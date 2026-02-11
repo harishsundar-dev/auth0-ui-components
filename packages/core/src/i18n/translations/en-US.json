@@ -201,6 +201,98 @@
       "organization_changes_error_message_generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
     }
   },
+  "invitations_management": {
+    "invitations_table": {
+      "header": {
+        "title": "Members",
+        "description": "Manage the members of your organization.",
+        "create_button_text": "Invite Member",
+        "back_button_text": "Back"
+      },
+      "tabs": {
+        "members": "Members",
+        "invitations": "Invitations"
+      },
+      "filter": {
+        "role_label": "Filter By Role",
+        "role_all": "All Roles",
+        "reset": "Reset"
+      },
+      "table": {
+        "empty_message": "No invitations found.",
+        "columns": {
+          "email": "Email",
+          "status": "Status",
+          "created_at": "Created At",
+          "expires_at": "Expires At",
+          "invited_by": "Invited By",
+          "roles": "Roles"
+        },
+        "actions": {
+          "resend_button_text": "Resend Invitation",
+          "delete_button_text": "Delete Invitation"
+        }
+      },
+      "notifications": {
+        "general_error": "There was an issue processing your request. Please try again or contact support if the issue persists.",
+        "fetch_invitations_error": "There was an issue fetching invitations. Please try again or contact support if the issue persists.",
+        "fetch_roles_error": "There was an issue fetching roles. Please try again or contact support if the issue persists.",
+        "invitation_create": {
+          "success": "Invitation(s) sent successfully",
+          "error": "There was an issue sending the invitation",
+          "on_before": "Invitation data is not valid."
+        },
+        "invitation_resend": {
+          "success": "Invitation resent successfully",
+          "error": "There was an issue resending the invitation",
+          "on_before": "Invitation resend validation is not correct."
+        },
+        "invitation_delete": {
+          "success": "Invitation deleted successfully",
+          "error": "There was an issue deleting the invitation",
+          "on_before": "Invitation delete validation is not correct."
+        }
+      }
+    },
+    "invitation_create": {
+      "modal": {
+        "title": "Invite Member",
+        "description": "Send an invitation to join your organization.",
+        "field": {
+          "email_label": "Email Address",
+          "email_placeholder": "Enter email address(es)",
+          "email_hint": "Add up to 10 members in a comma-separated list.",
+          "email_error": "Please enter valid email address(es)",
+          "roles_label": "Roles",
+          "roles_placeholder": "Select role(s)",
+          "roles_hint": "Optionally assign roles to the invited member(s)."
+        },
+        "actions": {
+          "cancel_button_text": "Cancel",
+          "send_button_text": "Send Invitation",
+          "sending_button_text": "Sending..."
+        }
+      }
+    },
+    "invitation_delete": {
+      "modal": {
+        "title": "Delete Invitation",
+        "description": "Are you sure you want to delete this invitation? This action cannot be undone.",
+        "email_label": "Invitation for:",
+        "actions": {
+          "cancel_button_text": "Cancel",
+          "delete_button_text": "Delete",
+          "deleting_button_text": "Deleting..."
+        }
+      }
+    },
+    "shared": {
+      "status": {
+        "pending": "Pending",
+        "expired": "Expired"
+      }
+    }
+  },
   "idp_management": {
     "sso_provider_table": {
       "header": {

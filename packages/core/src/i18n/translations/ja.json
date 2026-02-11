@@ -201,6 +201,98 @@
       "organization_changes_error_message_generic": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。"
     }
   },
+  "invitations_management": {
+    "invitations_table": {
+      "header": {
+        "title": "メンバー",
+        "description": "組織のメンバーを管理します。",
+        "create_button_text": "メンバーを招待",
+        "back_button_text": "戻る"
+      },
+      "tabs": {
+        "members": "メンバー",
+        "invitations": "招待"
+      },
+      "filter": {
+        "role_label": "ロールでフィルター",
+        "role_all": "すべてのロール",
+        "reset": "リセット"
+      },
+      "table": {
+        "empty_message": "招待が見つかりません。",
+        "columns": {
+          "email": "メールアドレス",
+          "status": "ステータス",
+          "created_at": "作成日",
+          "expires_at": "有効期限",
+          "invited_by": "招待者",
+          "roles": "ロール"
+        },
+        "actions": {
+          "resend_button_text": "招待を再送信",
+          "delete_button_text": "招待を削除"
+        }
+      },
+      "notifications": {
+        "general_error": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。",
+        "fetch_invitations_error": "招待の取得中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。",
+        "fetch_roles_error": "ロールの取得中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。",
+        "invitation_create": {
+          "success": "招待を送信しました",
+          "error": "招待の送信中に問題が発生しました",
+          "on_before": "招待データが無効です。"
+        },
+        "invitation_resend": {
+          "success": "招待を再送信しました",
+          "error": "招待の再送信中に問題が発生しました",
+          "on_before": "招待の再送信検証が正しくありません。"
+        },
+        "invitation_delete": {
+          "success": "招待を削除しました",
+          "error": "招待の削除中に問題が発生しました",
+          "on_before": "招待の削除検証が正しくありません。"
+        }
+      }
+    },
+    "invitation_create": {
+      "modal": {
+        "title": "メンバーを招待",
+        "description": "組織への招待を送信します。",
+        "field": {
+          "email_label": "メールアドレス",
+          "email_placeholder": "メールアドレスを入力",
+          "email_hint": "カンマ区切りで最大10件まで追加できます。",
+          "email_error": "有効なメールアドレスを入力してください",
+          "roles_label": "ロール",
+          "roles_placeholder": "ロールを選択",
+          "roles_hint": "招待するメンバーにロールを割り当てます（任意）。"
+        },
+        "actions": {
+          "cancel_button_text": "キャンセル",
+          "send_button_text": "招待を送信",
+          "sending_button_text": "送信中..."
+        }
+      }
+    },
+    "invitation_delete": {
+      "modal": {
+        "title": "招待を削除",
+        "description": "この招待を削除してもよろしいですか？この操作は取り消せません。",
+        "email_label": "招待先:",
+        "actions": {
+          "cancel_button_text": "キャンセル",
+          "delete_button_text": "削除",
+          "deleting_button_text": "削除中..."
+        }
+      }
+    },
+    "shared": {
+      "status": {
+        "pending": "保留中",
+        "expired": "期限切れ"
+      }
+    }
+  },
   "idp_management": {
     "sso_provider_table": {
       "header": {

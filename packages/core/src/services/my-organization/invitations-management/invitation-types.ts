@@ -1,4 +1,3 @@
-import type { MyOrganization } from '@auth0/myorganization-js';
 import type { InternalInvitationCreateFormValues } from '@core/schemas';
 
 // Invitation types from SDK

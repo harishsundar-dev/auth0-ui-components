@@ -1,4 +1,4 @@
-import type { Invitation } from '@auth0/universal-components-core';
+import type { Invitation, InvitationDeleteMessages } from '@auth0/universal-components-core';
 import React from 'react';
 
 import { useTranslator } from '../../../../hooks/use-translator';
@@ -8,7 +8,7 @@ import { Modal } from '../../../ui/modal';
 export interface InvitationDeleteModalProps {
   translatorKey?: string;
   className?: string;
-  customMessages?: Record<string, string>;
+  customMessages?: Partial<InvitationDeleteMessages>;
   invitation: Invitation | null;
   isOpen: boolean;
   isLoading: boolean;
@@ -42,17 +42,11 @@ export function InvitationDeleteModal({
       title={t('title')}
       content={
         <div className="space-y-6">
-          <p className="text-sm text-muted-foreground">
-            {t('description')}
-          </p>
+          <p className="text-sm text-muted-foreground">{t('description')}</p>
           {invitation && (
             <div className="rounded-lg bg-muted p-3">
-              <p className="text-xs font-medium text-muted-foreground mb-1">
-                {t('email_label')}
-              </p>
-              <p className="text-sm font-medium">
-                {invitation.invitee.email}
-              </p>
+              <p className="text-xs font-medium text-muted-foreground mb-1">{t('email_label')}</p>
+              <p className="text-sm font-medium">{invitation.invitee.email}</p>
             </div>
           )}
         </div>

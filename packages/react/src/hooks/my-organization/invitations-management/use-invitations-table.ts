@@ -1,8 +1,4 @@
-import {
-  type Invitation,
-  type Role,
-  BusinessError,
-} from '@auth0/universal-components-core';
+import { type Invitation, type Role, BusinessError } from '@auth0/universal-components-core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -27,7 +23,10 @@ export function useInvitationsTable({
   customMessages,
   pageSize = 10,
 }: UseInvitationsTableOptions): UseInvitationsTableResult {
-  const { t } = useTranslator('invitations_management.invitations_table.notifications', customMessages);
+  const { t } = useTranslator(
+    'invitations_management.invitations_table.notifications',
+    customMessages,
+  );
   const { coreClient } = useCoreClient();
   const queryClient = useQueryClient();
 
@@ -36,13 +35,24 @@ export function useInvitationsTable({
 
   // Fetch invitations
   const invitationsQuery = useQuery({
-    queryKey: invitationsQueryKeys.list({ page: currentPage, pageSize, roleFilter: selectedRoleFilter }),
+    queryKey: invitationsQueryKeys.list({
+      page: currentPage,
+      pageSize,
+      roleFilter: selectedRoleFilter,
+    }),
     queryFn: async () => {
-      const response = await coreClient!.getMyOrganizationApiClient().organization.members.invitations.list({
-        page: currentPage - 1, // API is 0-indexed
-        per_page: pageSize,
-        include_totals: true,
-      });
+      // TODO: Update when SDK supports invitations endpoint
+      // const response = await coreClient!.getMyOrganizationApiClient().organization.invitations.list({
+      //   page: currentPage - 1,
+      //   per_page: pageSize,
+      //   include_totals: true,
+      // });
+
+      // Mock data for now
+      const response: { invitations?: Invitation[]; total?: number } = {
+        invitations: [],
+        total: 0,
+      };
 
       let invitations: Invitation[] = response?.invitations ?? [];
       const total = response?.total ?? invitations.length;
@@ -61,9 +71,16 @@ export function useInvitationsTable({
   const rolesQuery = useQuery({
     queryKey: invitationsQueryKeys.roles(),
     queryFn: async () => {
-      const response = await coreClient!.getMyOrganizationApiClient().organization.roles.list({
-        per_page: 100, // Get all roles
-      });
+      // TODO: Update when SDK supports roles endpoint
+      // const response = await coreClient!.getMyOrganizationApiClient().organization.roles.list({
+      //   per_page: 100,
+      // });
+
+      // Mock data for now
+      const response: { roles?: Role[] } = {
+        roles: [],
+      };
+
       return response?.roles ?? [];
     },
     enabled: !!coreClient,
@@ -71,9 +88,9 @@ export function useInvitationsTable({
 
   // Create invitation mutation
   const createInvitationMutation = useMutation({
-    mutationFn: async ({ emails, roles }: { emails: string[]; roles: string[] }): Promise<Invitation[]> => {
+    mutationFn: async (_data: { emails: string[]; roles: string[] }): Promise<Invitation[]> => {
       const invitations: Invitation[] = [];
-      
+
       if (createAction?.onBefore) {
         // Call onBefore with the array of emails
         const shouldContinue = createAction.onBefore(invitations);
@@ -82,17 +99,18 @@ export function useInvitationsTable({
         }
       }
 
+      // TODO: Update when SDK supports invitations endpoint
       // Create invitation for each email
-      for (const email of emails) {
-        const invitation = await coreClient!
-          .getMyOrganizationApiClient()
-          .organization.members.invitations.create({
-            invitee: { email },
-            roles,
-            send_invitation_email: true,
-          });
-        invitations.push(invitation);
-      }
+      // for (const email of _data.emails) {
+      //   const invitation = await coreClient!
+      //     .getMyOrganizationApiClient()
+      //     .organization.invitations.create({
+      //       invitee: { email },
+      //       roles: _data.roles,
+      //       send_invitation_email: true,
+      //     });
+      //   invitations.push(invitation);
+      // }
 
       return invitations;
     },
@@ -109,28 +127,22 @@ export function useInvitationsTable({
         throw new BusinessError({ message: t('invitation_resend.on_before') });
       }
 
-      // Check if resend endpoint exists, otherwise recreate the invitation
-      try {
-        // Attempt to resend - this may not be available in all SDK versions
-        const response = await coreClient!
-          .getMyOrganizationApiClient()
-          .organization.members.invitations.resend?.(invitation.id);
-        return response || invitation;
-      } catch (error) {
-        // If resend is not available, delete and recreate
-        await coreClient!
-          .getMyOrganizationApiClient()
-          .organization.members.invitations.delete(invitation.id);
-        
-        const newInvitation = await coreClient!
-          .getMyOrganizationApiClient()
-          .organization.members.invitations.create({
-            invitee: { email: invitation.invitee.email },
-            roles: invitation.roles,
-            send_invitation_email: true,
-          });
-        return newInvitation;
-      }
+      // TODO: Update when SDK supports invitations endpoint
+      // Delete and recreate the invitation to "resend" it
+      // await coreClient!
+      //   .getMyOrganizationApiClient()
+      //   .organization.invitations.delete(invitation.id);
+
+      // const newInvitation = await coreClient!
+      //   .getMyOrganizationApiClient()
+      //   .organization.invitations.create({
+      //     invitee: { email: invitation.invitee.email },
+      //     roles: invitation.roles,
+      //     send_invitation_email: true,
+      //   });
+      // return newInvitation;
+
+      return invitation;
     },
     onSuccess: (result) => {
       resendAction?.onAfter?.(result);
@@ -144,9 +156,11 @@ export function useInvitationsTable({
       if (deleteAction?.onBefore && !deleteAction.onBefore(invitation)) {
         throw new BusinessError({ message: t('invitation_delete.on_before') });
       }
-      await coreClient!
-        .getMyOrganizationApiClient()
-        .organization.members.invitations.delete(invitation.id);
+
+      // TODO: Update when SDK supports invitations endpoint
+      // await coreClient!
+      //   .getMyOrganizationApiClient()
+      //   .organization.invitations.delete(invitation.id);
     },
     onSuccess: (_, invitation) => {
       deleteAction?.onAfter?.(invitation);

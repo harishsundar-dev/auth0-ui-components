@@ -1,7 +1,9 @@
 import {
   createInvitationCreateSchema,
+  parseEmailList,
   type InternalInvitationCreateFormValues,
   type Role,
+  type InvitationCreateMessages,
 } from '@auth0/universal-components-core';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as React from 'react';
@@ -9,16 +11,23 @@ import { useForm } from 'react-hook-form';
 
 import { useTranslator } from '../../../../hooks/use-translator';
 import { cn } from '../../../../lib/theme-utils';
-import { Form, FormControl, FormField, FormItem, FormMessage, FormLabel, FormDescription } from '../../../ui/form';
+import { Checkbox } from '../../../ui/checkbox';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  FormLabel,
+  FormDescription,
+} from '../../../ui/form';
 import { Modal } from '../../../ui/modal';
 import { TextField } from '../../../ui/text-field';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../ui/select';
-import { Checkbox } from '../../../ui/checkbox';
 
 export interface InvitationCreateModalProps {
   translatorKey?: string;
   className?: string;
-  customMessages?: Record<string, string>;
+  customMessages?: Partial<InvitationCreateMessages>;
   isOpen: boolean;
   isLoading: boolean;
   roles: Role[];
@@ -41,10 +50,11 @@ export function InvitationCreateModal({
   const { t } = useTranslator(translatorKey, customMessages);
 
   const [selectedRoles, setSelectedRoles] = React.useState<string[]>([]);
+  const [emailError, setEmailError] = React.useState<string>('');
 
   const invitationCreateSchema = React.useMemo(
-    () => createInvitationCreateSchema(schema, t('field.email_error')),
-    [schema, t],
+    () => createInvitationCreateSchema(schema),
+    [schema],
   );
 
   const form = useForm<InternalInvitationCreateFormValues>({
@@ -54,14 +64,24 @@ export function InvitationCreateModal({
       roles: [],
     },
     mode: 'onBlur',
-  });
+  }) as ReturnType<typeof useForm<InternalInvitationCreateFormValues>>;
 
   const handleCreate = React.useCallback(
     async (values: InternalInvitationCreateFormValues) => {
-      if (!values.email_list || values.email_list.length === 0) return;
-      await onCreate(values.email_list, selectedRoles);
-      form.reset();
-      setSelectedRoles([]);
+      if (!values.email_list) return;
+
+      try {
+        // Parse and validate emails
+        const emails = parseEmailList(values.email_list, 10);
+        await onCreate(emails, selectedRoles);
+        form.reset();
+        setSelectedRoles([]);
+        setEmailError('');
+      } catch (error) {
+        if (error instanceof Error) {
+          setEmailError(error.message);
+        }
+      }
     },
     [form, onCreate, selectedRoles],
   );
@@ -69,25 +89,21 @@ export function InvitationCreateModal({
   const handleClose = React.useCallback(() => {
     form.reset();
     setSelectedRoles([]);
+    setEmailError('');
     onClose();
   }, [form, onClose]);
 
   const onSubmit = React.useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      form.handleSubmit(handleCreate)();
+      void form.handleSubmit(handleCreate)();
     },
     [form, handleCreate],
   );
 
-  const handleRoleToggle = React.useCallback(
-    (roleId: string, checked: boolean) => {
-      setSelectedRoles((prev) =>
-        checked ? [...prev, roleId] : prev.filter((id) => id !== roleId)
-      );
-    },
-    [],
-  );
+  const handleRoleToggle = React.useCallback((roleId: string, checked: boolean) => {
+    setSelectedRoles((prev) => (checked ? [...prev, roleId] : prev.filter((id) => id !== roleId)));
+  }, []);
 
   return (
     <Modal
@@ -105,10 +121,7 @@ export function InvitationCreateModal({
                 name="email_list"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel
-                      htmlFor="email-list"
-                      className="text-sm font-medium"
-                    >
+                    <FormLabel htmlFor="email-list" className="text-sm font-medium">
                       {t('field.email_label')}
                     </FormLabel>
                     <FormControl>
@@ -120,9 +133,10 @@ export function InvitationCreateModal({
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      {t('field.email_hint')}
-                    </FormDescription>
+                    <FormDescription>{t('field.email_hint')}</FormDescription>
+                    {emailError && (
+                      <p className="text-sm font-medium text-destructive">{emailError}</p>
+                    )}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -130,12 +144,8 @@ export function InvitationCreateModal({
 
               {roles.length > 0 && (
                 <div className="space-y-3">
-                  <FormLabel className="text-sm font-medium">
-                    {t('field.roles_label')}
-                  </FormLabel>
-                  <FormDescription>
-                    {t('field.roles_hint')}
-                  </FormDescription>
+                  <FormLabel className="text-sm font-medium">{t('field.roles_label')}</FormLabel>
+                  <FormDescription>{t('field.roles_hint')}</FormDescription>
                   <div className="space-y-2 max-h-48 overflow-y-auto border rounded-lg p-3">
                     {roles.map((role) => (
                       <div key={role.id} className="flex items-center space-x-2">
@@ -175,7 +185,7 @@ export function InvitationCreateModal({
           disabled: isLoading,
           onClick: (e) => {
             e.preventDefault();
-            form.handleSubmit(handleCreate)();
+            void form.handleSubmit(handleCreate)();
           },
         },
         previousAction: {

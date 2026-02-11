@@ -6,15 +6,21 @@ import {
 import { Plus } from 'lucide-react';
 import * as React from 'react';
 
-import { InvitationsTableActionsColumn } from '../../../components/my-organization/invitations-management/invitations-table/invitations-table-actions-column';
 import { InvitationCreateModal } from '../../../components/my-organization/invitations-management/invitation-create/invitation-create-modal';
 import { InvitationDeleteModal } from '../../../components/my-organization/invitations-management/invitation-delete/invitation-delete-modal';
+import { InvitationsTableActionsColumn } from '../../../components/my-organization/invitations-management/invitations-table/invitations-table-actions-column';
 import { Badge } from '../../../components/ui/badge';
+import { Button } from '../../../components/ui/button';
 import { DataTable, type Column } from '../../../components/ui/data-table';
 import { Header } from '../../../components/ui/header';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../../components/ui/select';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../../components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-import { Button } from '../../../components/ui/button';
 import { withMyOrganizationService } from '../../../hoc/with-services';
 import { useInvitationsTable } from '../../../hooks/my-organization/invitations-management/use-invitations-table';
 import { useInvitationsTableLogic } from '../../../hooks/my-organization/invitations-management/use-invitations-table-logic';
@@ -75,16 +81,16 @@ function InvitationsTableComponent({
   const {
     invitations,
     roles,
-    totalInvitations,
-    currentPage,
+    // totalInvitations,
+    // currentPage,
     isFetchingInvitations,
-    isFetchingRoles,
+    // isFetchingRoles,
     isCreating,
     isDeleting,
     isResending,
     selectedRoleFilter,
     setSelectedRoleFilter,
-    setCurrentPage,
+    // setCurrentPage,
     fetchInvitations,
     onCreateInvitation,
     onResendInvitation,
@@ -106,7 +112,7 @@ function InvitationsTableComponent({
     setShowCreateModal,
     setShowDeleteModal,
     handleCreate,
-    handleResend,
+    // handleResend,
     handleDelete,
     handleCreateClick,
     handleResendClick,
@@ -133,86 +139,75 @@ function InvitationsTableComponent({
   }, [invitations, selectedRoleFilter]);
 
   const columns: Column<Invitation>[] = React.useMemo(
-    () => [
-      {
-        type: 'text',
-        accessorKey: 'invitee.email',
-        title: t('table.columns.email'),
-        width: '25%',
-        render: (invitation) => (
-          <div className="font-medium">{invitation.invitee.email}</div>
-        ),
-      },
-      {
-        type: 'text',
-        accessorKey: 'status',
-        title: t('table.columns.status'),
-        width: '15%',
-        render: (invitation) => {
-          const status = getInvitationStatus(invitation);
-          return (
-            <Badge variant={getStatusBadgeVariant(status)} size="sm">
-              {statusT.t(status)}
-            </Badge>
-          );
+    () =>
+      [
+        {
+          type: 'text',
+          accessorKey: 'id',
+          title: t('table.columns.email'),
+          width: '25%',
+          render: (invitation: Invitation) => (
+            <div className="font-medium">{invitation.invitee.email}</div>
+          ),
         },
-      },
-      {
-        type: 'text',
-        accessorKey: 'created_at',
-        title: t('table.columns.created_at'),
-        width: '15%',
-        render: (invitation) => (
-          <div className="text-sm text-muted-foreground">
-            {formatDate(invitation.created_at)}
-          </div>
-        ),
-      },
-      {
-        type: 'text',
-        accessorKey: 'expires_at',
-        title: t('table.columns.expires_at'),
-        width: '15%',
-        render: (invitation) => (
-          <div className="text-sm text-muted-foreground">
-            {formatDate(invitation.expires_at)}
-          </div>
-        ),
-      },
-      {
-        type: 'text',
-        accessorKey: 'inviter.name',
-        title: t('table.columns.invited_by'),
-        width: '15%',
-        render: (invitation) => (
-          <div className="text-sm">{invitation.inviter.name}</div>
-        ),
-      },
-      {
-        type: 'actions',
-        title: '',
-        width: '15%',
-        render: (invitation) => (
-          <InvitationsTableActionsColumn
-            invitation={invitation}
-            readOnly={readOnly}
-            customMessages={customMessages}
-            onResend={handleResendClick}
-            onDelete={handleDeleteClick}
-            isResending={isResending}
-          />
-        ),
-      },
-    ],
-    [
-      t,
-      statusT,
-      readOnly,
-      customMessages,
-      handleResendClick,
-      handleDeleteClick,
-      isResending,
-    ],
+        {
+          type: 'text',
+          accessorKey: 'id',
+          title: t('table.columns.status'),
+          width: '15%',
+          render: (invitation: Invitation) => {
+            const status = getInvitationStatus(invitation);
+            return (
+              <Badge variant={getStatusBadgeVariant(status)} size="sm">
+                {statusT.t(status)}
+              </Badge>
+            );
+          },
+        },
+        {
+          type: 'text',
+          accessorKey: 'created_at',
+          title: t('table.columns.created_at'),
+          width: '15%',
+          render: (invitation: Invitation) => (
+            <div className="text-sm text-muted-foreground">{formatDate(invitation.created_at)}</div>
+          ),
+        },
+        {
+          type: 'text',
+          accessorKey: 'expires_at',
+          title: t('table.columns.expires_at'),
+          width: '15%',
+          render: (invitation: Invitation) => (
+            <div className="text-sm text-muted-foreground">{formatDate(invitation.expires_at)}</div>
+          ),
+        },
+        {
+          type: 'text',
+          accessorKey: 'id',
+          title: t('table.columns.invited_by'),
+          width: '15%',
+          render: (invitation: Invitation) => (
+            <div className="text-sm">{invitation.inviter.name}</div>
+          ),
+        },
+        {
+          type: 'actions',
+          title: '',
+          width: '15%',
+          render: (invitation: Invitation) => (
+            <InvitationsTableActionsColumn
+              invitation={invitation}
+              readOnly={readOnly}
+              customMessages={customMessages}
+              onResend={handleResendClick}
+              onDelete={handleDeleteClick}
+              isResending={isResending}
+            />
+          ),
+        },
+      ] as Column<Invitation>[],
+    [t, statusT, readOnly, customMessages, handleResendClick, handleDeleteClick, isResending],
   );
 
   return (
@@ -253,16 +248,16 @@ function InvitationsTableComponent({
 
         <TabsContent value="invitations" className="mt-6">
           {/* Filters */}
-          <div className={`flex items-center gap-4 mb-6 ${currentStyles.classes?.['InvitationsTable-filters']}`}>
+          <div
+            className={`flex items-center gap-4 mb-6 ${currentStyles.classes?.['InvitationsTable-filters']}`}
+          >
             <div className="flex items-center gap-2">
               <label htmlFor="role-filter" className="text-sm font-medium">
                 {t('filter.role_label')}
               </label>
               <Select
                 value={selectedRoleFilter ?? 'all'}
-                onValueChange={(value) =>
-                  setSelectedRoleFilter(value === 'all' ? null : value)
-                }
+                onValueChange={(value) => setSelectedRoleFilter(value === 'all' ? null : value)}
               >
                 <SelectTrigger id="role-filter" className="w-[200px]">
                   <SelectValue placeholder={t('filter.role_all')} />
@@ -278,11 +273,7 @@ function InvitationsTableComponent({
               </Select>
             </div>
             {selectedRoleFilter && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setSelectedRoleFilter(null)}
-              >
+              <Button variant="ghost" size="sm" onClick={() => setSelectedRoleFilter(null)}>
                 {t('filter.reset')}
               </Button>
             )}
@@ -303,7 +294,7 @@ function InvitationsTableComponent({
         isOpen={showCreateModal}
         isLoading={isCreating}
         roles={roles}
-        schema={schema?.create}
+        schema={schema?.create as any}
         onClose={() => setShowCreateModal(false)}
         onCreate={handleCreate}
         customMessages={customMessages.create}

@@ -3,12 +3,13 @@
 import {
   getComponentStyles,
   MY_ORGANIZATION_INVITE_MEMBER_SCOPES,
+  type BulkInviteFormData,
+  type SingleInviteFormData,
 } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { InviteMemberDialog } from '../../../components/my-organization/member-management/invite-member-dialog';
 import { Button } from '../../../components/ui/button';
-import { Spinner } from '../../../components/ui/spinner';
 import { showToast } from '../../../components/ui/toast';
 import { withMyOrganizationService } from '../../../hoc/with-services';
 import { useInviteMember } from '../../../hooks/my-organization/member-management/use-invite-member';
@@ -78,7 +79,7 @@ function InviteMemberComponent({
   }, [resetError]);
 
   const handleSubmit = React.useCallback(
-    async (data: any) => {
+    async (data: SingleInviteFormData | BulkInviteFormData) => {
       try {
         if ('emails' in data) {
           // Bulk invite

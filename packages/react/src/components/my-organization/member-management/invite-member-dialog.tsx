@@ -22,7 +22,6 @@ import { SingleInviteForm } from './single-invite-form';
 export function InviteMemberDialog({
   isOpen,
   onClose,
-  organizationId,
   roles,
   isLoadingRoles,
   mode,

@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 
 import { useTranslator } from '../../../hooks/use-translator';
 import type { BulkInviteFormProps } from '../../../types/my-organization/member-management/invite-member-types';
-import { Alert } from '../../ui/alert';
 import { Button } from '../../ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../ui/form';
 

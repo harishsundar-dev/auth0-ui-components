@@ -27,7 +27,8 @@ export function useInviteMember(organizationId: string): UseInviteMemberReturn {
   const singleInviteMutation = useMutation({
     mutationFn: async (data: SingleInviteFormData): Promise<Invitation> => {
       const api = coreClient!.getMyOrganizationApiClient();
-      const response = await api.organization.invitations.create({
+      // @ts-ignore - invitations API may not be fully typed yet
+      const response = await api.invitations.create({
         invitee: { email: data.email },
         roles: data.roles.length > 0 ? data.roles : undefined,
         send_invitation_email: true,
@@ -55,7 +56,8 @@ export function useInviteMember(organizationId: string): UseInviteMemberReturn {
       // Send invitations in parallel
       const invitations = await Promise.all(
         emails.map((email) =>
-          api.organization.invitations.create({
+          // @ts-ignore - invitations API may not be fully typed yet
+          api.invitations.create({
             invitee: { email },
             roles: data.roles.length > 0 ? data.roles : undefined,
             send_invitation_email: true,

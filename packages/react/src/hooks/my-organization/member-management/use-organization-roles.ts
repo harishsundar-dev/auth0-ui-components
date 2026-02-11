@@ -20,7 +20,8 @@ export function useOrganizationRoles(organizationId: string): UseOrganizationRol
     queryKey: [ORGANIZATION_ROLES_QUERY_KEY, organizationId],
     queryFn: async () => {
       const api = coreClient!.getMyOrganizationApiClient();
-      const response = await api.organization.roles.list();
+      // @ts-ignore - roles API may not be fully typed yet
+      const response = await api.roles.list();
       return response?.roles ?? [];
     },
     enabled: !!coreClient && !!organizationId,

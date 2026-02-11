@@ -1,6 +1,5 @@
 'use client';
 
-import type { OrganizationRole } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { useTranslator } from '../../../hooks/use-translator';
@@ -8,7 +7,7 @@ import { cn } from '../../../lib/theme-utils';
 import type { RoleSelectorProps } from '../../../types/my-organization/member-management/invite-member-types';
 import { Badge } from '../../ui/badge';
 import { Checkbox } from '../../ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../ui/select';
+import { Select, SelectContent, SelectTrigger, SelectValue } from '../../ui/select';
 
 export function RoleSelector({
   roles,

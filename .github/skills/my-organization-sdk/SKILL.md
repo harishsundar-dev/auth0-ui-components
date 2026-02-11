@@ -99,9 +99,9 @@ The SDK provides a TypeScript client for Auth0's MyOrganization API, enabling:
 
 ### 2.3 Entry Points
 
-| Entry Point | Description |
-|-------------|-------------|
-| `@auth0/myorganization-js` | Main client for browser/Node.js |
+| Entry Point                       | Description                                   |
+| --------------------------------- | --------------------------------------------- |
+| `@auth0/myorganization-js`        | Main client for browser/Node.js               |
 | `@auth0/myorganization-js/server` | Server-side utilities with client credentials |
 
 ### 2.4 Runtime Support
@@ -145,43 +145,46 @@ src/
 ```typescript
 // Main client initialization
 const client = new MyOrganizationClient({
-    domain: "tenant.region.auth0.com",
-    token: "ACCESS_TOKEN",  // or token supplier function
+  domain: 'tenant.region.auth0.com',
+  token: 'ACCESS_TOKEN', // or token supplier function
 });
 
 // Resource access pattern
 client.organization.members.list();
-client.organization.domains.create({ domain: "example.com" });
-client.organization.roles.assign({ userId: "user_123", roleId: "role_456" });
+client.organization.domains.create({ domain: 'example.com' });
+client.organization.roles.assign({ userId: 'user_123', roleId: 'role_456' });
 ```
 
 ### 3.3 Authentication Patterns
 
 **Static Token:**
+
 ```typescript
 const client = new MyOrganizationClient({
-    domain: "tenant.auth0.com",
-    token: "static_access_token",
+  domain: 'tenant.auth0.com',
+  token: 'static_access_token',
 });
 ```
 
 **Token Supplier (Recommended):**
+
 ```typescript
 const client = new MyOrganizationClient({
-    domain: "tenant.auth0.com",
-    token: async ({ scope }) => {
-        return await getAccessToken({ scope });
-    },
+  domain: 'tenant.auth0.com',
+  token: async ({ scope }) => {
+    return await getAccessToken({ scope });
+  },
 });
 ```
 
 **Client Credentials (Server-side):**
+
 ```typescript
-import { createMyOrganizationClientWithClientCredentials } from "@auth0/myorganization-js/server";
+import { createMyOrganizationClientWithClientCredentials } from '@auth0/myorganization-js/server';
 
 const client = createMyOrganizationClientWithClientCredentials(
-    { domain: "tenant.auth0.com" },
-    { clientId: "...", clientSecret: "...", organization: "org_123" }
+  { domain: 'tenant.auth0.com' },
+  { clientId: '...', clientSecret: '...', organization: 'org_123' },
 );
 ```
 
@@ -196,19 +199,19 @@ const client = createMyOrganizationClientWithClientCredentials(
 
 ### 4.2 Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm install` | Install dependencies |
-| `pnpm build` | Build CJS and ESM outputs |
-| `pnpm test` | Run all tests |
-| `pnpm test:unit` | Run unit tests only |
-| `pnpm test:wire` | Run wire/integration tests |
-| `pnpm lint` | Check code style |
-| `pnpm lint:fix` | Fix linting issues |
-| `pnpm format` | Format code with Prettier |
-| `pnpm format:check` | Check formatting |
-| `pnpm check:fix` | Run all checks and auto-fix |
-| `pnpm docs` | Generate TypeDoc documentation |
+| Command             | Description                    |
+| ------------------- | ------------------------------ |
+| `pnpm install`      | Install dependencies           |
+| `pnpm build`        | Build CJS and ESM outputs      |
+| `pnpm test`         | Run all tests                  |
+| `pnpm test:unit`    | Run unit tests only            |
+| `pnpm test:wire`    | Run wire/integration tests     |
+| `pnpm lint`         | Check code style               |
+| `pnpm lint:fix`     | Fix linting issues             |
+| `pnpm format`       | Format code with Prettier      |
+| `pnpm format:check` | Check formatting               |
+| `pnpm check:fix`    | Run all checks and auto-fix    |
+| `pnpm docs`         | Generate TypeDoc documentation |
 
 ### 4.3 Build Process
 
@@ -249,15 +252,15 @@ The SDK uses **Vitest** with **MSW** (Mock Service Worker) for API mocking:
 import { describe, it, expect } from 'vitest';
 
 describe('MyOrganizationClient', () => {
-    it('should list organization members', async () => {
-        const client = new MyOrganizationClient({
-            domain: 'test.auth0.com',
-            token: 'test_token',
-        });
-
-        const members = await client.organization.members.list();
-        expect(members.data).toBeDefined();
+  it('should list organization members', async () => {
+    const client = new MyOrganizationClient({
+      domain: 'test.auth0.com',
+      token: 'test_token',
     });
+
+    const members = await client.organization.members.list();
+    expect(members.data).toBeDefined();
+  });
 });
 ```
 
@@ -284,17 +287,17 @@ pnpm test -- --watch
 ### 6.1 Error Handling
 
 ```typescript
-import { MyOrganizationClient, MyOrganizationError } from "@auth0/myorganization-js";
+import { MyOrganizationClient, MyOrganizationError } from '@auth0/myorganization-js';
 
 try {
-    await client.organization.domains.create({ domain: "example.com" });
+  await client.organization.domains.create({ domain: 'example.com' });
 } catch (err) {
-    if (err instanceof MyOrganizationError) {
-        console.log(err.statusCode);  // HTTP status code
-        console.log(err.message);     // Error message
-        console.log(err.body);        // Response body
-        console.log(err.rawResponse); // Raw fetch Response
-    }
+  if (err instanceof MyOrganizationError) {
+    console.log(err.statusCode); // HTTP status code
+    console.log(err.message); // Error message
+    console.log(err.body); // Response body
+    console.log(err.rawResponse); // Raw fetch Response
+  }
 }
 ```
 
@@ -308,8 +311,8 @@ console.log(page.data);
 
 // Iterate through pages
 while (page.hasNextPage()) {
-    page = await page.getNextPage();
-    console.log(page.data);
+  page = await page.getNextPage();
+  console.log(page.data);
 }
 ```
 
@@ -319,14 +322,14 @@ All methods accept optional request options:
 
 ```typescript
 await client.organization.domains.create(
-    { domain: "example.com" },
-    {
-        headers: { "X-Custom-Header": "value" },
-        queryParams: { customParam: "value" },
-        maxRetries: 3,
-        timeoutInSeconds: 30,
-        abortSignal: controller.signal,
-    }
+  { domain: 'example.com' },
+  {
+    headers: { 'X-Custom-Header': 'value' },
+    queryParams: { customParam: 'value' },
+    maxRetries: 3,
+    timeoutInSeconds: 30,
+    abortSignal: controller.signal,
+  },
 );
 ```
 
@@ -334,15 +337,16 @@ await client.organization.domains.create(
 
 ```typescript
 const { data, rawResponse } = await client.organization.domains
-    .create({ domain: "example.com" })
-    .withRawResponse();
+  .create({ domain: 'example.com' })
+  .withRawResponse();
 
-console.log(rawResponse.headers.get("X-RateLimit-Remaining"));
+console.log(rawResponse.headers.get('X-RateLimit-Remaining'));
 ```
 
 ### 6.5 Retry Behavior
 
 The SDK automatically retries on:
+
 - 408 (Timeout)
 - 429 (Rate Limited)
 - 5xx (Server Errors)
@@ -356,15 +360,17 @@ Default: 2 retries with exponential backoff.
 ### 7.1 Adding Custom Functionality
 
 1. Add file pattern to `.fernignore`:
+
    ```
    src/custom/
    ```
 
 2. Create custom module:
+
    ```typescript
    // src/custom/helpers.ts
    export function customHelper() {
-       // Your custom code
+     // Your custom code
    }
    ```
 
@@ -373,6 +379,7 @@ Default: 2 retries with exponential backoff.
 ### 7.2 Updating Documentation
 
 Safe to modify:
+
 - `README.md` - Main documentation
 - `reference.md` - API reference (may be generated)
 - `CONTRIBUTING.md` - Contribution guide
@@ -386,9 +393,9 @@ Create test files in `tests/unit/` or `tests/wire/`:
 import { describe, it, expect } from 'vitest';
 
 describe('My Feature', () => {
-    it('should work correctly', () => {
-        // Test implementation
-    });
+  it('should work correctly', () => {
+    // Test implementation
+  });
 });
 ```
 
@@ -407,25 +414,25 @@ If you find bugs in generated code:
 
 ### 8.1 Main Classes
 
-| Class | Description |
-|-------|-------------|
-| `MyOrganizationClient` | Main client for API access |
-| `MyOrganizationError` | Base error class |
+| Class                            | Description                  |
+| -------------------------------- | ---------------------------- |
+| `MyOrganizationClient`           | Main client for API access   |
+| `MyOrganizationError`            | Base error class             |
 | `ClientCredentialsTokenProvider` | Server-side token management |
 
 ### 8.2 Namespaces
 
-| Namespace | Description |
-|-----------|-------------|
+| Namespace        | Description                                   |
+| ---------------- | --------------------------------------------- |
 | `MyOrganization` | Type namespace for all request/response types |
 
 ### 8.3 Resource Endpoints
 
 ```typescript
-client.organization.members      // Member management
-client.organization.roles        // Role management
-client.organization.domains      // Domain management
-client.organization.invitations  // Invitation management
+client.organization.members; // Member management
+client.organization.roles; // Role management
+client.organization.domains; // Domain management
+client.organization.invitations; // Invitation management
 ```
 
 ---
@@ -492,7 +499,9 @@ export function initializeMyOrganizationClient(
           });
         },
       }),
-      setLatestScopes: (scopes) => { latestScopes = scopes; },
+      setLatestScopes: (scopes) => {
+        latestScopes = scopes;
+      },
     };
   }
 
@@ -508,7 +517,9 @@ export function initializeMyOrganizationClient(
         });
       },
     }),
-    setLatestScopes: (scopes) => { latestScopes = scopes; },
+    setLatestScopes: (scopes) => {
+      latestScopes = scopes;
+    },
   };
 }
 ```
@@ -535,9 +546,7 @@ export function useDomainTable(options: UseDomainTableOptions): UseDomainTableRe
   const domainsQuery = useQuery({
     queryKey: domainQueryKeys.list(),
     queryFn: async () => {
-      const response = await coreClient!
-        .getMyOrganizationApiClient()
-        .organization.domains.list();
+      const response = await coreClient!.getMyOrganizationApiClient().organization.domains.list();
       return response?.organization_domains ?? [];
     },
     enabled: !!coreClient,
@@ -546,9 +555,7 @@ export function useDomainTable(options: UseDomainTableOptions): UseDomainTableRe
   // Mutation: Create domain
   const createDomainMutation = useMutation({
     mutationFn: async (data: CreateOrganizationDomainRequestContent) => {
-      return coreClient!
-        .getMyOrganizationApiClient()
-        .organization.domains.create(data);
+      return coreClient!.getMyOrganizationApiClient().organization.domains.create(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: domainQueryKeys.list() });
@@ -600,24 +607,24 @@ export const DomainTable = withMyOrganizationService(
 
 ### 9.5 Key Files in auth0-ui-components
 
-| File | Purpose |
-|------|---------|
-| `packages/core/src/services/my-organization/my-organization-api-service.ts` | SDK initialization |
-| `packages/core/src/auth/core-client.ts` | Client factory with token management |
-| `packages/react/src/hooks/my-organization/*.ts` | React hooks with TanStack Query |
-| `packages/react/src/components/auth0/my-organization/*.tsx` | UI components |
-| `packages/react/src/hoc/with-services.tsx` | HOC for scope management |
+| File                                                                        | Purpose                              |
+| --------------------------------------------------------------------------- | ------------------------------------ |
+| `packages/core/src/services/my-organization/my-organization-api-service.ts` | SDK initialization                   |
+| `packages/core/src/auth/core-client.ts`                                     | Client factory with token management |
+| `packages/react/src/hooks/my-organization/*.ts`                             | React hooks with TanStack Query      |
+| `packages/react/src/components/auth0/my-organization/*.tsx`                 | UI components                        |
+| `packages/react/src/hoc/with-services.tsx`                                  | HOC for scope management             |
 
 ### 9.6 SDK API Endpoints Used
 
-| Hook | SDK Methods Called |
-|------|-------------------|
-| `useDomainTable` | `organization.domains.list()`, `.create()`, `.delete()`, `.verify.create()` |
-| `useSsoProviderTable` | `organization.identityProviders.list()`, `.get()`, `.delete()` |
-| `useSsoProviderCreate` | `organization.identityProviders.create()` |
-| `useSsoProviderEdit` | `organization.identityProviders.update()` |
-| `useOrganizationDetailsEdit` | `organization.get()`, `organization.update()` |
-| `useIdpConfig` | `organization.identityProviders.domains.create()`, `.delete()` |
+| Hook                         | SDK Methods Called                                                          |
+| ---------------------------- | --------------------------------------------------------------------------- |
+| `useDomainTable`             | `organization.domains.list()`, `.create()`, `.delete()`, `.verify.create()` |
+| `useSsoProviderTable`        | `organization.identityProviders.list()`, `.get()`, `.delete()`              |
+| `useSsoProviderCreate`       | `organization.identityProviders.create()`                                   |
+| `useSsoProviderEdit`         | `organization.identityProviders.update()`                                   |
+| `useOrganizationDetailsEdit` | `organization.get()`, `organization.update()`                               |
+| `useIdpConfig`               | `organization.identityProviders.domains.create()`, `.delete()`              |
 
 ### 9.7 Token & Scope Management
 
@@ -626,8 +633,8 @@ The integration uses dynamic scope injection:
 ```typescript
 // Before rendering a component, ensureScopes() is called
 await coreClient.ensureScopes(
-  'read:domains create:domains',  // Required scopes
-  'my-org'                         // Audience path
+  'read:domains create:domains', // Required scopes
+  'my-org', // Audience path
 );
 
 // This updates latestScopes in the SDK client

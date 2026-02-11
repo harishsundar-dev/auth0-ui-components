@@ -860,6 +860,65 @@
       "provisioning_attributes_sync_success": "The provisioning mappings have been updated."
     }
   },
+  "member_management": {
+    "invite_member": {
+      "title": "Invite Member",
+      "description": "Invite new members to join your organization.",
+      "trigger": {
+        "button": "Invite Member"
+      },
+      "mode": {
+        "single": "Single",
+        "bulk": "Bulk"
+      },
+      "form": {
+        "email": {
+          "label": "Email address",
+          "placeholder": "Enter email address",
+          "error": {
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address"
+          }
+        },
+        "emails": {
+          "label": "Email addresses",
+          "placeholder": "Enter email addresses separated by commas or new lines",
+          "hint": "You can invite up to ${max} members at once",
+          "error": {
+            "required": "At least one email is required",
+            "invalid": "One or more email addresses are invalid",
+            "tooMany": "Maximum ${max} invitations allowed at once"
+          }
+        },
+        "roles": {
+          "label": "Assign roles",
+          "placeholder": "Select roles (optional)",
+          "empty": "No roles available",
+          "loading": "Loading roles..."
+        },
+        "submit": "Send Invite",
+        "submit_bulk": "Send Invites",
+        "cancel": "Cancel"
+      },
+      "success": {
+        "title": "Invitation Sent",
+        "title_bulk": "Invitations Sent",
+        "message": "An invitation has been sent to ${email}",
+        "message_bulk": "${count} invitations have been sent successfully",
+        "close": "Done"
+      },
+      "error": {
+        "generic": "Failed to send invitation. Please try again.",
+        "duplicate": "This email has already been invited",
+        "memberExists": "This user is already a member of the organization"
+      },
+      "roleSelector": {
+        "selectAll": "Select all",
+        "clearAll": "Clear all",
+        "selected": "${count} role(s) selected"
+      }
+    }
+  },
   "mfa": {
     "title": "Multi-Factor Authentication methods",
     "description": "Extra protection for your account and your identity",

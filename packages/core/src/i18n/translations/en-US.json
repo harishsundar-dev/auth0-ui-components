@@ -201,6 +201,145 @@
       "organization_changes_error_message_generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
     }
   },
+  "member_management": {
+    "members": {
+      "title": "Members",
+      "description": "Manage the members of your organization.",
+      "tabs": {
+        "members": "Members",
+        "invitations": "Invitations"
+      },
+      "invite_button": "Invite Member",
+      "back_button": "Back",
+      "filter_by_role": "Filter By Role: All",
+      "filter_by_role_selected": "Filter By Role: ${role}",
+      "reset_filter": "Reset",
+      "search_placeholder": "Search for a member by name or email",
+      "table": {
+        "email": "Email",
+        "name": "Name",
+        "status": "Status",
+        "roles": "Roles",
+        "created_at": "Created At",
+        "last_login": "Last Login",
+        "expires_at": "Expires At",
+        "invited_by": "Invited By",
+        "actions": "Actions",
+        "select_all": "Select all",
+        "select_row": "Select row"
+      },
+      "status": {
+        "active": "Active",
+        "pending": "Pending",
+        "expired": "Expired"
+      },
+      "empty_state": {
+        "title": "No members yet",
+        "description": "Invite members to your organization to get started."
+      },
+      "no_results": {
+        "title": "No members found",
+        "description": "Try adjusting your search or filter criteria."
+      },
+      "bulk_actions": {
+        "selected": "${count} selected",
+        "delete": "Delete Selected",
+        "remove": "Remove Selected"
+      },
+      "row_actions": {
+        "view_details": "View Details",
+        "assign_roles": "Assign Roles",
+        "remove": "Remove from Organization",
+        "delete": "Delete Member"
+      }
+    },
+    "invitations": {
+      "empty_state": {
+        "title": "No invitations",
+        "description": "There are no pending invitations."
+      },
+      "row_actions": {
+        "resend": "Resend Invitation",
+        "revoke": "Revoke Invitation"
+      }
+    },
+    "invite_member": {
+      "title": "Invite Member",
+      "description": "Send an invitation to join your organization.",
+      "email_label": "Email Address*",
+      "email_placeholder": "Enter email address",
+      "email_hint": "Add up to 10 members in a comma-separated list.",
+      "roles_label": "Roles",
+      "roles_placeholder": "Select role(s)",
+      "roles_hint": "Assign roles to the invited member(s).",
+      "cancel": "Cancel",
+      "submit": "Send Invite",
+      "submitting": "Sending...",
+      "success": "Invite sent",
+      "success_multiple": "${count} invites sent",
+      "error": "Failed to send invitation"
+    },
+    "member_details": {
+      "back": "Back to Members",
+      "title": "Member Details",
+      "email_label": "Email",
+      "name_label": "Name",
+      "created_label": "Member Since",
+      "last_login_label": "Last Login",
+      "never_logged_in": "Never",
+      "assign_roles": "Assign Roles",
+      "roles_label": "Roles",
+      "no_roles": "No roles assigned",
+      "remove_role": "Remove role"
+    },
+    "role_selector": {
+      "title": "Assign Roles",
+      "description": "Select roles to assign to this member.",
+      "search_placeholder": "Search roles...",
+      "no_roles": "No roles available",
+      "cancel": "Cancel",
+      "confirm": "Save Roles",
+      "saving": "Saving..."
+    },
+    "delete_member": {
+      "title": "Delete Member",
+      "title_plural": "Delete Members",
+      "description_single": "Are you sure you want to delete \"${name}\"? This action cannot be undone.",
+      "description_multiple": "Are you sure you want to delete ${count} members? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting...",
+      "success": "Member deleted",
+      "success_multiple": "${count} members deleted",
+      "error": "Failed to delete member"
+    },
+    "remove_member": {
+      "title": "Remove Member from ${orgName}",
+      "title_plural": "Remove Members from ${orgName}",
+      "description_single": "Are you sure you want to remove \"${name}\" from this organization? This action will not delete their account but it will revoke their access and prevent them from signing in.",
+      "description_multiple": "Are you sure you want to remove ${count} members from this organization? This action will not delete their accounts but it will revoke their access and prevent them from signing in.",
+      "cancel": "Cancel",
+      "confirm": "Remove",
+      "removing": "Removing...",
+      "success": "Member removed",
+      "success_multiple": "${count} members removed",
+      "error": "Failed to remove member"
+    },
+    "roles": {
+      "admin": "Admin",
+      "admin_description": "Full administrative access",
+      "member": "Member",
+      "member_description": "Standard member access",
+      "viewer": "Viewer",
+      "viewer_description": "Read-only access"
+    },
+    "errors": {
+      "load_members": "Failed to load members",
+      "load_invitations": "Failed to load invitations",
+      "load_roles": "Failed to load roles",
+      "retry": "Retry"
+    }
+  },
   "idp_management": {
     "sso_provider_table": {
       "header": {

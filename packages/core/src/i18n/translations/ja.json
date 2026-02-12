@@ -201,6 +201,145 @@
       "organization_changes_error_message_generic": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。"
     }
   },
+  "member_management": {
+    "members": {
+      "title": "メンバー",
+      "description": "組織のメンバーを管理します。",
+      "tabs": {
+        "members": "メンバー",
+        "invitations": "招待"
+      },
+      "invite_button": "メンバーを招待",
+      "back_button": "戻る",
+      "filter_by_role": "ロールでフィルター: すべて",
+      "filter_by_role_selected": "ロールでフィルター: ${role}",
+      "reset_filter": "リセット",
+      "search_placeholder": "名前またはメールでメンバーを検索",
+      "table": {
+        "email": "メール",
+        "name": "名前",
+        "status": "ステータス",
+        "roles": "ロール",
+        "created_at": "作成日",
+        "last_login": "最終ログイン",
+        "expires_at": "有効期限",
+        "invited_by": "招待者",
+        "actions": "アクション",
+        "select_all": "すべて選択",
+        "select_row": "行を選択"
+      },
+      "status": {
+        "active": "アクティブ",
+        "pending": "保留中",
+        "expired": "期限切れ"
+      },
+      "empty_state": {
+        "title": "メンバーがいません",
+        "description": "組織にメンバーを招待して開始しましょう。"
+      },
+      "no_results": {
+        "title": "メンバーが見つかりません",
+        "description": "検索またはフィルター条件を調整してください。"
+      },
+      "bulk_actions": {
+        "selected": "${count}件選択中",
+        "delete": "選択したメンバーを削除",
+        "remove": "選択したメンバーを除外"
+      },
+      "row_actions": {
+        "view_details": "詳細を表示",
+        "assign_roles": "ロールを割り当て",
+        "remove": "組織から除外",
+        "delete": "メンバーを削除"
+      }
+    },
+    "invitations": {
+      "empty_state": {
+        "title": "招待がありません",
+        "description": "保留中の招待はありません。"
+      },
+      "row_actions": {
+        "resend": "招待を再送信",
+        "revoke": "招待を取り消し"
+      }
+    },
+    "invite_member": {
+      "title": "メンバーを招待",
+      "description": "組織への参加招待を送信します。",
+      "email_label": "メールアドレス*",
+      "email_placeholder": "メールアドレスを入力",
+      "email_hint": "カンマ区切りで最大10人のメンバーを追加できます。",
+      "roles_label": "ロール",
+      "roles_placeholder": "ロールを選択",
+      "roles_hint": "招待するメンバーにロールを割り当てます。",
+      "cancel": "キャンセル",
+      "submit": "招待を送信",
+      "submitting": "送信中...",
+      "success": "招待を送信しました",
+      "success_multiple": "${count}件の招待を送信しました",
+      "error": "招待の送信に失敗しました"
+    },
+    "member_details": {
+      "back": "メンバー一覧に戻る",
+      "title": "メンバー詳細",
+      "email_label": "メール",
+      "name_label": "名前",
+      "created_label": "参加日",
+      "last_login_label": "最終ログイン",
+      "never_logged_in": "なし",
+      "assign_roles": "ロールを割り当て",
+      "roles_label": "ロール",
+      "no_roles": "ロールが割り当てられていません",
+      "remove_role": "ロールを削除"
+    },
+    "role_selector": {
+      "title": "ロールを割り当て",
+      "description": "このメンバーに割り当てるロールを選択してください。",
+      "search_placeholder": "ロールを検索...",
+      "no_roles": "利用可能なロールがありません",
+      "cancel": "キャンセル",
+      "confirm": "ロールを保存",
+      "saving": "保存中..."
+    },
+    "delete_member": {
+      "title": "メンバーを削除",
+      "title_plural": "メンバーを削除",
+      "description_single": "「${name}」を削除してもよろしいですか？この操作は元に戻せません。",
+      "description_multiple": "${count}人のメンバーを削除してもよろしいですか？この操作は元に戻せません。",
+      "cancel": "キャンセル",
+      "confirm": "削除",
+      "deleting": "削除中...",
+      "success": "メンバーを削除しました",
+      "success_multiple": "${count}人のメンバーを削除しました",
+      "error": "メンバーの削除に失敗しました"
+    },
+    "remove_member": {
+      "title": "${orgName}からメンバーを除外",
+      "title_plural": "${orgName}からメンバーを除外",
+      "description_single": "「${name}」をこの組織から除外してもよろしいですか？この操作はアカウントを削除しませんが、アクセス権を取り消し、サインインを防止します。",
+      "description_multiple": "${count}人のメンバーをこの組織から除外してもよろしいですか？この操作はアカウントを削除しませんが、アクセス権を取り消し、サインインを防止します。",
+      "cancel": "キャンセル",
+      "confirm": "除外",
+      "removing": "除外中...",
+      "success": "メンバーを除外しました",
+      "success_multiple": "${count}人のメンバーを除外しました",
+      "error": "メンバーの除外に失敗しました"
+    },
+    "roles": {
+      "admin": "管理者",
+      "admin_description": "完全な管理者アクセス",
+      "member": "メンバー",
+      "member_description": "標準メンバーアクセス",
+      "viewer": "閲覧者",
+      "viewer_description": "読み取り専用アクセス"
+    },
+    "errors": {
+      "load_members": "メンバーの読み込みに失敗しました",
+      "load_invitations": "招待の読み込みに失敗しました",
+      "load_roles": "ロールの読み込みに失敗しました",
+      "retry": "再試行"
+    }
+  },
   "idp_management": {
     "sso_provider_table": {
       "header": {

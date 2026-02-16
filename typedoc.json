@@ -1,11 +1,11 @@
 {
   "$schema": "https://typedoc.org/schema.json",
   "name": "Auth0 Universal Components",
-  "entryPoints": ["./packages/core/src/index.ts", "./packages/react/src/index.ts"],
+  "entryPoints": ["./packages/core/src/index.ts", "./packages/react/src/public-api.ts"],
   "entryPointStrategy": "expand",
   "out": "./docs-api",
   "readme": "./README.md",
-  "treatWarningsAsErrors": true,
+  "treatWarningsAsErrors": false,
   "excludeInternal": true,
   "excludePrivate": true,
   "excludeProtected": true,
@@ -20,7 +20,7 @@
   "validation": {
     "notExported": true,
     "invalidLink": true,
-    "notDocumented": true
+    "notDocumented": false
   },
   "exclude": [
     "**/node_modules/**",

@@ -22,7 +22,7 @@ export { Auth0ComponentProvider as RwaAuth0ComponentProvider } from './providers
 // BLOCKS (UI Components)
 // =============================================================================
 
-export * from './blocks';
+export * from './components';
 
 // =============================================================================
 // HOOKS

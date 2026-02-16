@@ -2,15 +2,15 @@
 
 import * as React from 'react';
 
-import { Toaster } from '../components/ui/sonner';
-import { Spinner } from '../components/ui/spinner';
-import { CoreClientContext } from '../hooks/use-core-client';
-import { useCoreClientInitialization } from '../hooks/use-core-client-initialization';
-import { useToastProvider } from '../hooks/use-toast-provider';
-import type { Auth0ComponentProviderProps } from '../types/auth-types';
-
-import { ScopeManagerProvider } from './scope-manager-provider';
-import { ThemeProvider } from './theme-provider';
+import { Toaster } from '@/components/auth0/shared/sonner';
+import { Spinner } from '@/components/ui/spinner';
+import { CoreClientContext } from '@/hooks/shared/use-core-client';
+import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
+import { useToastProvider } from '@/hooks/shared/use-toast-provider';
+import { QueryProvider } from '@/providers/query-provider';
+import { ScopeManagerProvider } from '@/providers/scope-manager-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
+import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
 /**
  * Auth0 Proxy Provider for Next.js and server-side authentication
@@ -41,6 +41,7 @@ export const Auth0ComponentProvider = ({
     },
   },
   toastSettings,
+  cacheConfig,
   loader,
   children,
 }: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
@@ -91,7 +92,9 @@ export const Auth0ComponentProvider = ({
         }
       >
         <CoreClientContext.Provider value={coreClientValue}>
-          <ScopeManagerProvider>{children}</ScopeManagerProvider>
+          <QueryProvider cacheConfig={cacheConfig}>
+            <ScopeManagerProvider>{children}</ScopeManagerProvider>
+          </QueryProvider>
         </CoreClientContext.Provider>
       </React.Suspense>
     </ThemeProvider>

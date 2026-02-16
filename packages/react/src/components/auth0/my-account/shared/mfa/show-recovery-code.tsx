@@ -2,8 +2,8 @@ import { getComponentStyles, FACTOR_TYPE_RECOVERY_CODE } from '@auth0/universal-
 import * as React from 'react';
 
 import { CopyableTextField } from '@/components/auth0/shared/copyable-text-field';
-import { Spinner } from '@/components/auth0/shared/spinner';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { useOtpConfirmation } from '@/hooks/my-account/use-otp-confirmation';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';

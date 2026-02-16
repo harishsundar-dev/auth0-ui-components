@@ -8,7 +8,6 @@ import { useForm } from 'react-hook-form';
 
 import { CommonConfigureFields } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/common-configure-fields';
 import { CopyableTextField } from '@/components/auth0/shared/copyable-text-field';
-import { TextField } from '@/components/auth0/shared/text-field';
 import {
   Form,
   FormField,
@@ -20,6 +19,7 @@ import {
 } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { TextField } from '@/components/ui/text-field';
 import { useProviderFormMode } from '@/hooks/my-organization/use-provider-form-mode';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';

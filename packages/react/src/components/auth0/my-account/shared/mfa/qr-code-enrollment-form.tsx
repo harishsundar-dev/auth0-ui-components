@@ -7,9 +7,9 @@ import * as React from 'react';
 
 import { OTPVerificationForm } from '@/components/auth0/my-account/shared/mfa/otp-verification-form';
 import { CopyableTextField } from '@/components/auth0/shared/copyable-text-field';
-import { QRCodeDisplayer } from '@/components/auth0/shared/qr-code';
-import { Spinner } from '@/components/auth0/shared/spinner';
 import { Button } from '@/components/ui/button';
+import { QRCodeDisplayer } from '@/components/ui/qr-code';
+import { Spinner } from '@/components/ui/spinner';
 import { useOtpEnrollment } from '@/hooks/my-account/use-otp-enrollment';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';

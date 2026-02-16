@@ -7,7 +7,6 @@ import * as React from 'react';
 import { useForm } from 'react-hook-form';
 
 import { Section } from '@/components/auth0/shared/section';
-import { TextField } from '@/components/auth0/shared/text-field';
 import {
   Form,
   FormControl,
@@ -17,6 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { TextField } from '@/components/ui/text-field';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { ProviderDetailsProps } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 

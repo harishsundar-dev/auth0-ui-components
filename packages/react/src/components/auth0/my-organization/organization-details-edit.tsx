@@ -6,7 +6,7 @@ import * as React from 'react';
 
 import { OrganizationDetails } from '@/components/auth0/my-organization/shared/organization-management/organization-details/organization-details';
 import { Header } from '@/components/auth0/shared/header';
-import { Spinner } from '@/components/auth0/shared/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { withMyOrganizationService } from '@/hoc/with-services';
 import { useOrganizationDetailsEdit } from '@/hooks/my-organization/use-organization-details-edit';
 import { useTheme } from '@/hooks/shared/use-theme';

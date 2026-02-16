@@ -3,8 +3,8 @@ import type { LucideIcon } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
 import * as React from 'react';
 
-import { Spinner } from '@/components/auth0/shared/spinner';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';

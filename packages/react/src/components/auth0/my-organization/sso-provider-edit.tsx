@@ -10,7 +10,7 @@ import { SsoDomainTab } from '@/components/auth0/my-organization/shared/idp-mana
 import { SsoProviderTab } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provider-tab';
 import { SsoProvisioningTab } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provisioning/sso-provisioning-tab';
 import { Header } from '@/components/auth0/shared/header';
-import { Spinner } from '@/components/auth0/shared/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { withMyOrganizationService } from '@/hoc/with-services';
 import { useConfig } from '@/hooks/my-organization/use-config';

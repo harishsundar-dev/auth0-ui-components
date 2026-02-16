@@ -1,9 +1,8 @@
 import { LinkIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { ColorPickerInput } from '@/components/auth0/shared/color-picker';
-import { ImagePreviewField } from '@/components/auth0/shared/image-preview-field';
 import { Section } from '@/components/auth0/shared/section';
+import { ColorPickerInput } from '@/components/ui/color-picker';
 import {
   FormControl,
   FormDescription,
@@ -12,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { ImagePreviewField } from '@/components/ui/image-preview-field';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { BrandingDetailsProps } from '@/types/my-organization/organization-management/organization-details-types';
 

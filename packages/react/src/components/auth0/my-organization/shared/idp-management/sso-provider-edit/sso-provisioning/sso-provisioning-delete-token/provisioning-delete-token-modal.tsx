@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ProvisioningDeleteTokenModalContent } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provisioning/sso-provisioning-delete-token/provisioning-delete-token-modal-content';
-import { Modal } from '@/components/auth0/shared/modal';
+import { Modal } from '@/components/ui/modal';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { ProvisioningDeleteTokenModalProps } from '@/types/my-organization/idp-management/sso-provisioning/provisioning-manage-token-types';
 

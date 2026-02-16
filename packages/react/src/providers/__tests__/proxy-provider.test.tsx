@@ -15,7 +15,7 @@ vi.mock('@/components/auth0/shared/sonner', () => ({
   Toaster: () => <div data-testid="toaster" />,
 }));
 
-vi.mock('@/components/auth0/shared/spinner', () => ({
+vi.mock('@/components/ui/spinner', () => ({
   Spinner: () => <div data-testid="spinner" />,
 }));
 

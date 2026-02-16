@@ -10,8 +10,8 @@ import OktaLogo from '@/assets/icons/okta-logo';
 import PingIdLogo from '@/assets/icons/pingid-logo';
 import SamlpLogo from '@/assets/icons/sampl-logo';
 import { Section } from '@/components/auth0/shared/section';
-import { Spinner } from '@/components/auth0/shared/spinner';
 import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { ProviderSelectProps } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 

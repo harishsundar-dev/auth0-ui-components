@@ -5,7 +5,7 @@ import type { BasicAuth0ContextInterface } from '@auth0/universal-components-cor
 import * as React from 'react';
 
 import { Toaster } from '@/components/auth0/shared/sonner';
-import { Spinner } from '@/components/auth0/shared/spinner';
+import { Spinner } from '@/components/ui/spinner';
 import { CoreClientContext } from '@/hooks/shared/use-core-client';
 import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
 import { useToastProvider } from '@/hooks/shared/use-toast-provider';

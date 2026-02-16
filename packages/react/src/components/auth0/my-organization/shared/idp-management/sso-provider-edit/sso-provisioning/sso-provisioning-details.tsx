@@ -12,7 +12,6 @@ import { useForm } from 'react-hook-form';
 import { SsoProviderAttributeMappings } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provider-attribute-mappings';
 import { ProvisioningManageToken } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provisioning/provisioning-manage-token';
 import { CopyableTextField } from '@/components/auth0/shared/copyable-text-field';
-import { TextField } from '@/components/auth0/shared/text-field';
 import {
   Form,
   FormControl,
@@ -23,6 +22,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
+import { TextField } from '@/components/ui/text-field';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';

@@ -4,7 +4,6 @@ import * as React from 'react';
 import { SsoProviderAttributeSyncAlert } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provider-attribute-sync-alert';
 import { SsoProvisioningDeleteModal } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provisioning/sso-provisioning-delete-modal';
 import { SsoProvisioningDetails } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provisioning/sso-provisioning-details';
-import { Spinner } from '@/components/auth0/shared/spinner';
 import {
   Card,
   CardAction,
@@ -13,6 +12,7 @@ import {
   CardTitle,
   CardContent,
 } from '@/components/ui/card';
+import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { useSsoProviderEdit } from '@/hooks/my-organization/use-sso-provider-edit';

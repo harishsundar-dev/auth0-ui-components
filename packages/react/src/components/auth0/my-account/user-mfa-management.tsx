@@ -13,11 +13,11 @@ import { MFAEmptyState } from '@/components/auth0/my-account/shared/mfa/empty-st
 import { MFAErrorState } from '@/components/auth0/my-account/shared/mfa/error-state';
 import { FactorsList } from '@/components/auth0/my-account/shared/mfa/factors-list';
 import { UserMFASetupForm } from '@/components/auth0/my-account/shared/mfa/user-mfa-setup-form';
-import { List, ListItem } from '@/components/auth0/shared/list';
-import { Spinner } from '@/components/auth0/shared/spinner';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardTitle } from '@/components/ui/card';
+import { List, ListItem } from '@/components/ui/list';
+import { Spinner } from '@/components/ui/spinner';
 import { withMyAccountService } from '@/hoc/with-services';
 import { useMFA } from '@/hooks/my-account/use-mfa';
 import { useTheme } from '@/hooks/shared/use-theme';

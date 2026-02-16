@@ -2,8 +2,8 @@ import type { IdentityProviderAssociatedWithDomain } from '@auth0/universal-comp
 import React from 'react';
 
 import { type Column, DataTable } from '@/components/auth0/shared/data-table';
-import { Modal } from '@/components/auth0/shared/modal';
 import { Button } from '@/components/ui/button';
+import { Modal } from '@/components/ui/modal';
 import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { useTranslator } from '@/hooks/shared/use-translator';

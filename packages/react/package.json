@@ -1,6 +1,6 @@
 {
   "name": "@auth0/universal-components-react",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "private": false,
   "sideEffects": [
     "*.css"
@@ -47,6 +47,7 @@
     "@auth0/universal-components-core": "workspace:*",
     "@hookform/resolvers": "^5.1.0",
     "@radix-ui/react-accordion": "^1.2.0",
+    "@tanstack/react-query": "^5.56.2",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
@@ -70,6 +71,11 @@
     "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.0",
     "zod": "^3.25.56"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/auth0-ui-components",
+    "directory": "packages/react"
   },
   "author": "Auth0",
   "license": "MIT",

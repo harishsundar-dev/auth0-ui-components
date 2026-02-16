@@ -72,6 +72,11 @@
     "tailwind-merge": "^3.3.0",
     "zod": "^3.25.56"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/auth0-ui-components",
+    "directory": "packages/react"
+  },
   "author": "Auth0",
   "license": "MIT",
   "devDependencies": {

@@ -2,8 +2,8 @@ import type { CoreClientInterface } from '@auth0/universal-components-core';
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { mockCreateCoreClient } from '../../internals';
-import { useCoreClientInitialization } from '../use-core-client-initialization';
+import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
+import { mockCreateCoreClient } from '@/tests/utils';
 
 const { createCoreClient } = mockCreateCoreClient();
 
@@ -97,7 +97,7 @@ describe('useCoreClientInitialization', () => {
     });
   });
 
-  it('should reinitialize when domain changes', async () => {
+  it('should not reinitialize when domain changes (domain is optional)', async () => {
     createCoreClient.mockResolvedValue(mockCoreClient);
 
     const propsWithDomain = {
@@ -116,8 +116,6 @@ describe('useCoreClientInitialization', () => {
       authDetails: { authProxyUrl: '/api/auth', domain: 'new.auth0.com' },
     });
 
-    await waitFor(() => {
-      expect(createCoreClient).toHaveBeenCalledTimes(2);
-    });
+    expect(createCoreClient).toHaveBeenCalledTimes(1);
   });
 });

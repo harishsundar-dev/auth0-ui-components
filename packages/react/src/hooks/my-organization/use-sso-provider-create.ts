@@ -8,9 +8,8 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
-import { ssoProviderQueryKeys } from './use-sso-provider-table';
-
 import { showToast } from '@/components/auth0/shared/toast';
+import { ssoProviderQueryKeys } from '@/hooks/my-organization/use-sso-provider-table';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { UseSsoProviderCreateOptions } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';

@@ -16,12 +16,17 @@ import React, {
   type HTMLAttributes,
 } from 'react';
 
-import { cn } from '../../lib/theme-utils';
-
-import { Button } from './button';
-import { Popover, PopoverContent, PopoverTrigger } from './popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
-import { TextField } from './text-field';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { TextField } from '@/components/ui/text-field';
+import { cn } from '@/lib/utils';
 
 interface HsvaColor {
   h: number;

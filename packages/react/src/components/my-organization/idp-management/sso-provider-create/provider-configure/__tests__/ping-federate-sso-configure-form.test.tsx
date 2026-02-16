@@ -3,10 +3,9 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { renderWithProviders } from '../../../../../../internals';
-import { createMockI18nService } from '../../../../../../internals/__mocks__/core/i18n-service.mocks';
-import type { PingFederateConfigureFormHandle } from '../ping-federate-sso-configure-form';
-import { PingFederateProviderForm } from '../ping-federate-sso-configure-form';
+import type { PingFederateConfigureFormHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/ping-federate-sso-configure-form';
+import { PingFederateProviderForm } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/ping-federate-sso-configure-form';
+import { createMockI18nService, renderWithProviders } from '@/tests/utils';
 
 describe('PingFederateProviderForm', () => {
   beforeEach(() => {

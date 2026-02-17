@@ -7,11 +7,14 @@ import type {
   UseConfigIdpResult,
 } from '@/types/my-organization/config/config-idp-types';
 
-const idpConfigQueryKeys = {
+export const idpConfigQueryKeys = {
   all: ['idp-config'] as const,
   config: () => [...idpConfigQueryKeys.all, 'config'] as const,
 };
 
+/**
+ *
+ */
 export function useIdpConfig(): UseConfigIdpResult {
   const { coreClient } = useCoreClient();
   const queryClient = useQueryClient();

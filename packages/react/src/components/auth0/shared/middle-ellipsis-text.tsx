@@ -7,6 +7,17 @@ export interface MiddleEllipsisTextProps {
   className?: string;
 }
 
+// Reusable canvas context for text measurement (singleton)
+let measureContext: CanvasRenderingContext2D | null = null;
+
+function getMeasureContext(): CanvasRenderingContext2D | null {
+  if (!measureContext) {
+    const canvas = document.createElement('canvas');
+    measureContext = canvas.getContext('2d');
+  }
+  return measureContext;
+}
+
 /**
  * Calculates how much text fits in the available width using canvas measurement.
  * Returns truncated text with middle ellipsis if needed.
@@ -20,15 +31,12 @@ function calculateTruncatedText(
     return { truncated: text, isTruncated: false };
   }
 
-  // Create a canvas element for text measurement
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
+  const context = getMeasureContext();
   if (!context) {
     return { truncated: text, isTruncated: false };
   }
 
   context.font = font;
-  const ellipsis = '...';
   const fullWidth = context.measureText(text).width;
 
   // If text fits, return as-is
@@ -36,6 +44,7 @@ function calculateTruncatedText(
     return { truncated: text, isTruncated: false };
   }
 
+  const ellipsis = '...';
   const ellipsisWidth = context.measureText(ellipsis).width;
   const targetWidth = availableWidth - ellipsisWidth;
 
@@ -43,42 +52,58 @@ function calculateTruncatedText(
     return { truncated: ellipsis, isTruncated: true };
   }
 
-  // Binary search for optimal split point
-  let start = 0;
-  let end = text.length;
-  let bestStart = 0;
-  let bestEnd = text.length;
+  // Calculate characters to show on each side (roughly equal visual weight)
+  const halfTarget = targetWidth / 2;
+  let leftEnd = 0;
+  let rightStart = text.length;
+  let leftWidth = 0;
+  let rightWidth = 0;
 
-  while (start <= end) {
-    const mid = Math.floor((start + end) / 2);
-    const leftPart = text.substring(0, mid);
-    const rightPart = text.substring(text.length - mid);
-    const combinedWidth =
-      context.measureText(leftPart).width + context.measureText(rightPart).width;
-
-    if (combinedWidth <= targetWidth) {
-      bestStart = mid;
-      bestEnd = text.length - mid;
-      start = mid + 1;
+  // Build left side character by character
+  for (let i = 0; i < text.length && leftWidth < halfTarget; i++) {
+    const char = text.charAt(i);
+    const charWidth = context.measureText(char).width;
+    if (leftWidth + charWidth <= halfTarget) {
+      leftWidth += charWidth;
+      leftEnd = i + 1;
     } else {
-      end = mid - 1;
+      break;
     }
   }
 
-  const truncated = text.substring(0, bestStart) + ellipsis + text.substring(bestEnd);
+  // Build right side character by character
+  for (let i = text.length - 1; i >= leftEnd && rightWidth < halfTarget; i--) {
+    const char = text.charAt(i);
+    const charWidth = context.measureText(char).width;
+    if (rightWidth + charWidth <= halfTarget) {
+      rightWidth += charWidth;
+      rightStart = i;
+    } else {
+      break;
+    }
+  }
+
+  const truncated = text.substring(0, leftEnd) + ellipsis + text.substring(rightStart);
   return { truncated, isTruncated: true };
 }
 
 /**
  * Component that displays text with middle ellipsis when it exceeds container width.
  * Uses canvas measureText for accurate width calculation and responds to container resize.
+ *
+ * Performance optimizations:
+ * - Singleton canvas context for measurements
+ * - Debounced resize handling to batch rapid changes
+ * - CSS `contain: inline-size` for layout isolation
+ * - Conditional state updates to prevent re-renders
  */
 export const MiddleEllipsisText = React.memo(
   React.forwardRef<HTMLSpanElement, MiddleEllipsisTextProps>(({ text, className }, ref) => {
     const [displayText, setDisplayText] = React.useState(text);
     const [isTruncated, setIsTruncated] = React.useState(false);
     const containerRef = React.useRef<HTMLSpanElement>(null);
-    const rafIdRef = React.useRef<number | null>(null);
+    const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+    const lastWidthRef = React.useRef<number>(0);
 
     React.useImperativeHandle(ref, () => containerRef.current!);
 
@@ -86,53 +111,60 @@ export const MiddleEllipsisText = React.memo(
       const container = containerRef.current;
       if (!container) return;
 
-      const computedStyle = window.getComputedStyle(container);
-      const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
       const availableWidth = container.offsetWidth;
 
-      const { truncated, isTruncated: truncated_flag } = calculateTruncatedText(
+      // Skip if width hasn't changed (common during scroll/other DOM updates)
+      if (availableWidth === lastWidthRef.current) return;
+      lastWidthRef.current = availableWidth;
+
+      const computedStyle = window.getComputedStyle(container);
+      const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+
+      const { truncated, isTruncated: newIsTruncated } = calculateTruncatedText(
         text,
         availableWidth,
         font,
       );
 
-      setDisplayText(truncated);
-      setIsTruncated(truncated_flag);
+      // Only update state if values changed
+      setDisplayText((prev) => (prev === truncated ? prev : truncated));
+      setIsTruncated((prev) => (prev === newIsTruncated ? prev : newIsTruncated));
     }, [text]);
 
-    // Update truncation on mount/text change and observe resize
+    // Debounced resize handler - batches rapid resize events
+    const debouncedUpdate = React.useCallback(() => {
+      if (timeoutRef.current !== null) {
+        clearTimeout(timeoutRef.current);
+      }
+      // 16ms ≈ 1 frame at 60fps, good balance of responsiveness and performance
+      timeoutRef.current = setTimeout(updateTruncation, 16);
+    }, [updateTruncation]);
+
     React.useEffect(() => {
+      // Reset width cache when text changes
+      lastWidthRef.current = 0;
       updateTruncation();
 
       const container = containerRef.current;
-      let resizeObserver: ResizeObserver | null = null;
+      if (!container) return;
 
-      if (container) {
-        resizeObserver = new ResizeObserver(() => {
-          if (rafIdRef.current !== null) {
-            cancelAnimationFrame(rafIdRef.current);
-          }
-          rafIdRef.current = requestAnimationFrame(() => {
-            updateTruncation();
-          });
-        });
-
-        resizeObserver.observe(container);
-      }
+      const resizeObserver = new ResizeObserver(debouncedUpdate);
+      resizeObserver.observe(container);
 
       return () => {
-        if (rafIdRef.current !== null) {
-          cancelAnimationFrame(rafIdRef.current);
-          rafIdRef.current = null;
+        if (timeoutRef.current !== null) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
         }
-        resizeObserver?.disconnect();
+        resizeObserver.disconnect();
       };
-    }, [updateTruncation]);
+    }, [updateTruncation, debouncedUpdate]);
 
     return (
       <span
         ref={containerRef}
         className={cn('block min-w-0', className)}
+        style={{ contain: 'inline-size' }}
         title={isTruncated ? text : undefined}
       >
         {displayText}

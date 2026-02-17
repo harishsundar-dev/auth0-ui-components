@@ -9,10 +9,10 @@ import type { SortingState, ColumnDef } from '@tanstack/react-table';
 import { Copy } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 
+import { MiddleEllipsisText } from '@/components/auth0/shared/middle-ellipsis-text';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { InlineCode } from '@/components/ui/inline-code';
-import { MiddleEllipsisText } from '@/components/ui/middle-ellipsis-text';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import {

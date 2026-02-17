@@ -1,7 +1,7 @@
 import { render, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
-import { MiddleEllipsisText } from '../middle-ellipsis-text';
+import { MiddleEllipsisText } from '@/components/auth0/shared/middle-ellipsis-text';
 
 describe('MiddleEllipsisText', () => {
   let resizeCallback: ResizeObserverCallback | null = null;

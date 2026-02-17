@@ -54,6 +54,12 @@ export interface DomainTableProps
   onCreateProvider?: () => void;
 }
 
+// DomainTableView component props
+export interface DomainTableViewProps {
+  logic: UseDomainTableResult & DomainTableProps;
+  api: UseDomainTableLogicResult;
+}
+
 /* ============ Subcomponents ============ */
 
 export interface DomainTableActionsColumnProps {

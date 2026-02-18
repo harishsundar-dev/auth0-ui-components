@@ -1,7 +1,7 @@
 import {
+  type Domain,
   getComponentStyles,
   MY_ORGANIZATION_DOMAIN_SCOPES,
-  type Domain,
 } from '@auth0/universal-components-core';
 import { Plus } from 'lucide-react';
 import * as React from 'react';

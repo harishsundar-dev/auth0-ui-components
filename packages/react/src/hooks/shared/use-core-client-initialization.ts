@@ -1,3 +1,9 @@
+/**
+ * CoreClient initialization hook.
+ * @module use-core-client-initialization
+ * @internal
+ */
+
 import type {
   CoreClientInterface,
   AuthDetails,
@@ -12,10 +18,11 @@ interface UseCoreClientInitializationProps {
 }
 
 /**
- * Custom hook to handle CoreClient initialization
- * @param props
- * @param props.authDetails
- * @param props.i18nOptions
+ * Initializes CoreClient with auth and i18n config.
+ * @param props - Hook props.
+ * @param props.authDetails - Auth0 authentication details.
+ * @param props.i18nOptions - i18n configuration options.
+ * @internal
  */
 export const useCoreClientInitialization = ({
   authDetails,

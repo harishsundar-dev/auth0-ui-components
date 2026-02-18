@@ -1,3 +1,9 @@
+/**
+ * Multi-step wizard component.
+ * @module wizard
+ * @internal
+ */
+
 'use client';
 
 import * as React from 'react';
@@ -46,6 +52,18 @@ export interface WizardProps {
   allowStepNavigation?: boolean;
 }
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.steps
+ * @param props.initialStep
+ * @param props.onComplete
+ * @param props.className
+ * @param props.formActionLabels
+ * @param props.hideStepperNumbers
+ * @param props.isLoading
+ * @param props.allowStepNavigation
+ */
 function Wizard({
   steps,
   initialStep = 0,

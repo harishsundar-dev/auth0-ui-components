@@ -1,3 +1,9 @@
+/**
+ * Recovery code display component.
+ * @module show-recovery-code
+ * @internal
+ */
+
 import { getComponentStyles, FACTOR_TYPE_RECOVERY_CODE } from '@auth0/universal-components-core';
 import * as React from 'react';
 
@@ -10,6 +16,23 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type { ShowRecoveryCodeProps } from '@/types/my-account/mfa/mfa-types';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.factorType
+ * @param props.confirmEnrollment
+ * @param props.onError
+ * @param props.onSuccess
+ * @param props.onClose
+ * @param props.userOtp
+ * @param props.recoveryCode
+ * @param props.authSession
+ * @param props.authenticationMethodId
+ * @param props.onBack
+ * @param props.styling
+ * @param props.loading
+ * @param props.customMessages
+ */
 export function ShowRecoveryCode({
   factorType,
   confirmEnrollment,

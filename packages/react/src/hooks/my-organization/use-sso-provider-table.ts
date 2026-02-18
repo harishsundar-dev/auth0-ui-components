@@ -1,3 +1,8 @@
+/**
+ * SSO provider table data and actions hook.
+ * @module use-sso-provider-table
+ */
+
 import {
   OrganizationDetailsMappers,
   SsoProviderMappers,
@@ -22,12 +27,12 @@ export const ssoProviderQueryKeys = {
 };
 
 /**
- * Custom hook for managing SSO provider table data and actions.
- * Uses TanStack Query for caching, loading states, and data synchronization.
- * @param deleteAction
- * @param removeFromOrg
- * @param enableAction
- * @param customMessages
+ * Hook for SSO provider table data and CRUD operations.
+ * @param deleteAction - Delete action handler.
+ * @param removeFromOrg - Remove from org handler.
+ * @param enableAction - Enable/disable handler.
+ * @param customMessages - Translation overrides.
+ * @returns Provider data, mutations, and actions.
  */
 export function useSsoProviderTable(
   deleteAction?: ComponentAction<IdentityProvider, void>,

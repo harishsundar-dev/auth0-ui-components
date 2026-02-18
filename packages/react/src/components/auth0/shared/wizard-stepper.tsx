@@ -1,3 +1,9 @@
+/**
+ * Wizard stepper navigation component.
+ * @module wizard-stepper
+ * @internal
+ */
+
 'use client';
 
 import { Stepper, Step, StepTitle, StepDescription } from '@/components/ui/stepper';
@@ -16,6 +22,15 @@ interface WizardStepperProps {
   hideNumbers?: boolean;
 }
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.steps
+ * @param props.currentStep
+ * @param props.onStepClick
+ * @param props.className
+ * @param props.hideNumbers
+ */
 function WizardStepper({
   steps,
   currentStep = 0,

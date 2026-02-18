@@ -1,3 +1,9 @@
+/**
+ * SCIM token management section.
+ * @module provisioning-manage-token
+ * @internal
+ */
+
 'use client';
 
 import {
@@ -33,6 +39,18 @@ const TOKEN_STATUS = {
   EXPIRED: 'expired',
 } as const;
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.isScimTokensLoading
+ * @param props.isScimTokenCreating
+ * @param props.isScimTokenDeleting
+ * @param props.onListScimTokens
+ * @param props.onCreateScimToken
+ * @param props.onDeleteScimToken
+ * @param props.styling
+ * @param props.customMessages
+ */
 export function ProvisioningManageToken({
   isScimTokensLoading,
   isScimTokenCreating,

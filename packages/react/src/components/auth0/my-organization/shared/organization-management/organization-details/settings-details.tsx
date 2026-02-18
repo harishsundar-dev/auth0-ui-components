@@ -1,3 +1,9 @@
+/**
+ * Organization settings details form section.
+ * @module settings-details
+ * @internal
+ */
+
 import * as React from 'react';
 
 import { Section } from '@/components/auth0/shared/section';
@@ -18,6 +24,11 @@ import type { SettingsDetailsProps } from '@/types/my-organization/organization-
  *
  * Renders the organization settings section with name and display name fields.
  * This component is focused purely on the settings-related form fields.
+ * @param props - Component props.
+ * @param props.form
+ * @param props.readOnly
+ * @param props.customMessages
+ * @param props.className
  */
 export function SettingsDetails({
   form,

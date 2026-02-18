@@ -1,3 +1,9 @@
+/**
+ * MFA setup form with factor selection.
+ * @module user-mfa-setup-form
+ * @internal
+ */
+
 import {
   type MFAType,
   FACTOR_TYPE_EMAIL,
@@ -39,6 +45,20 @@ type EnrollmentPhase =
   | typeof SHOW_RECOVERY_CODE
   | null;
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.open
+ * @param props.onClose
+ * @param props.factorType
+ * @param props.enrollMfa
+ * @param props.confirmEnrollment
+ * @param props.onSuccess
+ * @param props.onError
+ * @param props.schema
+ * @param props.styling
+ * @param props.customMessages
+ */
 export function UserMFASetupForm({
   open,
   onClose,

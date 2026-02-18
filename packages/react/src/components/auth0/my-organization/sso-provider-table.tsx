@@ -1,3 +1,21 @@
+/**
+ * SSO providers table component.
+ *
+ * Displays a table of SSO identity providers with actions for creating, editing,
+ * enabling/disabling, and deleting providers.
+ *
+ * @module sso-provider-table
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderTable
+ *   createAction={{ onAfter: () => navigate('/providers/new') }}
+ *   editAction={{ onAfter: (provider) => navigate(`/providers/${provider.id}`) }}
+ *   deleteAction={{ onAfter: (provider) => console.log('Deleted:', provider) }}
+ * />
+ * ```
+ */
+
 import {
   getComponentStyles,
   type IdentityProvider,
@@ -21,7 +39,17 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import type { SsoProviderTableProps } from '@/types/my-organization/idp-management/sso-provider/sso-provider-table-types';
 
 /**
- * SsoProviderTable Component
+ * Internal SSO provider table component.
+ * @param root0
+ * @param root0.customMessages
+ * @param root0.styling
+ * @param root0.readOnly
+ * @param root0.createAction
+ * @param root0.editAction
+ * @param root0.deleteAction
+ * @param root0.deleteFromOrganizationAction
+ * @param root0.enableProviderAction
+ * @internal
  */
 function SsoProviderTableComponent({
   customMessages = {},
@@ -256,6 +284,34 @@ function SsoProviderTableComponent({
   );
 }
 
+/**
+ * SSO identity providers table.
+ *
+ * Displays a table of SSO identity providers with actions for creating, editing,
+ * enabling/disabling, deleting, and removing providers from the organization.
+ *
+ * @param customMessages - Custom i18n message overrides
+ * @param styling - CSS variables and class overrides
+ * @param readOnly - Render in read-only mode
+ * @param createAction - Lifecycle hooks for provider creation
+ * @param editAction - Lifecycle hooks for provider editing
+ * @param deleteAction - Lifecycle hooks for provider deletion
+ * @param deleteFromOrganizationAction - Lifecycle hooks for removing provider from organization
+ * @param enableProviderAction - Lifecycle hooks for enabling/disabling provider
+ * @returns SSO provider table component
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderTable
+ *   createAction={{ onAfter: () => navigate('/providers/new') }}
+ *   editAction={{ onAfter: (provider) => navigate(`/providers/${provider.id}`) }}
+ *   deleteAction={{
+ *     onBefore: (provider) => confirm(`Delete ${provider.name}?`),
+ *     onAfter: (provider) => console.log('Deleted:', provider),
+ *   }}
+ * />
+ * ```
+ */
 export const SsoProviderTable = withMyOrganizationService(
   SsoProviderTableComponent,
   MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES,

@@ -1,3 +1,9 @@
+/**
+ * SSO provider delete section component.
+ * @module provider-delete
+ * @internal
+ */
+
 import * as React from 'react';
 
 import { SsoProviderDeleteModal } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-delete/provider-delete-modal';
@@ -7,6 +13,15 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type { SsoProviderDeleteProps } from '@/types/my-organization/idp-management/sso-provider/sso-provider-delete-types';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.provider
+ * @param props.onDelete
+ * @param props.customMessages
+ * @param props.isLoading
+ * @param props.readOnly
+ */
 export function SsoProviderDelete({
   provider,
   onDelete,

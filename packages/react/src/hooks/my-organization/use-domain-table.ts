@@ -1,3 +1,8 @@
+/**
+ * Domain table data and mutations hook.
+ * @module use-domain-table
+ */
+
 import {
   type Domain,
   type IdentityProvider,
@@ -21,6 +26,16 @@ const domainQueryKeys = {
   providers: (domainId: string) => [...domainQueryKeys.all, 'providers', domainId] as const,
 };
 
+/**
+ * Hook for domain table data fetching and CRUD operations.
+ * @param props - Component props.
+ * @param props.createAction
+ * @param props.deleteAction
+ * @param props.verifyAction
+ * @param props.associateToProviderAction
+ * @param props.deleteFromProviderAction
+ * @param props.customMessages
+ */
 export function useDomainTable({
   createAction,
   deleteAction,

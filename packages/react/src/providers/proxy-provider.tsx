@@ -1,3 +1,8 @@
+/**
+ * RWA proxy provider for server-side auth.
+ * @module proxy-provider
+ */
+
 'use client';
 
 import * as React from 'react';
@@ -13,20 +18,15 @@ import { ThemeProvider } from '@/providers/theme-provider';
 import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
 /**
- * Auth0 Proxy Provider for Next.js and server-side authentication
- *
- * Use this when you have a backend proxy that handles Auth0 authentication.
- *
- * @example
- * ```tsx
- * <Auth0ProxyProvider
- *   authDetails={{ authProxyUrl: '/api/auth' }}
- *   themeSettings={{ mode: 'dark', theme: 'rounded' }}
- *   toastSettings={{ provider: 'custom', customMethods: {...} }}
- * >
- *   <YourApp />
- * </Auth0ProxyProvider>
- * ```
+ * Auth0 provider for RWAs using backend proxy auth.
+ * @param props - Provider props.
+ * @param props.i18n - i18n configuration.
+ * @param props.authDetails - Auth0 authentication details.
+ * @param props.themeSettings - Theme configuration.
+ * @param props.toastSettings - Toast notification settings.
+ * @param props.cacheConfig - Query cache configuration.
+ * @param props.loader - Loading component.
+ * @param props.children - Child components.
  */
 export const Auth0ComponentProvider = ({
   i18n,

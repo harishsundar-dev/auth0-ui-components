@@ -1,37 +1,14 @@
 /**
- * React components, hooks, and providers for building Auth0-powered user interfaces.
- *
- * @packageDocumentation
+ * Public API exports for Auth0 UI components.
+ * @module public-api
  */
 
-// =============================================================================
-// PROVIDERS
-// =============================================================================
-
-/**
- * Provider for Single Page Applications using auth0-react
- */
+/** Provider for SPAs using auth0-react. */
 export { Auth0ComponentProvider as SpaAuth0ComponentProvider } from './providers/spa-provider';
 
-/**
- * Provider for Regular Web Applications using backend proxy authentication
- */
+/** Provider for RWAs using backend proxy auth. */
 export { Auth0ComponentProvider as RwaAuth0ComponentProvider } from './providers/proxy-provider';
 
-// =============================================================================
-// BLOCKS (UI Components)
-// =============================================================================
-
 export * from './components';
-
-// =============================================================================
-// HOOKS
-// =============================================================================
-
 export * from './hooks';
-
-// =============================================================================
-// TYPES
-// =============================================================================
-
 export * from './types';

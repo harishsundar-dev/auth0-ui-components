@@ -1,3 +1,9 @@
+/**
+ * SSO domain tab table action column.
+ * @module sso-domain-tab-action-column
+ * @internal
+ */
+
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
@@ -9,6 +15,16 @@ import type { SsoDomainTabActionColumn } from '@/types/my-organization/idp-manag
  * SsoDomainTabActionsColumn component
  * Handles the actions column for SSO provider edit on domain tab table
  * with enable/disable toggle and verify button
+ * @param props - Component props.
+ * @param props.translatorKey
+ * @param props.customMessages
+ * @param props.readOnly
+ * @param props.idpDomains
+ * @param props.domain
+ * @param props.handleVerify
+ * @param props.isUpdating
+ * @param props.isUpdatingId
+ * @param props.onToggle
  */
 export function SsoDomainTabActionsColumn({
   translatorKey = 'idp_management.edit_sso_provider.tabs.domains',

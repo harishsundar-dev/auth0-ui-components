@@ -1,3 +1,9 @@
+/**
+ * OTP verification input form.
+ * @module otp-verification-form
+ * @internal
+ */
+
 import {
   type MFAType,
   FACTOR_TYPE_EMAIL,
@@ -41,9 +47,9 @@ type OtpForm = {
  * - Shows the first 3 and last 3 characters
  * - Masks the middle characters with asterisks
  *
- * @param {string} contact - The contact information to mask (email or phone number)
- * @param {MFAType} factorType - The type of MFA factor to determine masking strategy
- * @returns {string} The masked contact information
+ * @param contact - The contact information to mask (email or phone number).
+ * @param factorType - The type of MFA factor to determine masking strategy.
+ * @returns The masked contact information.
  *
  * @example
  * // Email masking
@@ -67,6 +73,21 @@ const maskContact = (contact: string, factorType: MFAType): string => {
     : contact;
 };
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.factorType
+ * @param props.confirmEnrollment
+ * @param props.onError
+ * @param props.onSuccess
+ * @param props.onClose
+ * @param props.contact
+ * @param props.authSession
+ * @param props.authenticationMethodId
+ * @param props.onBack
+ * @param props.styling
+ * @param props.customMessages
+ */
 export function OTPVerificationForm({
   factorType,
   confirmEnrollment,

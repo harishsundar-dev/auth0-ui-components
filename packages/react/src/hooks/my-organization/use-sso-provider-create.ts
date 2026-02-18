@@ -1,3 +1,8 @@
+/**
+ * SSO provider creation hook.
+ * @module use-sso-provider-create
+ */
+
 import {
   hasApiErrorBody,
   SsoProviderMappers,
@@ -15,8 +20,10 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import type { UseSsoProviderCreateOptions } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 /**
- * Extracts domain from "discovery failure: <domain>" error detail
- * @param detail
+ * Extracts domain from discovery error detail.
+ * @param detail - Error detail string.
+ * @returns Domain string or null.
+ * @internal
  */
 function extractDomainFromDiscoveryError(detail?: string): string | null {
   if (!detail) return null;
@@ -30,11 +37,10 @@ export interface UseSsoProviderCreateReturn {
 }
 
 /**
- * Custom hook for creating SSO providers.
- * Uses TanStack Query for mutation management and cache invalidation.
- * @param root0
- * @param root0.createAction
- * @param root0.customMessages
+ * Hook for creating SSO identity providers.
+ * @param options - Hook options.
+ * @param options.createAction - Callback after successful creation.
+ * @param options.customMessages - Custom translation messages.
  */
 export function useSsoProviderCreate({
   createAction,

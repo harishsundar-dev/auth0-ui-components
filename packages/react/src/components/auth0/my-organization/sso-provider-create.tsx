@@ -1,3 +1,25 @@
+/**
+ * SSO provider creation wizard.
+ *
+ * Multi-step wizard for creating new SSO identity providers. Supports various
+ * strategies including OIDC, SAML, Google Workspace, Microsoft Entra ID, Okta, and more.
+ *
+ * @module sso-provider-create
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderCreate
+ *   createAction={{
+ *     onBefore: (data) => true,
+ *     onAfter: (provider) => navigate(`/providers/${provider.id}`),
+ *   }}
+ *   backButton={{
+ *     onClick: () => navigate('/providers'),
+ *   }}
+ * />
+ * ```
+ */
+
 import {
   getComponentStyles,
   type IdpStrategy,
@@ -32,6 +54,17 @@ type FormState = {
   configure?: ProviderConfigureFormValues | null;
 };
 
+/**
+ * Internal SSO provider creation component.
+ * @param root0
+ * @param root0.createAction
+ * @param root0.backButton
+ * @param root0.onNext
+ * @param root0.onPrevious
+ * @param root0.customMessages
+ * @param root0.styling
+ * @internal
+ */
 export function SsoProviderCreateComponent({
   createAction,
   backButton,
@@ -210,6 +243,34 @@ export function SsoProviderCreateComponent({
   );
 }
 
+/**
+ * SSO provider creation wizard.
+ *
+ * Multi-step wizard for creating new SSO identity providers. Guides users through
+ * provider selection, configuration, and setup. Supports OIDC, SAML, Google Workspace,
+ * Microsoft Entra ID, Okta, PingFederate, and ADFS strategies.
+ *
+ * @param createAction - Lifecycle hooks for provider creation
+ * @param backButton - Back button configuration
+ * @param onNext - Callback when moving to next step
+ * @param onPrevious - Callback when moving to previous step
+ * @param customMessages - Custom i18n message overrides
+ * @param styling - CSS variables and class overrides
+ * @returns SSO provider creation wizard component
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderCreate
+ *   createAction={{
+ *     onBefore: (data) => true,
+ *     onAfter: (provider) => navigate(`/providers/${provider.id}`),
+ *   }}
+ *   backButton={{
+ *     onClick: () => navigate('/providers'),
+ *   }}
+ * />
+ * ```
+ */
 export const SsoProviderCreate = withMyOrganizationService(
   SsoProviderCreateComponent,
   MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,

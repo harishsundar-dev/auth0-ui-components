@@ -1,3 +1,9 @@
+/**
+ * MFA contact input form for email/SMS enrollment.
+ * @module contact-input-form
+ * @internal
+ */
+
 import {
   FACTOR_TYPE_EMAIL,
   createEmailContactSchema,
@@ -39,6 +45,19 @@ const PHASES = {
 
 type Phase = (typeof PHASES)[keyof typeof PHASES];
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.factorType
+ * @param props.enrollMfa
+ * @param props.onError
+ * @param props.confirmEnrollment
+ * @param props.onSuccess
+ * @param props.onClose
+ * @param props.schema
+ * @param props.styling
+ * @param props.customMessages
+ */
 export function ContactInputForm({
   factorType,
   enrollMfa,

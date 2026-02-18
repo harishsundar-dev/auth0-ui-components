@@ -1,3 +1,8 @@
+/**
+ * Error handling hook with toast notifications.
+ * @module use-error-handler
+ */
+
 import { hasApiErrorBody, isBusinessError } from '@auth0/universal-components-core';
 import { useCallback } from 'react';
 
@@ -9,7 +14,8 @@ interface ErrorHandlerOptions {
 }
 
 /**
- * Hook for handling errors with optional toast notifications
+ * Hook for handling errors with optional toast notifications.
+ * @returns Error handler function.
  */
 export const useErrorHandler = () => {
   const handleError = useCallback((error: unknown, options: ErrorHandlerOptions = {}) => {

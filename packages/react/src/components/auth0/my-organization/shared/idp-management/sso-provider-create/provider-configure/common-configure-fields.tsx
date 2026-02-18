@@ -1,3 +1,9 @@
+/**
+ * Common SSO provider configuration fields.
+ * @module common-configure-fields
+ * @internal
+ */
+
 import { useFormContext } from 'react-hook-form';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -14,6 +20,10 @@ interface CommonConfigureFieldsProps {
 /**
  * CommonConfigureFields Component
  * Renders common fields (show_as_button, assign_membership_on_login) that are shared across all SSO provider strategies
+ * @param props - Component props.
+ * @param props.idpConfig
+ * @param props.readOnly
+ * @param props.customMessages
  */
 export function CommonConfigureFields({
   idpConfig,

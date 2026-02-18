@@ -1,3 +1,9 @@
+/**
+ * SSO provider configuration step container.
+ * @module provider-configure
+ * @internal
+ */
+
 import type { ProviderConfigureFormValues } from '@auth0/universal-components-core';
 import * as React from 'react';
 

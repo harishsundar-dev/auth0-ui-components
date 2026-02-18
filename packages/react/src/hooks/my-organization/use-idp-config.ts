@@ -1,3 +1,8 @@
+/**
+ * Identity provider configuration hook.
+ * @module use-idp-config
+ */
+
 import { hasApiErrorBody, type IdpStrategy } from '@auth0/universal-components-core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -13,7 +18,8 @@ export const idpConfigQueryKeys = {
 };
 
 /**
- *
+ * Hook for fetching IDP configuration and provisioning settings.
+ * @returns IDP config and provisioning utilities.
  */
 export function useIdpConfig(): UseConfigIdpResult {
   const { coreClient } = useCoreClient();

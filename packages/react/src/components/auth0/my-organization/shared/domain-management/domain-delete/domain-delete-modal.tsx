@@ -1,3 +1,9 @@
+/**
+ * Domain deletion confirmation modal.
+ * @module domain-delete-modal
+ * @internal
+ */
+
 import type { Domain } from '@auth0/universal-components-core';
 import React from 'react';
 
@@ -10,6 +16,18 @@ const getDescriptionKey = (domain: Domain | null) => {
   return domain?.status === 'pending' ? 'description.pending' : 'description.verified';
 };
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.translatorKey
+ * @param props.className
+ * @param props.customMessages
+ * @param props.domain
+ * @param props.isOpen
+ * @param props.isLoading
+ * @param props.onClose
+ * @param props.onDelete
+ */
 export function DomainDeleteModal({
   translatorKey = 'domain_management.domain_delete.modal',
   className,

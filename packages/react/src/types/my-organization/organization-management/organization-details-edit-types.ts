@@ -1,3 +1,8 @@
+/**
+ * Organization details edit types.
+ * @module organization-details-edit-types
+ */
+
 import type {
   BlockComponentSharedProps,
   OrganizationDetailsSchemas,

@@ -1,3 +1,9 @@
+/**
+ * SSO provisioning delete confirmation modal.
+ * @module sso-provisioning-delete-modal
+ * @internal
+ */
+
 import React from 'react';
 
 import { Modal } from '@/components/ui/modal';
@@ -5,6 +11,15 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type { SsoProvisioningDeleteModalProps } from '@/types/my-organization/idp-management/sso-provisioning/sso-provisioning-tab-types';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.open
+ * @param props.onOpenChange
+ * @param props.onConfirm
+ * @param props.isLoading
+ * @param props.customMessages
+ */
 export function SsoProvisioningDeleteModal({
   open,
   onOpenChange,

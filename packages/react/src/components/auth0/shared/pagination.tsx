@@ -1,3 +1,9 @@
+/**
+ * Pagination navigation component.
+ * @module pagination
+ * @internal
+ */
+
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
 import * as React from 'react';
 
@@ -5,6 +11,11 @@ import type { Button } from '@/components/ui/button';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ */
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
     <nav
@@ -17,6 +28,11 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   );
 }
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ */
 function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) {
   return (
     <ul
@@ -27,6 +43,10 @@ function PaginationContent({ className, ...props }: React.ComponentProps<'ul'>) 
   );
 }
 
+/**
+ *
+ * @param root0
+ */
 function PaginationItem({ ...props }: React.ComponentProps<'li'>) {
   return <li data-slot="pagination-item" {...props} />;
 }
@@ -36,6 +56,13 @@ type PaginationLinkProps = {
 } & Pick<React.ComponentProps<typeof Button>, 'size'> &
   React.ComponentProps<'a'>;
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ * @param props.isActive
+ * @param props.size
+ */
 function PaginationLink({ className, isActive, size = 'icon', ...props }: PaginationLinkProps) {
   return (
     <a
@@ -54,6 +81,12 @@ function PaginationLink({ className, isActive, size = 'icon', ...props }: Pagina
   );
 }
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ * @param props.label
+ */
 function PaginationPrevious({
   className,
   label = 'Previous',
@@ -72,6 +105,12 @@ function PaginationPrevious({
   );
 }
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ * @param props.label
+ */
 function PaginationNext({
   className,
   label = 'Next',
@@ -90,6 +129,11 @@ function PaginationNext({
   );
 }
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ */
 function PaginationEllipsis({ className, ...props }: React.ComponentProps<'span'>) {
   return (
     <span

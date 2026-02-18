@@ -1,3 +1,21 @@
+/**
+ * Domain management table component.
+ *
+ * Displays organization domains with CRUD operations including create, verify, and delete.
+ * Supports associating domains with identity providers.
+ *
+ * @module domain-table
+ *
+ * @example
+ * ```tsx
+ * <DomainTable
+ *   createAction={{ onAfter: (domain) => console.log('Created:', domain) }}
+ *   verifyAction={{ onAfter: (domain) => console.log('Verified:', domain) }}
+ *   deleteAction={{ onAfter: (domain) => console.log('Deleted:', domain) }}
+ * />
+ * ```
+ */
+
 import {
   type Domain,
   getComponentStyles,
@@ -23,7 +41,21 @@ import { getStatusBadgeVariant } from '@/lib/utils/my-organization/domain-manage
 import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
 
 /**
- * DomainTable Component
+ * Internal domain table component.
+ * @param root0
+ * @param root0.customMessages
+ * @param root0.schema
+ * @param root0.styling
+ * @param root0.hideHeader
+ * @param root0.readOnly
+ * @param root0.createAction
+ * @param root0.verifyAction
+ * @param root0.deleteAction
+ * @param root0.associateToProviderAction
+ * @param root0.deleteFromProviderAction
+ * @param root0.onOpenProvider
+ * @param root0.onCreateProvider
+ * @internal
  */
 function DomainTableComponent({
   customMessages = {},
@@ -221,6 +253,39 @@ function DomainTableComponent({
   );
 }
 
+/**
+ * Domain management table for organization domains.
+ *
+ * Displays a table of organization domains with actions for creating, verifying,
+ * deleting, and associating domains with identity providers.
+ *
+ * @param customMessages - Custom i18n message overrides
+ * @param schema - Validation schema overrides
+ * @param styling - CSS variables and class overrides
+ * @param hideHeader - Hide the header section
+ * @param readOnly - Render in read-only mode
+ * @param createAction - Lifecycle hooks for domain creation
+ * @param verifyAction - Lifecycle hooks for domain verification
+ * @param deleteAction - Lifecycle hooks for domain deletion
+ * @param associateToProviderAction - Lifecycle hooks for provider association
+ * @param deleteFromProviderAction - Lifecycle hooks for removing provider association
+ * @param onOpenProvider - Callback when opening a provider
+ * @param onCreateProvider - Callback when creating a provider
+ * @returns Domain table component
+ *
+ * @example
+ * ```tsx
+ * <DomainTable
+ *   createAction={{
+ *     onBefore: () => true,
+ *     onAfter: (domain) => console.log('Created:', domain),
+ *   }}
+ *   verifyAction={{
+ *     onAfter: (domain) => console.log('Verified:', domain),
+ *   }}
+ * />
+ * ```
+ */
 export const DomainTable = withMyOrganizationService(
   DomainTableComponent,
   MY_ORGANIZATION_DOMAIN_SCOPES,

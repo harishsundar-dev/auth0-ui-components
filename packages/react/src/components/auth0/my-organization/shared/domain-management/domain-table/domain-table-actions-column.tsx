@@ -1,3 +1,9 @@
+/**
+ * Domain table row actions dropdown.
+ * @module domain-table-actions-column
+ * @internal
+ */
+
 import { MoreHorizontal, Trash2, PencilLine, Eye, RefreshCcw } from 'lucide-react';
 import * as React from 'react';
 
@@ -14,6 +20,14 @@ import type { DomainTableActionsColumnProps } from '@/types/my-organization/doma
 /**
  * DomainTableActionsColumn Component
  * Handles the actions column for Domain table with dropdown menu
+ * @param props - Component props.
+ * @param props.customMessages
+ * @param props.readOnly
+ * @param props.domain
+ * @param props.onView
+ * @param props.onConfigure
+ * @param props.onVerify
+ * @param props.onDelete
  */
 export function DomainTableActionsColumn({
   customMessages = {},

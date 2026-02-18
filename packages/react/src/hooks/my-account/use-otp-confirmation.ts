@@ -1,3 +1,9 @@
+/**
+ * OTP confirmation hook for MFA enrollment.
+ * @module use-otp-confirmation
+ * @internal
+ */
+
 import { normalizeError, type MFAType } from '@auth0/universal-components-core';
 import { useState, useCallback } from 'react';
 
@@ -23,6 +29,18 @@ type UseOtpConfirmationProps = {
   onClose: () => void;
 };
 
+/**
+ * Hook for OTP code confirmation during MFA enrollment.
+ * @param props - Component props.
+ * @param props.factorType
+ * @param props.authSession
+ * @param props.authenticationMethodId
+ * @param props.confirmEnrollment
+ * @param props.onError
+ * @param props.onSuccess
+ * @param props.onClose
+ * @internal
+ */
 export function useOtpConfirmation({
   factorType,
   authSession,

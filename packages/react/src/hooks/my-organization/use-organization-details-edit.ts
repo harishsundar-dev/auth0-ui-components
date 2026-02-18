@@ -1,3 +1,8 @@
+/**
+ * Organization details edit hook.
+ * @module use-organization-details-edit
+ */
+
 import {
   OrganizationDetailsFactory,
   OrganizationDetailsMappers,
@@ -22,6 +27,14 @@ const organizationDetailsQueryKeys = {
 
 const EMPTY_ORGANIZATION = OrganizationDetailsFactory.create();
 
+/**
+ * Hook for fetching and updating organization details.
+ * @param props - Component props.
+ * @param props.saveAction
+ * @param props.cancelAction
+ * @param props.readOnly
+ * @param props.customMessages
+ */
 export function useOrganizationDetailsEdit({
   saveAction,
   cancelAction,

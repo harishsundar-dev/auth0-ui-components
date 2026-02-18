@@ -110,7 +110,8 @@ export default [
       
       // ERROR level - these are the core validation rules that catch doc/code mismatches
       'jsdoc/check-param-names': ['error', { 
-        checkDestructured: true,  // Require @param for each destructured property
+        checkDestructured: true,  // Requires @param props.fieldName format for destructured params
+        checkRestProperty: false,  // Don't require rest property params
       }],
       'jsdoc/check-tag-names': ['error', { 
         definedTags: ['packageDocumentation', 'defaultValue', 'internal', 'see', 'category']

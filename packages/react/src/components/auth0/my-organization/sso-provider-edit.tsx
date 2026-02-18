@@ -1,3 +1,26 @@
+/**
+ * SSO provider edit component with tabs.
+ *
+ * Tabbed interface for editing SSO provider settings, managing domains,
+ * and configuring SCIM provisioning.
+ *
+ * @module sso-provider-edit
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderEdit
+ *   providerId="con_abc123"
+ *   sso={{
+ *     saveAction: { onAfter: (provider) => console.log('Saved:', provider) },
+ *     deleteAction: { onAfter: () => navigate('/providers') },
+ *   }}
+ *   provisioning={{
+ *     createAction: { onAfter: (config) => console.log('Created:', config) },
+ *   }}
+ * />
+ * ```
+ */
+
 'use client';
 
 import {
@@ -22,18 +45,19 @@ import { cn } from '@/lib/utils';
 import type { SsoProviderEditProps } from '@/types/my-organization/idp-management/sso-provider/sso-provider-edit-types';
 
 /**
- *
- * @param props
- * @param props.providerId
- * @param props.backButton
- * @param props.sso
- * @param props.provisioning
- * @param props.domains
- * @param props.hideHeader
- * @param props.customMessages
- * @param props.styling
- * @param props.schema
- * @param props.readOnly
+ * Internal SSO provider edit component.
+ * @param root0
+ * @param root0.providerId
+ * @param root0.backButton
+ * @param root0.sso
+ * @param root0.provisioning
+ * @param root0.domains
+ * @param root0.hideHeader
+ * @param root0.customMessages
+ * @param root0.styling
+ * @param root0.schema
+ * @param root0.readOnly
+ * @internal
  */
 export function SsoProviderEditComponent({
   providerId,
@@ -231,6 +255,40 @@ export function SsoProviderEditComponent({
   );
 }
 
+/**
+ * SSO provider edit interface with tabbed navigation.
+ *
+ * Provides a complete interface for editing SSO provider settings including:
+ * - SSO tab: Provider configuration, attribute mappings, delete/remove actions
+ * - Provisioning tab: SCIM configuration and token management
+ * - Domains tab: Domain association and verification
+ *
+ * @param providerId - Identity provider ID to edit
+ * @param backButton - Back button configuration
+ * @param sso - SSO tab lifecycle hooks (save, delete, remove actions)
+ * @param provisioning - Provisioning tab lifecycle hooks
+ * @param domains - Domains tab configuration
+ * @param hideHeader - Hide the header section
+ * @param customMessages - Custom i18n message overrides
+ * @param styling - CSS variables and class overrides
+ * @param schema - Validation schema overrides
+ * @param readOnly - Render in read-only mode
+ * @returns SSO provider edit component
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderEdit
+ *   providerId="con_abc123"
+ *   sso={{
+ *     saveAction: { onAfter: (provider) => console.log('Saved:', provider) },
+ *     deleteAction: { onAfter: () => navigate('/providers') },
+ *   }}
+ *   backButton={{
+ *     onClick: () => navigate('/providers'),
+ *   }}
+ * />
+ * ```
+ */
 export const SsoProviderEdit = withMyOrganizationService(
   SsoProviderEditComponent,
   MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES,

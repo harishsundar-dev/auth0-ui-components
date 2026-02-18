@@ -1,3 +1,9 @@
+/**
+ * QR code MFA enrollment form.
+ * @module qr-code-enrollment-form
+ * @internal
+ */
+
 import {
   getComponentStyles,
   FACTOR_TYPE_TOTP,
@@ -24,6 +30,18 @@ const PHASES = {
 
 type Phase = (typeof PHASES)[keyof typeof PHASES];
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.factorType
+ * @param props.enrollMfa
+ * @param props.confirmEnrollment
+ * @param props.onError
+ * @param props.onSuccess
+ * @param props.onClose
+ * @param props.styling
+ * @param props.customMessages
+ */
 export function QRCodeEnrollmentForm({
   factorType,
   enrollMfa,

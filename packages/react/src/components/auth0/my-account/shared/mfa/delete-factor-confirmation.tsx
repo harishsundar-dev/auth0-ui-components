@@ -1,3 +1,9 @@
+/**
+ * MFA factor deletion confirmation dialog.
+ * @module delete-factor-confirmation
+ * @internal
+ */
+
 import { getComponentStyles } from '@auth0/universal-components-core';
 import * as React from 'react';
 
@@ -9,6 +15,18 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type { DeleteFactorConfirmationProps } from '@/types/my-account/mfa/mfa-types';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.open
+ * @param props.onOpenChange
+ * @param props.factorToDelete
+ * @param props.isDeletingFactor
+ * @param props.onConfirm
+ * @param props.onCancel
+ * @param props.styling
+ * @param props.customMessages
+ */
 export function DeleteFactorConfirmation({
   open,
   onOpenChange,

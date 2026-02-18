@@ -1,3 +1,9 @@
+/**
+ * Domain configure providers modal.
+ * @module domain-configure-providers-modal
+ * @internal
+ */
+
 import type { IdentityProviderAssociatedWithDomain } from '@auth0/universal-components-core';
 import React from 'react';
 
@@ -10,6 +16,21 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type { DomainConfigureProvidersModalProps } from '@/types/my-organization/domain-management/domain-configure-types';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.className
+ * @param props.customMessages
+ * @param props.domain
+ * @param props.providers
+ * @param props.isOpen
+ * @param props.isLoading
+ * @param props.isLoadingSwitch
+ * @param props.onClose
+ * @param props.onToggleSwitch
+ * @param props.onOpenProvider
+ * @param props.onCreateProvider
+ */
 export function DomainConfigureProvidersModal({
   className,
   customMessages,

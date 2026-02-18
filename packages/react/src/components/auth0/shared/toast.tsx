@@ -1,3 +1,9 @@
+/**
+ * Toast notification utilities.
+ * @module toast
+ * @internal
+ */
+
 import { Flag } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { toast, type ExternalToast } from 'sonner';

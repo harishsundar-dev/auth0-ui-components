@@ -1,3 +1,9 @@
+/**
+ * Domain creation modal.
+ * @module domain-create-modal
+ * @internal
+ */
+
 import {
   createDomainCreateSchema,
   type InternalDomainCreateFormValues,
@@ -20,6 +26,18 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type { DomainCreateModalProps } from '@/types/my-organization/domain-management/domain-create-types';
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.translatorKey
+ * @param props.className
+ * @param props.customMessages
+ * @param props.isOpen
+ * @param props.isLoading
+ * @param props.schema
+ * @param props.onClose
+ * @param props.onCreate
+ */
 export function DomainCreateModal({
   translatorKey = 'domain_management.domain_create.modal',
   className,

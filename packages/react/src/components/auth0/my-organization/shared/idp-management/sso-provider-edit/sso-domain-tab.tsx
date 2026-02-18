@@ -1,3 +1,9 @@
+/**
+ * SSO provider domains tab component.
+ * @module sso-domain-tab
+ * @internal
+ */
+
 import type { Domain } from '@auth0/universal-components-core';
 import { getComponentStyles } from '@auth0/universal-components-core';
 import { Plus } from 'lucide-react';
@@ -18,6 +24,14 @@ import type { SsoDomainsTabProps } from '@/types/my-organization/idp-management/
 
 /**
  * SsoDomainTab Component
+ * @param props - Component props.
+ * @param props.customMessages
+ * @param props.styling
+ * @param props.readOnly
+ * @param props.schema
+ * @param props.idpId
+ * @param props.domains
+ * @param props.provider
  */
 export function SsoDomainTab({
   customMessages = {},

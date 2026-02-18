@@ -1,8 +1,20 @@
+/**
+ * OAuth scope management provider.
+ * @module scope-manager-provider
+ * @internal
+ */
+
 import React, { useState, useCallback, useEffect, type ReactNode } from 'react';
 
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { ScopeManagerContext, type Audience } from '@/hooks/shared/use-scope-manager';
 
+/**
+ * Provides scope registration and authorization for components.
+ * @param props - Component props.
+ * @param props.children - Child components.
+ * @internal
+ */
 export const ScopeManagerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { coreClient } = useCoreClient();
 

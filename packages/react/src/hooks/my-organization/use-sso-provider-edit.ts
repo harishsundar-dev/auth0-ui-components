@@ -1,3 +1,8 @@
+/**
+ * SSO provider edit hook.
+ * @module use-sso-provider-edit
+ */
+
 import {
   OrganizationDetailsFactory,
   OrganizationDetailsMappers,
@@ -36,12 +41,12 @@ export const ssoProviderEditQueryKeys = {
 };
 
 /**
- *
- * @param idpId
- * @param props
- * @param props.sso
- * @param props.provisioning
- * @param props.customMessages
+ * Hook for editing SSO provider settings and provisioning.
+ * @param idpId - Identity provider ID.
+ * @param options - Hook options.
+ * @param options.sso - SSO action callbacks.
+ * @param options.provisioning - Provisioning action callbacks.
+ * @param options.customMessages - Custom translation messages.
  */
 export function useSsoProviderEdit(
   idpId: IdpId,

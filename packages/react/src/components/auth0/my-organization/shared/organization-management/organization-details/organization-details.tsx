@@ -1,3 +1,9 @@
+/**
+ * Organization details form component.
+ * @module organization-details
+ * @internal
+ */
+
 import type {
   OrganizationDetailsFormValues,
   OrganizationPrivate,
@@ -30,6 +36,14 @@ import type { OrganizationDetailsProps } from '@/types/my-organization/organizat
  * This component renders form fields for organization configuration in a structured layout with sections.
  * All data, validation, and business logic are handled via props passed from parent components.
  *
+ * @param props - Component props.
+ * @param props.organization
+ * @param props.isLoading
+ * @param props.schema
+ * @param props.customMessages
+ * @param props.styling
+ * @param props.readOnly
+ * @param props.formActions
  */
 export function OrganizationDetails({
   organization,

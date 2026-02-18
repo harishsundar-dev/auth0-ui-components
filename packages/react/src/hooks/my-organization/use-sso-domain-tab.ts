@@ -1,3 +1,8 @@
+/**
+ * SSO domain tab data and actions hook.
+ * @module use-sso-domain-tab
+ */
+
 import type { CreateOrganizationDomainRequestContent } from '@auth0/universal-components-core';
 import { BusinessError, type Domain, type IdpId } from '@auth0/universal-components-core';
 import { useQuery, useQueryClient, useMutation, useQueries } from '@tanstack/react-query';
@@ -22,12 +27,12 @@ const domainQueryKeys = {
 };
 
 /**
- *
- * @param idpId
- * @param root0
- * @param root0.customMessages
- * @param root0.domains
- * @param root0.provider
+ * Hook for SSO domain tab domain operations and state.
+ * @param idpId - Identity provider ID.
+ * @param options - Hook options.
+ * @param options.customMessages - Custom translation messages.
+ * @param options.domains - Initial domains data.
+ * @param options.provider - SSO provider data.
  */
 export function useSsoDomainTab(
   idpId: IdpId,

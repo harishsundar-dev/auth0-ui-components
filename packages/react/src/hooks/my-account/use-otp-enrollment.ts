@@ -1,3 +1,9 @@
+/**
+ * OTP (TOTP) MFA enrollment hook.
+ * @module use-otp-enrollment
+ * @internal
+ */
+
 import {
   type CreateAuthenticationMethodResponseContent,
   normalizeError,
@@ -18,6 +24,15 @@ type UseOtpEnrollmentProps = {
   onClose: () => void;
 };
 
+/**
+ * Hook for TOTP authenticator enrollment flow.
+ * @param props - Component props.
+ * @param props.factorType
+ * @param props.enrollMfa
+ * @param props.onError
+ * @param props.onClose
+ * @internal
+ */
 export function useOtpEnrollment({
   factorType,
   enrollMfa,

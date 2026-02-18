@@ -1,3 +1,8 @@
+/**
+ * Organization details types.
+ * @module organization-details-types
+ */
+
 import type {
   SharedComponentProps,
   OrganizationPrivate,

@@ -1,3 +1,9 @@
+/**
+ * SSO provider type selection step.
+ * @module provider-select
+ * @internal
+ */
+
 import type { IdpStrategy } from '@auth0/universal-components-core';
 import { STRATEGY_DISPLAY_NAMES, STRATEGIES } from '@auth0/universal-components-core';
 import React from 'react';
@@ -25,6 +31,15 @@ const STRATEGY_ICONS: Record<IdpStrategy, React.FC<{ className?: string }>> = {
   [STRATEGIES.OIDC]: OidcLogo,
 };
 
+/**
+ *
+ * @param props - Component props.
+ * @param props.isLoading
+ * @param props.strategyList
+ * @param props.onClickStrategy
+ * @param props.customMessages
+ * @param props.className
+ */
 function ProviderSelect({
   isLoading,
   strategyList,

@@ -1,3 +1,25 @@
+/**
+ * Organization details edit component.
+ *
+ * Provides a form for editing organization details including name, display name,
+ * branding settings, and organization metadata.
+ *
+ * @module organization-details-edit
+ *
+ * @example
+ * ```tsx
+ * <OrganizationDetailsEdit
+ *   saveAction={{
+ *     onBefore: () => true,
+ *     onAfter: (org) => console.log('Saved:', org),
+ *   }}
+ *   cancelAction={{
+ *     onAfter: () => navigate('/organizations'),
+ *   }}
+ * />
+ * ```
+ */
+
 import {
   getComponentStyles,
   MY_ORGANIZATION_DETAILS_EDIT_SCOPES,
@@ -14,11 +36,17 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import type { OrganizationDetailsEditProps } from '@/types/my-organization/organization-management/organization-details-edit-types';
 
 /**
- * OrganizationDetailsEdit Component
- *
- * A comprehensive organization editing component that combines organization details
- * editing and deletion capabilities in a single interface. This component provides
- * a complete editing experience with form validation, lifecycle hooks, and user feedback.
+ * Internal organization details edit component.
+ * @param root0
+ * @param root0.schema
+ * @param root0.customMessages
+ * @param root0.styling
+ * @param root0.readOnly
+ * @param root0.saveAction
+ * @param root0.cancelAction
+ * @param root0.hideHeader
+ * @param root0.backButton
+ * @internal
  */
 function OrganizationDetailsEditComponent({
   schema,
@@ -95,6 +123,36 @@ function OrganizationDetailsEditComponent({
   );
 }
 
+/**
+ * Organization details editing form.
+ *
+ * A comprehensive component for editing organization details including name,
+ * display name, branding, and metadata. Provides form validation, lifecycle
+ * hooks for save/cancel actions, and user feedback.
+ *
+ * @param schema - Validation schema overrides
+ * @param customMessages - Custom i18n message overrides
+ * @param styling - CSS variables and class overrides
+ * @param readOnly - Render in read-only mode
+ * @param saveAction - Lifecycle hooks for save operation
+ * @param cancelAction - Lifecycle hooks for cancel operation
+ * @param hideHeader - Hide the header section
+ * @param backButton - Back button configuration
+ * @returns Organization details edit component
+ *
+ * @example
+ * ```tsx
+ * <OrganizationDetailsEdit
+ *   saveAction={{
+ *     onBefore: () => true,
+ *     onAfter: (org) => console.log('Saved:', org),
+ *   }}
+ *   cancelAction={{
+ *     onAfter: () => navigate(-1),
+ *   }}
+ * />
+ * ```
+ */
 export const OrganizationDetailsEdit = withMyOrganizationService(
   OrganizationDetailsEditComponent,
   MY_ORGANIZATION_DETAILS_EDIT_SCOPES,

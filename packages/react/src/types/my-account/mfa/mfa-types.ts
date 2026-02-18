@@ -1,3 +1,8 @@
+/**
+ * MFA management types.
+ * @module mfa-types
+ */
+
 import type {
   CreateAuthenticationMethodResponseContent,
   Authenticator,
@@ -10,71 +15,36 @@ import type {
 
 import type { ENROLL, CONFIRM } from '@/lib/constants/my-account/mfa/mfa-constants';
 
-/**
- * Configuration options for an individual MFA factor type.
- */
+/** Configuration for an individual MFA factor type. */
 export interface FactorConfigOptions {
-  /** Whether the factor type should be visible in the UI */
   visible?: boolean;
-  /** Whether the factor type can be enrolled/deleted */
   enabled?: boolean;
 }
 
-/**
- * Configuration object for MFA factor types.
- * Maps each MFA factor type to its visibility and enabled settings.
- */
+/** MFA factor type configuration map. */
 export type FactorConfig = Partial<Record<MFAType, FactorConfigOptions>>;
 
-/**
- * CSS class names for customizing the UserMFAMgmt component styling.
- *
- * @example
- * ```tsx
- * const classes: UserMFAMgmtClasses = {
- *   'UserMFAMgmt-card': 'my-custom-card-class',
- *   'UserMFASetupForm-dialogContent': 'my-dialog-class',
- * };
- * ```
- */
+/** CSS classes for UserMFAMgmt component. */
 export interface UserMFAMgmtClasses {
-  /** Custom class for the main MFA management card container */
   'UserMFAMgmt-card'?: string;
-  /** Custom class for the MFA setup form dialog content */
   'UserMFASetupForm-dialogContent'?: string;
-  /** Custom class for the delete confirmation dialog content */
   'DeleteFactorConfirmation-dialogContent'?: string;
 }
 
-/**
- * Props for the UserMFAMgmt component.
- *
- * @see {@link UserMFAMgmt} for component usage and examples
- * @see {@link UserMFAMgmtClasses} for available CSS class customizations
- */
+/** Props for UserMFAMgmt component. */
 export interface UserMFAMgmtProps
   extends SharedComponentProps<
     MFAMessages,
     UserMFAMgmtClasses,
     { email?: RegExp; phone?: RegExp }
   > {
-  /**
-   * Whether to hide the component header.
-   * @defaultValue `false`
-   */
+  /** Hide component header. */
   hideHeader?: boolean;
 
-  /**
-   * Whether to show only active (enrolled) MFA factors.
-   * When `true`, only factors that are currently enrolled will be displayed.
-   * @defaultValue `false`
-   */
+  /** Show only active (enrolled) factors. */
   showActiveOnly?: boolean;
 
-  /**
-   * Whether to disable the ability to enroll new MFA factors.
-   * @defaultValue `false`
-   */
+  /** Disable enrolling new factors. */
   disableEnroll?: boolean;
 
   /**

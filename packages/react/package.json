@@ -78,7 +78,7 @@
     "directory": "packages/react"
   },
   "author": "Auth0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@auth0/auth0-react": "^2.12.0",
     "@tailwindcss/cli": "^4.1.17",

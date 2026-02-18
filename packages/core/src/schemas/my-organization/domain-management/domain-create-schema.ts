@@ -1,10 +1,20 @@
+/**
+ * Domain creation schema for form validation.
+ * @module domain-create-schema
+ * @internal
+ */
+
 import { createDomainSchema } from '@core/schemas/common';
 import { z } from 'zod';
 
 import { type DomainCreateSchemas } from './domain-create-schema-types';
 
 /**
- * Helper to merge schema field config with defaults
+ * Helper to merge schema field config with defaults.
+ * @param schema
+ * @param field
+ * @param defaultError
+ * @internal
  */
 const mergeFieldConfig = <T extends keyof DomainCreateSchemas>(
   schema: DomainCreateSchemas | undefined,

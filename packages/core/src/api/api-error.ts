@@ -1,7 +1,14 @@
+/**
+ * API Error utilities for handling and normalizing API errors.
+ * @module api-error
+ * @internal
+ */
+
 import type { ApiError } from './api-types';
 
 /**
  * Type guard to determine if a given value is an ApiError.
+ * @internal
  *
  * @param error - The unknown value to test.
  * @returns `true` if the value conforms to the ApiError shape; otherwise, `false`.
@@ -18,9 +25,10 @@ export function isApiError(error: unknown): error is ApiError {
 
 /**
  * Type guard to check if an error has a structured API error body.
+ * @internal
  *
  * @param error - The unknown value to test
- * @returns `true` if the error has a body property with optional detail, title, status, or type fields
+ * @returns `true` if the error has a body property with optional detail, title, status, or type fields, `false` otherwise
  */
 export function hasApiErrorBody(
   error: unknown,
@@ -36,6 +44,7 @@ export function hasApiErrorBody(
 
 /**
  * Normalizes an unknown error into a standard JavaScript Error instance.
+ * @internal
  *
  * This function tries to extract meaningful information from API errors,
  * strings, or other unknown error shapes. You can provide a custom resolver
@@ -71,6 +80,7 @@ export function normalizeError(
 
 /**
  * Extracts the HTTP status code from an unknown error object.
+ * @internal
  *
  * This function checks multiple common locations where status codes may be stored:
  * - `error.status`

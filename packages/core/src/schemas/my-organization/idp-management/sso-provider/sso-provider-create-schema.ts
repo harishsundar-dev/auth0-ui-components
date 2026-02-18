@@ -1,3 +1,9 @@
+/**
+ * SSO provider creation schema for form validation.
+ * @module sso-provider-create-schema
+ * @internal
+ */
+
 import {
   createBooleanSchema,
   createFieldSchema,
@@ -16,6 +22,7 @@ import type {
   SsoProviderSchema,
 } from './sso-provider-create-schema-types';
 
+/** @internal */
 interface OktaOptions {
   domain?: FieldOptions;
   client_id?: FieldOptions;
@@ -367,6 +374,7 @@ export const createProviderSelectionSchema = (options: ProviderSelectionSchema =
 
 /**
  * Creates a schema for Step 2: Provider Details
+ * @param options
  */
 export const createProviderDetailsSchema = (options: ProviderDetailsSchema = {}) => {
   const { name = {}, displayName = {} } = options;
@@ -405,6 +413,8 @@ type StrategySchemaMap = {
 
 /**
  * Creates a dynamic schema for Step 3: Provider Configuration based on strategy
+ * @param strategy
+ * @param options
  */
 export function createProviderConfigureSchema<T extends IdpStrategy>(
   strategy: T,
@@ -425,6 +435,7 @@ export function createProviderConfigureSchema<T extends IdpStrategy>(
  */
 /**
  * Creates a complete schema for SSO provider form validation that combines all three steps
+ * @param options
  */
 export const createSsoProviderSchema = (options: SsoProviderSchema = {}) => {
   const selectionSchema = createProviderSelectionSchema(options);

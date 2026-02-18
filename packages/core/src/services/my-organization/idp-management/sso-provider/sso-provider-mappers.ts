@@ -1,3 +1,8 @@
+/**
+ * SSO provider data mappers for API transformations.
+ * @module sso-provider-mappers
+ * @internal
+ */
 import type {
   ProviderDetailsFormValues,
   ProviderSelectionFormValues,
@@ -56,6 +61,8 @@ const STRATEGY_FIELD_MAPPINGS = {
 
 /**
  * Filters and validates form options based on strategy-specific API requirements.
+ * @param strategy
+ * @param formOptions
  */
 const getValidOptionsForStrategy = (
   strategy: IdpStrategy,
@@ -81,6 +88,7 @@ export const SsoProviderMappers = {
   /**
    * Transforms form data to API request format for creating SSO providers.
    * Filters out form-specific fields and includes only strategy-valid API fields.
+   * @param data
    */
   createToAPI(data: CombinedProviderFormValues): CreateIdentityProviderRequestContent {
     const { strategy, name, display_name, options } = data;
@@ -100,6 +108,7 @@ export const SsoProviderMappers = {
   /**
    * Transforms form data to API request format for updating SSO providers.
    * Only includes fields that have been modified and are valid for the strategy.
+   * @param data
    */
   updateToAPI(data: UpdateProviderFormValues): UpdateIdentityProviderRequestContent {
     const {

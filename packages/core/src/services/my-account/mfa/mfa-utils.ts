@@ -1,3 +1,9 @@
+/**
+ * MFA utility functions for enrollment and factor management.
+ * @module mfa-utils
+ * @internal
+ */
+
 import {
   FACTOR_TYPE_EMAIL,
   FACTOR_TYPE_PHONE,
@@ -17,6 +23,14 @@ import type {
   EnrolledFactor,
 } from './mfa-types';
 
+/**
+ * Builds enrollment parameters for a given MFA factor type.
+ * @internal
+ *
+ * @param factorType - The type of MFA factor to enroll
+ * @param options - Optional enrollment options (email, phone_number)
+ * @returns Request content for creating authentication method
+ */
 export function buildEnrollParams(
   factorType: MFAType,
   options: EnrollOptions = {},
@@ -53,6 +67,11 @@ export function buildEnrollParams(
   }
 }
 
+/**
+ *
+ * @param type
+ * @param enrolledFactor
+ */
 function getFactorDisplayName(type: MFAType, enrolledFactor: EnrolledFactor): string {
   switch (type) {
     case FACTOR_TYPE_PHONE:
@@ -80,6 +99,14 @@ function getFactorDisplayName(type: MFAType, enrolledFactor: EnrolledFactor): st
   }
 }
 
+/**
+ *
+ * @param type
+ * @param id
+ * @param enrolled
+ * @param created_at
+ * @param enrolledFactor
+ */
 function createAuthenticator(
   type: MFAType,
   id: string,
@@ -96,6 +123,12 @@ function createAuthenticator(
   };
 }
 
+/**
+ *
+ * @param availableFactorsResponse
+ * @param enrolledFactors
+ * @param onlyActive
+ */
 export function transformMyAccountFactors(
   availableFactorsResponse: ListFactorsResponseContent,
   enrolledFactors: ListAuthenticationMethodsResponseContent,

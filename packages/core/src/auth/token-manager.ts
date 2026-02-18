@@ -1,17 +1,29 @@
+/**
+ * Token management service for handling access token retrieval and caching.
+ * @module token-manager
+ * @internal
+ */
+
 import type { AuthDetails, BasicAuth0ContextInterface } from './auth-types';
 import { AuthUtils } from './auth-utils';
 
 /**
  * Store for pending token requests to prevent duplicate requests for the same token.
  * Maps request keys (scope + audience combination) to pending promises.
+ * @internal
  */
 const pendingTokenRequests = new Map<string, Promise<string>>();
 
+/**
+ * Set of error types that trigger fallback authentication flows.
+ * @internal
+ */
 const FALLBACK_ERRORS = new Set(['consent_required', 'login_required', 'mfa_required']);
 
 /**
  * Pure utility functions for token management operations.
  * These functions handle token requests, validation, and caching logic.
+ * @internal
  */
 const TokenUtils = {
   /**
@@ -142,9 +154,10 @@ const TokenUtils = {
 
 /**
  * Creates a token manager service that handles access token retrieval with caching and deduplication.
+ * @internal
  *
  * The token manager provides intelligent caching to prevent duplicate requests for the same token
- * and supportssilent authentication flows.
+ * and supports silent authentication flows.
  *
  * @param auth - The authentication details containing domain, client configuration, and context interface
  * @returns A token manager service interface

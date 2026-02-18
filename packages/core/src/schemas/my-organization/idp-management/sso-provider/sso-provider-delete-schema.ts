@@ -1,9 +1,18 @@
+/**
+ * SSO provider deletion schema for form validation.
+ * @module sso-provider-delete-schema
+ * @internal
+ */
+
 import { z } from 'zod';
 
 import type { SsoProviderDeleteSchema } from './sso-provider-delete-schema-types';
 
 /**
- * Creates a schema for delete SSO provider confirmation
+ * Creates a schema for delete SSO provider confirmation.
+ * @param expectedProviderName
+ * @param options
+ * @internal
  */
 export const createDeleteProviderSchema = (
   expectedProviderName: string,
@@ -24,6 +33,7 @@ export const createDeleteProviderSchema = (
 
 /**
  * Default schema for delete provider validation
+ * @param expectedProviderName
  */
 export const deleteProviderSchema = (expectedProviderName: string) =>
   createDeleteProviderSchema(expectedProviderName);

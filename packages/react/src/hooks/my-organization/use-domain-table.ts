@@ -165,7 +165,7 @@ export function useDomainTable({
       });
     },
     fetchDomains: async () => {
-      await queryClient.invalidateQueries({ queryKey: domainQueryKeys.list() });
+      await queryClient.getQueryData(domainQueryKeys.list());
     },
     onCreateDomain: (data) => createDomainMutation.mutateAsync(data),
     onVerifyDomain: (domain) => verifyDomainMutation.mutateAsync(domain),

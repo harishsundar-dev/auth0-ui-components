@@ -64,7 +64,7 @@ describe('useOrganizationDetailsEdit', () => {
       expect(result.current.organization).toEqual(mockOrganization);
     });
 
-    it('should allow manual refetch of organization data', async () => {
+    it('should read cached organization data without refetching', async () => {
       const { result, apiService } = await renderUseOrganizationDetailsEdit();
 
       vi.clearAllMocks();
@@ -73,7 +73,7 @@ describe('useOrganizationDetailsEdit', () => {
         await result.current.fetchOrgDetails();
       });
 
-      expect(apiService.organizationDetails.get).toHaveBeenCalledTimes(1);
+      expect(apiService.organizationDetails.get).not.toHaveBeenCalled();
     });
 
     it('should show error toast when loading fails', async () => {

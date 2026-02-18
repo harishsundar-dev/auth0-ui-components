@@ -14,8 +14,6 @@ import type { UseFormReturn } from 'react-hook-form';
 
 import type { FormActionsProps } from '@/components/auth0/shared/form-actions';
 
-/* ============ Components ============ */
-
 /**
  * Styling that can be used to override default styles.
  */
@@ -48,8 +46,6 @@ export interface OrganizationDetailsProps
   isLoading?: boolean;
   formActions: OrganizationDetailsFormActions;
 }
-
-/* ============ Subcomponents ============ */
 
 export interface BrandingDetailsProps
   extends SharedComponentProps<OrganizationDetailsMessages, OrganizationDetailsClasses> {

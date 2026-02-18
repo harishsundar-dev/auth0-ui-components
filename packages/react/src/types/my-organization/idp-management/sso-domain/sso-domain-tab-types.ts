@@ -47,8 +47,6 @@ export interface SsoDomainsTabProps
   provider: IdentityProvider | null;
 }
 
-/* ============ Subcomponents ============ */
-
 export interface SsoDomainTabActionColumn
   extends SharedComponentProps<
     SsoDomainTabMessages,
@@ -63,8 +61,6 @@ export interface SsoDomainTabActionColumn
   isUpdatingId: string | null;
   onToggle: (domain: Domain, newCheckedValue: boolean) => Promise<void>;
 }
-
-/* ============ Hooks ============ */
 
 export interface UseSsoDomainTabOptions extends SharedComponentProps {
   domains: SsoDomainsTabEditProps;

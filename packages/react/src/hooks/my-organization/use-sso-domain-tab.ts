@@ -246,8 +246,6 @@ export function useSsoDomainTab(
     },
   });
 
-  // ===== Handlers =====
-
   const handleCreate = useCallback(
     async (domainUrl: string) => {
       try {

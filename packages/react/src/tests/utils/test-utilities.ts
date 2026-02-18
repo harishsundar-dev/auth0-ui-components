@@ -7,8 +7,6 @@ import { vi } from 'vitest';
 
 import { createMockI18nService } from '@/tests/utils/__mocks__/core/i18n-service.mocks';
 
-// ===== Types =====
-
 /**
  * Type for a module namespace that can be spied upon
  * Uses a more specific type that works with vi.spyOn without requiring 'any'
@@ -16,8 +14,6 @@ import { createMockI18nService } from '@/tests/utils/__mocks__/core/i18n-service
 type SpyableModule = {
   [K in string]: (...args: never[]) => unknown;
 };
-
-// ===== Mock Generators =====
 
 export const createMockUseCoreClient = (coreClient: CoreClientInterface | null = null) => ({
   coreClient,
@@ -33,8 +29,6 @@ export const createMockUseTranslator = (_customMessages?: object) => ({
 export const createMockUseErrorHandler = (handleError: ReturnType<typeof vi.fn>) => ({
   handleError,
 });
-
-// ===== Setup Utilities =====
 
 /**
  * Sets up a mock for useCoreClient hook with a valid core client.

@@ -46,10 +46,6 @@ export function useSsoProviderTable(
   const hasShownProvidersError = useRef(false);
   const hasShownOrganizationError = useRef(false);
 
-  // ============================================
-  // QUERIES - All data managed by TanStack Query
-  // ============================================
-
   const providersQuery = useQuery({
     queryKey: ssoProviderQueryKeys.list(),
     queryFn: async () => {
@@ -97,10 +93,6 @@ export function useSsoProviderTable(
       hasShownOrganizationError.current = false;
     }
   }, [organizationQuery.isError, t]);
-
-  // ============================================
-  // MUTATIONS
-  // ============================================
 
   const enableProviderMutation = useMutation({
     mutationFn: async ({
@@ -226,10 +218,6 @@ export function useSsoProviderTable(
     },
   });
 
-  // ============================================
-  // ACTIONS - Wrappers around mutations
-  // ============================================
-
   const onEnableProvider = useCallback(
     async (selectedIdp: IdentityProvider, enabled: boolean): Promise<boolean> => {
       if (!selectedIdp || !coreClient || !selectedIdp.id) {
@@ -294,10 +282,6 @@ export function useSsoProviderTable(
       return null;
     }
   }, [coreClient, queryClient, t]);
-
-  // ============================================
-  // RETURN
-  // ============================================
 
   return {
     // Data from TanStack Query - single source of truth

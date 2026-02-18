@@ -67,8 +67,6 @@ export interface DomainTableActionsColumnProps {
   onDelete: (domain: Domain) => void;
 }
 
-/* ============ Hooks ============ */
-
 export interface UseDomainTableOptions {
   createAction?: DomainTableProps['createAction'];
   verifyAction?: DomainTableProps['verifyAction'];

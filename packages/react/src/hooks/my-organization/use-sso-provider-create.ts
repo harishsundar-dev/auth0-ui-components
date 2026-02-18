@@ -51,10 +51,6 @@ export function useSsoProviderCreate({
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const queryClient = useQueryClient();
 
-  // ============================================
-  // MUTATION
-  // ============================================
-
   const createProviderMutation = useMutation({
     mutationFn: async (
       data: CreateIdentityProviderRequestContentPrivate,
@@ -126,10 +122,6 @@ export function useSsoProviderCreate({
       });
     },
   });
-
-  // ============================================
-  // ACTION - Wrapper around mutation
-  // ============================================
 
   const createProvider = useCallback(
     async (data: CreateIdentityProviderRequestContentPrivate): Promise<void> => {

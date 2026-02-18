@@ -69,8 +69,6 @@ export interface SsoProviderTabProps
   isSyncingAttributes?: boolean;
 }
 
-/* ============ Subcomponents ============ */
-
 export interface ProviderDetailsClasses
   extends Omit<
     SsoProviderCreateClasses,
@@ -98,5 +96,3 @@ export interface SsoProviderDetailsProps
   readOnly?: boolean;
   formActions?: SsoProviderDetailsFormActions;
 }
-
-/* ============ Hooks ============ */

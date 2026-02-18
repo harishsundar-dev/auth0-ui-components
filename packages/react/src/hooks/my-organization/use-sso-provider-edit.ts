@@ -60,10 +60,6 @@ export function useSsoProviderEdit(
   const hasShownProvisioningError = useRef(false);
   const hasShownOrganizationError = useRef(false);
 
-  // ============================================
-  // QUERIES - All data managed by TanStack Query
-  // ============================================
-
   /**
    * Provider query - fetches the identity provider details.
    * TanStack Query handles caching, loading states, and refetching.
@@ -162,10 +158,6 @@ export function useSsoProviderEdit(
       hasShownProvisioningError.current = false;
     }
   }, [provisioningQuery.isError, t]);
-
-  // ============================================
-  // MUTATIONS - All actions that modify data
-  // ============================================
 
   /**
    * Update provider mutation - updates SSO provider configuration.
@@ -525,10 +517,6 @@ export function useSsoProviderEdit(
       });
     },
   });
-
-  // ============================================
-  // ACTION CALLBACKS - Wrapper functions for mutations
-  // ============================================
 
   const fetchProvider = useCallback(async (): Promise<IdentityProvider | null> => {
     if (!coreClient || !idpId) {

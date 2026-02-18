@@ -15,14 +15,15 @@ import type { SsoProviderRemoveFromOrganizationModalProps } from '@/types/my-org
 /**
  *
  * @param props - Component props.
- * @param props.className
- * @param props.isOpen
- * @param props.onClose
- * @param props.provider
- * @param props.organizationName
- * @param props.onRemove
- * @param props.isLoading
- * @param props.customMessages
+ * @param props.className - Optional CSS class name for styling
+ * @param props.isOpen - Whether the modal/dialog is open
+ * @param props.onClose - Callback fired when the component should close
+ * @param props.provider - SSO provider object
+ * @param props.organizationName - Name of the organization
+ * @param props.onRemove - Callback fired when remove action is triggered
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function SsoProviderRemoveFromOrganizationModal({
   className,

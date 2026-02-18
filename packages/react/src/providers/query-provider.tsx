@@ -41,6 +41,7 @@ const DISABLED_CACHE_GC_TIME = 5 * 1000;
 /**
  * Merges user config with defaults.
  * @param userConfig - User-provided cache config.
+ * @returns The resolved cache configuration
  * @internal
  */
 export function resolveCacheConfig(userConfig?: QueryCacheConfig): Required<QueryCacheConfig> {
@@ -63,6 +64,7 @@ export function resolveCacheConfig(userConfig?: QueryCacheConfig): Required<Quer
 /**
  * Creates a QueryClient with config.
  * @param cacheConfig - Cache configuration.
+ * @returns The configured QueryClient instance
  * @internal
  */
 function createQueryClient(cacheConfig: Required<QueryCacheConfig>): QueryClient {
@@ -99,6 +101,7 @@ export interface QueryProviderProps {
  * @param props - Component props.
  * @param props.children - Child components.
  * @param props.cacheConfig - Cache configuration.
+ * @returns The context provider component
  * @internal
  */
 export function QueryProvider({ children, cacheConfig }: QueryProviderProps): ReactElement {

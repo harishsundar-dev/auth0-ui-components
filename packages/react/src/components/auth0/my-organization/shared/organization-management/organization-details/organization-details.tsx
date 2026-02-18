@@ -37,13 +37,14 @@ import type { OrganizationDetailsProps } from '@/types/my-organization/organizat
  * All data, validation, and business logic are handled via props passed from parent components.
  *
  * @param props - Component props.
- * @param props.organization
- * @param props.isLoading
- * @param props.schema
- * @param props.customMessages
- * @param props.styling
- * @param props.readOnly
- * @param props.formActions
+ * @param props.organization - Organization object
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.schema - Zod validation schema
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.formActions - Form action buttons configuration
+ * @returns JSX element
  */
 export function OrganizationDetails({
   organization,

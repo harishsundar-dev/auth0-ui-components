@@ -48,16 +48,17 @@ type EnrollmentPhase =
 /**
  *
  * @param props - Component props.
- * @param props.open
- * @param props.onClose
- * @param props.factorType
- * @param props.enrollMfa
- * @param props.confirmEnrollment
- * @param props.onSuccess
- * @param props.onError
- * @param props.schema
- * @param props.styling
- * @param props.customMessages
+ * @param props.open - Whether the component is open/visible
+ * @param props.onClose - Callback fired when the component should close
+ * @param props.factorType - The MFA factor type
+ * @param props.enrollMfa - Function to enroll a new MFA factor
+ * @param props.confirmEnrollment - Function to confirm MFA enrollment
+ * @param props.onSuccess - Callback fired on successful operation
+ * @param props.onError - Callback fired when an error occurs
+ * @param props.schema - Zod validation schema
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function UserMFASetupForm({
   open,

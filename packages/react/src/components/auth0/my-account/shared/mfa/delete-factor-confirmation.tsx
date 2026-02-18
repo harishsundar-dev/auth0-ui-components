@@ -18,14 +18,15 @@ import type { DeleteFactorConfirmationProps } from '@/types/my-account/mfa/mfa-t
 /**
  *
  * @param props - Component props.
- * @param props.open
- * @param props.onOpenChange
- * @param props.factorToDelete
- * @param props.isDeletingFactor
- * @param props.onConfirm
- * @param props.onCancel
- * @param props.styling
- * @param props.customMessages
+ * @param props.open - Whether the component is open/visible
+ * @param props.onOpenChange - Callback fired when open state changes
+ * @param props.factorToDelete - The factor selected for deletion
+ * @param props.isDeletingFactor - Whether a factor deletion is in progress
+ * @param props.onConfirm - Callback fired when the action is confirmed
+ * @param props.onCancel - Callback fired when the operation is cancelled
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function DeleteFactorConfirmation({
   open,

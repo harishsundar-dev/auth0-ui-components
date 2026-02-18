@@ -32,13 +32,14 @@ const STRATEGY_ICONS: Record<IdpStrategy, React.FC<{ className?: string }>> = {
 };
 
 /**
- *
+ * Provider selection component for SSO setup.
  * @param props - Component props.
- * @param props.isLoading
- * @param props.strategyList
- * @param props.onClickStrategy
- * @param props.customMessages
- * @param props.className
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.strategyList - List of available strategies
+ * @param props.onClickStrategy - Callback fired when a strategy is selected
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.className - Optional CSS class name for styling
+ * @returns JSX element
  */
 function ProviderSelect({
   isLoading,

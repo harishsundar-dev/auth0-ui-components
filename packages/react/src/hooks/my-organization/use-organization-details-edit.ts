@@ -30,10 +30,11 @@ const EMPTY_ORGANIZATION = OrganizationDetailsFactory.create();
 /**
  * Hook for fetching and updating organization details.
  * @param props - Component props.
- * @param props.saveAction
- * @param props.cancelAction
- * @param props.readOnly
- * @param props.customMessages
+ * @param props.saveAction - Configuration for the save action
+ * @param props.cancelAction - Configuration for the cancel action
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns Hook state and methods
  */
 export function useOrganizationDetailsEdit({
   saveAction,

@@ -32,14 +32,15 @@ type UseOtpConfirmationProps = {
 /**
  * Hook for OTP code confirmation during MFA enrollment.
  * @param props - Component props.
- * @param props.factorType
- * @param props.authSession
- * @param props.authenticationMethodId
- * @param props.confirmEnrollment
- * @param props.onError
- * @param props.onSuccess
- * @param props.onClose
+ * @param props.factorType - The MFA factor type
+ * @param props.authSession - Authentication session data
+ * @param props.authenticationMethodId - ID of the authentication method
+ * @param props.confirmEnrollment - Function to confirm MFA enrollment
+ * @param props.onError - Callback fired when an error occurs
+ * @param props.onSuccess - Callback fired on successful operation
+ * @param props.onClose - Callback fired when the component should close
  * @internal
+ * @returns Hook state and methods
  */
 export function useOtpConfirmation({
   factorType,

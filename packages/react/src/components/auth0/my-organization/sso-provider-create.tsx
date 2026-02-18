@@ -56,14 +56,15 @@ type FormState = {
 
 /**
  * Internal SSO provider creation component.
- * @param root0
- * @param root0.createAction
- * @param root0.backButton
- * @param root0.onNext
- * @param root0.onPrevious
- * @param root0.customMessages
- * @param root0.styling
+ * @param props - Component props
+ * @param props.createAction - Configuration for the create action
+ * @param props.backButton - Configuration for the back button
+ * @param props.onNext - Callback for next action
+ * @param props.onPrevious - Callback for previous action
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
  * @internal
+ * @returns JSX element
  */
 export function SsoProviderCreateComponent({
   createAction,

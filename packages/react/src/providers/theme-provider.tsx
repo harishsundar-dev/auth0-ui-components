@@ -17,6 +17,7 @@ const defaultStyleOverrides: StylingVariables = { common: {}, light: {}, dark: {
 /**
  * Theme context for accessing theme settings.
  * @internal
+ * @returns The context provider component
  */
 export const ThemeContext = React.createContext<ThemeContextValue>({
   isDarkMode: false,

@@ -33,6 +33,7 @@ const domainQueryKeys = {
  * @param options.customMessages - Custom translation messages.
  * @param options.domains - Initial domains data.
  * @param options.provider - SSO provider data.
+ * @returns Hook state and methods
  */
 export function useSsoDomainTab(
   idpId: IdpId,

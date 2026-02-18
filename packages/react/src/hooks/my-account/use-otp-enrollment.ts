@@ -27,11 +27,12 @@ type UseOtpEnrollmentProps = {
 /**
  * Hook for TOTP authenticator enrollment flow.
  * @param props - Component props.
- * @param props.factorType
- * @param props.enrollMfa
- * @param props.onError
- * @param props.onClose
+ * @param props.factorType - The MFA factor type
+ * @param props.enrollMfa - Function to enroll a new MFA factor
+ * @param props.onError - Callback fired when an error occurs
+ * @param props.onClose - Callback fired when the component should close
  * @internal
+ * @returns Hook state and methods
  */
 export function useOtpEnrollment({
   factorType,

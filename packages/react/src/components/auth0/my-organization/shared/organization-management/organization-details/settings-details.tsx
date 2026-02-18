@@ -25,10 +25,11 @@ import type { SettingsDetailsProps } from '@/types/my-organization/organization-
  * Renders the organization settings section with name and display name fields.
  * This component is focused purely on the settings-related form fields.
  * @param props - Component props.
- * @param props.form
- * @param props.readOnly
- * @param props.customMessages
- * @param props.className
+ * @param props.form - React Hook Form instance
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.className - Optional CSS class name for styling
+ * @returns JSX element
  */
 export function SettingsDetails({
   form,

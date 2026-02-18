@@ -21,9 +21,10 @@ interface CommonConfigureFieldsProps {
  * CommonConfigureFields Component
  * Renders common fields (show_as_button, assign_membership_on_login) that are shared across all SSO provider strategies
  * @param props - Component props.
- * @param props.idpConfig
- * @param props.readOnly
- * @param props.customMessages
+ * @param props.idpConfig - Identity provider configuration
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function CommonConfigureFields({
   idpConfig,

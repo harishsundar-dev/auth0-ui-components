@@ -13,6 +13,7 @@ import { ScopeManagerContext, type Audience } from '@/hooks/shared/use-scope-man
  * Provides scope registration and authorization for components.
  * @param props - Component props.
  * @param props.children - Child components.
+ * @returns The context provider component
  * @internal
  */
 export const ScopeManagerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

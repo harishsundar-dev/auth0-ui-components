@@ -14,11 +14,12 @@ import type { SsoProvisioningDeleteModalProps } from '@/types/my-organization/id
 /**
  *
  * @param props - Component props.
- * @param props.open
- * @param props.onOpenChange
- * @param props.onConfirm
- * @param props.isLoading
- * @param props.customMessages
+ * @param props.open - Whether the component is open/visible
+ * @param props.onOpenChange - Callback fired when open state changes
+ * @param props.onConfirm - Callback fired when the action is confirmed
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function SsoProvisioningDeleteModal({
   open,

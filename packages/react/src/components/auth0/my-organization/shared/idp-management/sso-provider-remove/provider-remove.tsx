@@ -16,12 +16,13 @@ import type { SsoProviderRemoveFromOrganizationProps } from '@/types/my-organiza
 /**
  *
  * @param props - Component props.
- * @param props.provider
- * @param props.organizationName
- * @param props.onRemove
- * @param props.customMessages
- * @param props.isLoading
- * @param props.readOnly
+ * @param props.provider - SSO provider object
+ * @param props.organizationName - Name of the organization
+ * @param props.onRemove - Callback fired when remove action is triggered
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @returns JSX element
  */
 export function SsoProviderRemoveFromOrganization({
   provider,

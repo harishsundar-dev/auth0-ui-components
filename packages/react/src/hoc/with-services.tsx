@@ -18,8 +18,9 @@ export interface ServiceRequirements {
 
 /**
  * Checks if required scopes are satisfied by ensured scopes.
- * @param required
- * @param ensured
+ * @param required - Required scopes array
+ * @param ensured - Ensured scopes array
+ * @returns Whether all required scopes are ensured
  * @internal
  */
 function scopesSatisfied(required: string, ensured: string) {
@@ -31,7 +32,8 @@ function scopesSatisfied(required: string, ensured: string) {
 
 /**
  * Normalizes scope string (sorts, dedupes, trims).
- * @param scopes
+ * @param scopes - OAuth scopes array
+ * @returns The normalized scope string
  * @internal
  */
 function normalizeScopes(scopes?: string) {

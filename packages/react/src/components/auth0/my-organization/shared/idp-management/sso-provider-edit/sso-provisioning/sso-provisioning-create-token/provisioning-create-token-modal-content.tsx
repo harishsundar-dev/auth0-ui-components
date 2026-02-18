@@ -13,10 +13,11 @@ import type { ProvisioningCreateTokenModalContentProps } from '@/types/my-organi
 /**
  *
  * @param props - Component props.
- * @param props.token
- * @param props.tokenId
- * @param props.customMessages
- * @param props.className
+ * @param props.token - Token string
+ * @param props.tokenId - Token identifier
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.className - Optional CSS class name for styling
+ * @returns JSX element
  */
 export function ProvisioningCreateTokenModalContent({
   token,

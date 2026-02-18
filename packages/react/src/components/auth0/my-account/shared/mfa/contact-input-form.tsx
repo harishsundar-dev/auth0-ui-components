@@ -48,15 +48,16 @@ type Phase = (typeof PHASES)[keyof typeof PHASES];
 /**
  *
  * @param props - Component props.
- * @param props.factorType
- * @param props.enrollMfa
- * @param props.onError
- * @param props.confirmEnrollment
- * @param props.onSuccess
- * @param props.onClose
- * @param props.schema
- * @param props.styling
- * @param props.customMessages
+ * @param props.factorType - The MFA factor type
+ * @param props.enrollMfa - Function to enroll a new MFA factor
+ * @param props.onError - Callback fired when an error occurs
+ * @param props.confirmEnrollment - Function to confirm MFA enrollment
+ * @param props.onSuccess - Callback fired on successful operation
+ * @param props.onClose - Callback fired when the component should close
+ * @param props.schema - Zod validation schema
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function ContactInputForm({
   factorType,

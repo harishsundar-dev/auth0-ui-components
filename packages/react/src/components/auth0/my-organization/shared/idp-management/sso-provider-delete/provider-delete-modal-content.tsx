@@ -15,9 +15,10 @@ import type { SsoProviderDeleteModalContentProps } from '@/types/my-organization
 /**
  *
  * @param props - Component props.
- * @param props.onChange
- * @param props.customMessages
- * @param props.className
+ * @param props.onChange - Callback fired when the value changes
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.className - Optional CSS class name for styling
+ * @returns JSX element
  */
 export function SsoProviderDeleteModalContent({
   onChange,

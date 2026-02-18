@@ -11,9 +11,10 @@ import type { ProvisioningDeleteTokenModalContentProps } from '@/types/my-organi
 /**
  *
  * @param props - Component props.
- * @param props.customMessages
- * @param props.className
- * @param props.tokenId
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.className - Optional CSS class name for styling
+ * @param props.tokenId - Token identifier
+ * @returns JSX element
  */
 export function ProvisioningDeleteTokenModalContent({
   customMessages = {},

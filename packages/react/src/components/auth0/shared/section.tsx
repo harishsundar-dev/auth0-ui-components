@@ -89,11 +89,12 @@ const ToggleAction: React.FC<ToggleActionProps> = ({
 /**
  *
  * @param props - Component props.
- * @param props.title
- * @param props.description
- * @param props.children
- * @param props.actions
- * @param props.className
+ * @param props.title - The title text
+ * @param props.description - The description text
+ * @param props.children - Child elements to render
+ * @param props.actions - Action buttons or elements
+ * @param props.className - Optional CSS class name for styling
+ * @returns JSX element
  */
 export function Section({
   title,

@@ -25,15 +25,16 @@ const FACTOR_ICONS = {
 /**
  *
  * @param props - Component props.
- * @param props.factors
- * @param props.factorType
- * @param props.readOnly
- * @param props.isEnabledFactor
- * @param props.onDeleteFactor
- * @param props.isDeletingFactor
- * @param props.disableDelete
- * @param props.styling
- * @param props.customMessages
+ * @param props.factors - Array of MFA factors
+ * @param props.factorType - The MFA factor type
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.isEnabledFactor - Whether the factor is enabled
+ * @param props.onDeleteFactor - Callback to delete a factor
+ * @param props.isDeletingFactor - Whether a factor deletion is in progress
+ * @param props.disableDelete - Whether delete action is disabled
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function FactorsList({
   factors,

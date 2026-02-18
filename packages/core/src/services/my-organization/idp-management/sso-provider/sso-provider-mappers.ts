@@ -61,8 +61,9 @@ const STRATEGY_FIELD_MAPPINGS = {
 
 /**
  * Filters and validates form options based on strategy-specific API requirements.
- * @param strategy
- * @param formOptions
+ * @param strategy - Authentication strategy
+ * @param formOptions - Form configuration options
+ * @returns Filtered options valid for the strategy
  */
 const getValidOptionsForStrategy = (
   strategy: IdpStrategy,
@@ -88,7 +89,8 @@ export const SsoProviderMappers = {
   /**
    * Transforms form data to API request format for creating SSO providers.
    * Filters out form-specific fields and includes only strategy-valid API fields.
-   * @param data
+   * @param data - The data object to process
+   * @returns API request payload for provider creation
    */
   createToAPI(data: CombinedProviderFormValues): CreateIdentityProviderRequestContent {
     const { strategy, name, display_name, options } = data;
@@ -108,7 +110,8 @@ export const SsoProviderMappers = {
   /**
    * Transforms form data to API request format for updating SSO providers.
    * Only includes fields that have been modified and are valid for the strategy.
-   * @param data
+   * @param data - The data object to process
+   * @returns API request payload for provider update
    */
   updateToAPI(data: UpdateProviderFormValues): UpdateIdentityProviderRequestContent {
     const {

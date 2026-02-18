@@ -47,6 +47,7 @@ export const ssoProviderEditQueryKeys = {
  * @param options.sso - SSO action callbacks.
  * @param options.provisioning - Provisioning action callbacks.
  * @param options.customMessages - Custom translation messages.
+ * @returns Hook state and methods
  */
 export function useSsoProviderEdit(
   idpId: IdpId,

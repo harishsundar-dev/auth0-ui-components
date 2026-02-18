@@ -11,9 +11,10 @@ import { type DomainCreateSchemas } from './domain-create-schema-types';
 
 /**
  * Helper to merge schema field config with defaults.
- * @param schema
- * @param field
- * @param defaultError
+ * @param schema - Zod validation schema
+ * @param field - Form field name
+ * @param defaultError - Default error message
+ * @returns The merged field configuration
  * @internal
  */
 const mergeFieldConfig = <T extends keyof DomainCreateSchemas>(
@@ -36,6 +37,7 @@ const mergeFieldConfig = <T extends keyof DomainCreateSchemas>(
  * Creates a schema for domain create form validation
  * @param options - Schema configuration options
  * @param defaultErrorMessage - Default error message for validation failures
+ * @returns Zod schema for domain form validation
  */
 export const createDomainCreateSchema = (
   options: DomainCreateSchemas = {},

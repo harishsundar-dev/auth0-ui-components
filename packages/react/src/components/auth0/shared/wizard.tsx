@@ -53,16 +53,17 @@ export interface WizardProps {
 }
 
 /**
- *
+ * Multi-step wizard component.
  * @param props - Component props.
- * @param props.steps
- * @param props.initialStep
- * @param props.onComplete
- * @param props.className
- * @param props.formActionLabels
- * @param props.hideStepperNumbers
- * @param props.isLoading
- * @param props.allowStepNavigation
+ * @param props.steps - Array of wizard steps
+ * @param props.initialStep - Initial step index
+ * @param props.onComplete - Callback fired when the operation completes
+ * @param props.className - Optional CSS class name for styling
+ * @param props.formActionLabels - Labels for form action buttons
+ * @param props.hideStepperNumbers - Whether to hide step numbers
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.allowStepNavigation - Whether step navigation is allowed
+ * @returns JSX element
  */
 function Wizard({
   steps,

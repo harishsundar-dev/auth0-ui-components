@@ -14,8 +14,9 @@ interface MFAEmptyStateProps {
 /**
  *
  * @param props - Component props.
- * @param props.message
- * @param props.className
+ * @param props.message - The message to display
+ * @param props.className - Optional CSS class name for styling
+ * @returns JSX element
  */
 export function MFAEmptyState({ message, className }: MFAEmptyStateProps) {
   return (

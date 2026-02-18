@@ -68,9 +68,10 @@ export function buildEnrollParams(
 }
 
 /**
- *
- * @param type
- * @param enrolledFactor
+ * Gets the display name for an enrolled MFA factor.
+ * @param type - The type of the item
+ * @param enrolledFactor - The enrolled factor data
+ * @returns The display name for the factor
  */
 function getFactorDisplayName(type: MFAType, enrolledFactor: EnrolledFactor): string {
   switch (type) {
@@ -100,12 +101,13 @@ function getFactorDisplayName(type: MFAType, enrolledFactor: EnrolledFactor): st
 }
 
 /**
- *
- * @param type
- * @param id
- * @param enrolled
- * @param created_at
- * @param enrolledFactor
+ * Creates an authenticator object from factor data.
+ * @param type - The type of the item
+ * @param id - Unique identifier
+ * @param enrolled - Whether the factor is enrolled
+ * @param created_at - Creation timestamp
+ * @param enrolledFactor - The enrolled factor data
+ * @returns Authenticator object
  */
 function createAuthenticator(
   type: MFAType,
@@ -124,10 +126,11 @@ function createAuthenticator(
 }
 
 /**
- *
- * @param availableFactorsResponse
- * @param enrolledFactors
- * @param onlyActive
+ * Transforms MFA factors response into grouped authenticators.
+ * @param availableFactorsResponse - Response containing available factors
+ * @param enrolledFactors - Array of enrolled factors
+ * @param onlyActive - Whether to include only active factors
+ * @returns Authenticators grouped by MFA type
  */
 export function transformMyAccountFactors(
   availableFactorsResponse: ListFactorsResponseContent,

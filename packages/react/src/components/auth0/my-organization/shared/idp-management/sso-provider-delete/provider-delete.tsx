@@ -16,11 +16,12 @@ import type { SsoProviderDeleteProps } from '@/types/my-organization/idp-managem
 /**
  *
  * @param props - Component props.
- * @param props.provider
- * @param props.onDelete
- * @param props.customMessages
- * @param props.isLoading
- * @param props.readOnly
+ * @param props.provider - SSO provider object
+ * @param props.onDelete - Callback fired when delete action is triggered
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @returns JSX element
  */
 export function SsoProviderDelete({
   provider,

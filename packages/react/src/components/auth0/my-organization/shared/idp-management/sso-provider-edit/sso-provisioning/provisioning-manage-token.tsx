@@ -42,14 +42,15 @@ const TOKEN_STATUS = {
 /**
  *
  * @param props - Component props.
- * @param props.isScimTokensLoading
- * @param props.isScimTokenCreating
- * @param props.isScimTokenDeleting
- * @param props.onListScimTokens
- * @param props.onCreateScimToken
- * @param props.onDeleteScimToken
- * @param props.styling
- * @param props.customMessages
+ * @param props.isScimTokensLoading - Whether SCIM tokens are loading
+ * @param props.isScimTokenCreating - Whether a SCIM token is being created
+ * @param props.isScimTokenDeleting - Whether a SCIM token is being deleted
+ * @param props.onListScimTokens - Callback to list SCIM tokens
+ * @param props.onCreateScimToken - Callback to create a SCIM token
+ * @param props.onDeleteScimToken - Callback to delete a SCIM token
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function ProvisioningManageToken({
   isScimTokensLoading,

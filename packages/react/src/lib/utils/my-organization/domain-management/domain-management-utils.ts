@@ -8,7 +8,8 @@ import type { Domain } from '@/types/my-organization/domain-management/domain-ta
 
 /**
  * Returns badge variant for domain status.
- * @param status
+ * @param status - Current status
+ * @returns The badge variant
  * @internal
  */
 export function getStatusBadgeVariant(

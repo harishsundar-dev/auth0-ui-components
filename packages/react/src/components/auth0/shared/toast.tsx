@@ -53,7 +53,7 @@ let globalToastSettings: ToastSettings = {
 
 /**
  * Sets global toast configuration. Called by Auth0ComponentProvider.
- * @param settings
+ * @param settings - Settings configuration
  * @internal
  */
 export const setGlobalToastSettings = (settings?: ToastSettings): void => {

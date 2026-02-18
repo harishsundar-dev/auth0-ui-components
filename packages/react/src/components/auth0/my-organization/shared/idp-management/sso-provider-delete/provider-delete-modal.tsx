@@ -15,13 +15,14 @@ import type { SsoProviderDeleteModalProps } from '@/types/my-organization/idp-ma
 /**
  *
  * @param props - Component props.
- * @param props.className
- * @param props.isOpen
- * @param props.onClose
- * @param props.provider
- * @param props.onDelete
- * @param props.isLoading
- * @param props.customMessages
+ * @param props.className - Optional CSS class name for styling
+ * @param props.isOpen - Whether the modal/dialog is open
+ * @param props.onClose - Callback fired when the component should close
+ * @param props.provider - SSO provider object
+ * @param props.onDelete - Callback fired when delete action is triggered
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function SsoProviderDeleteModal({
   className,

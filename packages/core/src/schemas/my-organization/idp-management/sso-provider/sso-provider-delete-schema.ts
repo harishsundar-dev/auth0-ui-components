@@ -10,8 +10,9 @@ import type { SsoProviderDeleteSchema } from './sso-provider-delete-schema-types
 
 /**
  * Creates a schema for delete SSO provider confirmation.
- * @param expectedProviderName
- * @param options
+ * @param expectedProviderName - Expected name for validation
+ * @param options - Configuration options
+ * @returns Zod schema for delete confirmation
  * @internal
  */
 export const createDeleteProviderSchema = (
@@ -33,7 +34,8 @@ export const createDeleteProviderSchema = (
 
 /**
  * Default schema for delete provider validation
- * @param expectedProviderName
+ * @param expectedProviderName - Expected name for validation
+ * @returns Zod schema for delete validation
  */
 export const deleteProviderSchema = (expectedProviderName: string) =>
   createDeleteProviderSchema(expectedProviderName);

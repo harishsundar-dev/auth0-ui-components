@@ -32,10 +32,11 @@ type UseContactEnrollmentProps = {
 /**
  * Hook for email/phone MFA enrollment flow.
  * @param props - Component props.
- * @param props.factorType
- * @param props.enrollMfa
- * @param props.onError
+ * @param props.factorType - The MFA factor type
+ * @param props.enrollMfa - Function to enroll a new MFA factor
+ * @param props.onError - Callback fired when an error occurs
  * @internal
+ * @returns Hook state and methods
  */
 export function useContactEnrollment({
   factorType,

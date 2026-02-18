@@ -22,6 +22,7 @@ interface UseCoreClientInitializationProps {
  * @param props - Hook props.
  * @param props.authDetails - Auth0 authentication details.
  * @param props.i18nOptions - i18n configuration options.
+ * @returns The initialized CoreClient instance
  * @internal
  */
 export const useCoreClientInitialization = ({

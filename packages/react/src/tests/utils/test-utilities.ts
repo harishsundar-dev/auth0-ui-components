@@ -38,8 +38,8 @@ export const createMockUseErrorHandler = (handleError: ReturnType<typeof vi.fn>)
 
 /**
  * Sets up a mock for useCoreClient hook with a valid core client.
- * @param coreClient
- * @param useCoreClientModule
+ * @param coreClient - Core client instance
+ * @param useCoreClientModule - Module containing useCoreClient hook
  */
 export function setupMockUseCoreClient(
   coreClient: CoreClientInterface,
@@ -52,7 +52,7 @@ export function setupMockUseCoreClient(
 
 /**
  * Sets up a mock for useCoreClient hook that returns null (error scenario).
- * @param useCoreClientModule
+ * @param useCoreClientModule - Module containing useCoreClient hook
  */
 export function setupMockUseCoreClientNull(useCoreClientModule: SpyableModule): void {
   vi.spyOn(useCoreClientModule, 'useCoreClient').mockReturnValue(createMockUseCoreClient(null));
@@ -60,8 +60,8 @@ export function setupMockUseCoreClientNull(useCoreClientModule: SpyableModule): 
 
 /**
  * Sets up a mock for useTranslator hook with optional custom messages.
- * @param useTranslatorModule
- * @param customMessages
+ * @param useTranslatorModule - Module containing useTranslator hook
+ * @param customMessages - Custom translation messages to override defaults
  */
 export function setupMockUseTranslator(
   useTranslatorModule: SpyableModule,
@@ -74,8 +74,9 @@ export function setupMockUseTranslator(
 
 /**
  * Sets up a mock for useErrorHandler hook.
- * @param useErrorHandlerModule
- * @param handleError
+ * @param useErrorHandlerModule - Module containing useErrorHandler hook
+ * @param handleError - Error handler function
+ * @returns Mock error handler function
  */
 export function setupMockUseErrorHandler(
   useErrorHandlerModule: SpyableModule,
@@ -92,13 +93,14 @@ export function setupMockUseErrorHandler(
 
 /**
  * Sets up all common hook mocks at once for convenience.
- * @param config
- * @param config.coreClient
- * @param config.useCoreClientModule
- * @param config.useTranslatorModule
- * @param config.useErrorHandlerModule
- * @param config.customMessages
- * @param config.handleError
+ * @param config - Configuration object
+ * @param config.coreClient - Core client instance
+ * @param config.useCoreClientModule - Module containing useCoreClient hook
+ * @param config.useTranslatorModule - Module containing useTranslator hook
+ * @param config.useErrorHandlerModule - Module containing useErrorHandler hook
+ * @param config.customMessages - Custom translation messages to override defaults
+ * @param config.handleError - Error handler function
+ * @returns Object with mock error handler
  */
 export function setupAllCommonMocks(config: {
   coreClient: CoreClientInterface | null;
@@ -137,12 +139,13 @@ export function setupAllCommonMocks(config: {
 
 /**
  * Sets up mocks specifically for SSO domain functionality.
- * @param config
- * @param config.coreClient
- * @param config.useCoreClientModule
- * @param config.useTranslatorModule
- * @param config.useErrorHandlerModule
- * @param config.customMessages
+ * @param config - Configuration object
+ * @param config.coreClient - Core client instance
+ * @param config.useCoreClientModule - Module containing useCoreClient hook
+ * @param config.useTranslatorModule - Module containing useTranslator hook
+ * @param config.useErrorHandlerModule - Module containing useErrorHandler hook
+ * @param config.customMessages - Custom translation messages to override defaults
+ * @returns Object with mock error handler
  */
 export function setupSSODomainMocks(config: {
   coreClient: CoreClientInterface | null;
@@ -161,11 +164,12 @@ export function setupSSODomainMocks(config: {
 
 /**
  * Sets up mocks for toast functionality.
- * @param config
- * @param config.coreClient
- * @param config.useCoreClientModule
- * @param config.useTranslatorModule
- * @param config.useErrorHandlerModule
+ * @param config - Configuration object
+ * @param config.coreClient - Core client instance
+ * @param config.useCoreClientModule - Module containing useCoreClient hook
+ * @param config.useTranslatorModule - Module containing useTranslator hook
+ * @param config.useErrorHandlerModule - Module containing useErrorHandler hook
+ * @returns Object with mock error handler
  */
 export function setupToastMocks(config: {
   coreClient: CoreClientInterface | null;
@@ -183,12 +187,13 @@ export function setupToastMocks(config: {
 
 /**
  * Sets up mocks for translation functionality.
- * @param config
- * @param config.coreClient
- * @param config.useCoreClientModule
- * @param config.useTranslatorModule
- * @param config.useErrorHandlerModule
- * @param config.customMessages
+ * @param config - Configuration object
+ * @param config.coreClient - Core client instance
+ * @param config.useCoreClientModule - Module containing useCoreClient hook
+ * @param config.useTranslatorModule - Module containing useTranslator hook
+ * @param config.useErrorHandlerModule - Module containing useErrorHandler hook
+ * @param config.customMessages - Custom translation messages to override defaults
+ * @returns Object with mock error handler
  */
 export function setupTranslationMocks(config: {
   coreClient: CoreClientInterface | null;

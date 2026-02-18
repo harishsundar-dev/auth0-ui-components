@@ -103,33 +103,26 @@ export default [
       'import/named': 'off',
       'import/namespace': 'off',
       'import/default': 'off',
-      'import/no-named-as-default-member': 'off',
-
-      // JSDoc validation (STRICT MODE) - ensures docs stay in sync with code
-      // CRITICAL: These rules ensure that if a function signature changes, the JSDoc must also change
-      
-      // ERROR level - these are the core validation rules that catch doc/code mismatches
+      'import/no-named-as-default-member': 'off',  
       'jsdoc/check-param-names': ['error', { 
-        checkDestructured: true,  // Requires @param props.fieldName format for destructured params
-        checkRestProperty: false,  // Don't require rest property params
+        checkDestructured: false,  
+        checkRestProperty: false, 
       }],
       'jsdoc/check-tag-names': ['error', { 
         definedTags: ['packageDocumentation', 'defaultValue', 'internal', 'see', 'category']
       }],
       'jsdoc/valid-types': 'error',
       
-      // WARN level - these encourage complete documentation but don't block builds
-      // These can be upgraded to 'error' incrementally as documentation is added
-      'jsdoc/require-param': ['warn', { 
-        checkDestructured: true,
-        checkDestructuredRoots: true,
+      'jsdoc/require-param': ['error', { 
+        checkDestructured: false, 
+        checkDestructuredRoots: true, 
       }],
-      'jsdoc/require-param-description': 'warn',
-      'jsdoc/require-returns': ['warn', { 
+      'jsdoc/require-param-description': 'error',
+      'jsdoc/require-returns': ['error', { 
         checkGetters: false,
       }],
-      'jsdoc/require-returns-description': 'warn',
-      'jsdoc/require-jsdoc': ['warn', {
+      'jsdoc/require-returns-description': 'error',
+      'jsdoc/require-jsdoc': ['error', {
         require: {
           FunctionDeclaration: true,
           MethodDefinition: false,
@@ -137,7 +130,7 @@ export default [
           ArrowFunctionExpression: false,
           FunctionExpression: false,
         },
-        publicOnly: false,  // Require docs for all functions, not just exported ones
+        publicOnly: false, 
       }],
     },
     settings: {

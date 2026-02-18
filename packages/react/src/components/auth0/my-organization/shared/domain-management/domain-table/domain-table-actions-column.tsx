@@ -21,13 +21,14 @@ import type { DomainTableActionsColumnProps } from '@/types/my-organization/doma
  * DomainTableActionsColumn Component
  * Handles the actions column for Domain table with dropdown menu
  * @param props - Component props.
- * @param props.customMessages
- * @param props.readOnly
- * @param props.domain
- * @param props.onView
- * @param props.onConfigure
- * @param props.onVerify
- * @param props.onDelete
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.domain - Domain object or domain name
+ * @param props.onView - Callback fired when view action is triggered
+ * @param props.onConfigure - Callback fired when configure action is triggered
+ * @param props.onVerify - Callback fired when verify action is triggered
+ * @param props.onDelete - Callback fired when delete action is triggered
+ * @returns JSX element
  */
 export function DomainTableActionsColumn({
   customMessages = {},

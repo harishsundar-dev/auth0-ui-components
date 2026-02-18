@@ -19,14 +19,8 @@ import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
 /**
  * Auth0 provider for RWAs using backend proxy auth.
- * @param props - Provider props.
- * @param props.i18n - i18n configuration.
- * @param props.authDetails - Auth0 authentication details.
- * @param props.themeSettings - Theme configuration.
- * @param props.toastSettings - Toast notification settings.
- * @param props.cacheConfig - Query cache configuration.
- * @param props.loader - Loading component.
- * @param props.children - Child components.
+ * @param props - Provider configuration including i18n, authDetails, themeSettings, toastSettings, cacheConfig, loader, and children.
+ * @returns Provider component tree
  */
 export const Auth0ComponentProvider = ({
   i18n,

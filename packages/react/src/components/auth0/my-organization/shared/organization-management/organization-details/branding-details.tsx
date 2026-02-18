@@ -27,10 +27,11 @@ import type { BrandingDetailsProps } from '@/types/my-organization/organization-
  * Renders the organization branding section with logo and color fields.
  * This component is focused purely on the branding-related form fields.
  * @param props - Component props.
- * @param props.form
- * @param props.customMessages
- * @param props.className
- * @param props.readOnly
+ * @param props.form - React Hook Form instance
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.className - Optional CSS class name for styling
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @returns JSX element
  */
 export function BrandingDetails({
   form,

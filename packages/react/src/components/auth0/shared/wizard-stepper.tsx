@@ -23,13 +23,14 @@ interface WizardStepperProps {
 }
 
 /**
- *
+ * Wizard stepper navigation component.
  * @param props - Component props.
- * @param props.steps
- * @param props.currentStep
- * @param props.onStepClick
- * @param props.className
- * @param props.hideNumbers
+ * @param props.steps - Array of wizard steps
+ * @param props.currentStep - Current active step index
+ * @param props.onStepClick - Callback fired when a step is clicked
+ * @param props.className - Optional CSS class name for styling
+ * @param props.hideNumbers - Whether to hide numbers
+ * @returns JSX element
  */
 function WizardStepper({
   steps,

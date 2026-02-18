@@ -15,11 +15,12 @@ import type { ProvisioningCreateTokenModalProps } from '@/types/my-organization/
 /**
  *
  * @param props - Component props.
- * @param props.open
- * @param props.onOpenChange
- * @param props.createdToken
- * @param props.isLoading
- * @param props.customMessages
+ * @param props.open - Whether the component is open/visible
+ * @param props.onOpenChange - Callback fired when open state changes
+ * @param props.createdToken - Newly created token data
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns JSX element
  */
 export function ProvisioningCreateTokenModal({
   open,

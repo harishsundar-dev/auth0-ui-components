@@ -42,6 +42,7 @@ export interface MappingProps<Item> {
  * @param props.content - Main content.
  * @param props.className - Additional CSS classes.
  * @param props.expanded - Whether accordion is expanded.
+ * @returns JSX element
  */
 export function Mapping<Item>({
   title,

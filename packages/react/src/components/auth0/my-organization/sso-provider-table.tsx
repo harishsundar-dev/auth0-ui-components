@@ -40,15 +40,16 @@ import type { SsoProviderTableProps } from '@/types/my-organization/idp-manageme
 
 /**
  * Internal SSO provider table component.
- * @param root0
- * @param root0.customMessages
- * @param root0.styling
- * @param root0.readOnly
- * @param root0.createAction
- * @param root0.editAction
- * @param root0.deleteAction
- * @param root0.deleteFromOrganizationAction
- * @param root0.enableProviderAction
+ * @param props - Component props
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.createAction - Configuration for the create action
+ * @param props.editAction - Configuration for the edit action
+ * @param props.deleteAction - Configuration for the delete action
+ * @param props.deleteFromOrganizationAction - Configuration for removing from organization
+ * @param props.enableProviderAction - Configuration for enabling a provider
+ * @returns JSX element
  * @internal
  */
 function SsoProviderTableComponent({

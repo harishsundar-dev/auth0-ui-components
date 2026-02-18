@@ -19,14 +19,15 @@ const getDescriptionKey = (domain: Domain | null) => {
 /**
  *
  * @param props - Component props.
- * @param props.translatorKey
- * @param props.className
- * @param props.customMessages
- * @param props.domain
- * @param props.isOpen
- * @param props.isLoading
- * @param props.onClose
- * @param props.onDelete
+ * @param props.translatorKey - Translation namespace key
+ * @param props.className - Optional CSS class name for styling
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.domain - Domain object or domain name
+ * @param props.isOpen - Whether the modal/dialog is open
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.onClose - Callback fired when the component should close
+ * @param props.onDelete - Callback fired when delete action is triggered
+ * @returns JSX element
  */
 export function DomainDeleteModal({
   translatorKey = 'domain_management.domain_delete.modal',

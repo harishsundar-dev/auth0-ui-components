@@ -42,19 +42,20 @@ import type { DomainTableProps } from '@/types/my-organization/domain-management
 
 /**
  * Internal domain table component.
- * @param root0
- * @param root0.customMessages
- * @param root0.schema
- * @param root0.styling
- * @param root0.hideHeader
- * @param root0.readOnly
- * @param root0.createAction
- * @param root0.verifyAction
- * @param root0.deleteAction
- * @param root0.associateToProviderAction
- * @param root0.deleteFromProviderAction
- * @param root0.onOpenProvider
- * @param root0.onCreateProvider
+ * @param props - Component props
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.schema - Zod validation schema
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.hideHeader - Whether to hide the header
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @returns JSX element
+ * @param props.createAction - Configuration for the create action
+ * @param props.verifyAction - Configuration for the verify action
+ * @param props.deleteAction - Configuration for the delete action
+ * @param props.associateToProviderAction - Configuration for associating to a provider
+ * @param props.deleteFromProviderAction - Configuration for deleting from a provider
+ * @param props.onOpenProvider - Callback fired when opening a provider
+ * @param props.onCreateProvider - Callback fired when creating a new provider
  * @internal
  */
 function DomainTableComponent({

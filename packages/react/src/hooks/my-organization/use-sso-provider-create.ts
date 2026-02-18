@@ -41,6 +41,7 @@ export interface UseSsoProviderCreateReturn {
  * @param options - Hook options.
  * @param options.createAction - Callback after successful creation.
  * @param options.customMessages - Custom translation messages.
+ * @returns Hook state and methods
  */
 export function useSsoProviderCreate({
   createAction,

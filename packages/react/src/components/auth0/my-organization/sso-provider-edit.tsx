@@ -46,18 +46,19 @@ import type { SsoProviderEditProps } from '@/types/my-organization/idp-managemen
 
 /**
  * Internal SSO provider edit component.
- * @param root0
- * @param root0.providerId
- * @param root0.backButton
- * @param root0.sso
- * @param root0.provisioning
- * @param root0.domains
- * @param root0.hideHeader
- * @param root0.customMessages
- * @param root0.styling
- * @param root0.schema
- * @param root0.readOnly
+ * @param props - Component props
+ * @param props.providerId - ID of the SSO provider
+ * @param props.backButton - Configuration for the back button
+ * @param props.sso - SSO configuration
+ * @param props.provisioning - Provisioning configuration
+ * @param props.domains - Array of domains
+ * @param props.hideHeader - Whether to hide the header
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.schema - Zod validation schema
+ * @param props.readOnly - Whether the component is in read-only mode
  * @internal
+ * @returns JSX element
  */
 export function SsoProviderEditComponent({
   providerId,

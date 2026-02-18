@@ -25,13 +25,14 @@ import type { SsoDomainsTabProps } from '@/types/my-organization/idp-management/
 /**
  * SsoDomainTab Component
  * @param props - Component props.
- * @param props.customMessages
- * @param props.styling
- * @param props.readOnly
- * @param props.schema
- * @param props.idpId
- * @param props.domains
- * @param props.provider
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.schema - Zod validation schema
+ * @param props.idpId - Identity provider ID
+ * @param props.domains - Array of domains
+ * @param props.provider - SSO provider object
+ * @returns JSX element
  */
 export function SsoDomainTab({
   customMessages = {},

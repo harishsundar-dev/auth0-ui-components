@@ -29,14 +29,15 @@ import type { DomainCreateModalProps } from '@/types/my-organization/domain-mana
 /**
  *
  * @param props - Component props.
- * @param props.translatorKey
- * @param props.className
- * @param props.customMessages
- * @param props.isOpen
- * @param props.isLoading
- * @param props.schema
- * @param props.onClose
- * @param props.onCreate
+ * @param props.translatorKey - Translation namespace key
+ * @param props.className - Optional CSS class name for styling
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.isOpen - Whether the modal/dialog is open
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.schema - Zod validation schema
+ * @param props.onClose - Callback fired when the component should close
+ * @param props.onCreate - Callback fired when create action is triggered
+ * @returns JSX element
  */
 export function DomainCreateModal({
   translatorKey = 'domain_management.domain_create.modal',

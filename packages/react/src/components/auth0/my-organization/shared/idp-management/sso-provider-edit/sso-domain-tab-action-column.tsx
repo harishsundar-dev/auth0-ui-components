@@ -16,15 +16,16 @@ import type { SsoDomainTabActionColumn } from '@/types/my-organization/idp-manag
  * Handles the actions column for SSO provider edit on domain tab table
  * with enable/disable toggle and verify button
  * @param props - Component props.
- * @param props.translatorKey
- * @param props.customMessages
- * @param props.readOnly
- * @param props.idpDomains
- * @param props.domain
- * @param props.handleVerify
- * @param props.isUpdating
- * @param props.isUpdatingId
- * @param props.onToggle
+ * @param props.translatorKey - Translation namespace key
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.idpDomains - Identity provider domains
+ * @param props.domain - Domain object or domain name
+ * @param props.handleVerify - Handler function for domain verification
+ * @param props.isUpdating - Whether an update operation is in progress
+ * @param props.isUpdatingId - ID of the item currently being updated
+ * @param props.onToggle - Callback fired when toggle state changes
+ * @returns JSX element
  */
 export function SsoDomainTabActionsColumn({
   translatorKey = 'idp_management.edit_sso_provider.tabs.domains',

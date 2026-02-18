@@ -37,15 +37,16 @@ import type { OrganizationDetailsEditProps } from '@/types/my-organization/organ
 
 /**
  * Internal organization details edit component.
- * @param root0
- * @param root0.schema
- * @param root0.customMessages
- * @param root0.styling
- * @param root0.readOnly
- * @param root0.saveAction
- * @param root0.cancelAction
- * @param root0.hideHeader
- * @param root0.backButton
+ * @param props - Component props
+ * @param props.schema - Zod validation schema
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.saveAction - Configuration for the save action
+ * @param props.cancelAction - Configuration for the cancel action
+ * @param props.hideHeader - Whether to hide the header
+ * @param props.backButton - Configuration for the back button
+ * @returns JSX element
  * @internal
  */
 function OrganizationDetailsEditComponent({

@@ -1,6 +1,6 @@
 {
   "name": "@auth0/universal-components-react",
-  "version": "1.0.0-beta.8",
+  "version": "1.0.0-beta.10",
   "private": false,
   "sideEffects": [
     "*.css"
@@ -95,6 +95,6 @@
     "postcss-cli": "^11.0.1",
     "react-hook-form": "^7.57.0",
     "rimraf": "^5.0.0",
-    "tailwindcss": "^4.1.10"
+    "tailwindcss": "^4.1.17"
   }
 }

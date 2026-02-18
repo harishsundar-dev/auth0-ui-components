@@ -7,7 +7,7 @@ import type {
   UseConfigIdpResult,
 } from '@/types/my-organization/config/config-idp-types';
 
-const idpConfigQueryKeys = {
+export const idpConfigQueryKeys = {
   all: ['idp-config'] as const,
   config: () => [...idpConfigQueryKeys.all, 'config'] as const,
 };
@@ -55,7 +55,7 @@ export function useIdpConfig(): UseConfigIdpResult {
     idpConfig,
     isIdpConfigValid: !!strategies && Object.keys(strategies).length > 0,
     isLoadingIdpConfig: idpConfigQuery.isLoading,
-    fetchIdpConfig: () => queryClient.invalidateQueries({ queryKey: idpConfigQueryKeys.config() }),
+    fetchIdpConfig: async () => await queryClient.getQueryData(idpConfigQueryKeys.config()),
     isProvisioningEnabled,
     isProvisioningMethodEnabled,
   };

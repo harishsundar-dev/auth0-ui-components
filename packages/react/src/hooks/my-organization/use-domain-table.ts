@@ -62,8 +62,6 @@ export function useDomainTable({
       return response?.organization_domains ?? [];
     },
     enabled: !!coreClient,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
   });
 
   const providersQuery = useQuery({

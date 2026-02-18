@@ -57,7 +57,7 @@ export interface DomainTableProps
 // DomainTableView component props
 export interface DomainTableViewProps {
   logic: UseDomainTableResult & DomainTableProps;
-  api: UseDomainTableLogicResult;
+  handlers: UseDomainTableLogicResult;
 }
 
 /* ============ Subcomponents ============ */

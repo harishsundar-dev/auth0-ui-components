@@ -23,17 +23,13 @@ import { getStatusBadgeVariant } from '@/lib/utils/my-organization/domain-manage
 import type { DomainTableViewProps } from '@/types';
 import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
 
-// ============================================================================
-// Container Component
-// ============================================================================
-
 /**
- * DomainTable Component
+ * DomainTableContainer Component
  *
  * Manages organization domains — create, verify, delete, and associate
  * with identity providers in a unified table interface.
  */
-function DomainTableComponent(props: DomainTableProps) {
+function DomainTableContainer(props: DomainTableProps) {
   const {
     customMessages = {},
     schema,
@@ -51,7 +47,7 @@ function DomainTableComponent(props: DomainTableProps) {
 
   const { t } = useTranslator('domain_management', customMessages);
 
-  const domainTable = useDomainTable({
+  const domainTableState = useDomainTable({
     createAction,
     verifyAction,
     deleteAction,
@@ -60,19 +56,19 @@ function DomainTableComponent(props: DomainTableProps) {
     customMessages,
   });
 
-  const api = useDomainTableLogic({
+  const domainTableHandlers = useDomainTableLogic({
     t,
-    onCreateDomain: domainTable.onCreateDomain,
-    onVerifyDomain: domainTable.onVerifyDomain,
-    onDeleteDomain: domainTable.onDeleteDomain,
-    onAssociateToProvider: domainTable.onAssociateToProvider,
-    onDeleteFromProvider: domainTable.onDeleteFromProvider,
-    fetchProviders: domainTable.fetchProviders,
-    fetchDomains: domainTable.fetchDomains,
+    onCreateDomain: domainTableState.onCreateDomain,
+    onVerifyDomain: domainTableState.onVerifyDomain,
+    onDeleteDomain: domainTableState.onDeleteDomain,
+    onAssociateToProvider: domainTableState.onAssociateToProvider,
+    onDeleteFromProvider: domainTableState.onDeleteFromProvider,
+    fetchProviders: domainTableState.fetchProviders,
+    fetchDomains: domainTableState.fetchDomains,
   });
 
-  const logic = {
-    ...domainTable,
+  const domainTableLogic = {
+    ...domainTableState,
     schema,
     styling,
     hideHeader,
@@ -81,23 +77,20 @@ function DomainTableComponent(props: DomainTableProps) {
     onCreateProvider,
   };
 
-  return <DomainTableView logic={logic} api={api} />;
+  return <DomainTableView logic={domainTableLogic} handlers={domainTableHandlers} />;
 }
-
-const DomainTable = withMyOrganizationService(DomainTableComponent, MY_ORGANIZATION_DOMAIN_SCOPES);
-
-// ============================================================================
-// Presentational Component
-// ============================================================================
 
 /**
  * DomainTableView — Presentational component for domain management.
  *
  * Renders the domains table, header, and all associated modals
  * (create, verify, configure providers, delete).
- * Receives data and handlers via `logic` and `api` props.
+ * Receives data and handlers via `logic` and `handlers` props.
  */
-function DomainTableView({ logic, api }: DomainTableViewProps) {
+function DomainTableView({
+  logic,
+  handlers,
+}: DomainTableViewProps & { handlers: ReturnType<typeof useDomainTableLogic> }) {
   const { isDarkMode } = useTheme();
   const { t } = useTranslator('domain_management', logic.customMessages);
 
@@ -138,7 +131,7 @@ function DomainTableView({ logic, api }: DomainTableViewProps) {
     handleConfigureClick,
     handleVerifyClick,
     handleDeleteClick,
-  } = api;
+  } = handlers;
 
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),
@@ -265,5 +258,7 @@ function DomainTableView({ logic, api }: DomainTableViewProps) {
     </div>
   );
 }
+
+const DomainTable = withMyOrganizationService(DomainTableContainer, MY_ORGANIZATION_DOMAIN_SCOPES);
 
 export { DomainTable, DomainTableView };

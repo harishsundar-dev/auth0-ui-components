@@ -681,23 +681,27 @@ describe('DomainTable', () => {
 });
 
 describe('DomainTableView', () => {
-  // Provide all required methods and properties for UseDomainTableResult & DomainTableProps
+  // Provide all required handlers and properties for UseDomainTableResult & DomainTableProps
   const logic = createMockLogic();
-  const api = createMockApi();
+  const handlers = createMockApi();
 
   it('renders the table and header', () => {
-    renderWithProviders(<DomainTableView logic={logic} api={api} />);
+    renderWithProviders(<DomainTableView logic={logic} handlers={handlers} />);
     expect(screen.getByRole('table')).toBeInTheDocument();
     expect(screen.getByText(/header.title/i)).toBeInTheDocument();
   });
 
   it('does not render header if hideHeader is true', () => {
-    renderWithProviders(<DomainTableView logic={{ ...logic, hideHeader: true }} api={api} />);
+    renderWithProviders(
+      <DomainTableView logic={{ ...logic, hideHeader: true }} handlers={handlers} />,
+    );
     expect(screen.queryByText(/header.title/i)).not.toBeInTheDocument();
   });
 
   it('disables create button if readOnly is true', () => {
-    renderWithProviders(<DomainTableView logic={{ ...logic, readOnly: true }} api={api} />);
+    renderWithProviders(
+      <DomainTableView logic={{ ...logic, readOnly: true }} handlers={handlers} />,
+    );
     expect(screen.getByRole('button', { name: /create/i })).toBeDisabled();
   });
 });

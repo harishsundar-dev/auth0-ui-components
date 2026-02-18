@@ -546,9 +546,7 @@ export function useSsoProviderEdit(
       return;
     }
 
-    await queryClient.invalidateQueries({
-      queryKey: ssoProviderEditQueryKeys.organization(),
-    });
+    await queryClient.getQueryData(ssoProviderEditQueryKeys.organization());
   }, [coreClient, queryClient]);
 
   const fetchProvisioning =

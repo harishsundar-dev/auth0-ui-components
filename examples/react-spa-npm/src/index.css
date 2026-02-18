@@ -1,12 +1,8 @@
 @import 'tailwindcss';
+@import '@auth0/universal-components-react/tailwind';
 
 @import './styles/font-sizes.css';
-
 @import './styles/themes/default.css';
-/* @import './styles/themes/minimal.css'; */
-/* @import './styles/themes/rounded.css'; */
-
-@import '@auth0/universal-components-react/tailwind';
 
 :root {
   --radius: 0.625rem;

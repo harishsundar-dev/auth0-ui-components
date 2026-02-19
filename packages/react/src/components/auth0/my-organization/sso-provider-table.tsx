@@ -291,15 +291,18 @@ function SsoProviderTableComponent({
  * Displays a table of SSO identity providers with actions for creating, editing,
  * enabling/disabling, deleting, and removing providers from the organization.
  *
- * @param customMessages - Custom i18n message overrides
- * @param styling - CSS variables and class overrides
- * @param readOnly - Render in read-only mode
- * @param createAction - Lifecycle hooks for provider creation
- * @param editAction - Lifecycle hooks for provider editing
- * @param deleteAction - Lifecycle hooks for provider deletion
- * @param deleteFromOrganizationAction - Lifecycle hooks for removing provider from organization
- * @param enableProviderAction - Lifecycle hooks for enabling/disabling provider
+ * @param props - {@link SsoProviderTableProps}
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.readOnly - Render in read-only mode
+ * @param props.createAction - Lifecycle hooks for provider creation
+ * @param props.editAction - Lifecycle hooks for provider editing
+ * @param props.deleteAction - Lifecycle hooks for provider deletion
+ * @param props.deleteFromOrganizationAction - Lifecycle hooks for removing provider from organization
+ * @param props.enableProviderAction - Lifecycle hooks for enabling/disabling provider
  * @returns SSO provider table component
+ *
+ * @see {@link SsoProviderTableProps} for full props documentation
  *
  * @example
  * ```tsx
@@ -313,7 +316,5 @@ function SsoProviderTableComponent({
  * />
  * ```
  */
-export const SsoProviderTable = withMyOrganizationService(
-  SsoProviderTableComponent,
-  MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES,
-);
+export const SsoProviderTable: React.ComponentType<SsoProviderTableProps> =
+  withMyOrganizationService(SsoProviderTableComponent, MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES);

@@ -19,16 +19,6 @@ import type {
   OrganizationDetailsFormActions,
 } from '@/types/my-organization/organization-management/organization-details-types';
 
-/**
- * Re-exported types from organization-details-types.
- * @see {@link OrganizationDetailsClasses} - CSS class overrides for organization details.
- * @see {@link OrganizationDetailsFormActions} - Form action configuration.
- */
-export type {
-  OrganizationDetailsClasses,
-  OrganizationDetailsFormActions,
-} from '@/types/my-organization/organization-management/organization-details-types';
-
 /** Type alias for organization edit CSS class overrides. */
 export type OrganizationEditClasses = OrganizationDetailsClasses;
 

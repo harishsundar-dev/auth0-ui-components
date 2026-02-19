@@ -131,15 +131,18 @@ function OrganizationDetailsEditComponent({
  * display name, branding, and metadata. Provides form validation, lifecycle
  * hooks for save/cancel actions, and user feedback.
  *
- * @param schema - Validation schema overrides
- * @param customMessages - Custom i18n message overrides
- * @param styling - CSS variables and class overrides
- * @param readOnly - Render in read-only mode
- * @param saveAction - Lifecycle hooks for save operation
- * @param cancelAction - Lifecycle hooks for cancel operation
- * @param hideHeader - Hide the header section
- * @param backButton - Back button configuration
+ * @param props - {@link OrganizationDetailsEditProps}
+ * @param props.schema - Validation schema overrides
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.readOnly - Render in read-only mode
+ * @param props.saveAction - Lifecycle hooks for save operation
+ * @param props.cancelAction - Lifecycle hooks for cancel operation
+ * @param props.hideHeader - Hide the header section
+ * @param props.backButton - Back button configuration
  * @returns Organization details edit component
+ *
+ * @see {@link OrganizationDetailsEditProps} for full props documentation
  *
  * @example
  * ```tsx
@@ -154,7 +157,5 @@ function OrganizationDetailsEditComponent({
  * />
  * ```
  */
-export const OrganizationDetailsEdit = withMyOrganizationService(
-  OrganizationDetailsEditComponent,
-  MY_ORGANIZATION_DETAILS_EDIT_SCOPES,
-);
+export const OrganizationDetailsEdit: React.ComponentType<OrganizationDetailsEditProps> =
+  withMyOrganizationService(OrganizationDetailsEditComponent, MY_ORGANIZATION_DETAILS_EDIT_SCOPES);

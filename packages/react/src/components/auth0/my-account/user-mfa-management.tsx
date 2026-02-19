@@ -468,21 +468,24 @@ function UserMFAMgmtInternal({
  * Complete MFA management interface for enrolling, viewing, and deleting authentication
  * factors. Supports TOTP authenticators, SMS, Email, Push notifications, and recovery codes.
  *
- * @param customMessages - Custom i18n message overrides
- * @param styling - CSS variables and class overrides
- * @param hideHeader - Hide the header section
- * @param showActiveOnly - Show only enrolled factors
- * @param disableEnroll - Disable enroll actions
- * @param disableDelete - Disable delete actions
- * @param readOnly - Render in read-only mode
- * @param factorConfig - Per-factor visibility/enabled configuration
- * @param onEnroll - Callback after successful enrollment
- * @param onDelete - Callback after successful deletion
- * @param onFetch - Callback after factors are loaded
- * @param onErrorAction - Callback when actions error
- * @param onBeforeAction - Callback before actions; return false to cancel
- * @param schema - Validation schema overrides
+ * @param props - {@link UserMFAMgmtProps}
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.hideHeader - Hide the header section
+ * @param props.showActiveOnly - Show only enrolled factors
+ * @param props.disableEnroll - Disable enroll actions
+ * @param props.disableDelete - Disable delete actions
+ * @param props.readOnly - Render in read-only mode
+ * @param props.factorConfig - Per-factor visibility/enabled configuration
+ * @param props.onEnroll - Callback after successful enrollment
+ * @param props.onDelete - Callback after successful deletion
+ * @param props.onFetch - Callback after factors are loaded
+ * @param props.onErrorAction - Callback when actions error
+ * @param props.onBeforeAction - Callback before actions; return false to cancel
+ * @param props.schema - Validation schema overrides
  * @returns MFA management component
+ *
+ * @see {@link UserMFAMgmtProps} for full props documentation
  *
  * @example
  * ```tsx
@@ -497,4 +500,7 @@ function UserMFAMgmtInternal({
  * />
  * ```
  */
-export const UserMFAMgmt = withMyAccountService(UserMFAMgmtInternal, USER_MFA_SCOPES);
+export const UserMFAMgmt: React.ComponentType<UserMFAMgmtProps> = withMyAccountService(
+  UserMFAMgmtInternal,
+  USER_MFA_SCOPES,
+);

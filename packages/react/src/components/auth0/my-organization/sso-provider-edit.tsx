@@ -264,17 +264,20 @@ export function SsoProviderEditComponent({
  * - Provisioning tab: SCIM configuration and token management
  * - Domains tab: Domain association and verification
  *
- * @param providerId - Identity provider ID to edit
- * @param backButton - Back button configuration
- * @param sso - SSO tab lifecycle hooks (save, delete, remove actions)
- * @param provisioning - Provisioning tab lifecycle hooks
- * @param domains - Domains tab configuration
- * @param hideHeader - Hide the header section
- * @param customMessages - Custom i18n message overrides
- * @param styling - CSS variables and class overrides
- * @param schema - Validation schema overrides
- * @param readOnly - Render in read-only mode
+ * @param props - {@link SsoProviderEditProps}
+ * @param props.providerId - Identity provider ID to edit
+ * @param props.backButton - Back button configuration
+ * @param props.sso - SSO tab lifecycle hooks (save, delete, remove actions)
+ * @param props.provisioning - Provisioning tab lifecycle hooks
+ * @param props.domains - Domains tab configuration
+ * @param props.hideHeader - Hide the header section
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.schema - Validation schema overrides
+ * @param props.readOnly - Render in read-only mode
  * @returns SSO provider edit component
+ *
+ * @see {@link SsoProviderEditProps} for full props documentation
  *
  * @example
  * ```tsx
@@ -290,7 +293,7 @@ export function SsoProviderEditComponent({
  * />
  * ```
  */
-export const SsoProviderEdit = withMyOrganizationService(
+export const SsoProviderEdit: React.ComponentType<SsoProviderEditProps> = withMyOrganizationService(
   SsoProviderEditComponent,
   MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES,
 );

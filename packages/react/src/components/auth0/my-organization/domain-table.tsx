@@ -278,19 +278,22 @@ function DomainTableView({
  * Displays organization domains with CRUD operations. Supports creating,
  * verifying, deleting domains, and associating them with identity providers.
  *
- * @param schema - Validation schema overrides
- * @param customMessages - Custom i18n message overrides
- * @param styling - CSS variables and class overrides
- * @param readOnly - Render in read-only mode
- * @param hideHeader - Hide the header section
- * @param createAction - Lifecycle hooks for create operation
- * @param verifyAction - Lifecycle hooks for verify operation
- * @param deleteAction - Lifecycle hooks for delete operation
- * @param associateToProviderAction - Lifecycle hooks for provider association
- * @param deleteFromProviderAction - Lifecycle hooks for provider removal
- * @param onOpenProvider - Callback when opening a provider
- * @param onCreateProvider - Callback when creating a provider
+ * @param props - {@link DomainTableProps}
+ * @param props.schema - Validation schema overrides
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.readOnly - Render in read-only mode
+ * @param props.hideHeader - Hide the header section
+ * @param props.createAction - Lifecycle hooks for create operation
+ * @param props.verifyAction - Lifecycle hooks for verify operation
+ * @param props.deleteAction - Lifecycle hooks for delete operation
+ * @param props.associateToProviderAction - Lifecycle hooks for provider association
+ * @param props.deleteFromProviderAction - Lifecycle hooks for provider removal
+ * @param props.onOpenProvider - Callback when opening a provider
+ * @param props.onCreateProvider - Callback when creating a provider
  * @returns Domain table component
+ *
+ * @see {@link DomainTableProps} for full props documentation
  *
  * @example
  * ```tsx
@@ -301,6 +304,9 @@ function DomainTableView({
  * />
  * ```
  */
-const DomainTable = withMyOrganizationService(DomainTableContainer, MY_ORGANIZATION_DOMAIN_SCOPES);
+const DomainTable: React.ComponentType<DomainTableProps> = withMyOrganizationService(
+  DomainTableContainer,
+  MY_ORGANIZATION_DOMAIN_SCOPES,
+);
 
 export { DomainTable, DomainTableView };

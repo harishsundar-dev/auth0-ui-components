@@ -15,10 +15,10 @@ import { showToast } from '@/components/auth0/shared/toast';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type {
-  OrganizationDetailsFormActions,
   UseOrganizationDetailsEditOptions,
   UseOrganizationDetailsEditResult,
 } from '@/types/my-organization/organization-management/organization-details-edit-types';
+import type { OrganizationDetailsFormActions } from '@/types/my-organization/organization-management/organization-details-types';
 
 const organizationDetailsQueryKeys = {
   all: ['organization-details'] as const,

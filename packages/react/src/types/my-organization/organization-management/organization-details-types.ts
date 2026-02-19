@@ -29,6 +29,9 @@ export interface OrganizationDetailsClasses {
  */
 export type OrganizationDetailsSchemas = CoreOrganizationDetailsSchemas;
 
+/**
+ * Form action configuration for organization details.
+ */
 export interface OrganizationDetailsFormActions extends Omit<FormActionsProps, 'nextAction'> {
   nextAction?: {
     disabled: boolean;

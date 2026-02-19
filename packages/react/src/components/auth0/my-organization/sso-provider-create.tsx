@@ -251,13 +251,16 @@ export function SsoProviderCreateComponent({
  * provider selection, configuration, and setup. Supports OIDC, SAML, Google Workspace,
  * Microsoft Entra ID, Okta, PingFederate, and ADFS strategies.
  *
- * @param createAction - Lifecycle hooks for provider creation
- * @param backButton - Back button configuration
- * @param onNext - Callback when moving to next step
- * @param onPrevious - Callback when moving to previous step
- * @param customMessages - Custom i18n message overrides
- * @param styling - CSS variables and class overrides
+ * @param props - {@link SsoProviderCreateProps}
+ * @param props.createAction - Lifecycle hooks for provider creation
+ * @param props.backButton - Back button configuration
+ * @param props.onNext - Callback when moving to next step
+ * @param props.onPrevious - Callback when moving to previous step
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
  * @returns SSO provider creation wizard component
+ *
+ * @see {@link SsoProviderCreateProps} for full props documentation
  *
  * @example
  * ```tsx
@@ -272,7 +275,5 @@ export function SsoProviderCreateComponent({
  * />
  * ```
  */
-export const SsoProviderCreate = withMyOrganizationService(
-  SsoProviderCreateComponent,
-  MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,
-);
+export const SsoProviderCreate: React.ComponentType<SsoProviderCreateProps> =
+  withMyOrganizationService(SsoProviderCreateComponent, MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES);

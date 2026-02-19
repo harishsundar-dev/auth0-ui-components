@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "auth0-ui-components",
+  "homepage": "https://github.com/auth0/auth0-ui-components",
+  "items": [
+    {
+      "name": "test-item",
+      "type": "registry:block",
+      "dependencies": [],
+      "files": [
+        {
+          "path": "auth0/my-account/user-mfa-management.tsx",
+          "type": "registry:component",
+          "target": ""
+        }
+      ]
+    }
+  ]
+}

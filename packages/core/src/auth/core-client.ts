@@ -15,6 +15,36 @@ export async function createCoreClient(
     i18nOptions || { currentLanguage: 'en-US', fallbackLanguage: 'en-US' },
   );
 
+  // Skip API clients for docs sites
+  if (authDetails.previewMode) {
+    const baseCoreClient: CoreClientInterface = {
+      auth: {},
+      i18nService,
+      async getToken() {
+        return undefined;
+      },
+      isProxyMode() {
+        return false;
+      },
+      ensureScopes: async () => {},
+      myAccountApiClient: undefined,
+      myOrganizationApiClient: undefined,
+      getMyAccountApiClient: function () {
+        throw new Error('Function not implemented.');
+      },
+      getMyOrganizationApiClient: function () {
+        throw new Error('Function not implemented.');
+      },
+      getDomain: function (): string | undefined {
+        throw new Error('Function not implemented.');
+      },
+    };
+
+    return {
+      ...baseCoreClient,
+    };
+  }
+
   const tokenManagerService = createTokenManager(authDetails);
 
   const { client: myOrganizationApiClient, setLatestScopes: setOrgScopes } =

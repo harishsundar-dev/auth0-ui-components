@@ -107,6 +107,7 @@ export interface AuthDetails {
   domain?: string | undefined;
   authProxyUrl?: string | undefined;
   contextInterface?: BasicAuth0ContextInterface | undefined;
+  previewMode?: boolean; // For docs - skip API client initialization
 }
 
 export interface BaseCoreClientInterface {

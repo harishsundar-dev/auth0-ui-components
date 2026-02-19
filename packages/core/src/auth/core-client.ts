@@ -16,7 +16,7 @@ export async function createCoreClient(
   );
 
   // Skip API clients for docs sites
-  if (authDetails.offlineMode) {
+  if (authDetails.previewMode) {
     const baseCoreClient: CoreClientInterface = {
       auth: {},
       i18nService,

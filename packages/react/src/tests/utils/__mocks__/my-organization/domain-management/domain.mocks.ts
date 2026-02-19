@@ -6,7 +6,11 @@ import type {
 } from '@auth0/universal-components-core';
 import { vi } from 'vitest';
 
-import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
+import type {
+  DomainTableProps,
+  UseDomainTableLogicOptions,
+  UseDomainTableResult,
+} from '@/types/my-organization/domain-management/domain-table-types';
 
 export const createMockDomain = (overrides?: Partial<Domain>): Domain => ({
   id: 'domain_abc123xyz456',
@@ -115,7 +119,9 @@ export const createMockDeleteAction = (): ComponentAction<Domain> => ({
   onAfter: vi.fn(),
 });
 
-export const createMockLogic = (overrides: Partial<any> = {}) => ({
+export const createMockLogic = (
+  overrides: Partial<UseDomainTableResult & DomainTableProps> = {},
+) => ({
   domains: [createMockDomain(), createMockVerifiedDomain()],
   providers: [],
   isCreating: false,
@@ -141,7 +147,7 @@ export const createMockLogic = (overrides: Partial<any> = {}) => ({
   ...overrides,
 });
 
-export const createMockApi = (overrides: Partial<any> = {}) => ({
+export const createMockApi = (overrides: Partial<UseDomainTableLogicOptions> = {}) => ({
   showCreateModal: false,
   showConfigureModal: false,
   showVerifyModal: false,

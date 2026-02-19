@@ -31,9 +31,7 @@ import type { DomainTableProps } from '@/types/my-organization/domain-management
  */
 function DomainTableContainer(props: DomainTableProps) {
   const {
-    customMessages = {},
     schema,
-    styling = { variables: { common: {}, light: {}, dark: {} }, classes: {} },
     hideHeader = false,
     readOnly = false,
     createAction,
@@ -41,6 +39,8 @@ function DomainTableContainer(props: DomainTableProps) {
     deleteAction,
     associateToProviderAction,
     deleteFromProviderAction,
+    customMessages = {},
+    styling = { variables: { common: {}, light: {}, dark: {} }, classes: {} },
     onOpenProvider,
     onCreateProvider,
   } = props;
@@ -81,11 +81,8 @@ function DomainTableContainer(props: DomainTableProps) {
 }
 
 /**
- * DomainTableView — Presentational component for domain management.
- *
- * Renders the domains table, header, and all associated modals
- * (create, verify, configure providers, delete).
- * Receives data and handlers via `logic` and `handlers` props.
+ * DomainTableView — Presentational component
+ * Renders the domains table view. Receives data and handlers via `logic` and `handlers` props.
  */
 function DomainTableView({
   logic,
@@ -138,8 +135,6 @@ function DomainTableView({
     [styling, isDarkMode],
   );
 
-  // --- Column definitions ---
-
   const columns: Column<Domain>[] = React.useMemo(
     () => [
       {
@@ -179,8 +174,6 @@ function DomainTableView({
     ],
     [t, readOnly, customMessages, handleConfigureClick, handleVerifyClick, handleDeleteClick],
   );
-
-  // --- Render ---
 
   return (
     <div style={currentStyles.variables}>

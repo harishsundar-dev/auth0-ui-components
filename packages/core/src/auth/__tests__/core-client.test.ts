@@ -408,10 +408,10 @@ describe('createCoreClient', () => {
     });
   });
 
-  // --- New tests for offlineMode ---
-  describe('offlineMode', () => {
-    it('returns a core client with offlineMode and disables API clients', async () => {
-      const authDetails = { ...createAuthDetails(), offlineMode: true };
+  // --- New tests for previewMode ---
+  describe('previewMode', () => {
+    it('returns a core client with previewMode and disables API clients', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
       expect(client.auth).toEqual({});
@@ -422,37 +422,37 @@ describe('createCoreClient', () => {
       expect(typeof client.isProxyMode).toBe('function');
     });
 
-    it('getToken returns undefined in offlineMode', async () => {
-      const authDetails = { ...createAuthDetails(), offlineMode: true };
+    it('getToken returns undefined in previewMode', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
       const token = await client.getToken('scope', 'aud');
       expect(token).toBeUndefined();
     });
 
-    it('isProxyMode returns false in offlineMode', async () => {
-      const authDetails = { ...createAuthDetails(), offlineMode: true };
+    it('isProxyMode returns false in previewMode', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
       expect(client.isProxyMode()).toBe(false);
     });
 
-    it('getMyAccountApiClient throws in offlineMode', async () => {
-      const authDetails = { ...createAuthDetails(), offlineMode: true };
+    it('getMyAccountApiClient throws in previewMode', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
       expect(() => client.getMyAccountApiClient()).toThrow('Function not implemented.');
     });
 
-    it('getMyOrganizationApiClient throws in offlineMode', async () => {
-      const authDetails = { ...createAuthDetails(), offlineMode: true };
+    it('getMyOrganizationApiClient throws in previewMode', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
       expect(() => client.getMyOrganizationApiClient()).toThrow('Function not implemented.');
     });
 
-    it('getDomain throws in offlineMode', async () => {
-      const authDetails = { ...createAuthDetails(), offlineMode: true };
+    it('getDomain throws in previewMode', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
       expect(() => client.getDomain()).toThrow('Function not implemented.');

@@ -1,2 +1,31 @@
 @import 'tailwindcss';
 @import '@auth0/universal-components-core/styles/globals.css';
+
+/*
+ * Re-anchor bridge variables to auth0 defaults within the .auth0 scope.
+ * After the CSS scoping transform, this :root block becomes:
+ *   :root, .auth0 { ... }
+ * The .auth0 part is a direct rule, so it wins over any value the user
+ * inherits from their own :root — preventing bleed-in.
+ */
+:root {
+  --background: var(--color-neutral-min);
+  --foreground: var(--color-neutral-12);
+  --card: var(--color-neutral-min);
+  --card-foreground: var(--color-neutral-max);
+  --primary: var(--color-carbon-9);
+  --primary-foreground: var(--color-neutral-min);
+  --secondary: var(--color-neutral-3);
+  --secondary-foreground: var(--color-neutral-1);
+  --accent: var(--color-neutral-2);
+  --accent-foreground: var(--color-neutral-12);
+  --muted: var(--color-neutral-2);
+  --muted-foreground: var(--color-neutral-11);
+  --destructive: var(--color-red-3);
+  --destructive-foreground: var(--color-red-9);
+  --popover: var(--color-neutral-1);
+  --popover-foreground: var(--color-neutral-12);
+  --input: var(--color-neutral-1);
+  --border: var(--color-neutral-6);
+  --ring: hsla(var(--color-neutral-7), 0.2);
+}

@@ -2,7 +2,7 @@ import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 
 import Header from './components/Header';
 import { Routes, Route, BrowserRouter, Navigate } from './components/RouterCompat';
@@ -17,7 +17,7 @@ import MFAManagement from './pages/MFAManagement';
 import OrganizationManagement from './pages/OrganizationManagement';
 import Profile from './pages/Profile';
 
-import { Auth0ComponentProvider } from '@/auth0-ui-components/providers/spa-provider';
+// import { Auth0ComponentProvider } from '@/auth0-ui-components/providers/spa-provider';
 
 const queryClient = new QueryClient();
 
@@ -54,10 +54,10 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => {
-  const { i18n } = useTranslation();
-  const defaultAuthDetails = {
-    domain: config.auth0.domain,
-  };
+  // const { i18n } = useTranslation();
+  // const defaultAuthDetails = {
+  //   domain: config.auth0.domain,
+  // };
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipPrimitive.Provider>
@@ -73,72 +73,72 @@ const App = () => {
             useRefreshTokens={true}
             useMrrt={true}
           >
-            <Auth0ComponentProvider
+            {/* <Auth0ComponentProvider
               authDetails={defaultAuthDetails}
               i18n={{ currentLanguage: i18n.language }}
-            >
-              <AppLayout>
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route
-                    path="/profile"
-                    element={
-                      <ProtectedRoute>
-                        <Profile />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/mfa"
-                    element={
-                      <ProtectedRoute>
-                        <MFAManagement />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/organization-management"
-                    element={
-                      <ProtectedRoute>
-                        <OrganizationManagement />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/idp-management"
-                    element={
-                      <ProtectedRoute>
-                        <IdentityProviderManagement />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/idp-management/create"
-                    element={
-                      <ProtectedRoute>
-                        <IdentityProviderManagementCreate />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/idp-management/edit/:id"
-                    element={
-                      <ProtectedRoute>
-                        <IdentityProviderManagementEdit />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/domain-management"
-                    element={
-                      <ProtectedRoute>
-                        <DomainManagement />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
-              </AppLayout>
-            </Auth0ComponentProvider>
+            > */}
+            <AppLayout>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <Profile />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/mfa"
+                  element={
+                    <ProtectedRoute>
+                      <MFAManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/organization-management"
+                  element={
+                    <ProtectedRoute>
+                      <OrganizationManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/idp-management"
+                  element={
+                    <ProtectedRoute>
+                      <IdentityProviderManagement />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/idp-management/create"
+                  element={
+                    <ProtectedRoute>
+                      <IdentityProviderManagementCreate />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/idp-management/edit/:id"
+                  element={
+                    <ProtectedRoute>
+                      <IdentityProviderManagementEdit />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/domain-management"
+                  element={
+                    <ProtectedRoute>
+                      <DomainManagement />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </AppLayout>
+            {/* </Auth0ComponentProvider> */}
           </Auth0Provider>
         </BrowserRouter>
       </TooltipPrimitive.Provider>

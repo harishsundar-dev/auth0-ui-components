@@ -446,32 +446,37 @@ function sortFilesByCategory(files) {
 }
 
 /**
+ * Recursively collect all files under a directory, excluding __tests__ folders.
+ */
+function collectFiles(dir) {
+  if (!fs.existsSync(dir)) return [];
+  const results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === '__tests__') continue;
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      results.push(...collectFiles(fullPath));
+    } else {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+
+/**
  * Infrastructure files that are always included for every block
  * (providers, HOC, styles, common type files)
  */
 function getInfrastructureFiles() {
   return [
-    // Providers
-    path.join(SRC_DIR, 'providers/proxy-provider.tsx'),
-    path.join(SRC_DIR, 'providers/scope-manager-provider.tsx'),
-    path.join(SRC_DIR, 'providers/spa-provider.tsx'),
-    path.join(SRC_DIR, 'providers/theme-provider.tsx'),
-    path.join(SRC_DIR, 'providers/query-provider.tsx'),
-    // HOC
-    path.join(SRC_DIR, 'hoc/with-services.tsx'),
-    // Styles
-    path.join(SRC_DIR, 'styles/globals.css'),
-    path.join(SRC_DIR, 'styles/font-sizes.css'),
-    path.join(SRC_DIR, 'styles/dark.css'),
-    path.join(SRC_DIR, 'styles/light.css'),
-    path.join(SRC_DIR, 'styles/themes/default.css'),
-    path.join(SRC_DIR, 'styles/themes/minimal.css'),
-    path.join(SRC_DIR, 'styles/themes/rounded.css'),
-    // Common type files
-    path.join(SRC_DIR, 'types/auth-types.ts'),
-    path.join(SRC_DIR, 'types/i18n-types.ts'),
-    path.join(SRC_DIR, 'types/theme-types.ts'),
-  ].filter((f) => fs.existsSync(f));
+    ...collectFiles(path.join(SRC_DIR, 'providers')),
+    ...collectFiles(path.join(SRC_DIR, 'hoc')),
+    ...collectFiles(path.join(SRC_DIR, 'styles')),
+    // Only top-level type files (exclude block-specific subdirectories and index files)
+    ...fs.readdirSync(path.join(SRC_DIR, 'types'), { withFileTypes: true })
+      .filter((entry) => entry.isFile() && !entry.name.startsWith('index'))
+      .map((entry) => path.join(SRC_DIR, 'types', entry.name)),
+  ];
 }
 
 /**

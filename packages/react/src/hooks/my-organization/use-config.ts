@@ -54,7 +54,7 @@ export function useConfig(): UseConfigResult {
   return {
     config: config ?? null,
     isLoadingConfig: configQuery.isLoading,
-    fetchConfig: () => queryClient.invalidateQueries({ queryKey: configQueryKeys.details() }),
+    fetchConfig: async () => await queryClient.getQueryData(configQueryKeys.details()),
     filteredStrategies,
     shouldAllowDeletion,
     isConfigValid,

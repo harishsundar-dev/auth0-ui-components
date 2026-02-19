@@ -64,7 +64,7 @@ export function useIdpConfig(): UseConfigIdpResult {
     idpConfig,
     isIdpConfigValid: !!strategies && Object.keys(strategies).length > 0,
     isLoadingIdpConfig: idpConfigQuery.isLoading,
-    fetchIdpConfig: () => queryClient.invalidateQueries({ queryKey: idpConfigQueryKeys.config() }),
+    fetchIdpConfig: async () => await queryClient.getQueryData(idpConfigQueryKeys.config()),
     isProvisioningEnabled,
     isProvisioningMethodEnabled,
   };

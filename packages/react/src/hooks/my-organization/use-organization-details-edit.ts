@@ -109,7 +109,7 @@ export function useOrganizationDetailsEdit({
   const isActionDisabled = updateMutation.isPending || isInitializing;
 
   const fetchOrgDetails = useCallback(async (): Promise<void> => {
-    await queryClient.invalidateQueries({ queryKey: organizationDetailsQueryKeys.details() });
+    await queryClient.getQueryData(organizationDetailsQueryKeys.details());
   }, [queryClient]);
 
   const updateOrgDetails = useCallback(

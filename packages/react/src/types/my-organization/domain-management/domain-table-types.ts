@@ -56,6 +56,12 @@ export interface DomainTableProps
   onCreateProvider?: () => void;
 }
 
+// DomainTableView component props
+export interface DomainTableViewProps {
+  logic: UseDomainTableResult & DomainTableProps;
+  handlers: UseDomainTableLogicResult;
+}
+
 /** Props for DomainTable actions column. */
 export interface DomainTableActionsColumnProps {
   customMessages?: Partial<DomainTableMainMessages>;

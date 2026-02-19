@@ -38,62 +38,34 @@ import { useDomainTableLogic } from '@/hooks/my-organization/use-domain-table-lo
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { getStatusBadgeVariant } from '@/lib/utils/my-organization/domain-management/domain-management-utils';
+import type { DomainTableViewProps } from '@/types';
 import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
 
 /**
- * Internal domain table component.
+ * DomainTableContainer Component.
  * @param props - Component props
- * @param props.customMessages - Custom translation messages to override defaults
- * @param props.schema - Zod validation schema
- * @param props.styling - Custom styling configuration with variables and classes
- * @param props.hideHeader - Whether to hide the header
- * @param props.readOnly - Whether the component is in read-only mode
- * @returns JSX element
- * @param props.createAction - Configuration for the create action
- * @param props.verifyAction - Configuration for the verify action
- * @param props.deleteAction - Configuration for the delete action
- * @param props.associateToProviderAction - Configuration for associating to a provider
- * @param props.deleteFromProviderAction - Configuration for deleting from a provider
- * @param props.onOpenProvider - Callback fired when opening a provider
- * @param props.onCreateProvider - Callback fired when creating a new provider
+ * @returns Domain table container element
  * @internal
  */
-function DomainTableComponent({
-  customMessages = {},
-  schema,
-  styling = {
-    variables: { common: {}, light: {}, dark: {} },
-    classes: {},
-  },
-  hideHeader = false,
-  readOnly = false,
-  createAction,
-  verifyAction,
-  deleteAction,
-  associateToProviderAction,
-  deleteFromProviderAction,
-  onOpenProvider,
-  onCreateProvider,
-}: DomainTableProps) {
-  const { isDarkMode } = useTheme();
+function DomainTableContainer(props: DomainTableProps) {
+  const {
+    schema,
+    hideHeader = false,
+    readOnly = false,
+    createAction,
+    verifyAction,
+    deleteAction,
+    associateToProviderAction,
+    deleteFromProviderAction,
+    customMessages = {},
+    styling = { variables: { common: {}, light: {}, dark: {} }, classes: {} },
+    onOpenProvider,
+    onCreateProvider,
+  } = props;
+
   const { t } = useTranslator('domain_management', customMessages);
 
-  const {
-    domains,
-    providers,
-    isFetching,
-    isCreating,
-    isVerifying,
-    isDeleting,
-    isLoadingProviders,
-    fetchProviders,
-    fetchDomains,
-    onCreateDomain,
-    onVerifyDomain,
-    onDeleteDomain,
-    onAssociateToProvider,
-    onDeleteFromProvider,
-  } = useDomainTable({
+  const domainTableState = useDomainTable({
     createAction,
     verifyAction,
     deleteAction,
@@ -101,6 +73,61 @@ function DomainTableComponent({
     deleteFromProviderAction,
     customMessages,
   });
+
+  const domainTableHandlers = useDomainTableLogic({
+    t,
+    onCreateDomain: domainTableState.onCreateDomain,
+    onVerifyDomain: domainTableState.onVerifyDomain,
+    onDeleteDomain: domainTableState.onDeleteDomain,
+    onAssociateToProvider: domainTableState.onAssociateToProvider,
+    onDeleteFromProvider: domainTableState.onDeleteFromProvider,
+    fetchProviders: domainTableState.fetchProviders,
+    fetchDomains: domainTableState.fetchDomains,
+  });
+
+  const domainTableLogic = {
+    ...domainTableState,
+    schema,
+    styling,
+    hideHeader,
+    readOnly,
+    onOpenProvider,
+    onCreateProvider,
+  };
+
+  return <DomainTableView logic={domainTableLogic} handlers={domainTableHandlers} />;
+}
+
+/**
+ * DomainTableView — Presentational component.
+ * @param props - View props with logic and handlers
+ * @returns Domain table view element
+ * @internal
+ */
+function DomainTableView({
+  logic,
+  handlers,
+}: DomainTableViewProps & { handlers: ReturnType<typeof useDomainTableLogic> }) {
+  const { isDarkMode } = useTheme();
+  const { t } = useTranslator('domain_management', logic.customMessages);
+
+  const {
+    domains,
+    providers,
+    isCreating,
+    isVerifying,
+    isFetching,
+    isLoadingProviders,
+    isDeleting,
+    schema,
+    styling,
+    hideHeader,
+    readOnly = false,
+    customMessages,
+    createAction,
+    onOpenProvider,
+    onCreateProvider,
+  } = logic;
 
   const {
     showCreateModal,
@@ -121,16 +148,7 @@ function DomainTableComponent({
     handleConfigureClick,
     handleVerifyClick,
     handleDeleteClick,
-  } = useDomainTableLogic({
-    t,
-    onCreateDomain,
-    onVerifyDomain,
-    onDeleteDomain,
-    onAssociateToProvider,
-    onDeleteFromProvider,
-    fetchProviders,
-    fetchDomains,
-  });
+  } = handlers;
 
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),
@@ -165,7 +183,7 @@ function DomainTableComponent({
           <DomainTableActionsColumn
             domain={domain}
             readOnly={readOnly}
-            customMessages={customMessages}
+            customMessages={logic.customMessages}
             onView={handleConfigureClick}
             onConfigure={handleConfigureClick}
             onVerify={handleVerifyClick}
@@ -212,7 +230,7 @@ function DomainTableComponent({
         schema={schema?.create}
         onClose={() => setShowCreateModal(false)}
         onCreate={handleCreate}
-        customMessages={customMessages.create}
+        customMessages={customMessages?.create}
       />
 
       <DomainConfigureProvidersModal
@@ -226,7 +244,7 @@ function DomainTableComponent({
         onToggleSwitch={handleToggleSwitch}
         onOpenProvider={onOpenProvider}
         onCreateProvider={onCreateProvider}
-        customMessages={customMessages.configure}
+        customMessages={customMessages?.configure}
       />
 
       <DomainVerifyModal
@@ -238,7 +256,7 @@ function DomainTableComponent({
         onClose={handleCloseVerifyModal}
         onVerify={handleVerify}
         onDelete={handleDeleteClick}
-        customMessages={customMessages.verify}
+        customMessages={customMessages?.verify}
       />
 
       <DomainDeleteModal
@@ -248,28 +266,28 @@ function DomainTableComponent({
         isLoading={isDeleting}
         onClose={() => setShowDeleteModal(false)}
         onDelete={handleDelete}
-        customMessages={customMessages.delete}
+        customMessages={customMessages?.delete}
       />
     </div>
   );
 }
 
 /**
- * Domain management table for organization domains.
+ * Domain management table.
  *
- * Displays a table of organization domains with actions for creating, verifying,
- * deleting, and associating domains with identity providers.
+ * Displays organization domains with CRUD operations. Supports creating,
+ * verifying, deleting domains, and associating them with identity providers.
  *
- * @param customMessages - Custom i18n message overrides
  * @param schema - Validation schema overrides
+ * @param customMessages - Custom i18n message overrides
  * @param styling - CSS variables and class overrides
- * @param hideHeader - Hide the header section
  * @param readOnly - Render in read-only mode
- * @param createAction - Lifecycle hooks for domain creation
- * @param verifyAction - Lifecycle hooks for domain verification
- * @param deleteAction - Lifecycle hooks for domain deletion
+ * @param hideHeader - Hide the header section
+ * @param createAction - Lifecycle hooks for create operation
+ * @param verifyAction - Lifecycle hooks for verify operation
+ * @param deleteAction - Lifecycle hooks for delete operation
  * @param associateToProviderAction - Lifecycle hooks for provider association
- * @param deleteFromProviderAction - Lifecycle hooks for removing provider association
+ * @param deleteFromProviderAction - Lifecycle hooks for provider removal
  * @param onOpenProvider - Callback when opening a provider
  * @param onCreateProvider - Callback when creating a provider
  * @returns Domain table component
@@ -277,17 +295,12 @@ function DomainTableComponent({
  * @example
  * ```tsx
  * <DomainTable
- *   createAction={{
- *     onBefore: () => true,
- *     onAfter: (domain) => console.log('Created:', domain),
- *   }}
- *   verifyAction={{
- *     onAfter: (domain) => console.log('Verified:', domain),
- *   }}
+ *   createAction={{ onAfter: (domain) => console.log('Created:', domain) }}
+ *   verifyAction={{ onAfter: (domain) => console.log('Verified:', domain) }}
+ *   deleteAction={{ onAfter: (domain) => console.log('Deleted:', domain) }}
  * />
  * ```
  */
-export const DomainTable = withMyOrganizationService(
-  DomainTableComponent,
-  MY_ORGANIZATION_DOMAIN_SCOPES,
-);
+const DomainTable = withMyOrganizationService(DomainTableContainer, MY_ORGANIZATION_DOMAIN_SCOPES);
+
+export { DomainTable, DomainTableView };

@@ -158,7 +158,7 @@ describe('useDomainTable', () => {
       expect(result.current.domains).toEqual([]);
     });
 
-    it('should invalidate and refetch when fetchDomains is called', async () => {
+    it('should read from cache without refetching when fetchDomains is called', async () => {
       const { result } = renderUseDomainTable(mockOptions);
 
       // Wait for initial fetch to complete
@@ -170,16 +170,14 @@ describe('useDomainTable', () => {
         mockCoreClient.getMyOrganizationApiClient().organization.domains.list,
       ).mock.calls.length;
 
-      // Call fetchDomains - should always invalidate and trigger refetch
+      // Call fetchDomains - should read from cache without triggering refetch
       await result.current.fetchDomains();
 
-      // Should trigger a refetch
-      await waitFor(() => {
-        expect(
-          vi.mocked(mockCoreClient.getMyOrganizationApiClient().organization.domains.list).mock
-            .calls.length,
-        ).toBeGreaterThan(initialCallCount);
-      });
+      // Should not trigger additional API calls
+      expect(
+        vi.mocked(mockCoreClient.getMyOrganizationApiClient().organization.domains.list).mock.calls
+          .length,
+      ).toBe(initialCallCount);
     });
 
     it('should refetch when data is invalidated', async () => {

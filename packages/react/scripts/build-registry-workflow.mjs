@@ -50,71 +50,6 @@ function runCommand(command) {
   }
 }
 
-/**
- * Recursively find all component JSON files in a directory (excludes registry.json)
- */
-function findComponentJsonFiles(dir) {
-  const files = [];
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...findComponentJsonFiles(fullPath));
-    } else if (entry.name.endsWith('.json') && entry.name !== 'registry.json') {
-      files.push(fullPath);
-    }
-  }
-  return files;
-}
-
-/**
- * Rewrite ALL @/ alias imports to relative paths in built registry JSON files.
- *
- * Uses each file's `target` field as its installed path (relative to src/).
- * The @/ import prefix (which maps to src/) is kept as-is — both the target
- * and the import path use the same root, so relative paths resolve correctly.
- */
-function rewriteAliasImports(outputDir) {
-  const jsonFiles = findComponentJsonFiles(outputDir);
-  let totalRewrites = 0;
-
-  for (const jsonFile of jsonFiles) {
-    const data = JSON.parse(fs.readFileSync(jsonFile, 'utf-8'));
-    if (!data.files || !Array.isArray(data.files)) continue;
-
-    let modified = false;
-
-    for (const file of data.files) {
-      if (!file.content || !file.target) continue;
-
-      const currentDir = path.posix.dirname(file.target);
-
-      const newContent = file.content.replace(
-        /from\s+(['"])@\/([^'"]+)\1/g,
-        (_match, quote, importPath) => {
-          let relativePath = path.posix.relative(currentDir, importPath);
-          if (!relativePath.startsWith('.')) {
-            relativePath = './' + relativePath;
-          }
-          totalRewrites++;
-          return `from ${quote}${relativePath}${quote}`;
-        },
-      );
-
-      if (newContent !== file.content) {
-        file.content = newContent;
-        modified = true;
-      }
-    }
-
-    if (modified) {
-      fs.writeFileSync(jsonFile, JSON.stringify(data, null, 2) + '\n', 'utf-8');
-    }
-  }
-
-  console.log(`Rewrote ${totalRewrites} @/ imports to relative paths`);
-}
-
 async function main() {
   console.log('Starting Registry Build Workflow...\n');
 
@@ -163,9 +98,8 @@ async function main() {
   // Run shadcn build
   runCommand(`pnpm exec shadcn build -o "${versionedOutputDir}"`);
 
-  // 5. Rewrite @/ alias imports to relative paths
-  console.log('\n--- Step 4: Rewrite @/ imports to relative paths ---');
-  rewriteAliasImports(versionedOutputDir);
+  // 5. Skip @/ alias rewriting — consumers are expected to have the @/ → src/ alias configured
+  console.log('\n--- Step 4: Skipping @/ alias rewriting (kept as-is) ---');
 
   // 6. Update versions.json
   console.log('\n--- Step 5: Update versions.json ---');

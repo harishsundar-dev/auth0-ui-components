@@ -1,0 +1,413 @@
+import CodeBlock from '../components/CodeBlock';
+import TabbedCodeBlock from '../components/TabbedCodeBlock';
+
+export default function Styling() {
+  return (
+    <div className="max-w-6xl mx-auto space-y-12">
+      {/* Header */}
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-fuchsia-600/10 to-pink-500/10 rounded-xl"></div>
+        <div
+          className="relative space-y-4 p-6 border-l-4"
+          style={{ borderImage: 'linear-gradient(to bottom, rgb(124 58 237), rgb(217 70 239)) 1' }}
+        >
+          <div className="flex items-center space-x-3">
+            <div className="w-3 h-3 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-full"></div>
+            <span className="text-sm font-medium text-violet-700 bg-violet-50 px-2 py-1 rounded-full flex items-center">
+              <svg
+                className="w-3 h-3 text-violet-600 mr-1.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                />
+              </svg>
+              Styling
+            </span>
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900">Styling & Theming</h1>
+          <p className="text-xl text-gray-600">
+            Choose the right stylesheet for your setup and customize the look of Auth0 components
+            with CSS variables.
+          </p>
+        </div>
+      </div>
+
+      {/* Stylesheet options */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-gray-900">Stylesheet Options</h2>
+        <p className="text-gray-600">
+          The package ships two stylesheets. Pick the one that matches how your application handles
+          CSS.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* styles.css */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
+                Recommended
+              </span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              <code className="text-sm bg-gray-100 px-2 py-1 rounded">styles.css</code>
+            </h3>
+            <p className="text-gray-600 text-sm">
+              A self-contained stylesheet with all Tailwind utilities pre-compiled and scoped to
+              Auth0 components. No Tailwind installation or configuration required in your app.
+            </p>
+            <CodeBlock code={`import '@auth0/universal-components-react/styles';`} language="tsx" />
+          </div>
+
+          {/* tailwind.css */}
+          <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                Tailwind apps
+              </span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              <code className="text-sm bg-gray-100 px-2 py-1 rounded">tailwind.css</code>
+            </h3>
+            <p className="text-gray-600 text-sm">
+              Tells your app's Tailwind build to scan the component library source for class names,
+              so all required utilities are included in your generated CSS. Use this when your app
+              already runs Tailwind.
+            </p>
+            <CodeBlock
+              code={`import '@auth0/universal-components-react/tailwind';`}
+              language="tsx"
+            />
+          </div>
+        </div>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <strong>When to use which:</strong> If your app does not use Tailwind, import{' '}
+            <code className="text-xs">styles.css</code> — it works standalone. If your app uses
+            Tailwind v4, import <code className="text-xs">tailwind.css</code> in your root CSS file
+            alongside your existing <code className="text-xs">@import "tailwindcss"</code> so
+            Tailwind picks up all the class names from the library.
+          </p>
+        </div>
+
+        <h3 className="text-lg font-medium text-gray-900">Using tailwind.css with Tailwind v4</h3>
+        <p className="text-gray-600">
+          Add the import to your root CSS file so Tailwind scans the library's compiled output when
+          building your stylesheet.
+        </p>
+        <CodeBlock
+          code={`/* app.css */
+@import "tailwindcss";
+@import "@auth0/universal-components-react/tailwind";`}
+          language="css"
+          title="app.css"
+        />
+      </section>
+
+      {/* Theme configuration */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-gray-900">Theme Configuration</h2>
+        <p className="text-gray-600">
+          Pass <code className="text-sm bg-gray-100 px-2 py-1 rounded">themeSettings</code> to{' '}
+          <code className="text-sm bg-gray-100 px-2 py-1 rounded">Auth0ComponentProvider</code> to
+          control the color mode and theme variant.
+        </p>
+
+        <CodeBlock
+          code={`<Auth0ComponentProvider
+  authDetails={authDetails}
+  themeSettings={{
+    mode: 'light',   // 'light' | 'dark'
+    theme: 'default' // 'default' | 'minimal' | 'rounded'
+  }}
+>
+  <App />
+</Auth0ComponentProvider>`}
+          language="tsx"
+        />
+
+        <div className="overflow-x-auto">
+          <table className="w-full border border-gray-200 rounded-lg">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/5">
+                  Property
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                  Type
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
+                  Default
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              <tr>
+                <td className="px-4 py-2 text-sm font-medium text-gray-900">
+                  <code className="text-xs">mode</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">"light" | "dark"</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">"light"</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">Color scheme</td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 text-sm font-medium text-gray-900">
+                  <code className="text-xs">theme</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">"default" | "minimal" | "rounded"</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">"default"</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  Visual style — <strong>default</strong> is the standard Auth0 look,{' '}
+                  <strong>minimal</strong> reduces shadows and borders, <strong>rounded</strong>{' '}
+                  increases border radii throughout
+                </td>
+              </tr>
+              <tr>
+                <td className="px-4 py-2 text-sm font-medium text-gray-900">
+                  <code className="text-xs">variables</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  <code className="text-xs">StylingVariables</code>
+                </td>
+                <td className="px-4 py-2 text-sm text-gray-500">—</td>
+                <td className="px-4 py-2 text-sm text-gray-500">
+                  CSS custom property overrides for branding — see below
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* CSS Variables */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-gray-900">CSS Variables</h2>
+        <p className="text-gray-600">
+          All colors, border radii, and font sizes are driven by CSS custom properties. Override any
+          of them in your stylesheet to match your brand.
+        </p>
+
+        <TabbedCodeBlock
+          tabs={[
+            {
+              label: 'Colors',
+              code: `:root {
+  /* Backgrounds & surfaces */
+  --background: oklch(100% 0 0);          /* page background */
+  --foreground: oklch(9% 0 0);            /* default text */
+  --card: oklch(100% 0 0);                /* card background */
+  --card-foreground: oklch(0% 0 0);       /* text inside cards */
+  --popover: oklch(100% 0 0);             /* popover / dropdown / dialog background */
+  --popover-foreground: oklch(9% 0 0);    /* text inside popovers */
+  --input: oklch(100% 0 0);               /* input field background */
+
+  /* Brand */
+  --primary: oklch(37% 0 0);              /* buttons, links, active states */
+  --primary-foreground: oklch(100% 0 0);  /* text on primary surfaces */
+
+  /* Secondary */
+  --secondary: oklch(96% 0 0);
+  --secondary-foreground: oklch(100% 0 0);
+
+  /* Muted */
+  --muted: oklch(96% 0 0);                /* disabled / subtle backgrounds */
+  --muted-foreground: oklch(45% 0 0);     /* placeholder / secondary text */
+
+  /* Accent */
+  --accent: oklch(97% 0 0);               /* hover highlights */
+  --accent-foreground: oklch(9% 0 0);
+
+  /* Destructive */
+  --destructive: oklch(93% 0.03 17);      /* error surfaces */
+  --destructive-foreground: oklch(36% 0.14 17);
+
+  /* Borders & focus */
+  --border: oklch(89% 0 0);
+  --ring: oklch(89% 0 0);
+}`,
+            },
+            {
+              label: 'Border radius',
+              code: `:root {
+  --radius-xs:  2px;    /* indicators, badges */
+  --radius-sm:  4px;    /* tags, chips */
+  --radius-md:  6px;    /* small elements */
+  --radius-lg:  10px;   /* list items, rows */
+  --radius-xl:  12px;   /* inputs, buttons */
+  --radius-2xl: 14px;   /* medium containers */
+  --radius-3xl: 16px;   /* cards, panels */
+  --radius-4xl: 20px;   /* large cards */
+  --radius-5xl: 24px;   /* popovers, dropdowns */
+  --radius-6xl: 32px;   /* large popovers */
+  --radius-7xl: 40px;   /* extra large containers */
+  --radius-8xl: 48px;   /* full-page panels */
+  --radius-9xl: 56px;   /* dialogs, modals */
+}`,
+            },
+            {
+              label: 'Font sizes',
+              code: `:root {
+  --font-size-page-header:      2.25rem;   /* main page title */
+  --font-size-page-description: 0.875rem;  /* page subtitle */
+  --font-size-heading:          1.5rem;    /* section headings */
+  --font-size-title:            1.25rem;   /* card / panel titles */
+  --font-size-subtitle:         1.125rem;  /* secondary headings */
+  --font-size-body:             1rem;      /* body text */
+  --font-size-paragraph:        0.875rem;  /* descriptions */
+  --font-size-label:            0.875rem;  /* form labels */
+}`,
+            },
+          ]}
+          language="css"
+          title="Available CSS variables"
+        />
+
+        <h3 className="text-lg font-medium text-gray-900">Color variables</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border border-gray-200 rounded-lg text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                  Variable
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Used for
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {[
+                ['--background', 'Page / container background'],
+                ['--foreground', 'Default text color'],
+                ['--primary', 'Primary action color (buttons, links, active states)'],
+                ['--primary-foreground', 'Text on primary-colored surfaces'],
+                ['--secondary', 'Secondary surfaces and subtle backgrounds'],
+                ['--secondary-foreground', 'Text on secondary surfaces'],
+                ['--muted', 'Muted / disabled backgrounds'],
+                ['--muted-foreground', 'Muted / placeholder text'],
+                ['--accent', 'Hover and highlight backgrounds'],
+                ['--accent-foreground', 'Text on accent surfaces'],
+                ['--destructive', 'Error and destructive action color'],
+                ['--destructive-foreground', 'Text on destructive surfaces'],
+                ['--card', 'Card background'],
+                ['--card-foreground', 'Text inside cards'],
+                ['--popover', 'Popover / dropdown / dialog background'],
+                ['--popover-foreground', 'Text inside popovers'],
+                ['--input', 'Input field background'],
+                ['--border', 'Border color'],
+                ['--ring', 'Focus ring color'],
+              ].map(([variable, description]) => (
+                <tr key={variable}>
+                  <td className="px-4 py-2 font-mono text-xs text-violet-700 whitespace-nowrap">
+                    {variable}
+                  </td>
+                  <td className="px-4 py-2 text-gray-600">{description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-lg font-medium text-gray-900">Border radius variables</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border border-gray-200 rounded-lg text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                  Variable
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                  Default
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Usage
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {[
+                ['--radius-xs', '2px', 'Indicators, badges'],
+                ['--radius-sm', '4px', 'Tags, chips'],
+                ['--radius-md', '6px', 'Small elements'],
+                ['--radius-lg', '10px', 'List items, rows'],
+                ['--radius-xl', '12px', 'Inputs, buttons'],
+                ['--radius-2xl', '14px', 'Medium containers'],
+                ['--radius-3xl', '16px', 'Cards, panels'],
+                ['--radius-4xl', '20px', 'Large cards'],
+                ['--radius-5xl', '24px', 'Popovers, dropdowns'],
+                ['--radius-6xl', '32px', 'Large popovers'],
+                ['--radius-7xl', '40px', 'Extra large containers'],
+                ['--radius-8xl', '48px', 'Full-page panels'],
+                ['--radius-9xl', '56px', 'Dialogs, modals'],
+              ].map(([variable, defaultValue, usage]) => (
+                <tr key={variable}>
+                  <td className="px-4 py-2 font-mono text-xs text-violet-700 whitespace-nowrap">
+                    {variable}
+                  </td>
+                  <td className="px-4 py-2 font-mono text-xs text-gray-500">{defaultValue}</td>
+                  <td className="px-4 py-2 text-gray-600">{usage}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <h3 className="text-lg font-medium text-gray-900">Font size variables</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full border border-gray-200 rounded-lg text-sm">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                  Variable
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                  Default
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Used for
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {[
+                ['--font-size-page-header', '2.25rem', 'Main page title'],
+                ['--font-size-page-description', '0.875rem', 'Page subtitle'],
+                ['--font-size-heading', '1.5rem', 'Section headings'],
+                ['--font-size-title', '1.25rem', 'Card / panel titles'],
+                ['--font-size-subtitle', '1.125rem', 'Secondary headings'],
+                ['--font-size-body', '1rem', 'Body text'],
+                ['--font-size-paragraph', '0.875rem', 'Descriptions'],
+                ['--font-size-label', '0.875rem', 'Form labels'],
+              ].map(([variable, defaultValue, description]) => (
+                <tr key={variable}>
+                  <td className="px-4 py-2 font-mono text-xs text-violet-700 whitespace-nowrap">
+                    {variable}
+                  </td>
+                  <td className="px-4 py-2 font-mono text-xs text-gray-500">{defaultValue}</td>
+                  <td className="px-4 py-2 text-gray-600">{description}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,3 +1,9 @@
+/**
+ * SSO provider details form step.
+ * @module provider-details
+ * @internal
+ */
+
 import {
   createProviderDetailsSchema,
   type ProviderDetailsFormValues,

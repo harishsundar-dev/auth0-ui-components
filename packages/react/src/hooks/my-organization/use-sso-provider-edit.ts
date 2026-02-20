@@ -1,3 +1,8 @@
+/**
+ * SSO provider edit hook.
+ * @module use-sso-provider-edit
+ */
+
 import {
   OrganizationDetailsFactory,
   OrganizationDetailsMappers,
@@ -35,6 +40,15 @@ export const ssoProviderEditQueryKeys = {
   scimTokens: (idpId: IdpId) => [...ssoProviderEditQueryKeys.all, 'scim-tokens', idpId] as const,
 };
 
+/**
+ * Hook for editing SSO provider settings and provisioning.
+ * @param idpId - Identity provider ID.
+ * @param options - Hook options.
+ * @param options.sso - SSO action callbacks.
+ * @param options.provisioning - Provisioning action callbacks.
+ * @param options.customMessages - Custom translation messages.
+ * @returns Hook state and methods
+ */
 export function useSsoProviderEdit(
   idpId: IdpId,
   { sso, provisioning, customMessages = {} }: Partial<UseSsoProviderEditOptions> = {},
@@ -45,10 +59,6 @@ export function useSsoProviderEdit(
   const hasShownProviderError = useRef(false);
   const hasShownProvisioningError = useRef(false);
   const hasShownOrganizationError = useRef(false);
-
-  // ============================================
-  // QUERIES - All data managed by TanStack Query
-  // ============================================
 
   /**
    * Provider query - fetches the identity provider details.
@@ -148,10 +158,6 @@ export function useSsoProviderEdit(
       hasShownProvisioningError.current = false;
     }
   }, [provisioningQuery.isError, t]);
-
-  // ============================================
-  // MUTATIONS - All actions that modify data
-  // ============================================
 
   /**
    * Update provider mutation - updates SSO provider configuration.
@@ -511,10 +517,6 @@ export function useSsoProviderEdit(
       });
     },
   });
-
-  // ============================================
-  // ACTION CALLBACKS - Wrapper functions for mutations
-  // ============================================
 
   const fetchProvider = useCallback(async (): Promise<IdentityProvider | null> => {
     if (!coreClient || !idpId) {

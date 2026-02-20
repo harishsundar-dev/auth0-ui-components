@@ -1,8 +1,22 @@
+/**
+ * My Account API service initialization.
+ * @module my-account-api-service
+ * @internal
+ */
+
 import { MyAccountClient } from '@auth0/myaccount-js';
 
 import type { AuthDetails } from '../../auth/auth-types';
 import type { createTokenManager } from '../../auth/token-manager';
 
+/**
+ * Initializes the My Account API client for MFA and user profile operations.
+ * @internal
+ *
+ * @param auth - Authentication configuration details
+ * @param tokenManagerService - Token manager for handling access tokens
+ * @returns Object containing the client and scope setter function
+ */
 export function initializeMyAccountClient(
   auth: AuthDetails,
   tokenManagerService: ReturnType<typeof createTokenManager>,

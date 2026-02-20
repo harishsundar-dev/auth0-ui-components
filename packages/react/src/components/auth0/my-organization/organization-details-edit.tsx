@@ -63,7 +63,7 @@ function OrganizationDetailsEditComponent({
   backButton,
 }: OrganizationDetailsEditProps): React.JSX.Element {
   const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, theme } = useTheme();
 
   const {
     organization,
@@ -84,6 +84,7 @@ function OrganizationDetailsEditComponent({
   if (isFetchLoading) {
     return (
       <div
+        data-theme={theme || 'default'}
         style={currentStyles.variables}
         className="flex items-center justify-center min-h-96 w-full"
       >
@@ -93,7 +94,7 @@ function OrganizationDetailsEditComponent({
   }
 
   return (
-    <div style={currentStyles.variables} className="w-full">
+    <div data-theme={theme || 'default'} style={currentStyles.variables} className="w-full">
       {!hideHeader && (
         <div className="mb-8">
           <Header

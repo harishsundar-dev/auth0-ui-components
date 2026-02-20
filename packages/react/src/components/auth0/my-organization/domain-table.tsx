@@ -108,7 +108,7 @@ function DomainTableView({
   logic,
   handlers,
 }: DomainTableViewProps & { handlers: ReturnType<typeof useDomainTableLogic> }) {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, theme } = useTheme();
   const { t } = useTranslator('domain_management', logic.customMessages);
 
   const {
@@ -196,7 +196,7 @@ function DomainTableView({
   );
 
   return (
-    <div style={currentStyles.variables}>
+    <div data-theme={theme || 'default'} style={currentStyles.variables}>
       {!hideHeader && (
         <div className={currentStyles.classes?.['DomainTable-header']}>
           <Header

@@ -76,7 +76,7 @@ export function SsoProviderEditComponent({
   readOnly = false,
 }: SsoProviderEditProps) {
   const { t } = useTranslator('idp_management.edit_sso_provider', customMessages);
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, theme } = useTheme();
 
   const {
     provider,
@@ -142,7 +142,7 @@ export function SsoProviderEditComponent({
   }
 
   return (
-    <div style={currentStyles.variables} className="w-full">
+    <div data-theme={theme || 'default'} style={currentStyles.variables} className="w-full">
       {!hideHeader && (
         <Header
           title={provider?.display_name || provider?.name || ''}

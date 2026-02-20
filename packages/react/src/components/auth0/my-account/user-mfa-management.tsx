@@ -95,7 +95,7 @@ function UserMFAMgmtInternal({
   schema,
 }: UserMFAMgmtProps): React.JSX.Element {
   const { t } = useTranslator('mfa', customMessages);
-  const { loader, isDarkMode } = useTheme();
+  const { loader, isDarkMode, theme } = useTheme();
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),
     [styling, isDarkMode],
@@ -306,7 +306,7 @@ function UserMFAMgmtInternal({
   );
 
   return (
-    <div style={currentStyles.variables}>
+    <div data-theme={theme || 'default'} style={currentStyles.variables}>
       {loading ? (
         <div className="flex items-center justify-center py-16">{loader || <Spinner />}</div>
       ) : (

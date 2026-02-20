@@ -78,7 +78,7 @@ export function SsoProviderCreateComponent({
   },
 }: SsoProviderCreateProps) {
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, theme } = useTheme();
 
   const [formData, setFormData] = useState<FormState>({});
   const { strategy, details, configure } = formData;
@@ -215,7 +215,7 @@ export function SsoProviderCreateComponent({
   );
 
   return (
-    <div style={currentStyles.variables} className="w-full">
+    <div data-theme={theme || 'default'} style={currentStyles.variables} className="w-full">
       <Header
         title={t('header.title')}
         backButton={

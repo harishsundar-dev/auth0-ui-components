@@ -1,14 +1,35 @@
 @import 'tailwindcss';
 @import '@auth0/universal-components-core/styles/globals.css';
 
-/*
- * Re-anchor bridge variables to auth0 defaults within the .auth0 scope.
- * After the CSS scoping transform, this :root block becomes:
- *   :root, .auth0 { ... }
- * The .auth0 part is a direct rule, so it wins over any value the user
- * inherits from their own :root — preventing bleed-in.
+/* Re-anchor bridge vars for auth0 feature components.
+ * Feature components render <div data-theme="..."> on their root.
+ * After PostCSS scoping transform these become .auth0 [data-theme='...'] { ... }
+ * re-anchoring bridge vars to auth0 defaults inside feature scope, while
+ * user content (no [data-theme] ancestor) still inherits from :root freely.
  */
-:root {
+[data-theme='default'] {
+  --background: var(--color-neutral-min);
+  --foreground: var(--color-neutral-12);
+  --card: var(--color-neutral-min);
+  --card-foreground: var(--color-neutral-max);
+  --primary: var(--color-carbon-12);
+  --primary-foreground: var(--color-neutral-min);
+  --secondary: var(--color-neutral-3);
+  --secondary-foreground: var(--color-neutral-1);
+  --accent: var(--color-neutral-9);
+  --accent-foreground: var(--color-neutral-12);
+  --muted: var(--color-neutral-3);
+  --muted-foreground: var(--color-neutral-10);
+  --destructive: var(--color-red-4);
+  --destructive-foreground: var(--color-red-11);
+  --popover: var(--color-neutral-min);
+  --popover-foreground: var(--color-neutral-12);
+  --input: var(--color-neutral-min);
+  --border: var(--color-neutral-6);
+  --ring: oklch(from var(--color-neutral-7) l c h / 50%);
+}
+
+[data-theme='minimal'] {
   --background: var(--color-neutral-min);
   --foreground: var(--color-neutral-12);
   --card: var(--color-neutral-min);
@@ -17,15 +38,37 @@
   --primary-foreground: var(--color-neutral-min);
   --secondary: var(--color-neutral-3);
   --secondary-foreground: var(--color-neutral-1);
-  --accent: var(--color-neutral-2);
+  --accent: var(--color-neutral-9);
   --accent-foreground: var(--color-neutral-12);
-  --muted: var(--color-neutral-2);
-  --muted-foreground: var(--color-neutral-11);
+  --muted: var(--color-neutral-3);
+  --muted-foreground: var(--color-neutral-10);
   --destructive: var(--color-red-3);
   --destructive-foreground: var(--color-red-9);
   --popover: var(--color-neutral-1);
   --popover-foreground: var(--color-neutral-12);
-  --input: var(--color-neutral-1);
+  --input: var(--color-neutral-3);
   --border: var(--color-neutral-6);
-  --ring: hsla(var(--color-neutral-7), 0.2);
+  --ring: oklch(from var(--color-neutral-7) l c h / 50%);
+}
+
+[data-theme='rounded'] {
+  --background: var(--color-neutral-1);
+  --foreground: var(--color-neutral-12);
+  --card: var(--color-neutral-min);
+  --card-foreground: var(--color-neutral-max);
+  --primary: var(--color-carbon-12);
+  --primary-foreground: var(--color-neutral-min);
+  --secondary: var(--color-neutral-5);
+  --secondary-foreground: var(--color-neutral-9);
+  --accent: var(--color-neutral-8);
+  --accent-foreground: var(--color-neutral-10);
+  --muted: var(--color-neutral-3);
+  --muted-foreground: var(--color-neutral-9);
+  --destructive: var(--color-red-4);
+  --destructive-foreground: var(--color-red-9);
+  --popover: var(--color-neutral-min);
+  --popover-foreground: var(--color-neutral-12);
+  --input: var(--color-neutral-min);
+  --border: var(--color-neutral-7);
+  --ring: oklch(from var(--color-neutral-max) l c h / 10%);
 }

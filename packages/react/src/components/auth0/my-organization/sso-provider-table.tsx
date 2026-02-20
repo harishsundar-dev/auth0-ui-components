@@ -65,7 +65,7 @@ function SsoProviderTableComponent({
   deleteFromOrganizationAction,
   enableProviderAction,
 }: SsoProviderTableProps) {
-  const { isDarkMode } = useTheme();
+  const { isDarkMode, theme } = useTheme();
   const { t } = useTranslator('idp_management.sso_provider_table', customMessages);
 
   const {
@@ -229,7 +229,7 @@ function SsoProviderTableComponent({
   );
 
   return (
-    <div style={currentStyles.variables}>
+    <div data-theme={theme || 'default'} style={currentStyles.variables}>
       <div className={currentStyles.classes?.['SsoProviderTable-header']}>
         <Header
           title={t('header.title')}

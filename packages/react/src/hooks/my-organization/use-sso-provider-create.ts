@@ -1,3 +1,8 @@
+/**
+ * SSO provider creation hook.
+ * @module use-sso-provider-create
+ */
+
 import {
   hasApiErrorBody,
   SsoProviderMappers,
@@ -14,7 +19,12 @@ import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { UseSsoProviderCreateOptions } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
-/** Extracts domain from "discovery failure: <domain>" error detail */
+/**
+ * Extracts domain from discovery error detail.
+ * @param detail - Error detail string.
+ * @returns Domain string or null.
+ * @internal
+ */
 function extractDomainFromDiscoveryError(detail?: string): string | null {
   if (!detail) return null;
   const match = detail.match(/discovery failure:\s*(.+)/i);
@@ -27,8 +37,11 @@ export interface UseSsoProviderCreateReturn {
 }
 
 /**
- * Custom hook for creating SSO providers.
- * Uses TanStack Query for mutation management and cache invalidation.
+ * Hook for creating SSO identity providers.
+ * @param options - Hook options.
+ * @param options.createAction - Callback after successful creation.
+ * @param options.customMessages - Custom translation messages.
+ * @returns Hook state and methods
  */
 export function useSsoProviderCreate({
   createAction,
@@ -37,10 +50,6 @@ export function useSsoProviderCreate({
   const { coreClient } = useCoreClient();
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const queryClient = useQueryClient();
-
-  // ============================================
-  // MUTATION
-  // ============================================
 
   const createProviderMutation = useMutation({
     mutationFn: async (
@@ -113,10 +122,6 @@ export function useSsoProviderCreate({
       });
     },
   });
-
-  // ============================================
-  // ACTION - Wrapper around mutation
-  // ============================================
 
   const createProvider = useCallback(
     async (data: CreateIdentityProviderRequestContentPrivate): Promise<void> => {

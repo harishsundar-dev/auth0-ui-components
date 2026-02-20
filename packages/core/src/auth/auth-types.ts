@@ -1,9 +1,19 @@
+/**
+ * Authentication type definitions for Auth0 integration.
+ * @module auth-types
+ * @internal
+ */
+
 import type { MyAccountClient } from '@auth0/myaccount-js';
 import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import type { ArbitraryObject } from '@core/types';
 
 import type { I18nServiceInterface } from '../i18n';
 
+/**
+ * Response structure from the token endpoint.
+ * @internal
+ */
 export type TokenEndpointResponse = {
   id_token: string;
   access_token: string;
@@ -12,8 +22,16 @@ export type TokenEndpointResponse = {
   scope?: string;
 };
 
+/**
+ * Verbose response from silent token retrieval.
+ * @internal
+ */
 export type GetTokenSilentlyVerboseResponse = Omit<TokenEndpointResponse, 'refresh_token'>;
 
+/**
+ * User profile information from Auth0.
+ * @internal
+ */
 export interface User {
   name?: string;
   given_name?: string;
@@ -38,6 +56,10 @@ export interface User {
   [key: string]: unknown;
 }
 
+/**
+ * Options for silent token retrieval.
+ * @internal
+ */
 export interface GetTokenSilentlyOptions {
   cacheMode?: 'on' | 'off' | 'cache-only';
   authorizationParams?: {
@@ -50,6 +72,10 @@ export interface GetTokenSilentlyOptions {
   detailedResponse?: boolean;
 }
 
+/**
+ * Auth0 context interface for authentication operations.
+ * @internal
+ */
 export interface Auth0ContextInterface<TUser = User> {
   user?: TUser;
   // auth0-spa-js: getUser()
@@ -77,6 +103,10 @@ export interface Auth0ContextInterface<TUser = User> {
   handleRedirectCallback: () => Promise<ArbitraryObject>;
 }
 
+/**
+ * Client configuration for Auth0 SDK.
+ * @internal
+ */
 export interface ClientConfiguration {
   /**
    * The Auth0 domain that was configured
@@ -88,6 +118,10 @@ export interface ClientConfiguration {
   clientId: string;
 }
 
+/**
+ * Basic Auth0 context interface for minimal authentication operations.
+ * @internal
+ */
 export interface BasicAuth0ContextInterface<TUser = User> {
   user?: TUser;
   isAuthenticated: boolean;
@@ -103,6 +137,10 @@ export interface BasicAuth0ContextInterface<TUser = User> {
   getConfiguration: () => Readonly<ClientConfiguration>;
 }
 
+/**
+ * Authentication details for provider configuration.
+ * @internal
+ */
 export interface AuthDetails {
   domain?: string | undefined;
   authProxyUrl?: string | undefined;
@@ -110,6 +148,10 @@ export interface AuthDetails {
   previewMode?: boolean; // For docs - skip API client initialization
 }
 
+/**
+ * Base interface for CoreClient functionality.
+ * @internal
+ */
 export interface BaseCoreClientInterface {
   auth: AuthDetails;
   i18nService: I18nServiceInterface;
@@ -123,6 +165,10 @@ export interface BaseCoreClientInterface {
   getDomain: () => string | undefined;
 }
 
+/**
+ * Full CoreClient interface with API clients.
+ * @internal
+ */
 export interface CoreClientInterface extends BaseCoreClientInterface {
   myAccountApiClient: MyAccountClient | undefined;
   myOrganizationApiClient: MyOrganizationClient | undefined;

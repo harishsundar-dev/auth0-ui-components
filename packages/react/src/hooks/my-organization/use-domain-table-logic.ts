@@ -1,3 +1,9 @@
+/**
+ * Domain table UI logic hook.
+ * @module use-domain-table-logic
+ * @internal
+ */
+
 import { type Domain, type IdentityProvider } from '@auth0/universal-components-core';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -8,6 +14,20 @@ import type {
   UseDomainTableLogicResult,
 } from '@/types/my-organization/domain-management/domain-table-types';
 
+/**
+ * Hook for domain table modal state and action handlers.
+ * @param props - Component props.
+ * @param props.t - Translation function
+ * @param props.onCreateDomain - The on create domain
+ * @param props.onVerifyDomain - The on verify domain
+ * @param props.onDeleteDomain - The on delete domain
+ * @param props.onAssociateToProvider - The on associate to provider
+ * @param props.onDeleteFromProvider - The on delete from provider
+ * @param props.fetchProviders - The fetch providers
+ * @param props.fetchDomains - The fetch domains
+ * @internal
+ * @returns Hook state and methods
+ */
 export function useDomainTableLogic({
   t,
   onCreateDomain,

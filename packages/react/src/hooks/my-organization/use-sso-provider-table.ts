@@ -1,3 +1,8 @@
+/**
+ * SSO provider table data and actions hook.
+ * @module use-sso-provider-table
+ */
+
 import {
   OrganizationDetailsMappers,
   SsoProviderMappers,
@@ -22,8 +27,12 @@ export const ssoProviderQueryKeys = {
 };
 
 /**
- * Custom hook for managing SSO provider table data and actions.
- * Uses TanStack Query for caching, loading states, and data synchronization.
+ * Hook for SSO provider table data and CRUD operations.
+ * @param deleteAction - Delete action handler.
+ * @param removeFromOrg - Remove from org handler.
+ * @param enableAction - Enable/disable handler.
+ * @param customMessages - Translation overrides.
+ * @returns Provider data, mutations, and actions.
  */
 export function useSsoProviderTable(
   deleteAction?: ComponentAction<IdentityProvider, void>,
@@ -36,10 +45,6 @@ export function useSsoProviderTable(
   const queryClient = useQueryClient();
   const hasShownProvidersError = useRef(false);
   const hasShownOrganizationError = useRef(false);
-
-  // ============================================
-  // QUERIES - All data managed by TanStack Query
-  // ============================================
 
   const providersQuery = useQuery({
     queryKey: ssoProviderQueryKeys.list(),
@@ -88,10 +93,6 @@ export function useSsoProviderTable(
       hasShownOrganizationError.current = false;
     }
   }, [organizationQuery.isError, t]);
-
-  // ============================================
-  // MUTATIONS
-  // ============================================
 
   const enableProviderMutation = useMutation({
     mutationFn: async ({
@@ -217,10 +218,6 @@ export function useSsoProviderTable(
     },
   });
 
-  // ============================================
-  // ACTIONS - Wrappers around mutations
-  // ============================================
-
   const onEnableProvider = useCallback(
     async (selectedIdp: IdentityProvider, enabled: boolean): Promise<boolean> => {
       if (!selectedIdp || !coreClient || !selectedIdp.id) {
@@ -285,10 +282,6 @@ export function useSsoProviderTable(
       return null;
     }
   }, [coreClient, queryClient, t]);
-
-  // ============================================
-  // RETURN
-  // ============================================
 
   return {
     // Data from TanStack Query - single source of truth

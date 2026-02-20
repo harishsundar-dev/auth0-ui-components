@@ -1,3 +1,8 @@
+/**
+ * SSO provider create types.
+ * @module sso-provider-create-types
+ */
+
 import type {
   SharedComponentProps,
   ProviderSelectMessages,
@@ -22,11 +27,10 @@ import type { UseFormReturn } from 'react-hook-form';
 
 import type { IdpConfig } from '@/types/my-organization/config/config-idp-types';
 
-/**
- * Form display mode for provider configuration
- */
+/** Form mode for provider configuration. */
 export type FormMode = 'create' | 'edit';
 
+/** CSS classes for SsoProviderCreate. */
 export interface SsoProviderCreateClasses {
   'SsoProviderCreate-header'?: string;
   'SsoProviderCreate-wizard'?: string;
@@ -35,6 +39,7 @@ export interface SsoProviderCreateClasses {
   'ProviderConfigure-root'?: string;
 }
 
+/** Props for ProviderSelect component. */
 export interface ProviderSelectProps
   extends SharedComponentProps<ProviderSelectMessages, SsoProviderCreateClasses> {
   isLoading: boolean;
@@ -45,6 +50,7 @@ export interface ProviderSelectProps
   className?: string;
 }
 
+/** Props for ProviderDetails component. */
 export interface ProviderDetailsProps
   extends SharedComponentProps<ProviderDetailsMessages, SsoProviderCreateClasses> {
   initialData?: Partial<ProviderDetailsFormValues>;
@@ -54,6 +60,7 @@ export interface ProviderDetailsProps
   onFormDirty?: (isDirty: boolean) => void;
 }
 
+/** Props for ProviderConfigure component. */
 export interface ProviderConfigureProps
   extends SharedComponentProps<ProviderConfigureMessages, SsoProviderCreateClasses> {
   className?: string;

@@ -1,3 +1,25 @@
+/**
+ * Organization details edit component.
+ *
+ * Provides a form for editing organization details including name, display name,
+ * branding settings, and organization metadata.
+ *
+ * @module organization-details-edit
+ *
+ * @example
+ * ```tsx
+ * <OrganizationDetailsEdit
+ *   saveAction={{
+ *     onBefore: () => true,
+ *     onAfter: (org) => console.log('Saved:', org),
+ *   }}
+ *   cancelAction={{
+ *     onAfter: () => navigate('/organizations'),
+ *   }}
+ * />
+ * ```
+ */
+
 import {
   getComponentStyles,
   MY_ORGANIZATION_DETAILS_EDIT_SCOPES,
@@ -14,11 +36,18 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 import type { OrganizationDetailsEditProps } from '@/types/my-organization/organization-management/organization-details-edit-types';
 
 /**
- * OrganizationDetailsEdit Component
- *
- * A comprehensive organization editing component that combines organization details
- * editing and deletion capabilities in a single interface. This component provides
- * a complete editing experience with form validation, lifecycle hooks, and user feedback.
+ * Internal organization details edit component.
+ * @param props - Component props
+ * @param props.schema - Zod validation schema
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.saveAction - Configuration for the save action
+ * @param props.cancelAction - Configuration for the cancel action
+ * @param props.hideHeader - Whether to hide the header
+ * @param props.backButton - Configuration for the back button
+ * @returns JSX element
+ * @internal
  */
 function OrganizationDetailsEditComponent({
   schema,
@@ -95,7 +124,38 @@ function OrganizationDetailsEditComponent({
   );
 }
 
-export const OrganizationDetailsEdit = withMyOrganizationService(
-  OrganizationDetailsEditComponent,
-  MY_ORGANIZATION_DETAILS_EDIT_SCOPES,
-);
+/**
+ * Organization details editing form.
+ *
+ * A comprehensive component for editing organization details including name,
+ * display name, branding, and metadata. Provides form validation, lifecycle
+ * hooks for save/cancel actions, and user feedback.
+ *
+ * @param props - {@link OrganizationDetailsEditProps}
+ * @param props.schema - Validation schema overrides
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.readOnly - Render in read-only mode
+ * @param props.saveAction - Lifecycle hooks for save operation
+ * @param props.cancelAction - Lifecycle hooks for cancel operation
+ * @param props.hideHeader - Hide the header section
+ * @param props.backButton - Back button configuration
+ * @returns Organization details edit component
+ *
+ * @see {@link OrganizationDetailsEditProps} for full props documentation
+ *
+ * @example
+ * ```tsx
+ * <OrganizationDetailsEdit
+ *   saveAction={{
+ *     onBefore: () => true,
+ *     onAfter: (org) => console.log('Saved:', org),
+ *   }}
+ *   cancelAction={{
+ *     onAfter: () => navigate(-1),
+ *   }}
+ * />
+ * ```
+ */
+export const OrganizationDetailsEdit: React.ComponentType<OrganizationDetailsEditProps> =
+  withMyOrganizationService(OrganizationDetailsEditComponent, MY_ORGANIZATION_DETAILS_EDIT_SCOPES);

@@ -1,3 +1,8 @@
+/**
+ * SSO provider edit types.
+ * @module sso-provider-edit-types
+ */
+
 import type {
   SharedComponentProps,
   BackButton,
@@ -36,13 +41,13 @@ import type {
   SsoProvisioningTabSchemas,
 } from '@/types/my-organization/idp-management/sso-provisioning/sso-provisioning-tab-types';
 
-/* ============ Components ============ */
-
+/** Back button for SSO provider edit. */
 export interface SsoProviderEditBackButton extends Omit<BackButton, 'onClick'> {
   icon?: LucideIcon;
   onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
+/** CSS classes for SsoProviderEdit. */
 export interface SsoProviderEditClasses
   extends SsoProviderTabClasses,
     SsoProvisioningTabClasses,
@@ -51,12 +56,14 @@ export interface SsoProviderEditClasses
   'SsoProviderEdit-tabs'?: string;
 }
 
+/** SSO provider edit schemas. */
 export interface SsoProviderEditSchema {
   provider: SsoProviderTabSchemas;
   provisioning: SsoProvisioningTabSchemas;
   domains?: SsoProviderEditDomainsTabSchema;
 }
 
+/** Props for SsoProviderEdit component. */
 export interface SsoProviderEditProps
   extends SharedComponentProps<
     SsoProviderEditMessages,
@@ -71,10 +78,7 @@ export interface SsoProviderEditProps
   backButton?: SsoProviderEditBackButton;
 }
 
-/* ============ Subcomponents ============ */
-
-/* ============ Hooks ============ */
-
+/** useSsoProviderEdit options. */
 export interface UseSsoProviderEditOptions extends SharedComponentProps {
   sso?: SsoProviderTabEditProps;
   provisioning?: SsoProvisioningTabEditProps;
@@ -168,7 +172,7 @@ export interface SsoProviderEditLogicProps
   schema: Partial<SsoProviderEditSchema> | undefined;
   readOnly: boolean;
   currentStyles: {
-    variables: Record<string, any>;
+    variables: Record<string, string>;
     classes?: Record<string, string | undefined> | undefined;
   };
   providerId: IdpId;

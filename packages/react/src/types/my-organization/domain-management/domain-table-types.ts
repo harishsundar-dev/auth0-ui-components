@@ -1,3 +1,8 @@
+/**
+ * Domain table types.
+ * @module domain-table-types
+ */
+
 import type {
   SharedComponentProps,
   IdentityProvider,
@@ -16,9 +21,7 @@ import type {
 
 export type { Domain };
 
-/* ============ Components ============ */
-
-// HTML classNames that the user can override
+/** CSS classes for DomainTable. */
 export interface DomainTableClasses {
   'DomainTable-header'?: string;
   'DomainTable-table'?: string;
@@ -27,7 +30,7 @@ export interface DomainTableClasses {
   'DomainTable-deleteModal'?: string;
 }
 
-// Component messages that the user can override
+/** DomainTable translation messages. */
 export interface DomainTableMainMessages extends DomainTableMessages {
   create: DomainCreateMessages;
   configure: DomainConfigureMessages;
@@ -35,11 +38,12 @@ export interface DomainTableMainMessages extends DomainTableMessages {
   delete: DomainDeleteMessages;
 }
 
-// Validation schemas that the user can override
+/** DomainTable validation schemas. */
 export interface DomainTableSchema {
   create?: DomainCreateSchemas;
 }
 
+/** Props for DomainTable component. */
 export interface DomainTableProps
   extends SharedComponentProps<DomainTableMainMessages, DomainTableClasses, DomainTableSchema> {
   hideHeader?: boolean;
@@ -48,9 +52,7 @@ export interface DomainTableProps
   deleteAction?: ComponentAction<Domain>;
   associateToProviderAction?: ComponentAction<Domain, IdentityProvider>;
   deleteFromProviderAction?: ComponentAction<Domain, IdentityProvider>;
-  // Used in the "View" buttons to open an IdP
   onOpenProvider?: (provider: IdentityProvider) => void;
-  // Used in the "Create provider" buttons to open the create IdP wizard
   onCreateProvider?: () => void;
 }
 
@@ -60,8 +62,7 @@ export interface DomainTableViewProps {
   handlers: UseDomainTableLogicResult;
 }
 
-/* ============ Subcomponents ============ */
-
+/** Props for DomainTable actions column. */
 export interface DomainTableActionsColumnProps {
   customMessages?: Partial<DomainTableMainMessages>;
   readOnly: boolean;
@@ -71,8 +72,6 @@ export interface DomainTableActionsColumnProps {
   onVerify: (domain: Domain) => void;
   onDelete: (domain: Domain) => void;
 }
-
-/* ============ Hooks ============ */
 
 export interface UseDomainTableOptions {
   createAction?: DomainTableProps['createAction'];

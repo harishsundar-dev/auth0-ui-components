@@ -1,3 +1,25 @@
+/**
+ * MFA management UI.
+ *
+ * Complete multi-factor authentication management interface for enrolling,
+ * viewing, and deleting MFA factors including TOTP, SMS, Email, Push notifications,
+ * and recovery codes.
+ *
+ * @module user-mfa-management
+ *
+ * @example
+ * ```tsx
+ * <UserMFAMgmt
+ *   onEnroll={(factor) => console.log('Enrolled:', factor)}
+ *   onDelete={(factor) => console.log('Deleted:', factor)}
+ *   factorConfig={{
+ *     otp: { enabled: true },
+ *     sms: { enabled: true },
+ *     email: { enabled: false },
+ *   }}
+ * />
+ * ```
+ */
 import type { Authenticator } from '@auth0/universal-components-core';
 import {
   FACTOR_TYPE_PUSH_NOTIFICATION,
@@ -28,15 +50,28 @@ import { cn } from '@/lib/utils';
 import type { UserMFAMgmtProps } from '@/types/my-account/mfa/mfa-types';
 
 /**
- * UserMFAMgmt Component
+ * Internal MFA management UI used by `UserMFAMgmt`.
+ * Handles loading factors, enroll/delete flows, and UI state.
  *
- * A component responsible for managing Multi-Factor Authentication (MFA) factors for a user.
- * This component handles fetching the MFA access token, fetching authenticators, enrolling, and deletion of MFA factors, and manages the MFA access token.
- * It operates in both ProxyMode (RWA) and SPA modes for authentication.
- * - **ProxyMode (RWA)**: In this mode, the component interacts with a proxy service to manage MFA
- * - **SPA (Single Page Application)**: In this mode, the component communicates directly with the API to manage MFA factors.
+ * @param props - Component props.
+ * @param props.customMessages - Override i18n messages.
+ * @param props.styling - CSS variables and class overrides.
+ * @param props.hideHeader - Hide the header section.
+ * @param props.showActiveOnly - Show only enrolled factors.
+ * @param props.disableEnroll - Disable enroll actions.
+ * @param props.disableDelete - Disable delete actions.
+ * @param props.readOnly - Render in read-only mode.
+ * @param props.factorConfig - Per-factor visibility/enabled config.
+ * @param props.onEnroll - Called after successful enroll.
+ * @param props.onDelete - Called after successful delete.
+ * @param props.onFetch - Called after factors load.
+ * @param props.onErrorAction - Called when actions error.
+ * @param props.onBeforeAction - Called before actions; return false to cancel.
+ * @param props.schema - Validation schema overrides.
+ * @returns MFA management UI.
+ * @internal
  */
-function UserMFAMgmtComponent({
+function UserMFAMgmtInternal({
   customMessages = {},
   styling = {
     variables: {
@@ -123,13 +158,18 @@ function UserMFAMgmtComponent({
    * Handles the enrollment button click for a specific MFA factor.
    * Opens the enrollment dialog for the chosen factor.
    *
-   * @param {MFAType} factor - The MFA factor to be enrolled.
+   * @param factor - The MFA factor type to be enrolled.
    */
   const handleEnroll = (factor: MFAType) => {
     setEnrollFactor(factor);
     setDialogOpen(true);
   };
 
+  /**
+   * Handles closing the enrollment dialog.
+   * Reloads factors if closing a push notification enrollment to ensure
+   * the latest enrollment state is reflected.
+   */
   const handleCloseDialog = React.useCallback(() => {
     setDialogOpen(false);
 
@@ -152,9 +192,9 @@ function UserMFAMgmtComponent({
    * - Delete action is disabled
    * - onBeforeAction returns false
    *
-   * @param {string} factorId - The unique identifier of the MFA factor to delete
-   * @param {MFAType} factorType - The type of MFA factor being deleted (e.g., 'sms', 'email', 'otp')
-   * @returns {Promise<void>}
+   * @param factorId - The unique identifier of the MFA factor to delete
+   * @param factorType - The type of MFA factor being deleted (e.g., 'sms', 'email', 'otp')
+   * @returns A promise that resolves when the delete action completes
    */
   const handleDeleteFactor = React.useCallback(
     async (factorId: string, factorType: MFAType) => {
@@ -184,8 +224,8 @@ function UserMFAMgmtComponent({
    * 3. Shows success/error notifications
    * 4. Handles cleanup of dialog and loading states
    *
-   * @param {string} factorId - The unique identifier of the MFA factor to delete
-   * @throws {Error} When deletion fails or factors cannot be reloaded
+   * @param factorId - The unique identifier of the MFA factor to delete
+   * @throws When deletion fails or factors cannot be reloaded
    */
   const handleConfirmDelete = React.useCallback(
     async (factorId: string) => {
@@ -226,7 +266,10 @@ function UserMFAMgmtComponent({
 
   /**
    * Handles the successful enrollment of an MFA factor.
-   * Displays a success message and reloads the factors list.
+   * Displays a success toast notification, invokes the onEnroll callback,
+   * and reloads the factors list to reflect the new enrollment.
+   *
+   * @returns A promise that resolves when the success handling is complete.
    */
   const handleEnrollSuccess = React.useCallback(async () => {
     setDialogOpen(false);
@@ -247,9 +290,10 @@ function UserMFAMgmtComponent({
 
   /**
    * Handles errors during the enrollment or confirmation process.
+   * Displays an error toast notification and invokes the onErrorAction callback.
    *
-   * @param {Error} error - The error object containing the failure message.
-   * @param {string} stage - The stage of the process ('enroll' or 'confirm').
+   * @param error - The error object containing the failure message.
+   * @param stage - The stage of the process where the error occurred ('enroll' or 'confirm').
    */
   const handleEnrollError = React.useCallback(
     (error: Error, stage: typeof ENROLL | typeof CONFIRM) => {
@@ -418,4 +462,45 @@ function UserMFAMgmtComponent({
   );
 }
 
-export const UserMFAMgmt = withMyAccountService(UserMFAMgmtComponent, USER_MFA_SCOPES);
+/**
+ * Multi-factor authentication management component.
+ *
+ * Complete MFA management interface for enrolling, viewing, and deleting authentication
+ * factors. Supports TOTP authenticators, SMS, Email, Push notifications, and recovery codes.
+ *
+ * @param props - {@link UserMFAMgmtProps}
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.hideHeader - Hide the header section
+ * @param props.showActiveOnly - Show only enrolled factors
+ * @param props.disableEnroll - Disable enroll actions
+ * @param props.disableDelete - Disable delete actions
+ * @param props.readOnly - Render in read-only mode
+ * @param props.factorConfig - Per-factor visibility/enabled configuration
+ * @param props.onEnroll - Callback after successful enrollment
+ * @param props.onDelete - Callback after successful deletion
+ * @param props.onFetch - Callback after factors are loaded
+ * @param props.onErrorAction - Callback when actions error
+ * @param props.onBeforeAction - Callback before actions; return false to cancel
+ * @param props.schema - Validation schema overrides
+ * @returns MFA management component
+ *
+ * @see {@link UserMFAMgmtProps} for full props documentation
+ *
+ * @example
+ * ```tsx
+ * <UserMFAMgmt
+ *   onEnroll={(factor) => console.log('Enrolled:', factor)}
+ *   onDelete={(factor) => console.log('Deleted:', factor)}
+ *   factorConfig={{
+ *     otp: { enabled: true },
+ *     sms: { enabled: true },
+ *     email: { enabled: false },
+ *   }}
+ * />
+ * ```
+ */
+export const UserMFAMgmt: React.ComponentType<UserMFAMgmtProps> = withMyAccountService(
+  UserMFAMgmtInternal,
+  USER_MFA_SCOPES,
+);

@@ -1,3 +1,21 @@
+/**
+ * Domain management table component.
+ *
+ * Displays organization domains with CRUD operations including create, verify, and delete.
+ * Supports associating domains with identity providers.
+ *
+ * @module domain-table
+ *
+ * @example
+ * ```tsx
+ * <DomainTable
+ *   createAction={{ onAfter: (domain) => console.log('Created:', domain) }}
+ *   verifyAction={{ onAfter: (domain) => console.log('Verified:', domain) }}
+ *   deleteAction={{ onAfter: (domain) => console.log('Deleted:', domain) }}
+ * />
+ * ```
+ */
+
 import {
   type Domain,
   getComponentStyles,
@@ -24,10 +42,10 @@ import type { DomainTableViewProps } from '@/types';
 import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
 
 /**
- * DomainTableContainer Component
- *
- * Manages organization domains — create, verify, delete, and associate
- * with identity providers in a unified table interface.
+ * DomainTableContainer Component.
+ * @param props - Component props
+ * @returns Domain table container element
+ * @internal
  */
 function DomainTableContainer(props: DomainTableProps) {
   const {
@@ -81,8 +99,10 @@ function DomainTableContainer(props: DomainTableProps) {
 }
 
 /**
- * DomainTableView — Presentational component
- * Renders the domains table view. Receives data and handlers via `logic` and `handlers` props.
+ * DomainTableView — Presentational component.
+ * @param props - View props with logic and handlers
+ * @returns Domain table view element
+ * @internal
  */
 function DomainTableView({
   logic,
@@ -252,6 +272,41 @@ function DomainTableView({
   );
 }
 
-const DomainTable = withMyOrganizationService(DomainTableContainer, MY_ORGANIZATION_DOMAIN_SCOPES);
+/**
+ * Domain management table.
+ *
+ * Displays organization domains with CRUD operations. Supports creating,
+ * verifying, deleting domains, and associating them with identity providers.
+ *
+ * @param props - {@link DomainTableProps}
+ * @param props.schema - Validation schema overrides
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.readOnly - Render in read-only mode
+ * @param props.hideHeader - Hide the header section
+ * @param props.createAction - Lifecycle hooks for create operation
+ * @param props.verifyAction - Lifecycle hooks for verify operation
+ * @param props.deleteAction - Lifecycle hooks for delete operation
+ * @param props.associateToProviderAction - Lifecycle hooks for provider association
+ * @param props.deleteFromProviderAction - Lifecycle hooks for provider removal
+ * @param props.onOpenProvider - Callback when opening a provider
+ * @param props.onCreateProvider - Callback when creating a provider
+ * @returns Domain table component
+ *
+ * @see {@link DomainTableProps} for full props documentation
+ *
+ * @example
+ * ```tsx
+ * <DomainTable
+ *   createAction={{ onAfter: (domain) => console.log('Created:', domain) }}
+ *   verifyAction={{ onAfter: (domain) => console.log('Verified:', domain) }}
+ *   deleteAction={{ onAfter: (domain) => console.log('Deleted:', domain) }}
+ * />
+ * ```
+ */
+const DomainTable: React.ComponentType<DomainTableProps> = withMyOrganizationService(
+  DomainTableContainer,
+  MY_ORGANIZATION_DOMAIN_SCOPES,
+);
 
 export { DomainTable, DomainTableView };

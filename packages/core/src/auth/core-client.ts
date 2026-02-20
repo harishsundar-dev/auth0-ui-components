@@ -1,3 +1,9 @@
+/**
+ * Core client factory for creating the main service client.
+ * @module core-client
+ * @internal
+ */
+
 import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
 import { initializeMyOrganizationClient } from '@core/services/my-organization/my-organization-api-service';
 
@@ -7,6 +13,14 @@ import { createI18nService } from '../i18n';
 import type { AuthDetails, CoreClientInterface } from './auth-types';
 import { createTokenManager } from './token-manager';
 
+/**
+ * Creates and initializes the core client with all necessary services.
+ * @internal
+ *
+ * @param authDetails - Authentication configuration details
+ * @param i18nOptions - Internationalization options
+ * @returns Promise resolving to the initialized CoreClient
+ */
 export async function createCoreClient(
   authDetails: AuthDetails,
   i18nOptions?: I18nInitOptions,

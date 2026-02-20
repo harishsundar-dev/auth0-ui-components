@@ -1,3 +1,21 @@
+/**
+ * SSO providers table component.
+ *
+ * Displays a table of SSO identity providers with actions for creating, editing,
+ * enabling/disabling, and deleting providers.
+ *
+ * @module sso-provider-table
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderTable
+ *   createAction={{ onAfter: () => navigate('/providers/new') }}
+ *   editAction={{ onAfter: (provider) => navigate(`/providers/${provider.id}`) }}
+ *   deleteAction={{ onAfter: (provider) => console.log('Deleted:', provider) }}
+ * />
+ * ```
+ */
+
 import {
   getComponentStyles,
   type IdentityProvider,
@@ -25,6 +43,20 @@ import type {
   SsoProviderTableViewProps,
 } from '@/types';
 
+/**
+ * Internal SSO provider table container(logic) component.
+ * @param props - Component props
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.createAction - Configuration for the create action
+ * @param props.editAction - Configuration for the edit action
+ * @param props.deleteAction - Configuration for the delete action
+ * @param props.deleteFromOrganizationAction - Configuration for removing from organization
+ * @param props.enableProviderAction - Configuration for enabling a provider
+ * @returns JSX element
+ * @internal
+ */
 function SsoProviderTableContainer(props: SsoProviderTableProps) {
   const {
     customMessages = {},
@@ -41,6 +73,7 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
 
   const {
     providers,
+    organization,
     isLoading,
     isDeleting,
     isRemoving,
@@ -49,7 +82,6 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
     onDeleteConfirm,
     onRemoveConfirm,
     onEnableProvider,
-    organization,
   } = useSsoProviderTable(
     deleteAction,
     deleteFromOrganizationAction,
@@ -185,6 +217,14 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
   );
 }
 
+/**
+ * Internal SSO provider table view component
+ * @param props - Component props
+ * @param props.logic - Component logic props
+ * @param props.handlers - Component handler props
+ * @internal
+ * @returns JSX element
+ */
 function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
   const {
     customMessages,
@@ -335,7 +375,38 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
   );
 }
 
-const SsoProviderTable = withMyOrganizationService(
+/**
+ * SSO identity providers table.
+ *
+ * Displays a table of SSO identity providers with actions for creating, editing,
+ * enabling/disabling, deleting, and removing providers from the organization.
+ *
+ * @param props - {@link SsoProviderTableProps}
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.readOnly - Render in read-only mode
+ * @param props.createAction - Lifecycle hooks for provider creation
+ * @param props.editAction - Lifecycle hooks for provider editing
+ * @param props.deleteAction - Lifecycle hooks for provider deletion
+ * @param props.deleteFromOrganizationAction - Lifecycle hooks for removing provider from organization
+ * @param props.enableProviderAction - Lifecycle hooks for enabling/disabling provider
+ * @returns SSO provider table component
+ *
+ * @see {@link SsoProviderTableProps} for full props documentation
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderTable
+ *   createAction={{ onAfter: () => navigate('/providers/new') }}
+ *   editAction={{ onAfter: (provider) => navigate(`/providers/${provider.id}`) }}
+ *   deleteAction={{
+ *     onBefore: (provider) => confirm(`Delete ${provider.name}?`),
+ *     onAfter: (provider) => console.log('Deleted:', provider),
+ *   }}
+ * />
+ * ```
+ */
+const SsoProviderTable: React.ComponentType<SsoProviderTableProps> = withMyOrganizationService(
   SsoProviderTableContainer,
   MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES,
 );

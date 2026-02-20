@@ -161,7 +161,7 @@ export function createMockSsoProviderTableLogic(
     shouldAllowDeletion: false,
     showDeleteModal: false,
     showRemoveModal: false,
-    organization: undefined,
+    organization: null,
     isUpdating: false,
     isUpdatingId: '',
     isDeleting: false,

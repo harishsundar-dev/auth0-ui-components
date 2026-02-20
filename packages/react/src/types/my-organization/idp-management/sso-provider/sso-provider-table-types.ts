@@ -1,3 +1,8 @@
+/**
+ * SSO provider table types.
+ * @module sso-provider-table-types
+ */
+
 import type {
   SharedComponentProps,
   ComponentAction,
@@ -7,13 +12,17 @@ import type {
   OrganizationPrivate,
 } from '@auth0/universal-components-core';
 
+import type { Column } from '@/components/auth0/shared/data-table';
+
 export type IdentityProvider = CoreIdentityProvider;
 
+/** SSO provider table schema. */
 interface SsoProviderTableSchema {
   delete?: SsoProviderDeleteSchema;
   remove?: SsoProviderDeleteSchema;
 }
 
+/** CSS classes for SsoProviderTable. */
 interface SsoProviderTableClasses {
   'SsoProviderTable-header'?: string;
   'SsoProviderTable-table'?: string;
@@ -21,6 +30,7 @@ interface SsoProviderTableClasses {
   'SsoProviderTable-deleteProviderFromOrganizationModal'?: string;
 }
 
+/** Props for SsoProviderTable component. */
 export interface SsoProviderTableProps
   extends SharedComponentProps<
     SsoProviderTableMessages,
@@ -34,6 +44,7 @@ export interface SsoProviderTableProps
   enableProviderAction?: ComponentAction<IdentityProvider>;
 }
 
+/** useSsoProviderTable hook result. */
 export interface UseSsoProviderTableReturn extends SharedComponentProps {
   providers: IdentityProvider[];
   organization: OrganizationPrivate | null;
@@ -49,6 +60,7 @@ export interface UseSsoProviderTableReturn extends SharedComponentProps {
   onEnableProvider: (selectedIdp: IdentityProvider, enabled: boolean) => Promise<boolean>;
 }
 
+/** Props for SsoProviderTable actions column. */
 export interface SsoProviderTableActionsColumnProps
   extends SharedComponentProps<
     SsoProviderTableMessages,
@@ -70,14 +82,14 @@ export interface SsoProviderTableActionsColumnProps
 
 export interface SsoProviderTableLogicProps {
   data: IdentityProvider[];
-  columns: any[]; // Use your DataTable column type if available
+  columns: Column<IdentityProvider>[];
   isLoading: boolean;
   styling: SsoProviderTableProps['styling'];
   customMessages: SsoProviderTableProps['customMessages'];
   hideHeader: boolean;
   readOnly: boolean;
   currentStyles: {
-    variables: Record<string, any>;
+    variables: Record<string, string>;
     classes?: Record<string, string | undefined> | undefined;
   };
   shouldHideCreate: boolean;
@@ -87,7 +99,7 @@ export interface SsoProviderTableLogicProps {
   selectedIdp: IdentityProvider | null;
   showDeleteModal: boolean;
   showRemoveModal: boolean;
-  organization: any;
+  organization: OrganizationPrivate | null;
   isUpdating: boolean;
   isUpdatingId: string | null;
   isDeleting: boolean;

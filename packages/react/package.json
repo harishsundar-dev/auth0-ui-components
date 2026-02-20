@@ -1,6 +1,6 @@
 {
   "name": "@auth0/universal-components-react",
-  "version": "1.0.0-beta.10",
+  "version": "1.0.0-beta.11",
   "private": false,
   "sideEffects": [
     "*.css"
@@ -78,7 +78,7 @@
     "directory": "packages/react"
   },
   "author": "Auth0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@auth0/auth0-react": "^2.12.0",
     "@tailwindcss/cli": "^4.1.17",

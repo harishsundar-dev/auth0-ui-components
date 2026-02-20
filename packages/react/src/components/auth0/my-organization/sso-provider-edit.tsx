@@ -1,3 +1,26 @@
+/**
+ * SSO provider edit component with tabs.
+ *
+ * Tabbed interface for editing SSO provider settings, managing domains,
+ * and configuring SCIM provisioning.
+ *
+ * @module sso-provider-edit
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderEdit
+ *   providerId="con_abc123"
+ *   sso={{
+ *     saveAction: { onAfter: (provider) => console.log('Saved:', provider) },
+ *     deleteAction: { onAfter: () => navigate('/providers') },
+ *   }}
+ *   provisioning={{
+ *     createAction: { onAfter: (config) => console.log('Created:', config) },
+ *   }}
+ * />
+ * ```
+ */
+
 'use client';
 
 import {
@@ -26,6 +49,22 @@ import type {
   SsoProviderEditViewProps,
 } from '@/types';
 
+/**
+ * Internal SSO provider edit container(logic) component.
+ * @param props - Component props
+ * @param props.providerId - ID of the SSO provider
+ * @param props.backButton - Configuration for the back button
+ * @param props.sso - SSO configuration
+ * @param props.provisioning - Provisioning configuration
+ * @param props.domains - Array of domains
+ * @param props.hideHeader - Whether to hide the header
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.schema - Zod validation schema
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @internal
+ * @returns JSX element
+ */
 function SsoProviderEditContainer(props: SsoProviderEditProps) {
   const {
     providerId,
@@ -119,6 +158,14 @@ function SsoProviderEditContainer(props: SsoProviderEditProps) {
   );
 }
 
+/**
+ * Internal SSO provider edition view component
+ * @param props - Component props
+ * @param props.logic - Component logic props
+ * @param props.handlers - Component handler props
+ * @internal
+ * @returns JSX element
+ */
 function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
   const {
     styling,
@@ -293,7 +340,44 @@ function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
   );
 }
 
-const SsoProviderEdit = withMyOrganizationService(
+/**
+ * SSO provider edit interface with tabbed navigation.
+ *
+ * Provides a complete interface for editing SSO provider settings including:
+ * - SSO tab: Provider configuration, attribute mappings, delete/remove actions
+ * - Provisioning tab: SCIM configuration and token management
+ * - Domains tab: Domain association and verification
+ *
+ * @param props - {@link SsoProviderEditProps}
+ * @param props.providerId - Identity provider ID to edit
+ * @param props.backButton - Back button configuration
+ * @param props.sso - SSO tab lifecycle hooks (save, delete, remove actions)
+ * @param props.provisioning - Provisioning tab lifecycle hooks
+ * @param props.domains - Domains tab configuration
+ * @param props.hideHeader - Hide the header section
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @param props.schema - Validation schema overrides
+ * @param props.readOnly - Render in read-only mode
+ * @returns SSO provider edit component
+ *
+ * @see {@link SsoProviderEditProps} for full props documentation
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderEdit
+ *   providerId="con_abc123"
+ *   sso={{
+ *     saveAction: { onAfter: (provider) => console.log('Saved:', provider) },
+ *     deleteAction: { onAfter: () => navigate('/providers') },
+ *   }}
+ *   backButton={{
+ *     onClick: () => navigate('/providers'),
+ *   }}
+ * />
+ * ```
+ */
+const SsoProviderEdit: React.ComponentType<SsoProviderEditProps> = withMyOrganizationService(
   SsoProviderEditContainer,
   MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES,
 );

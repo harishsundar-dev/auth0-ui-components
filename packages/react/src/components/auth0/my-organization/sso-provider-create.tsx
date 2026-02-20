@@ -1,3 +1,25 @@
+/**
+ * SSO provider creation wizard.
+ *
+ * Multi-step wizard for creating new SSO identity providers. Supports various
+ * strategies including OIDC, SAML, Google Workspace, Microsoft Entra ID, Okta, and more.
+ *
+ * @module sso-provider-create
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderCreate
+ *   createAction={{
+ *     onBefore: (data) => true,
+ *     onAfter: (provider) => navigate(`/providers/${provider.id}`),
+ *   }}
+ *   backButton={{
+ *     onClick: () => navigate('/providers'),
+ *   }}
+ * />
+ * ```
+ */
+
 import {
   getComponentStyles,
   MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,
@@ -29,6 +51,18 @@ import type {
   SsoProviderCreateViewProps,
 } from '@/types';
 
+/**
+ * Internal SSO provider creation container(logic) component.
+ * @param props - Component props
+ * @param props.createAction - Configuration for the create action
+ * @param props.backButton - Configuration for the back button
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @param props.styling - Custom styling configuration with variables and classes
+ * @param props.onNext - Callback for next action
+ * @param props.onPrevious - Callback for previous action
+ * @internal
+ * @returns JSX element
+ */
 function SsoProviderCreateContainer(props: SsoProviderCreateProps) {
   const {
     createAction,
@@ -131,6 +165,14 @@ function SsoProviderCreateContainer(props: SsoProviderCreateProps) {
   );
 }
 
+/**
+ * Internal SSO provider creation view component
+ * @param props - Component props
+ * @param props.logic - Component logic props
+ * @param props.handlers - Component handler props
+ * @internal
+ * @returns JSX element
+ */
 function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) {
   const {
     styling,
@@ -209,7 +251,7 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
               isLoading={isLoadingIdpConfig}
               initialData={configure ?? undefined}
               customMessages={customMessages?.provider_configure}
-              idpConfig={idpConfig}
+              idpConfig={idpConfig ?? null}
               className={currentStyles?.classes?.['ProviderConfigure-root']}
             />
           ) : null,
@@ -260,7 +302,38 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
   );
 }
 
-const SsoProviderCreate = withMyOrganizationService(
+/**
+ * SSO provider creation wizard.
+ *
+ * Multi-step wizard for creating new SSO identity providers. Guides users through
+ * provider selection, configuration, and setup. Supports OIDC, SAML, Google Workspace,
+ * Microsoft Entra ID, Okta, PingFederate, and ADFS strategies.
+ *
+ * @param props - {@link SsoProviderCreateProps}
+ * @param props.createAction - Lifecycle hooks for provider creation
+ * @param props.backButton - Back button configuration
+ * @param props.onNext - Callback when moving to next step
+ * @param props.onPrevious - Callback when moving to previous step
+ * @param props.customMessages - Custom i18n message overrides
+ * @param props.styling - CSS variables and class overrides
+ * @returns SSO provider creation wizard component
+ *
+ * @see {@link SsoProviderCreateProps} for full props documentation
+ *
+ * @example
+ * ```tsx
+ * <SsoProviderCreate
+ *   createAction={{
+ *     onBefore: (data) => true,
+ *     onAfter: (provider) => navigate(`/providers/${provider.id}`),
+ *   }}
+ *   backButton={{
+ *     onClick: () => navigate('/providers'),
+ *   }}
+ * />
+ * ```
+ */
+const SsoProviderCreate: React.ComponentType<SsoProviderCreateProps> = withMyOrganizationService(
   SsoProviderCreateContainer,
   MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,
 );

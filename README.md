@@ -141,9 +141,9 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## 📜 License
 
-Copyright 2025 Okta, Inc
+Copyright 2026 Okta, Inc
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the [Apache License 2.0](LICENSE). See the [LICENSE](LICENSE) file for details.
 
 **Authors**  
 Okta Inc.

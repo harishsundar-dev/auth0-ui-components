@@ -2,11 +2,16 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { SsoProviderEdit } from '@/components/auth0/my-organization/sso-provider-edit';
+import {
+  SsoProviderEdit,
+  SsoProviderEditView,
+} from '@/components/auth0/my-organization/sso-provider-edit';
 import * as useCoreClientModule from '@/hooks/shared/use-core-client';
 import {
   createMockIdentityProvider,
   createMockIdentityProviderWithoutProvisioning,
+  createMockSsoProviderEditHandler,
+  createMockSsoProviderEditLogic,
 } from '@/tests/utils/__mocks__';
 import { renderWithProviders } from '@/tests/utils/test-provider';
 import { mockCore, mockToast } from '@/tests/utils/test-setup';
@@ -706,5 +711,23 @@ describe('SsoProviderEdit', () => {
         });
       });
     });
+  });
+});
+
+describe('SsoProviderEditView', () => {
+  const logic = createMockSsoProviderEditLogic();
+  const handlers = createMockSsoProviderEditHandler();
+
+  it('renders the header and tabs', () => {
+    renderWithProviders(<SsoProviderEditView logic={logic} handlers={handlers} />);
+    expect(screen.getByRole('heading')).toBeInTheDocument();
+    expect(screen.getByText(/tabs.sso.name/i)).toBeInTheDocument();
+    expect(screen.getByText(/tabs.provisioning.name/i)).toBeInTheDocument();
+    expect(screen.getByText(/tabs.domains.name/i)).toBeInTheDocument();
+  });
+
+  it('renders the switch in header', () => {
+    renderWithProviders(<SsoProviderEditView logic={logic} handlers={handlers} />);
+    expect(screen.getByRole('switch')).toBeInTheDocument();
   });
 });

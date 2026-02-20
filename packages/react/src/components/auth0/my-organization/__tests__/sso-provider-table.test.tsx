@@ -5,9 +5,11 @@ import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 import { SsoProviderTable } from '@/components/auth0/my-organization/sso-provider-table';
+import { SsoProviderTableView } from '@/components/auth0/my-organization/sso-provider-table';
 import * as useConfigModule from '@/hooks/my-organization/use-config';
 import * as useIdpConfigModule from '@/hooks/my-organization/use-idp-config';
 import * as useCoreClientModule from '@/hooks/shared/use-core-client';
+import { createMockSsoProviderTableHandler, createMockSsoProviderTableLogic } from '@/tests/utils';
 import { createMockUseConfig } from '@/tests/utils/__mocks__/my-organization/config/config.mocks';
 import { createMockIdentityProvider } from '@/tests/utils/__mocks__/my-organization/domain-management/domain.mocks';
 import { createMockUseIdpConfig } from '@/tests/utils/__mocks__/my-organization/idp-management/idp-config.mocks';
@@ -798,5 +800,23 @@ describe('SsoProviderTable', () => {
         expect(screen.getByText(/table.empty_message/i)).toBeInTheDocument();
       });
     });
+  });
+});
+
+describe('SsoProviderTableView', () => {
+  const logic = createMockSsoProviderTableLogic();
+  const handlers = createMockSsoProviderTableHandler();
+
+  it('renders the table and header', () => {
+    renderWithProviders(<SsoProviderTableView logic={logic} handlers={handlers} />);
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getByRole('heading')).toBeInTheDocument();
+  });
+
+  it('does not render header if hideHeader is true', () => {
+    renderWithProviders(
+      <SsoProviderTableView logic={{ ...logic, hideHeader: true }} handlers={handlers} />,
+    );
+    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
   });
 });

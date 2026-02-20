@@ -9,10 +9,17 @@ import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { SsoProviderCreate } from '@/components/auth0/my-organization/sso-provider-create';
+import {
+  SsoProviderCreate,
+  SsoProviderCreateView,
+} from '@/components/auth0/my-organization/sso-provider-create';
 import * as useConfigModule from '@/hooks/my-organization/use-config';
 import * as useIdpConfigModule from '@/hooks/my-organization/use-idp-config';
 import * as useCoreClientModule from '@/hooks/shared/use-core-client';
+import {
+  createMockSsoProviderCreateHandler,
+  createMockSsoProviderCreateLogic,
+} from '@/tests/utils';
 import { createMockUseConfig } from '@/tests/utils/__mocks__/my-organization/config/config.mocks';
 import { createMockUseIdpConfig } from '@/tests/utils/__mocks__/my-organization/idp-management/idp-config.mocks';
 import { createTestQueryClient, renderWithProviders } from '@/tests/utils/test-provider';
@@ -689,5 +696,21 @@ describe('SsoProviderCreate', () => {
         });
       });
     });
+  });
+});
+
+describe('SsoProviderCreateView', () => {
+  const logic = createMockSsoProviderCreateLogic();
+  const handlers = createMockSsoProviderCreateHandler();
+
+  it('renders the wizard and header', () => {
+    renderWithProviders(<SsoProviderCreateView logic={logic} handlers={handlers} />);
+    expect(screen.getByRole('heading')).toBeInTheDocument();
+    expect(screen.getByTestId('sso-provider-create-content')).toBeInTheDocument();
+  });
+
+  it('renders the next button', () => {
+    renderWithProviders(<SsoProviderCreateView logic={logic} handlers={handlers} />);
+    expect(screen.getByRole('button', { name: /nextButtonLabel/i })).toBeInTheDocument();
   });
 });

@@ -15,11 +15,14 @@ import type {
   ComponentAction,
   BackButton,
   CreateIdentityProviderRequestContentPrivate,
+  getComponentStyles,
 } from '@auth0/universal-components-core';
 import type { LucideIcon } from 'lucide-react';
 import type React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
+import type { ProviderConfigureHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/provider-configure';
+import type { ProviderDetailsFormHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-details';
 import type { IdpConfig } from '@/types/my-organization/config/config-idp-types';
 
 /**
@@ -92,4 +95,49 @@ export interface SsoProviderCreateProps
 export interface UseSsoProviderCreateOptions {
   createAction?: SsoProviderCreateProps['createAction'];
   customMessages?: SsoProviderCreateProps['customMessages'];
+}
+
+export type FormState = {
+  strategy?: IdpStrategy;
+  details?: ProviderDetailsFormValues | null;
+  configure?: ProviderConfigureFormValues | null;
+};
+
+export type SsoProviderCreateViewProps = {
+  logic: SsoProviderCreateLogicProps;
+  handlers: SsoProviderCreateHandlerProps;
+};
+
+export interface SsoProviderCreateLogicProps {
+  isDarkMode: boolean;
+  formData: FormState;
+  strategy?: IdpStrategy;
+  details?: ProviderDetailsFormValues | null;
+  configure?: ProviderConfigureFormValues | null;
+  isCreating: boolean;
+  isLoadingConfig: boolean;
+  filteredStrategies: IdpStrategy[];
+  isLoadingIdpConfig: boolean;
+  idpConfig?: any;
+  styling?: SsoProviderCreateProps['styling'];
+  customMessages?: SsoProviderCreateProps['customMessages'];
+  backButton?: SsoProviderCreateProps['backButton'];
+  currentStyles?: ReturnType<typeof getComponentStyles>;
+  wizardSteps: any[];
+}
+
+export interface SsoProviderCreateHandlerProps {
+  onNext: ((stepId: string, values: Partial<SsoProviderFormValues>) => boolean) | undefined;
+  onPrevious: ((stepId: string, values: Partial<SsoProviderFormValues>) => boolean) | undefined;
+  setFormData: React.Dispatch<React.SetStateAction<FormState>>;
+  detailsRef: React.RefObject<ProviderDetailsFormHandle | null>;
+  configureRef: React.RefObject<ProviderConfigureHandle | null>;
+  handleCreate: () => Promise<void>;
+  createStepActions: (
+    stepId: 'provider_details' | 'provider_configure',
+    ref: React.RefObject<ProviderDetailsFormHandle | ProviderConfigureHandle | null>,
+  ) => {
+    onNextAction: () => Promise<boolean>;
+    onPreviousAction: () => Promise<boolean>;
+  };
 }

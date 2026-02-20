@@ -1,8 +1,5 @@
 import {
   getComponentStyles,
-  type IdpStrategy,
-  type ProviderDetailsFormValues,
-  type ProviderConfigureFormValues,
   MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,
 } from '@auth0/universal-components-core';
 import React, { useState, useRef, useCallback, useMemo } from 'react';
@@ -24,35 +21,32 @@ import { useIdpConfig } from '@/hooks/my-organization/use-idp-config';
 import { useSsoProviderCreate } from '@/hooks/my-organization/use-sso-provider-create';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
-import type { SsoProviderCreateProps } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
+import type {
+  FormState,
+  SsoProviderCreateHandlerProps,
+  SsoProviderCreateLogicProps,
+  SsoProviderCreateProps,
+  SsoProviderCreateViewProps,
+} from '@/types';
 
-type FormState = {
-  strategy?: IdpStrategy;
-  details?: ProviderDetailsFormValues | null;
-  configure?: ProviderConfigureFormValues | null;
-};
+function SsoProviderCreateContainer(props: SsoProviderCreateProps) {
+  const {
+    createAction,
+    backButton,
+    customMessages = {},
+    styling = {
+      variables: { common: {}, light: {}, dark: {} },
+      classes: {},
+    },
+    onNext,
+    onPrevious,
+  } = props;
 
-export function SsoProviderCreateComponent({
-  createAction,
-  backButton,
-  onNext,
-  onPrevious,
-  customMessages = {},
-  styling = {
-    variables: { common: {}, light: {}, dark: {} },
-    classes: {},
-  },
-}: SsoProviderCreateProps) {
-  const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const { isDarkMode } = useTheme();
-
   const [formData, setFormData] = useState<FormState>({});
   const { strategy, details, configure } = formData;
 
-  const { createProvider, isCreating } = useSsoProviderCreate({
-    createAction,
-    customMessages,
-  });
+  const { createProvider, isCreating } = useSsoProviderCreate({ createAction, customMessages });
   const { isLoadingConfig, filteredStrategies } = useConfig();
   const { isLoadingIdpConfig, idpConfig } = useIdpConfig();
 
@@ -70,7 +64,6 @@ export function SsoProviderCreateComponent({
       ref: React.RefObject<ProviderDetailsFormHandle | ProviderConfigureHandle | null>,
     ) => {
       const dataKey = stepId === 'provider_details' ? 'details' : 'configure';
-
       const handleAction = async (
         handler: typeof onNext | typeof onPrevious | undefined,
         shouldValidate = false,
@@ -79,14 +72,12 @@ export function SsoProviderCreateComponent({
           const isValid = await ref.current?.validate();
           if (!isValid) return false;
         }
-
         const currentData = ref.current?.getData() ?? null;
         setFormData((prev) => ({ ...prev, [dataKey]: currentData }));
         if (!handler) return true;
         const fullPayload = { ...formData, [dataKey]: currentData };
         return handler(stepId, fullPayload);
       };
-
       return {
         onNextAction: () => handleAction(onNext, true),
         onPreviousAction: () => handleAction(onPrevious, false),
@@ -97,13 +88,75 @@ export function SsoProviderCreateComponent({
 
   const handleCreate = useCallback(async () => {
     const finalConfigureData = configureRef.current?.getData();
-
     await createProvider({
       strategy: strategy!,
       ...details!,
       ...finalConfigureData,
     });
   }, [strategy, details, configure, createProvider]);
+
+  const ssoProviderCreateLogicProps: SsoProviderCreateLogicProps = {
+    isDarkMode: false,
+    formData,
+    strategy,
+    details,
+    configure,
+    isCreating,
+    isLoadingConfig,
+    filteredStrategies,
+    isLoadingIdpConfig,
+    idpConfig,
+    styling,
+    customMessages,
+    backButton,
+    currentStyles,
+    wizardSteps: [],
+  };
+
+  const ssoProviderCreateHandlerProps: SsoProviderCreateHandlerProps = {
+    onNext,
+    onPrevious,
+    setFormData,
+    detailsRef,
+    configureRef,
+    handleCreate,
+    createStepActions,
+  };
+
+  return (
+    <SsoProviderCreateView
+      logic={ssoProviderCreateLogicProps}
+      handlers={ssoProviderCreateHandlerProps}
+    />
+  );
+}
+
+function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) {
+  const {
+    styling,
+    customMessages,
+    backButton,
+    isCreating,
+    currentStyles,
+    strategy,
+    details,
+    configure,
+    isLoadingConfig,
+    filteredStrategies,
+    isLoadingIdpConfig,
+    idpConfig,
+  } = logic;
+
+  const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
+  const {
+    detailsRef,
+    configureRef,
+    onNext,
+    onPrevious,
+    setFormData,
+    handleCreate,
+    createStepActions,
+  }: SsoProviderCreateHandlerProps = handlers;
 
   const wizardSteps = useMemo(
     () => [
@@ -115,23 +168,20 @@ export function SsoProviderCreateComponent({
             isLoading={isLoadingConfig}
             strategyList={filteredStrategies}
             onClickStrategy={(selected) => {
-              setFormData((prev) => ({
+              setFormData((prev: FormState) => ({
                 strategy: selected,
                 details: prev.strategy === selected ? prev.details : null,
                 configure: prev.strategy === selected ? prev.configure : null,
               }));
-
               onNext?.('provider_select', { strategy: selected });
               navigate?.();
             }}
             selectedStrategy={strategy}
-            customMessages={customMessages.provider_select}
+            customMessages={customMessages?.provider_select}
             className={currentStyles?.classes?.['ProviderSelect-root']}
           />
         ),
-        actions: {
-          showNext: false,
-        },
+        actions: { showNext: false },
       },
       {
         id: 'provider_details',
@@ -141,7 +191,7 @@ export function SsoProviderCreateComponent({
             mode="create"
             ref={detailsRef}
             initialData={details ?? undefined}
-            customMessages={customMessages.provider_details}
+            customMessages={customMessages?.provider_details}
             styling={styling}
             className={currentStyles?.classes?.['ProviderDetails-root']}
           />
@@ -158,7 +208,7 @@ export function SsoProviderCreateComponent({
               strategy={strategy}
               isLoading={isLoadingIdpConfig}
               initialData={configure ?? undefined}
-              customMessages={customMessages.provider_configure}
+              customMessages={customMessages?.provider_configure}
               idpConfig={idpConfig}
               className={currentStyles?.classes?.['ProviderConfigure-root']}
             />
@@ -181,7 +231,7 @@ export function SsoProviderCreateComponent({
   );
 
   return (
-    <div style={currentStyles.variables} className="w-full">
+    <div style={currentStyles?.variables} className="w-full">
       <Header
         title={t('header.title')}
         backButton={
@@ -210,7 +260,9 @@ export function SsoProviderCreateComponent({
   );
 }
 
-export const SsoProviderCreate = withMyOrganizationService(
-  SsoProviderCreateComponent,
+const SsoProviderCreate = withMyOrganizationService(
+  SsoProviderCreateContainer,
   MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,
 );
+
+export { SsoProviderCreate, SsoProviderCreateView };

@@ -33,10 +33,15 @@ import { withMyOrganizationService } from '@/hoc/with-services';
 import { useOrganizationDetailsEdit } from '@/hooks/my-organization/use-organization-details-edit';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
-import type { OrganizationDetailsEditProps } from '@/types/my-organization/organization-management/organization-details-edit-types';
+import type {
+  OrganizationDetailsEditProps,
+  OrganizationDetailsEditLogicProps,
+  OrganizationDetailsEditHandlerProps,
+  OrganizationDetailsEditViewProps,
+} from '@/types/my-organization/organization-management/organization-details-edit-types';
 
 /**
- * Internal organization details edit component.
+ * Internal organization details edit container component.
  * @param props - Component props
  * @param props.schema - Zod validation schema
  * @param props.customMessages - Custom translation messages to override defaults
@@ -49,21 +54,20 @@ import type { OrganizationDetailsEditProps } from '@/types/my-organization/organ
  * @returns JSX element
  * @internal
  */
-function OrganizationDetailsEditComponent({
-  schema,
-  customMessages = {},
-  styling = {
-    variables: { common: {}, light: {}, dark: {} },
-    classes: {},
-  },
-  readOnly = false,
-  saveAction,
-  cancelAction,
-  hideHeader = false,
-  backButton,
-}: OrganizationDetailsEditProps): React.JSX.Element {
-  const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
-  const { isDarkMode } = useTheme();
+function OrganizationDetailsEditContainer(props: OrganizationDetailsEditProps): React.JSX.Element {
+  const {
+    schema,
+    customMessages = {},
+    styling = {
+      variables: { common: {}, light: {}, dark: {} },
+      classes: {},
+    },
+    readOnly = false,
+    saveAction,
+    cancelAction,
+    hideHeader = false,
+    backButton,
+  } = props;
 
   const {
     organization,
@@ -75,6 +79,50 @@ function OrganizationDetailsEditComponent({
     readOnly,
     customMessages,
   });
+
+  const orgDetailsEditLogicProps: OrganizationDetailsEditLogicProps = {
+    organization,
+    isFetchLoading,
+    schema,
+    styling,
+    customMessages,
+    readOnly,
+    hideHeader,
+    backButton,
+  };
+
+  const orgDetailsEditHandlerProps: OrganizationDetailsEditHandlerProps = {
+    formActions: enhancedFormActions,
+  };
+
+  return (
+    <OrganizationDetailsEditView
+      logic={orgDetailsEditLogicProps}
+      handlers={orgDetailsEditHandlerProps}
+    />
+  );
+}
+
+/**
+ * OrganizationDetailsEditView — Presentational component.
+ * @param props - View props with logic and handlers
+ * @returns Organization Details Edit view element
+ * @internal
+ */
+function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEditViewProps) {
+  const {
+    organization,
+    isFetchLoading,
+    schema,
+    styling,
+    customMessages,
+    readOnly,
+    hideHeader,
+    backButton,
+  } = logic;
+  const { formActions } = handlers;
+  const { isDarkMode } = useTheme();
+  const { t } = useTranslator('domain_management', customMessages);
 
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),
@@ -114,10 +162,10 @@ function OrganizationDetailsEditComponent({
         <OrganizationDetails
           organization={organization}
           schema={schema?.details}
-          customMessages={customMessages.details}
+          customMessages={customMessages?.details}
           styling={styling}
           readOnly={readOnly}
-          formActions={enhancedFormActions}
+          formActions={formActions}
         />
       </div>
     </div>
@@ -157,5 +205,7 @@ function OrganizationDetailsEditComponent({
  * />
  * ```
  */
-export const OrganizationDetailsEdit: React.ComponentType<OrganizationDetailsEditProps> =
-  withMyOrganizationService(OrganizationDetailsEditComponent, MY_ORGANIZATION_DETAILS_EDIT_SCOPES);
+const OrganizationDetailsEdit: React.ComponentType<OrganizationDetailsEditProps> =
+  withMyOrganizationService(OrganizationDetailsEditContainer, MY_ORGANIZATION_DETAILS_EDIT_SCOPES);
+
+export { OrganizationDetailsEdit, OrganizationDetailsEditView };

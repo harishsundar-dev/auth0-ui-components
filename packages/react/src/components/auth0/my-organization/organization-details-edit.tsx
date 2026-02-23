@@ -1,24 +1,4 @@
-/**
- * Organization details edit component.
- *
- * Provides a form for editing organization details including name, display name,
- * branding settings, and organization metadata.
- *
- * @module organization-details-edit
- *
- * @example
- * ```tsx
- * <OrganizationDetailsEdit
- *   saveAction={{
- *     onBefore: () => true,
- *     onAfter: (org) => console.log('Saved:', org),
- *   }}
- *   cancelAction={{
- *     onAfter: () => navigate('/organizations'),
- *   }}
- * />
- * ```
- */
+/** @module organization-details-edit */
 
 import {
   getComponentStyles,

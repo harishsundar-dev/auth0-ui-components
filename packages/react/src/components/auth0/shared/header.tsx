@@ -1,3 +1,9 @@
+/**
+ * Section header with actions.
+ * @module header
+ * @internal
+ */
+
 import type { ActionButton as CoreActionButton } from '@auth0/universal-components-core';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowLeft } from 'lucide-react';
@@ -111,7 +117,7 @@ export const Header = React.forwardRef<
   const renderAction = (action: ActionProps, index: number) => {
     const key = `action-${index}`;
     if (isLoading) {
-      return <Spinner className="w-4 h-4" />;
+      return <Spinner key={`spinner-${key}`} className="w-4 h-4" />;
     }
     if (action.hidden) {
       return null;

@@ -1,3 +1,8 @@
+/**
+ * Identity provider configuration hook.
+ * @module use-idp-config
+ */
+
 import { hasApiErrorBody, type IdpStrategy } from '@auth0/universal-components-core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -7,11 +12,15 @@ import type {
   UseConfigIdpResult,
 } from '@/types/my-organization/config/config-idp-types';
 
-const idpConfigQueryKeys = {
+export const idpConfigQueryKeys = {
   all: ['idp-config'] as const,
   config: () => [...idpConfigQueryKeys.all, 'config'] as const,
 };
 
+/**
+ * Hook for fetching IDP configuration and provisioning settings.
+ * @returns IDP config and provisioning utilities.
+ */
 export function useIdpConfig(): UseConfigIdpResult {
   const { coreClient } = useCoreClient();
   const queryClient = useQueryClient();
@@ -55,7 +64,7 @@ export function useIdpConfig(): UseConfigIdpResult {
     idpConfig,
     isIdpConfigValid: !!strategies && Object.keys(strategies).length > 0,
     isLoadingIdpConfig: idpConfigQuery.isLoading,
-    fetchIdpConfig: () => queryClient.invalidateQueries({ queryKey: idpConfigQueryKeys.config() }),
+    fetchIdpConfig: async () => await queryClient.getQueryData(idpConfigQueryKeys.config()),
     isProvisioningEnabled,
     isProvisioningMethodEnabled,
   };

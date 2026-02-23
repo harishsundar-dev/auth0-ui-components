@@ -1,3 +1,9 @@
+/**
+ * Data table with sorting and actions.
+ * @module data-table
+ * @internal
+ */
+
 import type { ActionButton as CoreActionButton } from '@auth0/universal-components-core';
 import {
   useReactTable,
@@ -172,6 +178,13 @@ const DEFAULT_COPY_LABELS: Required<CopyColumnLabels> = {
   copiedTooltip: 'Copied!',
 };
 
+/**
+ * Copy button with clipboard functionality.
+ * @param props - Component props.
+ * @param props.value - Value to copy
+ * @param props.labels - Tooltip labels
+ * @returns JSX element
+ */
 function CopyButton({
   value,
   labels = DEFAULT_COPY_LABELS,
@@ -226,6 +239,13 @@ function CopyButton({
   );
 }
 
+/**
+ * Renders a text column cell.
+ * @param item - Data item.
+ * @param value - Cell value.
+ * @param column - Column configuration.
+ * @returns React node
+ */
 function renderTextColumn<Item>(
   item: Item,
   value: unknown,
@@ -238,6 +258,13 @@ function renderTextColumn<Item>(
   return <span className="text-muted-foreground">{String(value)}</span>;
 }
 
+/**
+ * Renders a date column cell.
+ * @param item - Data item.
+ * @param value - Cell value.
+ * @param column - Column configuration.
+ * @returns React node
+ */
 function renderDateColumn<Item>(
   item: Item,
   value: Date | string | number,
@@ -255,6 +282,13 @@ function renderDateColumn<Item>(
   );
 }
 
+/**
+ * Renders a switch column cell.
+ * @param item - Data item.
+ * @param value - Cell value.
+ * @param column - Column configuration.
+ * @returns React node
+ */
 function renderSwitchColumn<Item>(
   item: Item,
   value: boolean,
@@ -271,6 +305,12 @@ function renderSwitchColumn<Item>(
   );
 }
 
+/**
+ * Renders a button column cell.
+ * @param item - Data item.
+ * @param column - Column configuration.
+ * @returns React node
+ */
 function renderButtonColumn<Item>(item: Item, column: ButtonColumn<Item>): React.ReactNode {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -284,14 +324,33 @@ function renderButtonColumn<Item>(item: Item, column: ButtonColumn<Item>): React
   );
 }
 
+/**
+ * Renders a badge column cell.
+ * @param value - Cell value.
+ * @param column - Column configuration.
+ * @returns React node
+ */
 function renderBadgeColumn<Item>(value: unknown, column: BadgeColumn<Item>): React.ReactNode {
   return <Badge variant={column.variant}>{String(value)}</Badge>;
 }
 
+/**
+ * Renders a copy column cell.
+ * @param value - Cell value.
+ * @returns React node
+ */
 function renderCopyColumn(value: unknown): React.ReactNode {
   return <CopyButton value={value} />;
 }
 
+/**
+ * Empty state component for data table.
+ * @param props - Component props.
+ * @param props.title - Empty state title.
+ * @param props.subtitle - Empty state subtitle.
+ * @param props.action - Optional action button config.
+ * @returns JSX element
+ */
 function EmptyState({ title, subtitle, action }: EmptyStateProps) {
   return (
     <div className="text-center py-12">
@@ -306,6 +365,19 @@ function EmptyState({ title, subtitle, action }: EmptyStateProps) {
   );
 }
 
+/**
+ * Generic data table component.
+ * @param props - Component props.
+ * @param props.data - Table data items.
+ * @param props.columns - Column configurations.
+ * @param props.loading - Loading state.
+ * @param props.loader - Custom loader component.
+ * @param props.emptyState - Empty state configuration.
+ * @param props.onRowClick - Row click handler.
+ * @param props.className - Additional CSS classes.
+ * @param props.headerAlign - Default header alignment.
+ * @returns JSX element
+ */
 export function DataTable<Item>({
   data,
   columns,

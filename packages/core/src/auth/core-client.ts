@@ -1,3 +1,9 @@
+/**
+ * Core client factory for creating the main service client.
+ * @module core-client
+ * @internal
+ */
+
 import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
 import { initializeMyOrganizationClient } from '@core/services/my-organization/my-organization-api-service';
 
@@ -7,6 +13,14 @@ import { createI18nService } from '../i18n';
 import type { AuthDetails, CoreClientInterface } from './auth-types';
 import { createTokenManager } from './token-manager';
 
+/**
+ * Creates and initializes the core client with all necessary services.
+ * @internal
+ *
+ * @param authDetails - Authentication configuration details
+ * @param i18nOptions - Internationalization options
+ * @returns Promise resolving to the initialized CoreClient
+ */
 export async function createCoreClient(
   authDetails: AuthDetails,
   i18nOptions?: I18nInitOptions,
@@ -14,6 +28,36 @@ export async function createCoreClient(
   const i18nService = await createI18nService(
     i18nOptions || { currentLanguage: 'en-US', fallbackLanguage: 'en-US' },
   );
+
+  // Skip API clients for docs sites
+  if (authDetails.previewMode) {
+    const baseCoreClient: CoreClientInterface = {
+      auth: {},
+      i18nService,
+      async getToken() {
+        return undefined;
+      },
+      isProxyMode() {
+        return false;
+      },
+      ensureScopes: async () => {},
+      myAccountApiClient: undefined,
+      myOrganizationApiClient: undefined,
+      getMyAccountApiClient: function () {
+        throw new Error('Function not implemented.');
+      },
+      getMyOrganizationApiClient: function () {
+        throw new Error('Function not implemented.');
+      },
+      getDomain: function (): string | undefined {
+        throw new Error('Function not implemented.');
+      },
+    };
+
+    return {
+      ...baseCoreClient,
+    };
+  }
 
   const tokenManagerService = createTokenManager(authDetails);
 

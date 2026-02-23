@@ -6,7 +6,11 @@ import type {
 } from '@auth0/universal-components-core';
 import { vi } from 'vitest';
 
-import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
+import type {
+  DomainTableProps,
+  UseDomainTableLogicOptions,
+  UseDomainTableResult,
+} from '@/types/my-organization/domain-management/domain-table-types';
 
 export const createMockDomain = (overrides?: Partial<Domain>): Domain => ({
   id: 'domain_abc123xyz456',
@@ -113,4 +117,55 @@ export const createMockDeleteAction = (): ComponentAction<Domain> => ({
   disabled: false,
   onBefore: vi.fn(() => true),
   onAfter: vi.fn(),
+});
+
+export const createMockLogic = (
+  overrides: Partial<UseDomainTableResult & DomainTableProps> = {},
+) => ({
+  domains: [createMockDomain(), createMockVerifiedDomain()],
+  providers: [],
+  isCreating: false,
+  isVerifying: false,
+  isFetching: false,
+  isLoadingProviders: false,
+  isDeleting: false,
+  schema: undefined,
+  styling: { variables: { common: {}, light: {}, dark: {} }, classes: {} },
+  hideHeader: false,
+  readOnly: false,
+  customMessages: {},
+  createAction: undefined,
+  onOpenProvider: undefined,
+  onCreateProvider: undefined,
+  fetchProviders: vi.fn(),
+  fetchDomains: vi.fn(),
+  onCreateDomain: vi.fn(),
+  onVerifyDomain: vi.fn(),
+  onDeleteDomain: vi.fn(),
+  onAssociateToProvider: vi.fn(),
+  onDeleteFromProvider: vi.fn(),
+  ...overrides,
+});
+
+export const createMockApi = (overrides: Partial<UseDomainTableLogicOptions> = {}) => ({
+  showCreateModal: false,
+  showConfigureModal: false,
+  showVerifyModal: false,
+  showDeleteModal: false,
+  verifyError: undefined,
+  selectedDomain: null,
+  setShowCreateModal: vi.fn(),
+  setShowConfigureModal: vi.fn(),
+  setShowDeleteModal: vi.fn(),
+  setShowVerifyModal: vi.fn(),
+  handleCreate: vi.fn(),
+  handleVerify: vi.fn(),
+  handleDelete: vi.fn(),
+  handleToggleSwitch: vi.fn(),
+  handleCloseVerifyModal: vi.fn(),
+  handleCreateClick: vi.fn(),
+  handleConfigureClick: vi.fn(),
+  handleVerifyClick: vi.fn(),
+  handleDeleteClick: vi.fn(),
+  ...overrides,
 });

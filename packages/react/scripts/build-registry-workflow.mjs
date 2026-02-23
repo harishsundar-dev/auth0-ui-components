@@ -29,6 +29,9 @@ const DOCS_SITE_PUBLIC_R = path.resolve(
 
 const MAX_VERSIONS_PER_MAJOR = 5;
 
+const SEMVER_REGEX = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+const CORE_PACKAGE_NAME = '@auth0/universal-components-core';
+
 function getCoreVersion() {
   if (!fs.existsSync(CORE_PACKAGE_JSON)) {
     console.error(`Core package.json not found at ${CORE_PACKAGE_JSON}`);
@@ -42,8 +45,23 @@ function getCoreVersion() {
     process.exit(1);
   }
   const version = pkg.version;
+  if (!SEMVER_REGEX.test(version)) {
+    console.error(`Invalid semver version "${version}" in core package.json`);
+    process.exit(1);
+  }
   const major = version.split('.')[0];
   console.log(`Core package version: ${version} (Major: ${major})`);
+
+  // Verify the version is published on npm before proceeding
+  console.log(`Verifying ${CORE_PACKAGE_NAME}@${version} is published on npm...`);
+  try {
+    execSync(`npm view ${CORE_PACKAGE_NAME}@${version} version`, { stdio: 'pipe' });
+    console.log(`Confirmed: ${CORE_PACKAGE_NAME}@${version} is available on npm.`);
+  } catch {
+    console.error(`Version ${version} of ${CORE_PACKAGE_NAME} is not published on npm. Aborting.`);
+    process.exit(1);
+  }
+
   return { version, major };
 }
 

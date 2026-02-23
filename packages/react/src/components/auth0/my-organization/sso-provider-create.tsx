@@ -1,24 +1,4 @@
-/**
- * SSO provider creation wizard.
- *
- * Multi-step wizard for creating new SSO identity providers. Supports various
- * strategies including OIDC, SAML, Google Workspace, Microsoft Entra ID, Okta, and more.
- *
- * @module sso-provider-create
- *
- * @example
- * ```tsx
- * <SsoProviderCreate
- *   createAction={{
- *     onBefore: (data) => true,
- *     onAfter: (provider) => navigate(`/providers/${provider.id}`),
- *   }}
- *   backButton={{
- *     onClick: () => navigate('/providers'),
- *   }}
- * />
- * ```
- */
+/** @module sso-provider-create */
 
 import {
   getComponentStyles,

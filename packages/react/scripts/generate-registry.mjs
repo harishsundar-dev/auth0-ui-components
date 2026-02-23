@@ -105,6 +105,21 @@ async function promptForMetadata(autoDetected, blockName) {
 // Module-level caches to avoid re-reading files on every call inside loops
 let _npmDependenciesCache = null;
 let _corePackageVersionCache = null;
+let _packageJsonCache = null;
+
+/**
+ * Read and cache the raw package.json object.
+ */
+function getPackageJson() {
+  if (_packageJsonCache) return _packageJsonCache;
+  try {
+    _packageJsonCache = JSON.parse(fs.readFileSync(PACKAGE_JSON, 'utf-8'));
+  } catch (error) {
+    console.error(`Failed to read or parse package.json: ${error.message}`);
+    process.exit(1);
+  }
+  return _packageJsonCache;
+}
 
 /**
  * Read package.json to get all declared dependencies.
@@ -112,7 +127,7 @@ let _corePackageVersionCache = null;
  */
 function getNpmDependencies() {
   if (_npmDependenciesCache) return _npmDependenciesCache;
-  const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON, 'utf-8'));
+  const pkg = getPackageJson();
   _npmDependenciesCache = {
     ...pkg.dependencies,
     ...pkg.peerDependencies,
@@ -133,7 +148,13 @@ function getCorePackageVersion() {
     );
     return 'workspace:*';
   }
-  const corePkg = JSON.parse(fs.readFileSync(CORE_PACKAGE_JSON, 'utf-8'));
+  let corePkg;
+  try {
+    corePkg = JSON.parse(fs.readFileSync(CORE_PACKAGE_JSON, 'utf-8'));
+  } catch (error) {
+    console.error(`Failed to read or parse core package.json: ${error.message}`);
+    process.exit(1);
+  }
   _corePackageVersionCache = corePkg.version;
   return _corePackageVersionCache;
 }
@@ -547,8 +568,8 @@ async function generateBlockItem(blockFilePath) {
   npmDeps.delete('@auth0/universal-components-core');
 
   // Filter out peer dependencies (users already have these), build tools, and internal packages
-  const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON, 'utf-8'));
-  const peerDeps = new Set(Object.keys(pkg.peerDependencies || {}));
+  // Re-use the cached package.json — no redundant file read needed here.
+  const peerDeps = new Set(Object.keys(getPackageJson().peerDependencies || {}));
   // Keep react-hook-form as it needs to be installed when adding the component
   peerDeps.delete('react-hook-form');
 

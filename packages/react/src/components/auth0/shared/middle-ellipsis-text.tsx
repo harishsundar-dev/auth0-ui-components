@@ -7,9 +7,13 @@ export interface MiddleEllipsisTextProps {
   className?: string;
 }
 
-// Reusable canvas context for text measurement (singleton)
 let measureContext: CanvasRenderingContext2D | null = null;
 
+/**
+ * Returns a shared canvas rendering context used to measure text width.
+ *
+ * @returns A cached 2D canvas rendering context, or `null` when unavailable.
+ */
 function getMeasureContext(): CanvasRenderingContext2D | null {
   if (!measureContext) {
     const canvas = document.createElement('canvas');
@@ -19,8 +23,12 @@ function getMeasureContext(): CanvasRenderingContext2D | null {
 }
 
 /**
- * Calculates how much text fits in the available width using canvas measurement.
- * Returns truncated text with middle ellipsis if needed.
+ * Truncates text by preserving both the beginning and the end and replacing the middle with an ellipsis.
+ *
+ * @param text The full text to potentially truncate.
+ * @param availableWidth The maximum width in pixels available for rendering.
+ * @param font The CSS font shorthand used for width measurement.
+ * @returns The display text and whether truncation was applied.
  */
 function calculateTruncatedText(
   text: string,
@@ -87,16 +95,6 @@ function calculateTruncatedText(
   return { truncated, isTruncated: true };
 }
 
-/**
- * Component that displays text with middle ellipsis when it exceeds container width.
- * Uses canvas measureText for accurate width calculation and responds to container resize.
- *
- * Performance optimizations:
- * - Singleton canvas context for measurements
- * - Debounced resize handling to batch rapid changes
- * - CSS `contain: inline-size` for layout isolation
- * - Conditional state updates to prevent re-renders
- */
 export const MiddleEllipsisText = React.memo(
   React.forwardRef<HTMLSpanElement, MiddleEllipsisTextProps>(({ text, className }, ref) => {
     const [displayText, setDisplayText] = React.useState(text);
@@ -113,7 +111,6 @@ export const MiddleEllipsisText = React.memo(
 
       const availableWidth = container.offsetWidth;
 
-      // Skip if width hasn't changed (common during scroll/other DOM updates)
       if (availableWidth === lastWidthRef.current) return;
       lastWidthRef.current = availableWidth;
 
@@ -126,22 +123,19 @@ export const MiddleEllipsisText = React.memo(
         font,
       );
 
-      // Only update state if values changed
       setDisplayText((prev) => (prev === truncated ? prev : truncated));
       setIsTruncated((prev) => (prev === newIsTruncated ? prev : newIsTruncated));
     }, [text]);
 
-    // Debounced resize handler - batches rapid resize events
     const debouncedUpdate = React.useCallback(() => {
       if (timeoutRef.current !== null) {
         clearTimeout(timeoutRef.current);
       }
-      // 16ms ≈ 1 frame at 60fps, good balance of responsiveness and performance
+
       timeoutRef.current = setTimeout(updateTruncation, 16);
     }, [updateTruncation]);
 
     React.useEffect(() => {
-      // Reset width cache when text changes
       lastWidthRef.current = 0;
       updateTruncation();
 

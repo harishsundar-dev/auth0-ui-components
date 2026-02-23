@@ -27,7 +27,7 @@ const DOCS_SITE_PUBLIC_R = path.resolve(
   '../../docs-site/public/r',
 );
 
-const MAX_VERSIONS = 10;
+const MAX_VERSIONS_PER_MAJOR = 5;
 
 function getCoreVersion() {
   if (!fs.existsSync(CORE_PACKAGE_JSON)) {
@@ -235,19 +235,26 @@ async function main() {
   if (!versionsData.versions) versionsData.versions = {};
   versionsData.versions[version] = { status, major };
 
-  // Prune to keep only the last MAX_VERSIONS versions and clean up old versioned directories
-  const versionEntries = Object.entries(versionsData.versions);
-  if (versionEntries.length > MAX_VERSIONS) {
-    const toRemove = versionEntries.slice(0, versionEntries.length - MAX_VERSIONS);
-    for (const [oldVersion, oldInfo] of toRemove) {
-      delete versionsData.versions[oldVersion];
-      const oldVersionDir = path.join(DOCS_SITE_PUBLIC_R, `v${oldInfo.major}`, oldVersion);
-      if (fs.existsSync(oldVersionDir)) {
-        fs.rmSync(oldVersionDir, { recursive: true });
-        console.log(`Cleaned up old version directory: v${oldInfo.major}/${oldVersion}`);
+  // Prune to keep only the last MAX_VERSIONS_PER_MAJOR versions per major and clean up old directories
+  const byMajor = {};
+  for (const [v, info] of Object.entries(versionsData.versions)) {
+    const key = `v${info.major}`;
+    if (!byMajor[key]) byMajor[key] = [];
+    byMajor[key].push([v, info]);
+  }
+  for (const [majorKey, entries] of Object.entries(byMajor)) {
+    if (entries.length > MAX_VERSIONS_PER_MAJOR) {
+      const toRemove = entries.slice(0, entries.length - MAX_VERSIONS_PER_MAJOR);
+      for (const [oldVersion, oldInfo] of toRemove) {
+        delete versionsData.versions[oldVersion];
+        const oldVersionDir = path.join(DOCS_SITE_PUBLIC_R, `v${oldInfo.major}`, oldVersion);
+        if (fs.existsSync(oldVersionDir)) {
+          fs.rmSync(oldVersionDir, { recursive: true });
+          console.log(`Cleaned up old version directory: v${oldInfo.major}/${oldVersion}`);
+        }
       }
+      console.log(`Pruned ${toRemove.length} old ${majorKey} version(s), keeping last ${MAX_VERSIONS_PER_MAJOR}`);
     }
-    console.log(`Pruned ${toRemove.length} old version(s), keeping last ${MAX_VERSIONS}`);
   }
 
   fs.writeFileSync(versionsJsonPath, JSON.stringify(versionsData, null, 2) + '\n', 'utf-8');

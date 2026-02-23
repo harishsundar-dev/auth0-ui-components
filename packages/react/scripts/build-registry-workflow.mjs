@@ -27,12 +27,20 @@ const DOCS_SITE_PUBLIC_R = path.resolve(
   '../../docs-site/public/r',
 );
 
+const MAX_VERSIONS = 10;
+
 function getCoreVersion() {
   if (!fs.existsSync(CORE_PACKAGE_JSON)) {
     console.error(`Core package.json not found at ${CORE_PACKAGE_JSON}`);
     process.exit(1);
   }
-  const pkg = JSON.parse(fs.readFileSync(CORE_PACKAGE_JSON, 'utf-8'));
+  let pkg;
+  try {
+    pkg = JSON.parse(fs.readFileSync(CORE_PACKAGE_JSON, 'utf-8'));
+  } catch (error) {
+    console.error(`Failed to read or parse core package.json: ${error.message}`);
+    process.exit(1);
+  }
   const version = pkg.version;
   const major = version.split('.')[0];
   console.log(`Core package version: ${version} (Major: ${major})`);
@@ -48,6 +56,91 @@ function runCommand(command) {
     console.error(error.message);
     process.exit(1);
   }
+}
+
+/**
+ * Flatten the latest versioned component JSONs to the root r/ directory
+ * for official shadcn registry compliance (flat structure, no subdirectories).
+ *
+ * For each component JSON in the versioned build output:
+ *   - Strips the category prefix from the "name" field
+ *     (e.g. "my-account/user-mfa-management" → "user-mfa-management")
+ *   - Writes the modified JSON to docs-site/public/r/{component-name}.json
+ *
+ * Also regenerates docs-site/public/r/index.json with the flat names so that
+ * the shadcn CLI registry index is spec-compliant.
+ */
+function flattenRegistryToRoot(versionedDir, rootRDir, sourceRegistryPath) {
+  // Recursively collect all .json files, skipping registry.json
+  function collectComponentJsonFiles(dir, results = []) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const fullPath = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        collectComponentJsonFiles(fullPath, results);
+      } else if (
+        entry.isFile() &&
+        entry.name.endsWith('.json') &&
+        entry.name !== 'registry.json'
+      ) {
+        results.push(fullPath);
+      }
+    }
+    return results;
+  }
+
+  const componentFiles = collectComponentJsonFiles(versionedDir);
+  let copied = 0;
+
+  for (const sourcePath of componentFiles) {
+    let content;
+    try {
+      content = JSON.parse(fs.readFileSync(sourcePath, 'utf-8'));
+    } catch (error) {
+      console.error(`Failed to parse component JSON ${sourcePath}: ${error.message}`);
+      process.exit(1);
+    }
+    const originalName = content.name || '';
+
+    // Strip category prefix: "my-account/user-mfa-management" → "user-mfa-management"
+    const flatName = path.posix.basename(originalName);
+    content.name = flatName;
+
+    const destPath = path.join(rootRDir, `${flatName}.json`);
+    fs.writeFileSync(destPath, JSON.stringify(content, null, 2) + '\n', 'utf-8');
+    console.log(`  ${originalName} → ${flatName}.json`);
+    copied++;
+  }
+
+  console.log(`Flattened ${copied} component(s) to ${rootRDir}`);
+
+  // Regenerate index.json with flat names sourced from the generated registry.json
+  const indexJsonPath = path.join(rootRDir, 'index.json');
+  const indexData = {
+    name: 'auth0-ui-components',
+    homepage: 'https://github.com/auth0/auth0-ui-components',
+    items: [],
+  };
+
+  if (fs.existsSync(sourceRegistryPath)) {
+    let sourceRegistry;
+    try {
+      sourceRegistry = JSON.parse(fs.readFileSync(sourceRegistryPath, 'utf-8'));
+    } catch (error) {
+      console.error(`Failed to parse source registry.json: ${error.message}`);
+      process.exit(1);
+    }
+    indexData.name = sourceRegistry.name || indexData.name;
+    indexData.homepage = sourceRegistry.homepage || indexData.homepage;
+    indexData.items = (sourceRegistry.items || []).map((item) => ({
+      name: path.posix.basename(item.name),
+      type: item.type,
+      title: item.title,
+      description: item.description,
+    }));
+  }
+
+  fs.writeFileSync(indexJsonPath, JSON.stringify(indexData, null, 2) + '\n', 'utf-8');
+  console.log(`Updated index.json with ${indexData.items.length} flat item(s)`);
 }
 
 async function main() {
@@ -74,10 +167,16 @@ async function main() {
     fs.mkdirSync(versionedOutputDir, { recursive: true });
   }
 
-  // Pre-create subdirectories based on registry items
+  // Pre-create subdirectories based on registry items (shadcn requires these to exist)
   const registryPath = path.join(PACKAGES_DIR, 'registry.json');
   if (fs.existsSync(registryPath)) {
-    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
+    let registry;
+    try {
+      registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
+    } catch (error) {
+      console.error(`Failed to parse registry.json: ${error.message}`);
+      process.exit(1);
+    }
     const subdirs = new Set();
     registry.items.forEach((item) => {
       const dirname = path.dirname(item.name);
@@ -101,12 +200,21 @@ async function main() {
   // 5. Skip @/ alias rewriting — consumers are expected to have the @/ → src/ alias configured
   console.log('\n--- Step 4: Skipping @/ alias rewriting (kept as-is) ---');
 
-  // 6. Update versions.json
-  console.log('\n--- Step 5: Update versions.json ---');
+  // 6. Flatten latest component JSONs to root r/ for official shadcn registry compliance
+  console.log('\n--- Step 5: Flatten latest components to root r/ ---');
+  flattenRegistryToRoot(versionedOutputDir, DOCS_SITE_PUBLIC_R, registryPath);
+
+  // 7. Update versions.json
+  console.log('\n--- Step 6: Update versions.json ---');
   const versionsJsonPath = path.join(DOCS_SITE_PUBLIC_R, 'versions.json');
   let versionsData = {};
   if (fs.existsSync(versionsJsonPath)) {
-    versionsData = JSON.parse(fs.readFileSync(versionsJsonPath, 'utf-8'));
+    try {
+      versionsData = JSON.parse(fs.readFileSync(versionsJsonPath, 'utf-8'));
+    } catch (error) {
+      console.error(`Failed to parse versions.json: ${error.message}`);
+      process.exit(1);
+    }
   }
 
   const status = version.includes('beta') ? 'beta' : 'stable';
@@ -126,6 +234,21 @@ async function main() {
 
   if (!versionsData.versions) versionsData.versions = {};
   versionsData.versions[version] = { status, major };
+
+  // Prune to keep only the last MAX_VERSIONS versions and clean up old versioned directories
+  const versionEntries = Object.entries(versionsData.versions);
+  if (versionEntries.length > MAX_VERSIONS) {
+    const toRemove = versionEntries.slice(0, versionEntries.length - MAX_VERSIONS);
+    for (const [oldVersion, oldInfo] of toRemove) {
+      delete versionsData.versions[oldVersion];
+      const oldVersionDir = path.join(DOCS_SITE_PUBLIC_R, `v${oldInfo.major}`, oldVersion);
+      if (fs.existsSync(oldVersionDir)) {
+        fs.rmSync(oldVersionDir, { recursive: true });
+        console.log(`Cleaned up old version directory: v${oldInfo.major}/${oldVersion}`);
+      }
+    }
+    console.log(`Pruned ${toRemove.length} old version(s), keeping last ${MAX_VERSIONS}`);
+  }
 
   fs.writeFileSync(versionsJsonPath, JSON.stringify(versionsData, null, 2) + '\n', 'utf-8');
   console.log(`Updated versions.json: latest=${version}`);

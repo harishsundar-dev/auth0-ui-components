@@ -102,22 +102,31 @@ async function promptForMetadata(autoDetected, blockName) {
   };
 }
 
+// Module-level caches to avoid re-reading files on every call inside loops
+let _npmDependenciesCache = null;
+let _corePackageVersionCache = null;
+
 /**
- * Read package.json to get all declared dependencies
+ * Read package.json to get all declared dependencies.
+ * Result is cached after the first call.
  */
 function getNpmDependencies() {
+  if (_npmDependenciesCache) return _npmDependenciesCache;
   const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON, 'utf-8'));
-  return {
+  _npmDependenciesCache = {
     ...pkg.dependencies,
     ...pkg.peerDependencies,
     ...pkg.devDependencies,
   };
+  return _npmDependenciesCache;
 }
 
 /**
- * Get the core package version from packages/core/package.json
+ * Get the core package version from packages/core/package.json.
+ * Result is cached after the first call.
  */
 function getCorePackageVersion() {
+  if (_corePackageVersionCache) return _corePackageVersionCache;
   if (!fs.existsSync(CORE_PACKAGE_JSON)) {
     console.warn(
       '   Warning: Could not find core package.json, using "workspace:*"',
@@ -125,7 +134,8 @@ function getCorePackageVersion() {
     return 'workspace:*';
   }
   const corePkg = JSON.parse(fs.readFileSync(CORE_PACKAGE_JSON, 'utf-8'));
-  return corePkg.version;
+  _corePackageVersionCache = corePkg.version;
+  return _corePackageVersionCache;
 }
 
 /**

@@ -1,7 +1,10 @@
 import type { Domain, IdentityProvider } from '@auth0/universal-components-core';
 import { vi } from 'vitest';
 
-import type { SsoProviderCreateHandlerProps, SsoProviderCreateLogicProps } from '@/types';
+import type {
+  SsoProviderCreateHandlerProps,
+  SsoProviderCreateLogicProps,
+} from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 export const createMockSsoDomain = (overrides?: Partial<Domain>): Domain => ({
   id: 'domain-1',
@@ -41,7 +44,6 @@ export function createMockSsoProviderCreateLogic(
     customMessages: {},
     backButton: undefined,
     isCreating: false,
-    currentStyles: { variables: {}, classes: {} },
     strategy: undefined,
     details: undefined,
     configure: undefined,
@@ -49,9 +51,7 @@ export function createMockSsoProviderCreateLogic(
     filteredStrategies: [],
     isLoadingIdpConfig: false,
     idpConfig: undefined,
-    isDarkMode: false,
     formData: {},
-    wizardSteps: [],
     ...overrides,
   };
 }

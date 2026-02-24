@@ -24,23 +24,17 @@ import {
   getComponentStyles,
   MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES,
 } from '@auth0/universal-components-core';
-import React, { useState, useRef, useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-import ProviderConfigure, {
-  type ProviderConfigureHandle,
-} from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/provider-configure';
-import {
-  ProviderDetails,
-  type ProviderDetailsFormHandle,
-} from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-details';
+import ProviderConfigure from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/provider-configure';
+import { ProviderDetails } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-details';
 import { ProviderSelect } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-select';
 import { Header } from '@/components/auth0/shared/header';
 import { Wizard } from '@/components/auth0/shared/wizard';
 import type { StepProps } from '@/components/auth0/shared/wizard';
 import { withMyOrganizationService } from '@/hoc/with-services';
-import { useConfig } from '@/hooks/my-organization/use-config';
-import { useIdpConfig } from '@/hooks/my-organization/use-idp-config';
 import { useSsoProviderCreate } from '@/hooks/my-organization/use-sso-provider-create';
+import { useSsoProviderCreateLogic } from '@/hooks/my-organization/use-sso-provider-create-logic';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type {
@@ -49,7 +43,7 @@ import type {
   SsoProviderCreateLogicProps,
   SsoProviderCreateProps,
   SsoProviderCreateViewProps,
-} from '@/types';
+} from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
 /**
  * Internal SSO provider creation container(logic) component.
@@ -76,61 +70,27 @@ function SsoProviderCreateContainer(props: SsoProviderCreateProps) {
     onPrevious,
   } = props;
 
-  const { isDarkMode } = useTheme();
-  const [formData, setFormData] = useState<FormState>({});
+  const { createProvider, isCreating } = useSsoProviderCreate({ createAction, customMessages });
+  const {
+    formData,
+    detailsRef,
+    configureRef,
+    setFormData,
+    handleCreate,
+    createStepActions,
+    isLoadingConfig,
+    filteredStrategies,
+    isLoadingIdpConfig,
+    idpConfig,
+  } = useSsoProviderCreateLogic({
+    onNext,
+    onPrevious,
+    createProvider,
+  });
+
   const { strategy, details, configure } = formData;
 
-  const { createProvider, isCreating } = useSsoProviderCreate({ createAction, customMessages });
-  const { isLoadingConfig, filteredStrategies } = useConfig();
-  const { isLoadingIdpConfig, idpConfig } = useIdpConfig();
-
-  const detailsRef = useRef<ProviderDetailsFormHandle>(null);
-  const configureRef = useRef<ProviderConfigureHandle>(null);
-
-  const currentStyles = useMemo(
-    () => getComponentStyles(styling, isDarkMode),
-    [styling, isDarkMode],
-  );
-
-  const createStepActions = useCallback(
-    (
-      stepId: 'provider_details' | 'provider_configure',
-      ref: React.RefObject<ProviderDetailsFormHandle | ProviderConfigureHandle | null>,
-    ) => {
-      const dataKey = stepId === 'provider_details' ? 'details' : 'configure';
-      const handleAction = async (
-        handler: typeof onNext | typeof onPrevious | undefined,
-        shouldValidate = false,
-      ): Promise<boolean> => {
-        if (shouldValidate) {
-          const isValid = await ref.current?.validate();
-          if (!isValid) return false;
-        }
-        const currentData = ref.current?.getData() ?? null;
-        setFormData((prev) => ({ ...prev, [dataKey]: currentData }));
-        if (!handler) return true;
-        const fullPayload = { ...formData, [dataKey]: currentData };
-        return handler(stepId, fullPayload);
-      };
-      return {
-        onNextAction: () => handleAction(onNext, true),
-        onPreviousAction: () => handleAction(onPrevious, false),
-      };
-    },
-    [formData, onNext, onPrevious],
-  );
-
-  const handleCreate = useCallback(async () => {
-    const finalConfigureData = configureRef.current?.getData();
-    await createProvider({
-      strategy: strategy!,
-      ...details!,
-      ...finalConfigureData,
-    });
-  }, [strategy, details, configure, createProvider]);
-
   const ssoProviderCreateLogicProps: SsoProviderCreateLogicProps = {
-    isDarkMode: false,
     formData,
     strategy,
     details,
@@ -143,8 +103,6 @@ function SsoProviderCreateContainer(props: SsoProviderCreateProps) {
     styling,
     customMessages,
     backButton,
-    currentStyles,
-    wizardSteps: [],
   };
 
   const ssoProviderCreateHandlerProps: SsoProviderCreateHandlerProps = {
@@ -179,7 +137,6 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
     customMessages,
     backButton,
     isCreating,
-    currentStyles,
     strategy,
     details,
     configure,
@@ -187,8 +144,9 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
     filteredStrategies,
     isLoadingIdpConfig,
     idpConfig,
-  } = logic;
+  }: SsoProviderCreateLogicProps = logic;
 
+  const { isDarkMode } = useTheme();
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const {
     detailsRef,
@@ -199,6 +157,11 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
     handleCreate,
     createStepActions,
   }: SsoProviderCreateHandlerProps = handlers;
+
+  const currentStyles = useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   const wizardSteps = useMemo(
     () => [

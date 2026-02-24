@@ -20,7 +20,6 @@ import type {
   ComponentAction,
   BackButton,
   CreateIdentityProviderRequestContentPrivate,
-  getComponentStyles,
 } from '@auth0/universal-components-core';
 import type { LucideIcon } from 'lucide-react';
 import type React from 'react';
@@ -104,6 +103,33 @@ export interface UseSsoProviderCreateOptions {
   customMessages?: SsoProviderCreateProps['customMessages'];
 }
 
+export interface UseSsoProviderCreateLogicOptions {
+  onNext?: SsoProviderCreateProps['onNext'];
+  onPrevious?: SsoProviderCreateProps['onPrevious'];
+  createProvider: (data: CreateIdentityProviderRequestContentPrivate) => Promise<void>;
+  strategy?: FormState['strategy'];
+  details?: FormState['details'];
+}
+
+export interface UseSsoProviderCreateLogicResult {
+  formData: FormState;
+  setFormData: React.Dispatch<React.SetStateAction<FormState>>;
+  detailsRef: React.RefObject<ProviderDetailsFormHandle | null>;
+  configureRef: React.RefObject<ProviderConfigureHandle | null>;
+  handleCreate: () => Promise<void>;
+  isLoadingConfig: boolean;
+  filteredStrategies: IdpStrategy[];
+  isLoadingIdpConfig: boolean;
+  idpConfig?: IdpConfig | null;
+  createStepActions: (
+    stepId: 'provider_details' | 'provider_configure',
+    ref: React.RefObject<ProviderDetailsFormHandle | ProviderConfigureHandle | null>,
+  ) => {
+    onNextAction: () => Promise<boolean>;
+    onPreviousAction: () => Promise<boolean>;
+  };
+}
+
 export type FormState = {
   strategy?: IdpStrategy;
   details?: ProviderDetailsFormValues | null;
@@ -116,7 +142,6 @@ export type SsoProviderCreateViewProps = {
 };
 
 export interface SsoProviderCreateLogicProps {
-  isDarkMode: boolean;
   formData: FormState;
   strategy?: IdpStrategy;
   details?: ProviderDetailsFormValues | null;
@@ -129,8 +154,6 @@ export interface SsoProviderCreateLogicProps {
   styling?: SsoProviderCreateProps['styling'];
   customMessages?: SsoProviderCreateProps['customMessages'];
   backButton?: SsoProviderCreateProps['backButton'];
-  currentStyles?: ReturnType<typeof getComponentStyles>;
-  wizardSteps: [];
 }
 
 export interface SsoProviderCreateHandlerProps {

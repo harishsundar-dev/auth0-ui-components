@@ -27,7 +27,7 @@ import {
   getComponentStyles,
   MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES,
 } from '@auth0/universal-components-core';
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 
 import { SsoDomainTab } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-domain-tab';
 import { SsoProviderTab } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-edit/sso-provider-tab';
@@ -36,9 +36,8 @@ import { Header } from '@/components/auth0/shared/header';
 import { Spinner } from '@/components/ui/spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { withMyOrganizationService } from '@/hoc/with-services';
-import { useConfig } from '@/hooks/my-organization/use-config';
-import { useIdpConfig } from '@/hooks/my-organization/use-idp-config';
 import { useSsoProviderEdit } from '@/hooks/my-organization/use-sso-provider-edit';
+import { useSsoProviderEditLogic } from '@/hooks/my-organization/use-sso-provider-edit-logic';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
@@ -47,7 +46,7 @@ import type {
   SsoProviderEditLogicProps,
   SsoProviderEditProps,
   SsoProviderEditViewProps,
-} from '@/types';
+} from '@/types/my-organization/idp-management/sso-provider/sso-provider-edit-types';
 
 /**
  * Internal SSO provider edit container(logic) component.
@@ -82,12 +81,6 @@ function SsoProviderEditContainer(props: SsoProviderEditProps) {
     readOnly = false,
   } = props;
 
-  const { isDarkMode } = useTheme();
-  const currentStyles = useMemo(
-    () => getComponentStyles(styling, isDarkMode),
-    [styling, isDarkMode],
-  );
-
   const ssoProviderEdit = useSsoProviderEdit(providerId, {
     sso,
     provisioning,
@@ -95,36 +88,15 @@ function SsoProviderEditContainer(props: SsoProviderEditProps) {
     customMessages,
   });
 
-  const { shouldAllowDeletion, isLoadingConfig } = useConfig();
-  const { idpConfig, isLoadingIdpConfig, isProvisioningEnabled, isProvisioningMethodEnabled } =
-    useIdpConfig();
+  const ssoProviderEditLogic = useSsoProviderEditLogic(ssoProviderEdit);
 
-  const showProvisioningTab =
-    isProvisioningEnabled(ssoProviderEdit.provider?.strategy) &&
-    isProvisioningMethodEnabled(ssoProviderEdit.provider?.strategy);
-
-  const [activeTab, setActiveTab] = useState('sso');
-
-  const handleToggleProvider = useCallback(
-    async (enabled: boolean) => {
-      if (!ssoProviderEdit.provider?.strategy) return;
-      await ssoProviderEdit.updateProvider({
-        strategy: ssoProviderEdit.provider.strategy,
-        is_enabled: enabled,
-      });
-    },
-    [ssoProviderEdit.provider?.strategy, ssoProviderEdit.updateProvider],
-  );
-
-  const ssoProviderCreateLogicProps: SsoProviderEditLogicProps = {
+  const ssoProviderCreateLogicProps: Omit<SsoProviderEditLogicProps, 'handleToggleProvider'> = {
     ...ssoProviderEdit,
-    currentStyles,
-    shouldAllowDeletion,
-    isLoadingConfig,
-    idpConfig,
-    isLoadingIdpConfig,
-    showProvisioningTab,
-    activeTab,
+    shouldAllowDeletion: ssoProviderEditLogic.shouldAllowDeletion,
+    isLoadingConfig: ssoProviderEditLogic.isLoadingConfig,
+    idpConfig: ssoProviderEditLogic.idpConfig,
+    isLoadingIdpConfig: ssoProviderEditLogic.isLoadingIdpConfig,
+    showProvisioningTab: ssoProviderEditLogic.showProvisioningTab,
     styling,
     customMessages,
     backButton,
@@ -136,8 +108,7 @@ function SsoProviderEditContainer(props: SsoProviderEditProps) {
   };
 
   const ssoProviderCreateHandlerProps: SsoProviderEditHandlerProps = {
-    setActiveTab,
-    handleToggleProvider,
+    handleToggleProvider: ssoProviderEditLogic.handleToggleProvider,
     updateProvider: ssoProviderEdit.updateProvider,
     listScimTokens: ssoProviderEdit.listScimTokens,
     syncSsoAttributes: ssoProviderEdit.syncSsoAttributes,
@@ -169,13 +140,11 @@ function SsoProviderEditContainer(props: SsoProviderEditProps) {
 function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
   const {
     styling,
-    activeTab,
     schema,
     readOnly,
     providerId,
     domains,
     hideHeader,
-    currentStyles,
     provider,
     organization,
     isLoading,
@@ -201,7 +170,6 @@ function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
   } = logic;
 
   const {
-    setActiveTab,
     updateProvider,
     listScimTokens,
     syncSsoAttributes,
@@ -215,7 +183,13 @@ function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
     syncProvisioningAttributes,
   } = handlers;
 
+  const { isDarkMode } = useTheme();
+  const [activeTab, setActiveTab] = useState('sso');
   const { t } = useTranslator('idp_management.edit_sso_provider', customMessages);
+  const currentStyles = useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   if (isLoading || isLoadingConfig || isLoadingIdpConfig) {
     return (

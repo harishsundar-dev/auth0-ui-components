@@ -31,9 +31,8 @@ import { SsoProviderTableActionsColumn } from '@/components/auth0/my-organizatio
 import { DataTable, type Column } from '@/components/auth0/shared/data-table';
 import { Header } from '@/components/auth0/shared/header';
 import { withMyOrganizationService } from '@/hoc/with-services';
-import { useConfig } from '@/hooks/my-organization/use-config';
-import { useIdpConfig } from '@/hooks/my-organization/use-idp-config';
 import { useSsoProviderTable } from '@/hooks/my-organization/use-sso-provider-table';
+import { useSsoProviderTableLogic } from '@/hooks/my-organization/use-sso-provider-table-logic';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type {
@@ -41,7 +40,7 @@ import type {
   SsoProviderTableLogicProps,
   SsoProviderTableHandlerProps,
   SsoProviderTableViewProps,
-} from '@/types';
+} from '@/types/my-organization/idp-management/sso-provider/sso-provider-table-types';
 
 /**
  * Internal SSO provider table container(logic) component.
@@ -69,12 +68,16 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
     enableProviderAction,
   } = props;
 
-  const { isDarkMode } = useTheme();
+  const ssoProviderTable = useSsoProviderTable(
+    deleteAction,
+    deleteFromOrganizationAction,
+    enableProviderAction,
+    customMessages,
+  );
 
   const {
     providers,
     organization,
-    isLoading,
     isDeleting,
     isRemoving,
     isUpdating,
@@ -82,111 +85,26 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
     onDeleteConfirm,
     onRemoveConfirm,
     onEnableProvider,
-  } = useSsoProviderTable(
+  } = ssoProviderTable;
+
+  const tableLogic = useSsoProviderTableLogic({
+    readOnly,
+    createAction,
+    editAction,
     deleteAction,
     deleteFromOrganizationAction,
-    enableProviderAction,
-    customMessages,
-  );
-  const { isLoadingConfig, shouldAllowDeletion, isConfigValid } = useConfig();
-  const { isLoadingIdpConfig, isIdpConfigValid } = useIdpConfig();
-
-  const shouldHideCreate = !isConfigValid || !isIdpConfigValid;
-  const isViewLoading = isLoading || isLoadingConfig || isLoadingIdpConfig;
-
-  const [showDeleteModal, setShowDeleteModal] = React.useState(false);
-  const [showRemoveModal, setShowRemoveModal] = React.useState(false);
-  const [selectedIdp, setSelectedIdp] = React.useState<IdentityProvider | null>(null);
-
-  const currentStyles = React.useMemo(
-    () => getComponentStyles(styling, isDarkMode),
-    [styling, isDarkMode],
-  );
-
-  const handleCreate = React.useCallback(() => {
-    if (createAction?.onAfter) {
-      createAction.onAfter();
-    }
-  }, [createAction]);
-
-  const handleEdit = React.useCallback(
-    (idp: IdentityProvider) => {
-      if (editAction?.onAfter) {
-        editAction.onAfter(idp);
-      }
-    },
-    [editAction],
-  );
-
-  const handleDelete = React.useCallback(
-    (idp: IdentityProvider) => {
-      setSelectedIdp(idp);
-
-      if (deleteAction?.onBefore) {
-        const shouldProceed = deleteAction.onBefore(idp);
-        if (!shouldProceed) return;
-      }
-
-      setShowDeleteModal(true);
-    },
-    [deleteAction],
-  );
-
-  const handleDeleteFromOrganization = React.useCallback(
-    (idp: IdentityProvider) => {
-      setSelectedIdp(idp);
-
-      if (deleteFromOrganizationAction?.onBefore) {
-        const shouldProceed = deleteFromOrganizationAction.onBefore(idp);
-        if (!shouldProceed) return;
-      }
-
-      setShowRemoveModal(true);
-    },
-    [deleteFromOrganizationAction],
-  );
-
-  const handleToggleEnabled = React.useCallback(
-    async (idp: IdentityProvider, enabled: boolean) => {
-      if (readOnly || !onEnableProvider) return;
-      await onEnableProvider(idp, enabled);
-    },
-    [readOnly, onEnableProvider],
-  );
-
-  const handleDeleteConfirm = React.useCallback(
-    async (provider: IdentityProvider) => {
-      await onDeleteConfirm(provider);
-      setShowDeleteModal(false);
-      setSelectedIdp(null);
-    },
-    [onDeleteConfirm, selectedIdp],
-  );
-
-  const handleRemoveConfirm = React.useCallback(
-    async (provider: IdentityProvider) => {
-      await onRemoveConfirm(provider);
-      setShowRemoveModal(false);
-      setSelectedIdp(null);
-    },
-    [onRemoveConfirm],
-  );
+    onEnableProvider,
+    onDeleteConfirm,
+    onRemoveConfirm,
+  });
 
   const ssoProviderCreateLogicProps: SsoProviderTableLogicProps = {
     data: providers,
-    isLoading: isViewLoading,
     styling,
     customMessages,
     readOnly,
-    currentStyles,
-    shouldHideCreate,
-    isViewLoading,
     createAction,
     editAction,
-    selectedIdp,
-    showDeleteModal,
-    showRemoveModal,
-    shouldAllowDeletion,
     organization,
     isUpdating,
     isUpdatingId,
@@ -194,19 +112,26 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
     isRemoving,
     columns: [],
     hideHeader: false,
+    isLoading: tableLogic.isViewLoading,
+    shouldHideCreate: tableLogic.shouldHideCreate,
+    isViewLoading: tableLogic.isViewLoading,
+    selectedIdp: tableLogic.selectedIdp,
+    showDeleteModal: tableLogic.showDeleteModal,
+    showRemoveModal: tableLogic.showRemoveModal,
+    shouldAllowDeletion: tableLogic.shouldAllowDeletion,
   };
 
   const ssoProviderCreateHandlerProps: SsoProviderTableHandlerProps = {
-    handleCreate,
-    handleEdit,
-    handleDelete,
-    handleDeleteFromOrganization,
-    handleToggleEnabled,
-    handleDeleteConfirm,
-    handleRemoveConfirm,
-    setShowDeleteModal,
-    setShowRemoveModal,
-    setSelectedIdp,
+    handleCreate: tableLogic.handleCreate,
+    handleEdit: tableLogic.handleEdit,
+    handleDelete: tableLogic.handleDelete,
+    handleDeleteFromOrganization: tableLogic.handleDeleteFromOrganization,
+    handleToggleEnabled: tableLogic.handleToggleEnabled,
+    handleDeleteConfirm: tableLogic.handleDeleteConfirm,
+    handleRemoveConfirm: tableLogic.handleRemoveConfirm,
+    setShowDeleteModal: tableLogic.setShowDeleteModal,
+    setShowRemoveModal: tableLogic.setShowRemoveModal,
+    setSelectedIdp: tableLogic.setSelectedIdp,
   };
 
   return (
@@ -227,9 +152,9 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
  */
 function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
   const {
+    styling,
     customMessages,
     readOnly,
-    currentStyles,
     data,
     shouldHideCreate,
     isViewLoading,
@@ -258,7 +183,12 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
     setShowRemoveModal,
   } = handlers;
 
+  const { isDarkMode } = useTheme();
   const { t } = useTranslator('idp_management.sso_provider_table', customMessages);
+  const currentStyles = React.useMemo(
+    () => getComponentStyles(styling, isDarkMode),
+    [styling, isDarkMode],
+  );
 
   const columns: Column<IdentityProvider>[] = React.useMemo(
     () => [

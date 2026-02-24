@@ -24,7 +24,7 @@ import type {
 import type { LucideIcon } from 'lucide-react';
 import type React from 'react';
 
-import type { IdpConfig } from '@/types';
+import type { IdpConfig } from '@/types/my-organization/config/config-idp-types';
 import type {
   SsoDomainsTabEditProps,
   SsoDomainTabClasses,
@@ -142,47 +142,28 @@ export type SsoProviderEditViewProps = {
 };
 
 export interface SsoProviderEditLogicProps
-  extends Pick<
-    UseSsoProviderEditReturn,
-    | 'provider'
-    | 'organization'
-    | 'isLoading'
-    | 'isUpdating'
-    | 'isDeleting'
-    | 'isRemoving'
-    | 'isProvisioningUpdating'
-    | 'isProvisioningDeleting'
-    | 'isScimTokensLoading'
-    | 'isScimTokenCreating'
-    | 'isScimTokenDeleting'
-    | 'isSsoAttributesSyncing'
-    | 'isProvisioningAttributesSyncing'
-    | 'hasSsoAttributeSyncWarning'
-    | 'hasProvisioningAttributeSyncWarning'
-  > {
-  shouldAllowDeletion: boolean;
-  isLoadingConfig: boolean;
-  idpConfig: IdpConfig | null;
-  isLoadingIdpConfig: boolean;
-  showProvisioningTab: boolean;
-  activeTab: string;
-  styling: SsoProviderEditProps['styling'];
-  customMessages: SsoProviderEditProps['customMessages'];
-  backButton?: SsoProviderEditBackButton;
-  schema: Partial<SsoProviderEditSchema> | undefined;
-  readOnly: boolean;
-  currentStyles: {
-    variables: Record<string, string>;
-    classes?: Record<string, string | undefined> | undefined;
-  };
-  providerId: IdpId;
-  domains?: SsoDomainsTabEditProps;
-  hideHeader?: boolean;
-  t?: (key: string) => string;
-}
+  extends SsoProviderEditProps,
+    Omit<UseSsoProviderEditLogicResult, 'handleToggleProvider'>,
+    Pick<
+      UseSsoProviderEditReturn,
+      | 'provider'
+      | 'organization'
+      | 'isLoading'
+      | 'isUpdating'
+      | 'isDeleting'
+      | 'isRemoving'
+      | 'isProvisioningUpdating'
+      | 'isProvisioningDeleting'
+      | 'isScimTokensLoading'
+      | 'isScimTokenCreating'
+      | 'isScimTokenDeleting'
+      | 'isSsoAttributesSyncing'
+      | 'isProvisioningAttributesSyncing'
+      | 'hasSsoAttributeSyncWarning'
+      | 'hasProvisioningAttributeSyncWarning'
+    > {}
 
 export interface SsoProviderEditHandlerProps {
-  setActiveTab: (tab: string) => void;
   updateProvider: (data: UpdateIdentityProviderRequestContentPrivate) => Promise<void>;
   createProvisioningAction: () => Promise<void>;
   deleteProvisioningAction: () => Promise<void>;
@@ -195,5 +176,14 @@ export interface SsoProviderEditHandlerProps {
   syncProvisioningAttributes: () => Promise<void>;
   onDeleteConfirm: () => Promise<void>;
   onRemoveConfirm: () => Promise<void>;
+  handleToggleProvider: (enabled: boolean) => Promise<void>;
+}
+
+export interface UseSsoProviderEditLogicResult {
+  shouldAllowDeletion: boolean;
+  isLoadingConfig: boolean;
+  idpConfig: IdpConfig | null;
+  isLoadingIdpConfig: boolean;
+  showProvisioningTab: boolean;
   handleToggleProvider: (enabled: boolean) => Promise<void>;
 }

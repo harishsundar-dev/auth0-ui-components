@@ -183,41 +183,20 @@ export default function GettingStarted() {
           <div>
             <h3 className="text-lg font-medium text-gray-900 mb-3">Option 2: Shadcn CLI</h3>
             <p className="text-gray-600 mb-4">
-              If you're using Shadcn, you can add individual blocks directly to your project. You'll
-              still need to install the core package separately:
+              If you're using Shadcn, you can add individual blocks directly to your project:
             </p>
-            <div className="space-y-3">
-              <TabbedCodeBlock
-                tabs={[
-                  { label: 'npm', code: 'npm install @auth0/universal-components-core' },
-                  { label: 'pnpm', code: 'pnpm add @auth0/universal-components-core' },
-                ]}
-                language="bash"
-                title="1. Install Core Package"
-              />
-              <CodeBlock
-                code="npx shadcn@latest add https://auth0-universal-components.vercel.app/r/my-organization/organization-details-edit.json"
-                language="bash"
-                title="2. Add Shadcn Block (e.g., OrganizationDetailsEdit)"
-              />
-            </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-              <p className="text-sm text-blue-800 mb-3">
-                <strong>Note:</strong> Shadcn installs the React component source code in your{' '}
-                <code>src/auth0-ui-components/</code> directory along with all UI dependencies, but
-                you must install the core package separately via npm.
-              </p>
-              <p className="text-sm text-blue-800">
-                <strong>Important:</strong> When using Shadcn components, you must import the global
-                styles in your root file:
-              </p>
-            </div>
             <CodeBlock
-              code={`// In your App.tsx or main entry file
-import 'src/auth0-ui-components/styles/globals.css';`}
-              language="tsx"
-              title="3. Import Global Styles"
+              code="npx shadcn@latest add @auth0/organization-details-edit"
+              language="bash"
+              title="Add Shadcn Block (e.g., OrganizationDetailsEdit)"
             />
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> This installs the React component source code in your{' '}
+                <code>src/components/auth0/</code> directory along with all UI dependencies and the
+                core package.
+              </p>
+            </div>
           </div>
         </div>
       </section>

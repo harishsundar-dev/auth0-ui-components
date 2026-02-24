@@ -1,20 +1,4 @@
-/**
- * SSO providers table component.
- *
- * Displays a table of SSO identity providers with actions for creating, editing,
- * enabling/disabling, and deleting providers.
- *
- * @module sso-provider-table
- *
- * @example
- * ```tsx
- * <SsoProviderTable
- *   createAction={{ onAfter: () => navigate('/providers/new') }}
- *   editAction={{ onAfter: (provider) => navigate(`/providers/${provider.id}`) }}
- *   deleteAction={{ onAfter: (provider) => console.log('Deleted:', provider) }}
- * />
- * ```
- */
+/** @module sso-provider-table */
 
 import {
   getComponentStyles,

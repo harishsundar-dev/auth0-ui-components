@@ -1,25 +1,4 @@
-/**
- * MFA management UI.
- *
- * Complete multi-factor authentication management interface for enrolling,
- * viewing, and deleting MFA factors including TOTP, SMS, Email, Push notifications,
- * and recovery codes.
- *
- * @module user-mfa-management
- *
- * @example
- * ```tsx
- * <UserMFAMgmt
- *   onEnroll={(factor) => console.log('Enrolled:', factor)}
- *   onDelete={(factor) => console.log('Deleted:', factor)}
- *   factorConfig={{
- *     otp: { enabled: true },
- *     sms: { enabled: true },
- *     email: { enabled: false },
- *   }}
- * />
- * ```
- */
+/** @module user-mfa-management */
 
 import { getComponentStyles, USER_MFA_SCOPES } from '@auth0/universal-components-core';
 import * as React from 'react';

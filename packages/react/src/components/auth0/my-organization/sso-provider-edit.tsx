@@ -1,25 +1,4 @@
-/**
- * SSO provider edit component with tabs.
- *
- * Tabbed interface for editing SSO provider settings, managing domains,
- * and configuring SCIM provisioning.
- *
- * @module sso-provider-edit
- *
- * @example
- * ```tsx
- * <SsoProviderEdit
- *   providerId="con_abc123"
- *   sso={{
- *     saveAction: { onAfter: (provider) => console.log('Saved:', provider) },
- *     deleteAction: { onAfter: () => navigate('/providers') },
- *   }}
- *   provisioning={{
- *     createAction: { onAfter: (config) => console.log('Created:', config) },
- *   }}
- * />
- * ```
- */
+/** @module sso-provider-edit */
 
 'use client';
 

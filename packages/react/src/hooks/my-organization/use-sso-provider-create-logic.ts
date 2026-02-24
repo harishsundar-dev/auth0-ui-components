@@ -25,10 +25,9 @@ export function useSsoProviderCreateLogic({
   onNext,
   onPrevious,
   createProvider,
-  strategy,
-  details,
 }: UseSsoProviderCreateLogicOptions): UseSsoProviderCreateLogicResult {
   const [formData, setFormData] = useState<FormState>({});
+  const { strategy, details, configure } = formData;
   const detailsRef = useRef<ProviderDetailsFormHandle>(null);
   const configureRef = useRef<ProviderConfigureHandle>(null);
   const { isLoadingConfig, filteredStrategies } = useConfig();
@@ -69,7 +68,7 @@ export function useSsoProviderCreateLogic({
       ...details!,
       ...finalConfigureData,
     });
-  }, [strategy, details, createProvider]);
+  }, [strategy, details, configure, createProvider]);
 
   return {
     formData,

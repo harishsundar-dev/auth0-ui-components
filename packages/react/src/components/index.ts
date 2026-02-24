@@ -3,7 +3,7 @@
  * @module components
  */
 
-export { UserMFAMgmt } from './auth0/my-account/user-mfa-management';
+export { UserMFAMgmt, UserMFAMgmtView } from './auth0/my-account/user-mfa-management';
 
 export { SsoProviderEdit, SsoProviderEditView } from './auth0/my-organization/sso-provider-edit';
 export {

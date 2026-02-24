@@ -107,8 +107,6 @@ export interface UseSsoProviderCreateLogicOptions {
   onNext?: SsoProviderCreateProps['onNext'];
   onPrevious?: SsoProviderCreateProps['onPrevious'];
   createProvider: (data: CreateIdentityProviderRequestContentPrivate) => Promise<void>;
-  strategy?: FormState['strategy'];
-  details?: FormState['details'];
 }
 
 export interface UseSsoProviderCreateLogicResult {

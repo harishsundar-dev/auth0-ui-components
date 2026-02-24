@@ -714,13 +714,13 @@ describe('SsoProviderCreateView', () => {
       <SsoProviderCreateView
         logic={{
           ...logic,
-          currentStyles: {
-            ...logic.currentStyles,
+          styling: {
+            ...logic.styling,
             classes: {
-              ...logic?.currentStyles?.classes,
+              ...logic?.styling?.classes,
               'SsoProviderCreate-header': 'custom-header',
             },
-            variables: logic?.currentStyles?.variables ?? {},
+            variables: logic?.styling?.variables ?? {},
           },
         }}
         handlers={handlers}
@@ -734,13 +734,13 @@ describe('SsoProviderCreateView', () => {
       <SsoProviderCreateView
         logic={{
           ...logic,
-          currentStyles: {
-            ...logic.currentStyles,
+          styling: {
+            ...logic.styling,
             classes: {
-              ...logic?.currentStyles?.classes,
+              ...logic?.styling?.classes,
               'SsoProviderCreate-wizard': 'custom-wizard',
             },
-            variables: logic?.currentStyles?.variables ?? {},
+            variables: logic?.styling?.variables ?? {},
           },
         }}
         handlers={handlers}

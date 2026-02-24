@@ -736,9 +736,9 @@ describe('SsoProviderEditView', () => {
       <SsoProviderEditView
         logic={{
           ...logic,
-          currentStyles: {
-            ...logic.currentStyles,
-            classes: { ...logic.currentStyles.classes, 'SsoProviderEdit-header': 'custom-header' },
+          styling: {
+            ...logic.styling,
+            classes: { ...logic?.styling?.classes, 'SsoProviderEdit-header': 'custom-header' },
           },
         }}
         handlers={handlers}
@@ -752,9 +752,9 @@ describe('SsoProviderEditView', () => {
       <SsoProviderEditView
         logic={{
           ...logic,
-          currentStyles: {
-            ...logic.currentStyles,
-            classes: { ...logic.currentStyles.classes, 'SsoProviderEdit-tabs': 'custom-tabs' },
+          styling: {
+            ...logic.styling,
+            classes: { ...logic?.styling?.classes, 'SsoProviderEdit-tabs': 'custom-tabs' },
           },
         }}
         handlers={handlers}

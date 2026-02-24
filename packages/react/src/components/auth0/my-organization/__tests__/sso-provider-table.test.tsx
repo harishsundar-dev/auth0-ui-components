@@ -901,9 +901,9 @@ describe('SsoProviderTableView', () => {
       <SsoProviderTableView
         logic={{
           ...logic,
-          currentStyles: {
-            ...logic.currentStyles,
-            classes: { ...logic.currentStyles.classes, 'SsoProviderTable-header': 'custom-header' },
+          styling: {
+            ...logic.styling,
+            classes: { ...logic?.styling?.classes, 'SsoProviderTable-header': 'custom-header' },
           },
         }}
         handlers={handlers}
@@ -917,9 +917,9 @@ describe('SsoProviderTableView', () => {
       <SsoProviderTableView
         logic={{
           ...logic,
-          currentStyles: {
-            ...logic.currentStyles,
-            classes: { ...logic.currentStyles.classes, 'SsoProviderTable-table': 'custom-table' },
+          styling: {
+            ...logic.styling,
+            classes: { ...logic?.styling?.classes, 'SsoProviderTable-table': 'custom-table' },
           },
         }}
         handlers={handlers}

@@ -398,4 +398,4 @@ const UserMFAMgmt: React.ComponentType<UserMFAMgmtProps> = withMyAccountService(
   USER_MFA_SCOPES,
 );
 
-export { UserMFAMgmt };
+export { UserMFAMgmt, UserMFAMgmtView };

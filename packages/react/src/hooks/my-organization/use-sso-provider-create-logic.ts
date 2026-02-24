@@ -6,12 +6,12 @@
 
 import { useCallback, useRef, useState } from 'react';
 
-import type { ProviderConfigureHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/provider-configure';
-import type { ProviderDetailsFormHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-details';
 import { useConfig } from '@/hooks/my-organization/use-config';
 import { useIdpConfig } from '@/hooks/my-organization/use-idp-config';
 import type {
   FormState,
+  ProviderConfigureHandle,
+  ProviderDetailsFormHandle,
   UseSsoProviderCreateLogicOptions,
   UseSsoProviderCreateLogicResult,
 } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';

@@ -25,9 +25,19 @@ import type { LucideIcon } from 'lucide-react';
 import type React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
-import type { ProviderConfigureHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-configure/provider-configure';
-import type { ProviderDetailsFormHandle } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-create/provider-details';
 import type { IdpConfig } from '@/types/my-organization/config/config-idp-types';
+
+export interface ProviderConfigureHandle {
+  validate: () => Promise<boolean>;
+  getData: () => ProviderConfigureFormValues;
+}
+
+export interface ProviderDetailsFormHandle {
+  validate: () => Promise<boolean>;
+  getData: () => ProviderDetailsFormValues;
+  isDirty: () => boolean;
+  reset: (data?: ProviderDetailsFormValues) => void;
+}
 
 /** Form mode for provider configuration. */
 export type FormMode = 'create' | 'edit';

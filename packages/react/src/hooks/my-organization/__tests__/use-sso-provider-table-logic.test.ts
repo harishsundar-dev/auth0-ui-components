@@ -27,7 +27,7 @@ describe('useSsoProviderTableLogic', () => {
   const mockDeleteAction = { onBefore: vi.fn(() => true) };
   const mockDeleteFromOrgAction = { onBefore: vi.fn(() => true) };
 
-  const idp = { id: 'idp1', name: 'Test IDP' };
+  const idp = { id: 'idp1', name: 'Test IDP', options: {}, strategy: 'waad' as const };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -90,7 +90,7 @@ describe('useSsoProviderTableLogic', () => {
       }),
     );
     act(() => {
-      result.current.handleEdit(idp as any);
+      result.current.handleEdit(idp);
     });
     expect(mockEditAction.onAfter).toHaveBeenCalledWith(idp);
   });
@@ -110,7 +110,7 @@ describe('useSsoProviderTableLogic', () => {
       }),
     );
     act(() => {
-      result.current.handleDelete(idp as any);
+      result.current.handleDelete(idp);
     });
     expect(result.current.selectedIdp).toEqual(idp);
     expect(result.current.showDeleteModal).toBe(true);
@@ -131,7 +131,7 @@ describe('useSsoProviderTableLogic', () => {
       }),
     );
     act(() => {
-      result.current.handleDeleteFromOrganization(idp as any);
+      result.current.handleDeleteFromOrganization(idp);
     });
     expect(result.current.selectedIdp).toEqual(idp);
     expect(result.current.showRemoveModal).toBe(true);
@@ -152,7 +152,7 @@ describe('useSsoProviderTableLogic', () => {
       }),
     );
     await act(async () => {
-      await result.current.handleToggleEnabled(idp as any, true);
+      await result.current.handleToggleEnabled(idp, true);
     });
     expect(mockOnEnableProvider).toHaveBeenCalledWith(idp, true);
   });
@@ -172,7 +172,7 @@ describe('useSsoProviderTableLogic', () => {
       }),
     );
     await act(async () => {
-      await result.current.handleToggleEnabled(idp as any, false);
+      await result.current.handleToggleEnabled(idp, false);
     });
     expect(mockOnEnableProvider).not.toHaveBeenCalled();
   });
@@ -193,10 +193,10 @@ describe('useSsoProviderTableLogic', () => {
     );
     act(() => {
       result.current.setShowDeleteModal(true);
-      result.current.setSelectedIdp(idp as any);
+      result.current.setSelectedIdp(idp);
     });
     await act(async () => {
-      await result.current.handleDeleteConfirm(idp as any);
+      await result.current.handleDeleteConfirm(idp);
     });
     expect(mockOnDeleteConfirm).toHaveBeenCalledWith(idp);
     expect(result.current.showDeleteModal).toBe(false);
@@ -219,10 +219,10 @@ describe('useSsoProviderTableLogic', () => {
     );
     act(() => {
       result.current.setShowRemoveModal(true);
-      result.current.setSelectedIdp(idp as any);
+      result.current.setSelectedIdp(idp);
     });
     await act(async () => {
-      await result.current.handleRemoveConfirm(idp as any);
+      await result.current.handleRemoveConfirm(idp);
     });
     expect(mockOnRemoveConfirm).toHaveBeenCalledWith(idp);
     expect(result.current.showRemoveModal).toBe(false);

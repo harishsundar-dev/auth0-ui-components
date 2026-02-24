@@ -3,8 +3,11 @@
  * @module use-mfa-logic
  * @internal
  */
-import { FACTOR_TYPE_PUSH_NOTIFICATION } from '@auth0/universal-components-core';
-import type { MFAType, Authenticator } from '@auth0/universal-components-core';
+import {
+  FACTOR_TYPE_PUSH_NOTIFICATION,
+  type MFAType,
+  type Authenticator,
+} from '@auth0/universal-components-core';
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 

@@ -77,8 +77,11 @@ describe('useSsoProviderCreateLogic', () => {
     });
     // Mock configureRef.current.getData
     result.current.configureRef.current = {
-      getData: () => ({ strategy: 'oidc', display_name: 'test provider', name: 'test' }),
-    } as any;
+      validate: vi.fn().mockResolvedValue(true),
+      getData: vi
+        .fn()
+        .mockReturnValue({ name: 'test', display_name: 'test provider', strategy: 'oidc' }),
+    };
     await act(async () => {
       await result.current.handleCreate();
     });
@@ -104,7 +107,7 @@ describe('useSsoProviderCreateLogic', () => {
         getData: vi.fn().mockReturnValue({ name: 'test' }),
       },
     };
-    const actions = result.current.createStepActions('provider_details', ref as any);
+    const actions = result.current.createStepActions('provider_details', ref);
     await act(async () => {
       await actions.onNextAction();
       await actions.onPreviousAction();
@@ -135,7 +138,7 @@ describe('useSsoProviderCreateLogic', () => {
         getData: vi.fn(),
       },
     };
-    const actions = result.current.createStepActions('provider_details', ref as any);
+    const actions = result.current.createStepActions('provider_details', ref);
     let nextResult;
     await act(async () => {
       nextResult = await actions.onNextAction();

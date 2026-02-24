@@ -12,8 +12,6 @@ import type {
   OrganizationPrivate,
 } from '@auth0/universal-components-core';
 
-import type { Column } from '@/components/auth0/shared/data-table';
-
 export type IdentityProvider = CoreIdentityProvider;
 
 /** SSO provider table schema. */
@@ -118,7 +116,6 @@ export interface UseSsoProviderTableLogicResult {
 
 export interface SsoProviderTableLogicProps {
   data: IdentityProvider[];
-  columns: Column<IdentityProvider>[];
   isLoading: boolean;
   styling: SsoProviderTableProps['styling'];
   customMessages: SsoProviderTableProps['customMessages'];

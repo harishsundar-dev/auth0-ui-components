@@ -96,7 +96,6 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
     isUpdatingId,
     isDeleting,
     isRemoving,
-    columns: [],
     hideHeader: false,
     isLoading: tableLogic.isViewLoading,
     shouldHideCreate: tableLogic.shouldHideCreate,

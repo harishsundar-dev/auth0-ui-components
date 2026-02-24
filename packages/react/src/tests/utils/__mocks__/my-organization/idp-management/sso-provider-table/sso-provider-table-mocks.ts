@@ -10,7 +10,6 @@ export function createMockSsoProviderTableLogic(
 ): SsoProviderTableLogicProps {
   return {
     data: [],
-    columns: [],
     isLoading: false,
     styling: { variables: { common: {}, light: {}, dark: {} }, classes: {} },
     customMessages: {},

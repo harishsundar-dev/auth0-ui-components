@@ -85,7 +85,7 @@ export interface UseSsoProviderTableLogicOptions {
   createAction: ComponentAction<void>;
   editAction: ComponentAction<IdentityProvider>;
   deleteAction?: ComponentAction<IdentityProvider>;
-  deleteFromOrganizationAction: ComponentAction<IdentityProvider>;
+  deleteFromOrganizationAction?: ComponentAction<IdentityProvider>;
   onEnableProvider: (selectedIdp: IdentityProvider, enabled: boolean) => Promise<boolean>;
   onDeleteConfirm: (selectedIdp: IdentityProvider) => Promise<void>;
   onRemoveConfirm: (selectedIdp: IdentityProvider) => Promise<void>;

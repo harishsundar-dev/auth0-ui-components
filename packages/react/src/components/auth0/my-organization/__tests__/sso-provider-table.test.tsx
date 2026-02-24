@@ -44,7 +44,7 @@ const createMockSsoProviderTableProps = (
     onAfter: vi.fn(),
   },
   deleteAction: undefined,
-  deleteFromOrganizationAction: undefined,
+  deleteFromOrganizationAction: {},
   enableProviderAction: undefined,
   ...overrides,
 });

@@ -62,6 +62,7 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
   const {
     providers,
     organization,
+    isLoading,
     isDeleting,
     isRemoving,
     isUpdating,
@@ -72,6 +73,7 @@ function SsoProviderTableContainer(props: SsoProviderTableProps) {
   } = ssoProviderTable;
 
   const tableLogic = useSsoProviderTableLogic({
+    isLoading,
     readOnly,
     createAction,
     editAction,

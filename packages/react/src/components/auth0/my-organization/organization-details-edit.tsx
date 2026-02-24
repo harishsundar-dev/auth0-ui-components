@@ -102,7 +102,7 @@ function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEdi
   } = logic;
   const { formActions } = handlers;
   const { isDarkMode } = useTheme();
-  const { t } = useTranslator('domain_management', customMessages);
+  const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
 
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),

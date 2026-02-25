@@ -183,8 +183,54 @@ export default function GettingStarted() {
           <div>
             <h3 className="text-lg font-medium text-gray-900 mb-3">Option 2: Shadcn CLI</h3>
             <p className="text-gray-600 mb-4">
-              If you're using Shadcn, you can add individual blocks directly to your project:
+              If you're using Shadcn, you can add individual blocks directly to your project.
             </p>
+
+            {/* Alias prerequisite */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+              <p className="text-sm font-semibold text-amber-900 mb-2">
+                Prerequisites: configure the <code>@</code> path alias
+              </p>
+              <p className="text-sm text-amber-800 mb-3">
+                The installed components use <code>@/...</code> imports. Make sure your project has
+                the alias set up before running the add command:
+              </p>
+              <div className="space-y-3">
+                <CodeBlock
+                  code={`// tsconfig.json
+"paths": {
+  "@/*": ["./src/*"]
+}`}
+                  language="json"
+                  title="tsconfig.json"
+                />
+                <CodeBlock
+                  code={`// vite.config.ts
+import path from 'path';
+
+resolve: {
+  alias: {
+    '@': path.resolve('./src'),
+  },
+},`}
+                  language="ts"
+                  title="vite.config.ts"
+                />
+                <CodeBlock
+                  code={`// components.json
+"aliases": {
+  "components": "@/components",
+  "utils": "@/lib/utils",
+  "ui": "@/components/ui",
+  "hooks": "@/hooks",
+  "lib": "@/lib"
+}`}
+                  language="json"
+                  title="components.json"
+                />
+              </div>
+            </div>
+
             <CodeBlock
               code="npx shadcn@latest add @auth0/organization-details-edit"
               language="bash"

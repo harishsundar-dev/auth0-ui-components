@@ -49,11 +49,7 @@ function OrganizationDetailsEditContainer(props: OrganizationDetailsEditProps): 
     backButton,
   } = props;
 
-  const {
-    organization,
-    isFetchLoading,
-    formActions: enhancedFormActions,
-  } = useOrganizationDetailsEdit({
+  const { organization, isFetchLoading, formActions } = useOrganizationDetailsEdit({
     saveAction,
     cancelAction,
     readOnly,
@@ -72,7 +68,7 @@ function OrganizationDetailsEditContainer(props: OrganizationDetailsEditProps): 
   };
 
   const orgDetailsEditHandlerProps: OrganizationDetailsEditHandlerProps = {
-    formActions: enhancedFormActions,
+    formActions,
   };
 
   return (

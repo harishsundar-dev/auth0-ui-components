@@ -640,8 +640,8 @@ async function generateRegistry() {
 
   const registry = {
     $schema: 'https://ui.shadcn.com/schema/registry.json',
-    name: 'auth0-ui-components',
-    homepage: 'https://github.com/auth0/auth0-ui-components',
+    name: 'auth0-universal-components',
+    homepage: 'https://github.com/auth0/universal-components-web',
     items,
   };
 

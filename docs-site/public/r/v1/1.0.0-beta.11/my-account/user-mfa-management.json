@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "user-mfa-management",
+  "name": "my-account/user-mfa-management",
   "type": "registry:block",
   "title": "Internal MFA management UI used by `UserMFAMgmt`.",
   "description": "Handles loading factors, enroll/delete flows, and UI state.",

@@ -22,8 +22,10 @@ import { useDomainTableLogic } from '@/hooks/my-organization/use-domain-table-lo
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { getStatusBadgeVariant } from '@/lib/utils/my-organization/domain-management/domain-management-utils';
-import type { DomainTableViewProps } from '@/types';
-import type { DomainTableProps } from '@/types/my-organization/domain-management/domain-table-types';
+import type {
+  DomainTableProps,
+  DomainTableViewProps,
+} from '@/types/my-organization/domain-management/domain-table-types';
 
 /**
  * DomainTableContainer Component.

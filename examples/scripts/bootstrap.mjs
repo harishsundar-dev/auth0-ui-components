@@ -37,6 +37,7 @@ import {
 import {
   checkAuth0CLI,
   checkNodeVersion,
+  validateAuth0Session,
   validateTenant,
   validateRequiredScopes,
 } from "./utils/validation.mjs"
@@ -76,6 +77,7 @@ async function main() {
   console.log("📋 Step 1: Pre-flight Checks")
   checkNodeVersion()
   await checkAuth0CLI()
+  await validateAuth0Session()
   const domain = await validateTenant(tenantName)
   console.log("")
 

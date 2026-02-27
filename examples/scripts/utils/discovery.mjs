@@ -2,6 +2,9 @@ import { $ } from "execa"
 import ora from "ora"
 
 import { auth0ApiCall } from "./auth0-api.mjs"
+
+// Timeout for CLI commands (30 seconds)
+const CLI_TIMEOUT = 30000
 import { createChangePlan, ChangeAction, createChangeItem } from "./change-plan.mjs"
 import {
   checkDashboardClientChanges,
@@ -51,23 +54,23 @@ export async function discoverExistingResources() {
     }
 
     // Get clients
-    const { stdout: clientsStdout } = await $`auth0 apps list --json --no-input`
+    const { stdout: clientsStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 apps list --json --no-input`
     resources.clients = JSON.parse(clientsStdout) || []
 
     // Get roles
-    const { stdout: rolesStdout } = await $`auth0 roles list --json --no-input`
+    const { stdout: rolesStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 roles list --json --no-input`
     resources.roles = JSON.parse(rolesStdout) || []
 
     // Get connections
-    const { stdout: connectionsStdout } = await $`auth0 api get connections --no-input`
+    const { stdout: connectionsStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 api get connections --no-input`
     resources.connections = JSON.parse(connectionsStdout) || []
 
     // Get resource servers
-    const { stdout: rsStdout } = await $`auth0 apis list --json --no-input`
+    const { stdout: rsStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 apis list --json --no-input`
     resources.resourceServers = JSON.parse(rsStdout) || []
 
     // Get client grants
-    const { stdout: grantsStdout } = await $`auth0 api get client-grants --no-input`
+    const { stdout: grantsStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 api get client-grants --no-input`
     resources.clientGrants = JSON.parse(grantsStdout) || []
 
     // Get connection profiles (using generic API)
@@ -83,13 +86,13 @@ export async function discoverExistingResources() {
       userAttributeProfiles?.user_attribute_profiles || []
 
     // Get Orgs
-    const { stdout: orgsStdout } = await $`auth0 orgs list --json --no-input`
+    const { stdout: orgsStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 orgs list --json --no-input`
     resources.orgs = JSON.parse(orgsStdout) || []
 
     // Get Org Members (if Demo Org exists)
     const demoOrg = resources.orgs.find((o) => o.name === DEMO_ORG_NAME)
     if (demoOrg) {
-      const { stdout: membersStdout } = await $`auth0 orgs members list ${demoOrg.id} --json --no-input`
+      const { stdout: membersStdout } = await $({ timeout: CLI_TIMEOUT })`auth0 orgs members list ${demoOrg.id} --json --no-input`
       resources.orgMembers = JSON.parse(membersStdout) || []
     } else {
       resources.orgMembers = []
@@ -110,6 +113,14 @@ export async function discoverExistingResources() {
     spinner.succeed("Resource discovery complete")
     return resources
   } catch (e) {
+    // Handle timeout errors with a helpful message
+    if (e.timedOut) {
+      spinner.fail("Resource discovery timed out")
+      console.error("\n❌ The Auth0 CLI is not responding.")
+      console.error("   This usually means your session has expired.")
+      console.error("   Please run 'auth0 login' and try again.\n")
+      process.exit(1)
+    }
     spinner.fail("Failed to discover existing resources")
     console.error(e)
     process.exit(1)

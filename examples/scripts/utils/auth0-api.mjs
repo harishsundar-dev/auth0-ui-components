@@ -4,7 +4,7 @@ import { $ } from "execa"
  * Make a generic API call using auth0 CLI
  */
 export async function auth0ApiCall(method, endpoint, data = null) {
-  const args = ["api", method, endpoint]
+  const args = ["api", method, endpoint, "--no-input"]
 
   if (data) {
     args.push("--data", JSON.stringify(data))

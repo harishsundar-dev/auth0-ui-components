@@ -28,14 +28,31 @@ export const MYORG_API_SCOPES = [
 "read:my_org:configuration",
 ]
 
-// My Account API Scopes (for MFA management)
-export const MYACCOUNT_API_SCOPES = [
+// My Account API Scopes - desired scopes for MFA management
+// Not all tenants may have these scopes available on their My Account API
+export const MYACCOUNT_API_SCOPES_DESIRED = [
   "create:me:authentication_methods",
   "read:me:authentication_methods",
   "delete:me:authentication_methods",
   "update:me:authentication_methods",
   "read:me:factors",
 ]
+
+/**
+ * Get available My Account API scopes from the resource server
+ * Returns only the scopes that actually exist on the tenant
+ */
+export function getAvailableMyAccountScopes(existingResourceServers, domain) {
+  const myAccountApi = existingResourceServers.find(
+    (rs) => rs.identifier === `https://${domain}/me/`
+  )
+
+  if (!myAccountApi || !myAccountApi.scopes) {
+    return []
+  }
+
+  return myAccountApi.scopes.map((s) => s.value)
+}
 
 // ============================================================================
 // CHECK FUNCTIONS - Determine what changes are needed

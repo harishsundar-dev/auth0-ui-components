@@ -14,6 +14,7 @@ export const DASHBOARD_CLIENT_NAME = "Universal Components Demo"
 
 /**
  * Check if Dashboard Client needs changes
+ * @param {object} featureConfig - Feature configuration { enableMyOrg, enableMyAccount }
  */
 export async function checkDashboardClientChanges(
   existingClients,
@@ -22,7 +23,8 @@ export async function checkDashboardClientChanges(
   exampleType,
   domain,
   myOrgApiScopes,
-  myAccountApiScopes
+  myAccountApiScopes,
+  featureConfig = { enableMyOrg: true, enableMyAccount: true }
 ) {
   const existingClient = existingClients.find(
     (c) => c.name === DASHBOARD_CLIENT_NAME
@@ -39,6 +41,7 @@ export async function checkDashboardClientChanges(
       name: `${DASHBOARD_CLIENT_NAME} - ${appType}`,
       connectionProfileId,
       userAttributeProfileId,
+      featureConfig,
     })
   }
 
@@ -65,10 +68,9 @@ export async function checkDashboardClientChanges(
     requiredAppType: (exampleType === 'next-rwa' ? "regular_web" : "spa")
   }
 
-  // Check if my_org config needs update
-  // If profiles are TO_BE_CREATED, we'll need to update after creating them
-  // Otherwise, check if current config matches desired IDs
-  const myOrgConfigNeedsUpdate =
+  // Check if my_org config needs update (only if MyOrg is enabled)
+  // Keep my_organization_configuration on client even if MyOrg disabled (harmless, future-proofs)
+  const myOrgConfigNeedsUpdate = featureConfig.enableMyOrg && (
     connectionProfileId === "TO_BE_CREATED" ||
     userAttributeProfileId === "TO_BE_CREATED" ||
     !clientToCheck.my_organization_configuration ||
@@ -76,28 +78,42 @@ export async function checkDashboardClientChanges(
       connectionProfileId ||
     clientToCheck.my_organization_configuration.user_attribute_profile_id !==
       userAttributeProfileId
+  )
 
-  const organizationSettingsNeedUpdate =
+  // Organization settings only needed if MyOrg is enabled
+  const organizationSettingsNeedUpdate = featureConfig.enableMyOrg && (
     clientToCheck.organization_require_behavior !== "post_login_prompt" ||
     clientToCheck.organization_usage !== "require"
-
-  // Check if My Org API policy exists with correct scopes
-  const hasMyOrgPolicy = clientToCheck.refresh_token?.policies?.some(
-    policy => (
-      policy.audience === `https://${domain}/my-org/` &&
-      policy.scope?.slice().sort().toString() === myOrgApiScopes.slice().sort().toString()
-    )
   )
 
-  // Check if My Account API policy exists with correct scopes
-  const hasMyAccountPolicy = clientToCheck.refresh_token?.policies?.some(
-    policy => (
-      policy.audience === `https://${domain}/me/` &&
-      policy.scope?.slice().sort().toString() === myAccountApiScopes.slice().sort().toString()
-    )
-  )
+  // Check refresh token policies based on enabled features
+  let refreshTokenPoliciesNeedUpdate = false
 
-  const refreshTokenPoliciesNeedUpdate = !hasMyOrgPolicy || !hasMyAccountPolicy
+  // Check if My Org API policy exists with correct scopes (only if enabled)
+  if (featureConfig.enableMyOrg && myOrgApiScopes.length > 0) {
+    const hasMyOrgPolicy = clientToCheck.refresh_token?.policies?.some(
+      policy => (
+        policy.audience === `https://${domain}/my-org/` &&
+        policy.scope?.slice().sort().toString() === myOrgApiScopes.slice().sort().toString()
+      )
+    )
+    if (!hasMyOrgPolicy) {
+      refreshTokenPoliciesNeedUpdate = true
+    }
+  }
+
+  // Check if My Account API policy exists with correct scopes (only if enabled)
+  if (featureConfig.enableMyAccount && myAccountApiScopes.length > 0) {
+    const hasMyAccountPolicy = clientToCheck.refresh_token?.policies?.some(
+      policy => (
+        policy.audience === `https://${domain}/me/` &&
+        policy.scope?.slice().sort().toString() === myAccountApiScopes.slice().sort().toString()
+      )
+    )
+    if (!hasMyAccountPolicy) {
+      refreshTokenPoliciesNeedUpdate = true
+    }
+  }
 
   const refreshTokenRotationNeedsUpdate =
     clientToCheck.refresh_token?.rotation_type !== "rotating"
@@ -145,6 +161,7 @@ export async function checkDashboardClientChanges(
         userAttributeProfileId,
         refreshTokenNeedsUpdate
       },
+      featureConfig,
       summary: `\n     - ${changes.join("\n     - ")}`,
     })
   }
@@ -252,7 +269,36 @@ export function checkMyAccountClientGrantChanges(
 // ============================================================================
 
 /**
+ * Build refresh token policies based on feature configuration
+ * @param {string} domain - The tenant domain
+ * @param {object} featureConfig - Feature configuration { enableMyOrg, enableMyAccount }
+ * @param {string[]} myOrgApiScopes - My Org API scopes
+ * @param {string[]} myAccountApiScopes - My Account API scopes
+ * @returns {object[]} Array of refresh token policies
+ */
+function buildRefreshTokenPolicies(domain, featureConfig, myOrgApiScopes, myAccountApiScopes) {
+  const policies = []
+
+  if (featureConfig.enableMyOrg && myOrgApiScopes.length > 0) {
+    policies.push({
+      audience: `https://${domain}/my-org/`,
+      scope: myOrgApiScopes
+    })
+  }
+
+  if (featureConfig.enableMyAccount && myAccountApiScopes.length > 0) {
+    policies.push({
+      audience: `https://${domain}/me/`,
+      scope: myAccountApiScopes
+    })
+  }
+
+  return policies
+}
+
+/**
  * Apply Dashboard Client changes
+ * @param {object} featureConfig - Feature configuration { enableMyOrg, enableMyAccount }
  */
 export async function applyDashboardClientChanges(
   changePlan,
@@ -261,7 +307,8 @@ export async function applyDashboardClientChanges(
   exampleType,
   domain,
   myOrgApiScopes,
-  myAccountApiScopes
+  myAccountApiScopes,
+  featureConfig = { enableMyOrg: true, enableMyAccount: true }
 ) {
   if (changePlan.action === ChangeAction.SKIP) {
     const spinner = ora({
@@ -271,6 +318,9 @@ export async function applyDashboardClientChanges(
     return changePlan.existing
   }
 
+  // Use featureConfig from changePlan if available (for consistency)
+  const effectiveFeatureConfig = changePlan.featureConfig || featureConfig
+
   if (changePlan.action === ChangeAction.CREATE) {
     const spinner = ora({
       text: `Creating ${DASHBOARD_CLIENT_NAME} client`,
@@ -279,65 +329,71 @@ export async function applyDashboardClientChanges(
     try {
       const desiredCallbacks = (exampleType === 'next-rwa') ? [`${APP_BASE_URL}/auth/callback`] : [APP_BASE_URL]
       const desiredLogoutUrls = [APP_BASE_URL]
-      const desiredAppType = (exampleType === 'next-rwa') ? "regular_web" : "spa" 
+      const desiredAppType = (exampleType === 'next-rwa') ? "regular_web" : "spa"
       const desiredTokenEndpointAuthMethod = (exampleType === 'next-rwa') ? "client_secret_post" : "none"
       const desiredAllowedWebOrigins = desiredAppType === 'spa' ? [APP_BASE_URL] : []
+
+      // Build refresh token policies based on enabled features
+      const refreshTokenPolicies = buildRefreshTokenPolicies(
+        domain,
+        effectiveFeatureConfig,
+        myOrgApiScopes,
+        myAccountApiScopes
+      )
+
+      // Build client data conditionally based on features
+      const clientData = {
+        name: DASHBOARD_CLIENT_NAME,
+        description: "The client to facilitate login to the dashboard in the context of an organization.",
+        callbacks: desiredCallbacks,
+        allowed_logout_urls: desiredLogoutUrls,
+        web_origins: desiredAllowedWebOrigins,
+        app_type: desiredAppType,
+        oidc_conformant: true,
+        is_first_party: true,
+        grant_types: ["authorization_code", "refresh_token"],
+        token_endpoint_auth_method: desiredTokenEndpointAuthMethod,
+        jwt_configuration: {
+          alg: "RS256",
+          lifetime_in_seconds: 36000,
+          secret_encoded: false,
+        },
+        refresh_token: {
+          expiration_type: "expiring",
+          rotation_type: "rotating",
+          token_lifetime: 31557600,
+          idle_token_lifetime: 2592000,
+          leeway: 0,
+          infinite_token_lifetime: false,
+          infinite_idle_token_lifetime: false,
+          policies: refreshTokenPolicies
+        }
+      }
+
+      // Add organization settings only if MyOrg is enabled
+      if (effectiveFeatureConfig.enableMyOrg) {
+        clientData.organization_require_behavior = "post_login_prompt"
+        clientData.organization_usage = "require"
+        clientData.my_organization_configuration = {
+          connection_profile_id: connectionProfileId,
+          user_attribute_profile_id: userAttributeProfileId,
+          connection_deletion_behavior: "allow_if_empty",
+          allowed_strategies: [
+            "pingfederate",
+            "adfs",
+            "waad",
+            "google-apps",
+            "okta",
+            "oidc",
+            "samlp",
+          ],
+        }
+      }
 
       // prettier-ignore
       const createClientArgs = [
         "api", "post", "clients",
-        "--data", JSON.stringify({
-          name: DASHBOARD_CLIENT_NAME,
-          description: "The client to facilitate login to the dashboard in the context of an organization.",
-          callbacks: desiredCallbacks,
-          allowed_logout_urls: desiredLogoutUrls,
-          web_origins: desiredAllowedWebOrigins,
-          app_type: desiredAppType,
-          oidc_conformant: true,
-          is_first_party: true,
-          grant_types: ["authorization_code", "refresh_token"],
-          token_endpoint_auth_method: desiredTokenEndpointAuthMethod,
-          organization_require_behavior: "post_login_prompt",
-          organization_usage: "require",
-          jwt_configuration: {
-            alg: "RS256",
-            lifetime_in_seconds: 36000,
-            secret_encoded: false,
-          },
-          my_organization_configuration: {
-            connection_profile_id: connectionProfileId,
-            user_attribute_profile_id: userAttributeProfileId,
-            connection_deletion_behavior: "allow_if_empty",
-            allowed_strategies: [
-              "pingfederate",
-              "adfs",
-              "waad",
-              "google-apps",
-              "okta",
-              "oidc",
-              "samlp",
-            ],
-          },
-          refresh_token: {
-            expiration_type: "expiring",
-            rotation_type: "rotating",
-            token_lifetime: 31557600,
-            idle_token_lifetime: 2592000,
-            leeway: 0,
-            infinite_token_lifetime: false,
-            infinite_idle_token_lifetime: false,
-            policies: [
-              {
-                audience: `https://${domain}/my-org/`,
-                scope: myOrgApiScopes
-              },
-              {
-                audience: `https://${domain}/me/`,
-                scope: myAccountApiScopes
-              }
-            ]
-          }
-        }),
+        "--data", JSON.stringify(clientData),
       ];
 
       const { stdout } = await $`auth0 ${createClientArgs}`
@@ -352,7 +408,9 @@ export async function applyDashboardClientChanges(
       return fullClient
     } catch (e) {
       spinner.fail(`Failed to create the ${DASHBOARD_CLIENT_NAME} client`)
-      spinner.fail(`Ensure your tenant supports My Organization feature.`)
+      if (effectiveFeatureConfig.enableMyOrg) {
+        spinner.fail(`Ensure your tenant supports My Organization feature.`)
+      }
       throw e
     }
   }
@@ -415,45 +473,49 @@ export async function applyDashboardClientChanges(
       }
 
       if (updates.refreshTokenNeedsUpdate) {
-        const desiredMyOrgPolicy = {
-          audience: `https://${domain}/my-org/`,
-          scope: myOrgApiScopes,
-        }
-
-        const desiredMyAccountPolicy = {
-          audience: `https://${domain}/me/`,
-          scope: myAccountApiScopes,
-        }
-
         const existingPolicies = existing.refresh_token?.policies || []
-
-        // Check if My Org policy exists
-        const hasMyOrgPolicy = existingPolicies.some(
-          (policy) =>
-            policy.audience === desiredMyOrgPolicy.audience &&
-            policy.scope?.slice().sort().toString() ===
-              myOrgApiScopes.slice().sort().toString()
-        )
-
-        // Check if My Account policy exists
-        const hasMyAccountPolicy = existingPolicies.some(
-          (policy) =>
-            policy.audience === desiredMyAccountPolicy.audience &&
-            policy.scope?.slice().sort().toString() ===
-              myAccountApiScopes.slice().sort().toString()
-        )
-
-        // Build new policies array, adding missing policies
         let newPolicies = [...existingPolicies]
-        if (!hasMyOrgPolicy) {
-          // Remove any existing My Org policy with wrong scopes
-          newPolicies = newPolicies.filter(p => p.audience !== desiredMyOrgPolicy.audience)
-          newPolicies.push(desiredMyOrgPolicy)
+
+        // Handle My Org policy (only if enabled)
+        if (effectiveFeatureConfig.enableMyOrg && myOrgApiScopes.length > 0) {
+          const desiredMyOrgPolicy = {
+            audience: `https://${domain}/my-org/`,
+            scope: myOrgApiScopes,
+          }
+
+          const hasMyOrgPolicy = existingPolicies.some(
+            (policy) =>
+              policy.audience === desiredMyOrgPolicy.audience &&
+              policy.scope?.slice().sort().toString() ===
+                myOrgApiScopes.slice().sort().toString()
+          )
+
+          if (!hasMyOrgPolicy) {
+            // Remove any existing My Org policy with wrong scopes
+            newPolicies = newPolicies.filter(p => p.audience !== desiredMyOrgPolicy.audience)
+            newPolicies.push(desiredMyOrgPolicy)
+          }
         }
-        if (!hasMyAccountPolicy) {
-          // Remove any existing My Account policy with wrong scopes
-          newPolicies = newPolicies.filter(p => p.audience !== desiredMyAccountPolicy.audience)
-          newPolicies.push(desiredMyAccountPolicy)
+
+        // Handle My Account policy (only if enabled)
+        if (effectiveFeatureConfig.enableMyAccount && myAccountApiScopes.length > 0) {
+          const desiredMyAccountPolicy = {
+            audience: `https://${domain}/me/`,
+            scope: myAccountApiScopes,
+          }
+
+          const hasMyAccountPolicy = existingPolicies.some(
+            (policy) =>
+              policy.audience === desiredMyAccountPolicy.audience &&
+              policy.scope?.slice().sort().toString() ===
+                myAccountApiScopes.slice().sort().toString()
+          )
+
+          if (!hasMyAccountPolicy) {
+            // Remove any existing My Account policy with wrong scopes
+            newPolicies = newPolicies.filter(p => p.audience !== desiredMyAccountPolicy.audience)
+            newPolicies.push(desiredMyAccountPolicy)
+          }
         }
 
         updateData.refresh_token = {

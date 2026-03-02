@@ -162,7 +162,7 @@ function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
     syncProvisioningAttributes,
   } = handlers;
 
-  const { isDarkMode, theme } = useTheme();
+  const { isDarkMode } = useTheme();
   const [activeTab, setActiveTab] = useState('sso');
   const { t } = useTranslator('idp_management.edit_sso_provider', customMessages);
   const currentStyles = useMemo(
@@ -179,7 +179,7 @@ function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
   }
 
   return (
-    <div data-theme={theme || 'default'} style={currentStyles.variables} className="w-full">
+    <div style={currentStyles.variables}>
       {!hideHeader && (
         <Header
           title={provider?.display_name || provider?.name || ''}

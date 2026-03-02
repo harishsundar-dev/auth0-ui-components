@@ -126,7 +126,7 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
     idpConfig,
   }: SsoProviderCreateLogicProps = logic;
 
-  const { isDarkMode, theme } = useTheme();
+  const { isDarkMode } = useTheme();
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const {
     detailsRef,
@@ -216,7 +216,7 @@ function SsoProviderCreateView({ logic, handlers }: SsoProviderCreateViewProps) 
   );
 
   return (
-    <div data-theme={theme || 'default'} style={currentStyles.variables} className="w-full">
+    <div style={currentStyles.variables} className="w-full">
       <Header
         title={t('header.title')}
         backButton={

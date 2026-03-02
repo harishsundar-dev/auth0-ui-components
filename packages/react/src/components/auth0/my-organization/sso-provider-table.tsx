@@ -168,7 +168,7 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
     setShowRemoveModal,
   } = handlers;
 
-  const { isDarkMode, theme } = useTheme();
+  const { isDarkMode } = useTheme();
   const { t } = useTranslator('idp_management.sso_provider_table', customMessages);
   const currentStyles = React.useMemo(
     () => getComponentStyles(styling, isDarkMode),
@@ -234,7 +234,7 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
   );
 
   return (
-    <div data-theme={theme || 'default'} style={currentStyles.variables}>
+    <div style={currentStyles.variables}>
       <div className={currentStyles.classes?.['SsoProviderTable-header']}>
         <Header
           title={t('header.title')}

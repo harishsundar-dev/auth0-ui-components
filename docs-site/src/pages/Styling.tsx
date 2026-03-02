@@ -208,39 +208,39 @@ export default function Styling() {
           tabs={[
             {
               label: 'Colors',
-              code: `:root {
+              code: `.auth0-universal {
   /* Backgrounds & surfaces */
-  --background: oklch(100% 0 0);          /* page background */
-  --foreground: oklch(9% 0 0);            /* default text */
-  --card: oklch(100% 0 0);                /* card background */
-  --card-foreground: oklch(0% 0 0);       /* text inside cards */
-  --popover: oklch(100% 0 0);             /* popover / dropdown / dialog background */
-  --popover-foreground: oklch(9% 0 0);    /* text inside popovers */
-  --input: oklch(100% 0 0);               /* input field background */
+  --auth0-background: oklch(100% 0 0);          /* page background */
+  --auth0-foreground: oklch(9% 0 0);            /* default text */
+  --auth0-card: oklch(100% 0 0);                /* card background */
+  --auth0-card-foreground: oklch(0% 0 0);       /* text inside cards */
+  --auth0-popover: oklch(100% 0 0);             /* popover / dropdown / dialog background */
+  --auth0-popover-foreground: oklch(9% 0 0);    /* text inside popovers */
+  --auth0-input: oklch(100% 0 0);               /* input field background */
 
   /* Brand */
-  --primary: oklch(37% 0 0);              /* buttons, links, active states */
-  --primary-foreground: oklch(100% 0 0);  /* text on primary surfaces */
+  --auth0-primary: oklch(37% 0 0);              /* buttons, links, active states */
+  --auth0-primary-foreground: oklch(100% 0 0);  /* text on primary surfaces */
 
   /* Secondary */
-  --secondary: oklch(96% 0 0);
-  --secondary-foreground: oklch(100% 0 0);
+  --auth0-secondary: oklch(96% 0 0);
+  --auth0-secondary-foreground: oklch(100% 0 0);
 
   /* Muted */
-  --muted: oklch(96% 0 0);                /* disabled / subtle backgrounds */
-  --muted-foreground: oklch(45% 0 0);     /* placeholder / secondary text */
+  --auth0-muted: oklch(96% 0 0);                /* disabled / subtle backgrounds */
+  --auth0-muted-foreground: oklch(45% 0 0);     /* placeholder / secondary text */
 
   /* Accent */
-  --accent: oklch(97% 0 0);               /* hover highlights */
-  --accent-foreground: oklch(9% 0 0);
+  --auth0-accent: oklch(97% 0 0);               /* hover highlights */
+  --auth0-accent-foreground: oklch(9% 0 0);
 
   /* Destructive */
-  --destructive: oklch(93% 0.03 17);      /* error surfaces */
-  --destructive-foreground: oklch(36% 0.14 17);
+  --auth0-destructive: oklch(93% 0.03 17);      /* error surfaces */
+  --auth0-destructive-foreground: oklch(36% 0.14 17);
 
   /* Borders & focus */
-  --border: oklch(89% 0 0);
-  --ring: oklch(89% 0 0);
+  --auth0-border: oklch(89% 0 0);
+  --auth0-ring: oklch(89% 0 0);
 }`,
             },
             {
@@ -294,25 +294,25 @@ export default function Styling() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {[
-                ['--background', 'Page / container background'],
-                ['--foreground', 'Default text color'],
-                ['--primary', 'Primary action color (buttons, links, active states)'],
-                ['--primary-foreground', 'Text on primary-colored surfaces'],
-                ['--secondary', 'Secondary surfaces and subtle backgrounds'],
-                ['--secondary-foreground', 'Text on secondary surfaces'],
-                ['--muted', 'Muted / disabled backgrounds'],
-                ['--muted-foreground', 'Muted / placeholder text'],
-                ['--accent', 'Hover and highlight backgrounds'],
-                ['--accent-foreground', 'Text on accent surfaces'],
-                ['--destructive', 'Error and destructive action color'],
-                ['--destructive-foreground', 'Text on destructive surfaces'],
-                ['--card', 'Card background'],
-                ['--card-foreground', 'Text inside cards'],
-                ['--popover', 'Popover / dropdown / dialog background'],
-                ['--popover-foreground', 'Text inside popovers'],
-                ['--input', 'Input field background'],
-                ['--border', 'Border color'],
-                ['--ring', 'Focus ring color'],
+                ['--auth0-background', 'Page / container background'],
+                ['--auth0-foreground', 'Default text color'],
+                ['--auth0-primary', 'Primary action color (buttons, links, active states)'],
+                ['--auth0-primary-foreground', 'Text on primary-colored surfaces'],
+                ['--auth0-secondary', 'Secondary surfaces and subtle backgrounds'],
+                ['--auth0-secondary-foreground', 'Text on secondary surfaces'],
+                ['--auth0-muted', 'Muted / disabled backgrounds'],
+                ['--auth0-muted-foreground', 'Muted / placeholder text'],
+                ['--auth0-accent', 'Hover and highlight backgrounds'],
+                ['--auth0-accent-foreground', 'Text on accent surfaces'],
+                ['--auth0-destructive', 'Error and destructive action color'],
+                ['--auth0-destructive-foreground', 'Text on destructive surfaces'],
+                ['--auth0-card', 'Card background'],
+                ['--auth0-card-foreground', 'Text inside cards'],
+                ['--auth0-popover', 'Popover / dropdown / dialog background'],
+                ['--auth0-popover-foreground', 'Text inside popovers'],
+                ['--auth0-input', 'Input field background'],
+                ['--auth0-border', 'Border color'],
+                ['--auth0-ring', 'Focus ring color'],
               ].map(([variable, description]) => (
                 <tr key={variable}>
                   <td className="px-4 py-2 font-mono text-xs text-violet-700 whitespace-nowrap">

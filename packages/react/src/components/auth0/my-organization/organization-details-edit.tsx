@@ -97,7 +97,7 @@ function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEdi
     backButton,
   } = logic;
   const { formActions } = handlers;
-  const { isDarkMode, theme } = useTheme();
+  const { isDarkMode } = useTheme();
   const { t } = useTranslator('organization_management.organization_details_edit', customMessages);
 
   const currentStyles = React.useMemo(
@@ -108,7 +108,6 @@ function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEdi
   if (isFetchLoading) {
     return (
       <div
-        data-theme={theme || 'default'}
         style={currentStyles.variables}
         className="flex items-center justify-center min-h-96 w-full"
       >
@@ -118,7 +117,7 @@ function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEdi
   }
 
   return (
-    <div data-theme={theme || 'default'} style={currentStyles.variables} className="w-full">
+    <div className="w-full" style={currentStyles.variables}>
       {!hideHeader && (
         <div className="mb-8">
           <Header

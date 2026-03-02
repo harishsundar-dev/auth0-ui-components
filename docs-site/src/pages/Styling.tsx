@@ -58,8 +58,8 @@ export default function Styling() {
               <code className="text-sm bg-gray-100 px-2 py-1 rounded">styles.css</code>
             </h3>
             <p className="text-gray-600 text-sm">
-              A self-contained stylesheet with all Tailwind utilities pre-compiled and scoped to
-              Auth0 components. No Tailwind installation or configuration required in your app.
+              A self-contained, pre-compiled stylesheet. All Tailwind utilities are bundled in — no
+              Tailwind installation or configuration required in your app.
             </p>
             <CodeBlock code={`import '@auth0/universal-components-react/styles';`} language="tsx" />
           </div>
@@ -71,17 +71,25 @@ export default function Styling() {
                 Tailwind apps
               </span>
             </div>
-            <h3 className="text-lg font-semibold text-gray-900">
-              <code className="text-sm bg-gray-100 px-2 py-1 rounded">tailwind.css</code>
-            </h3>
+            <h3 className="text-lg font-semibold text-gray-900">Tailwind v4 theme variables</h3>
             <p className="text-gray-600 text-sm">
-              Tells your app's Tailwind build to scan the component library source for class names,
-              so all required utilities are included in your generated CSS. Use this when your app
-              already runs Tailwind.
+              If your app already runs Tailwind v4, define the Auth0 theme tokens directly in your{' '}
+              <code className="text-xs">@theme</code> block using the{' '}
+              <code className="text-xs">--auth0-</code> prefix. The components read these variables
+              at runtime, so Tailwind generates them as part of your normal build.
             </p>
             <CodeBlock
-              code={`import '@auth0/universal-components-react/tailwind';`}
-              language="tsx"
+              code={`/* app.css */
+@import "tailwindcss";
+
+@theme {
+  --auth0-background: oklch(100% 0 0);
+  --auth0-foreground: oklch(9% 0 0);
+  --auth0-primary:    oklch(37% 0 0);
+  /* ... other tokens */
+}`}
+              language="css"
+              title="app.css"
             />
           </div>
         </div>
@@ -89,22 +97,55 @@ export default function Styling() {
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-blue-800">
             <strong>When to use which:</strong> If your app does not use Tailwind, import{' '}
-            <code className="text-xs">styles.css</code> — it works standalone. If your app uses
-            Tailwind v4, import <code className="text-xs">tailwind.css</code> in your root CSS file
-            alongside your existing <code className="text-xs">@import "tailwindcss"</code> so
-            Tailwind picks up all the class names from the library.
+            <code className="text-xs">styles.css</code> — it is self-contained and works without
+            Tailwind. If your app uses Tailwind v4, define the{' '}
+            <code className="text-xs">--auth0-*</code> tokens in your{' '}
+            <code className="text-xs">@theme</code> block so Tailwind generates them alongside your
+            other design tokens.
           </p>
         </div>
 
-        <h3 className="text-lg font-medium text-gray-900">Using tailwind.css with Tailwind v4</h3>
+        <h3 className="text-lg font-medium text-gray-900">Tailwind v4 — full token list</h3>
         <p className="text-gray-600">
-          Add the import to your root CSS file so Tailwind scans the library's compiled output when
-          building your stylesheet.
+          Add all required tokens to your{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">@theme</code> block. The{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code> prefix
+          namespaces every token so they never collide with your existing theme.
         </p>
         <CodeBlock
           code={`/* app.css */
 @import "tailwindcss";
-@import "@auth0/universal-components-react/tailwind";`}
+
+@theme {
+  /* Backgrounds & surfaces */
+  --auth0-background:         oklch(100% 0 0);
+  --auth0-foreground:         oklch(9% 0 0);
+  --auth0-card:               oklch(100% 0 0);
+  --auth0-card-foreground:    oklch(0% 0 0);
+  --auth0-popover:            oklch(100% 0 0);
+  --auth0-popover-foreground: oklch(9% 0 0);
+  --auth0-input:              oklch(100% 0 0);
+
+  /* Brand */
+  --auth0-primary:            oklch(37% 0 0);
+  --auth0-primary-foreground: oklch(100% 0 0);
+
+  /* Secondary / muted / accent */
+  --auth0-secondary:             oklch(96% 0 0);
+  --auth0-secondary-foreground:  oklch(100% 0 0);
+  --auth0-muted:                 oklch(96% 0 0);
+  --auth0-muted-foreground:      oklch(45% 0 0);
+  --auth0-accent:                oklch(97% 0 0);
+  --auth0-accent-foreground:     oklch(9% 0 0);
+
+  /* Destructive */
+  --auth0-destructive:            oklch(93% 0.03 17);
+  --auth0-destructive-foreground: oklch(36% 0.14 17);
+
+  /* Borders & focus */
+  --auth0-border: oklch(89% 0 0);
+  --auth0-ring:   oklch(89% 0 0);
+}`}
           language="css"
           title="app.css"
         />
@@ -200,15 +241,66 @@ export default function Styling() {
       <section className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">CSS Variables</h2>
         <p className="text-gray-600">
-          All colors, border radii, and font sizes are driven by CSS custom properties. Override any
-          of them in your stylesheet to match your brand.
+          All colors, border radii, and font sizes are driven by CSS custom properties prefixed with{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code>. Where you
+          override them depends on which stylesheet option you chose:
         </p>
+        <ul className="list-disc list-inside space-y-1 text-gray-600 text-sm">
+          <li>
+            <strong>styles.css users</strong> — override inside the{' '}
+            <code className="text-xs">.auth0-universal</code> selector to stay scoped.
+          </li>
+          <li>
+            <strong>Tailwind v4 users</strong> — define or override inside your{' '}
+            <code className="text-xs">@theme</code> block; Tailwind generates them as part of your
+            normal build.
+          </li>
+        </ul>
 
         <TabbedCodeBlock
           tabs={[
             {
-              label: 'Colors',
-              code: `.auth0-universal {
+              label: 'Colors (styles.css)',
+              code: `/* Override inside the scoped selector */
+.auth0-universal {
+  /* Backgrounds & surfaces */
+  --auth0-background: oklch(100% 0 0);          /* page background */
+  --auth0-foreground: oklch(9% 0 0);            /* default text */
+  --auth0-card: oklch(100% 0 0);                /* card background */
+  --auth0-card-foreground: oklch(0% 0 0);       /* text inside cards */
+  --auth0-popover: oklch(100% 0 0);             /* popover / dropdown / dialog background */
+  --auth0-popover-foreground: oklch(9% 0 0);    /* text inside popovers */
+  --auth0-input: oklch(100% 0 0);               /* input field background */
+
+  /* Brand */
+  --auth0-primary: oklch(37% 0 0);              /* buttons, links, active states */
+  --auth0-primary-foreground: oklch(100% 0 0);  /* text on primary surfaces */
+
+  /* Secondary */
+  --auth0-secondary: oklch(96% 0 0);
+  --auth0-secondary-foreground: oklch(100% 0 0);
+
+  /* Muted */
+  --auth0-muted: oklch(96% 0 0);                /* disabled / subtle backgrounds */
+  --auth0-muted-foreground: oklch(45% 0 0);     /* placeholder / secondary text */
+
+  /* Accent */
+  --auth0-accent: oklch(97% 0 0);               /* hover highlights */
+  --auth0-accent-foreground: oklch(9% 0 0);
+
+  /* Destructive */
+  --auth0-destructive: oklch(93% 0.03 17);      /* error surfaces */
+  --auth0-destructive-foreground: oklch(36% 0.14 17);
+
+  /* Borders & focus */
+  --auth0-border: oklch(89% 0 0);
+  --auth0-ring: oklch(89% 0 0);
+}`,
+            },
+            {
+              label: 'Colors (Tailwind v4)',
+              code: `/* Define inside @theme so Tailwind generates the variables */
+@theme {
   /* Backgrounds & surfaces */
   --auth0-background: oklch(100% 0 0);          /* page background */
   --auth0-foreground: oklch(9% 0 0);            /* default text */

@@ -44,7 +44,7 @@ export const ThemeProvider: React.FC<{
       variables: themeSettings?.variables ?? defaultStyleOverrides,
       loader: themeSettings?.loader ?? null,
       mode: themeSettings?.mode,
-      theme: themeSettings?.theme,
+      theme: themeSettings?.theme ?? 'default',
     }),
     [themeSettings],
   );
@@ -60,13 +60,13 @@ export const ThemeProvider: React.FC<{
       <PortalContext.Provider value={portalContainer}>
         <div
           className={cn('auth0-universal not-prose', mode === 'dark' && 'dark')}
-          data-theme={theme || 'default'}
+          data-theme={theme}
         >
           {children}
         </div>
         <div
           className={cn('auth0-universal not-prose', mode === 'dark' && 'dark')}
-          data-theme={theme || 'default'}
+          data-theme={theme}
           ref={setPortalContainer}
         />
       </PortalContext.Provider>

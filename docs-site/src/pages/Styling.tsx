@@ -46,52 +46,55 @@ export default function Styling() {
           CSS.
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* styles.css */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
-                Recommended
-              </span>
-            </div>
+        {/* Option 1: styles.css */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
+              Recommended
+            </span>
             <h3 className="text-lg font-semibold text-gray-900">
               <code className="text-sm bg-gray-100 px-2 py-1 rounded">styles.css</code>
             </h3>
-            <p className="text-gray-600 text-sm">
-              A self-contained, pre-compiled stylesheet. All Tailwind utilities are bundled in — no
-              Tailwind installation or configuration required in your app.
-            </p>
-            <CodeBlock code={`import '@auth0/universal-components-react/styles';`} language="tsx" />
           </div>
+          <p className="text-gray-600">
+            A self-contained, pre-compiled stylesheet. All Tailwind utilities are bundled in — no
+            Tailwind installation or configuration required in your app.
+          </p>
+          <CodeBlock code={`import '@auth0/universal-components-react/styles';`} language="tsx" />
+        </div>
 
-          {/* tailwind.css */}
-          <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                Tailwind apps
-              </span>
-            </div>
+        {/* Option 2: Tailwind v4 */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              Tailwind apps
+            </span>
             <h3 className="text-lg font-semibold text-gray-900">Tailwind v4 theme variables</h3>
-            <p className="text-gray-600 text-sm">
-              If your app already runs Tailwind v4, define the Auth0 theme tokens directly in your{' '}
-              <code className="text-xs">@theme</code> block using the{' '}
-              <code className="text-xs">--auth0-</code> prefix. The components read these variables
-              at runtime, so Tailwind generates them as part of your normal build.
-            </p>
-            <CodeBlock
-              code={`/* app.css */
+          </div>
+          <p className="text-gray-600">
+            If your app already runs Tailwind v4, define the Auth0 design tokens in your{' '}
+            <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">@theme</code> block using the{' '}
+            <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code> prefix. The
+            components read these variables at runtime, so Tailwind generates them as part of your
+            normal build. See the full token list in the{' '}
+            <a href="#css-variables" className="text-blue-600 hover:underline">
+              CSS Variables
+            </a>{' '}
+            section below.
+          </p>
+          <CodeBlock
+            code={`/* app.css */
 @import "tailwindcss";
 
 @theme {
   --auth0-background: oklch(100% 0 0);
   --auth0-foreground: oklch(9% 0 0);
   --auth0-primary:    oklch(37% 0 0);
-  /* ... other tokens */
+  /* ... see CSS Variables section for the full list */
 }`}
-              language="css"
-              title="app.css"
-            />
-          </div>
+            language="css"
+            title="app.css"
+          />
         </div>
 
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -104,51 +107,6 @@ export default function Styling() {
             other design tokens.
           </p>
         </div>
-
-        <h3 className="text-lg font-medium text-gray-900">Tailwind v4 — full token list</h3>
-        <p className="text-gray-600">
-          Add all required tokens to your{' '}
-          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">@theme</code> block. The{' '}
-          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code> prefix
-          namespaces every token so they never collide with your existing theme.
-        </p>
-        <CodeBlock
-          code={`/* app.css */
-@import "tailwindcss";
-
-@theme {
-  /* Backgrounds & surfaces */
-  --auth0-background:         oklch(100% 0 0);
-  --auth0-foreground:         oklch(9% 0 0);
-  --auth0-card:               oklch(100% 0 0);
-  --auth0-card-foreground:    oklch(0% 0 0);
-  --auth0-popover:            oklch(100% 0 0);
-  --auth0-popover-foreground: oklch(9% 0 0);
-  --auth0-input:              oklch(100% 0 0);
-
-  /* Brand */
-  --auth0-primary:            oklch(37% 0 0);
-  --auth0-primary-foreground: oklch(100% 0 0);
-
-  /* Secondary / muted / accent */
-  --auth0-secondary:             oklch(96% 0 0);
-  --auth0-secondary-foreground:  oklch(100% 0 0);
-  --auth0-muted:                 oklch(96% 0 0);
-  --auth0-muted-foreground:      oklch(45% 0 0);
-  --auth0-accent:                oklch(97% 0 0);
-  --auth0-accent-foreground:     oklch(9% 0 0);
-
-  /* Destructive */
-  --auth0-destructive:            oklch(93% 0.03 17);
-  --auth0-destructive-foreground: oklch(36% 0.14 17);
-
-  /* Borders & focus */
-  --auth0-border: oklch(89% 0 0);
-  --auth0-ring:   oklch(89% 0 0);
-}`}
-          language="css"
-          title="app.css"
-        />
       </section>
 
       {/* Theme configuration */}
@@ -238,146 +196,27 @@ export default function Styling() {
       </section>
 
       {/* CSS Variables */}
-      <section className="space-y-6">
+      <section id="css-variables" className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">CSS Variables</h2>
         <p className="text-gray-600">
           All colors, border radii, and font sizes are driven by CSS custom properties prefixed with{' '}
-          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code>. Where you
-          override them depends on which stylesheet option you chose:
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code>. The table below
+          lists every token with its light and dark defaults.
         </p>
-        <ul className="list-disc list-inside space-y-1 text-gray-600 text-sm">
-          <li>
-            <strong>styles.css users</strong> — override inside the{' '}
-            <code className="text-xs">.auth0-universal</code> selector to stay scoped.
-          </li>
-          <li>
-            <strong>Tailwind v4 users</strong> — define or override inside your{' '}
-            <code className="text-xs">@theme</code> block; Tailwind generates them as part of your
-            normal build.
-          </li>
-        </ul>
-
-        <TabbedCodeBlock
-          tabs={[
-            {
-              label: 'Colors (styles.css)',
-              code: `/* Override inside the scoped selector */
-.auth0-universal {
-  /* Backgrounds & surfaces */
-  --auth0-background: oklch(100% 0 0);          /* page background */
-  --auth0-foreground: oklch(9% 0 0);            /* default text */
-  --auth0-card: oklch(100% 0 0);                /* card background */
-  --auth0-card-foreground: oklch(0% 0 0);       /* text inside cards */
-  --auth0-popover: oklch(100% 0 0);             /* popover / dropdown / dialog background */
-  --auth0-popover-foreground: oklch(9% 0 0);    /* text inside popovers */
-  --auth0-input: oklch(100% 0 0);               /* input field background */
-
-  /* Brand */
-  --auth0-primary: oklch(37% 0 0);              /* buttons, links, active states */
-  --auth0-primary-foreground: oklch(100% 0 0);  /* text on primary surfaces */
-
-  /* Secondary */
-  --auth0-secondary: oklch(96% 0 0);
-  --auth0-secondary-foreground: oklch(100% 0 0);
-
-  /* Muted */
-  --auth0-muted: oklch(96% 0 0);                /* disabled / subtle backgrounds */
-  --auth0-muted-foreground: oklch(45% 0 0);     /* placeholder / secondary text */
-
-  /* Accent */
-  --auth0-accent: oklch(97% 0 0);               /* hover highlights */
-  --auth0-accent-foreground: oklch(9% 0 0);
-
-  /* Destructive */
-  --auth0-destructive: oklch(93% 0.03 17);      /* error surfaces */
-  --auth0-destructive-foreground: oklch(36% 0.14 17);
-
-  /* Borders & focus */
-  --auth0-border: oklch(89% 0 0);
-  --auth0-ring: oklch(89% 0 0);
-}`,
-            },
-            {
-              label: 'Colors (Tailwind v4)',
-              code: `/* Define inside @theme so Tailwind generates the variables */
-@theme {
-  /* Backgrounds & surfaces */
-  --auth0-background: oklch(100% 0 0);          /* page background */
-  --auth0-foreground: oklch(9% 0 0);            /* default text */
-  --auth0-card: oklch(100% 0 0);                /* card background */
-  --auth0-card-foreground: oklch(0% 0 0);       /* text inside cards */
-  --auth0-popover: oklch(100% 0 0);             /* popover / dropdown / dialog background */
-  --auth0-popover-foreground: oklch(9% 0 0);    /* text inside popovers */
-  --auth0-input: oklch(100% 0 0);               /* input field background */
-
-  /* Brand */
-  --auth0-primary: oklch(37% 0 0);              /* buttons, links, active states */
-  --auth0-primary-foreground: oklch(100% 0 0);  /* text on primary surfaces */
-
-  /* Secondary */
-  --auth0-secondary: oklch(96% 0 0);
-  --auth0-secondary-foreground: oklch(100% 0 0);
-
-  /* Muted */
-  --auth0-muted: oklch(96% 0 0);                /* disabled / subtle backgrounds */
-  --auth0-muted-foreground: oklch(45% 0 0);     /* placeholder / secondary text */
-
-  /* Accent */
-  --auth0-accent: oklch(97% 0 0);               /* hover highlights */
-  --auth0-accent-foreground: oklch(9% 0 0);
-
-  /* Destructive */
-  --auth0-destructive: oklch(93% 0.03 17);      /* error surfaces */
-  --auth0-destructive-foreground: oklch(36% 0.14 17);
-
-  /* Borders & focus */
-  --auth0-border: oklch(89% 0 0);
-  --auth0-ring: oklch(89% 0 0);
-}`,
-            },
-            {
-              label: 'Border radius',
-              code: `:root {
-  --radius-xs:  2px;    /* indicators, badges */
-  --radius-sm:  4px;    /* tags, chips */
-  --radius-md:  6px;    /* small elements */
-  --radius-lg:  10px;   /* list items, rows */
-  --radius-xl:  12px;   /* inputs, buttons */
-  --radius-2xl: 14px;   /* medium containers */
-  --radius-3xl: 16px;   /* cards, panels */
-  --radius-4xl: 20px;   /* large cards */
-  --radius-5xl: 24px;   /* popovers, dropdowns */
-  --radius-6xl: 32px;   /* large popovers */
-  --radius-7xl: 40px;   /* extra large containers */
-  --radius-8xl: 48px;   /* full-page panels */
-  --radius-9xl: 56px;   /* dialogs, modals */
-}`,
-            },
-            {
-              label: 'Font sizes',
-              code: `:root {
-  --font-size-page-header:      2.25rem;   /* main page title */
-  --font-size-page-description: 0.875rem;  /* page subtitle */
-  --font-size-heading:          1.5rem;    /* section headings */
-  --font-size-title:            1.25rem;   /* card / panel titles */
-  --font-size-subtitle:         1.125rem;  /* secondary headings */
-  --font-size-body:             1rem;      /* body text */
-  --font-size-paragraph:        0.875rem;  /* descriptions */
-  --font-size-label:            0.875rem;  /* form labels */
-}`,
-            },
-          ]}
-          language="css"
-          title="Available CSS variables"
-        />
 
         <h3 className="text-lg font-medium text-gray-900">Color variables</h3>
         <div className="overflow-x-auto">
           <table className="w-full border border-gray-200 rounded-lg text-sm">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/5">
                   Variable
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/5">
+                  Light default
+                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/5">
+                  Dark default
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Used for
@@ -386,29 +225,100 @@ export default function Styling() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {[
-                ['--auth0-background', 'Page / container background'],
-                ['--auth0-foreground', 'Default text color'],
-                ['--auth0-primary', 'Primary action color (buttons, links, active states)'],
-                ['--auth0-primary-foreground', 'Text on primary-colored surfaces'],
-                ['--auth0-secondary', 'Secondary surfaces and subtle backgrounds'],
-                ['--auth0-secondary-foreground', 'Text on secondary surfaces'],
-                ['--auth0-muted', 'Muted / disabled backgrounds'],
-                ['--auth0-muted-foreground', 'Muted / placeholder text'],
-                ['--auth0-accent', 'Hover and highlight backgrounds'],
-                ['--auth0-accent-foreground', 'Text on accent surfaces'],
-                ['--auth0-destructive', 'Error and destructive action color'],
-                ['--auth0-destructive-foreground', 'Text on destructive surfaces'],
-                ['--auth0-card', 'Card background'],
-                ['--auth0-card-foreground', 'Text inside cards'],
-                ['--auth0-popover', 'Popover / dropdown / dialog background'],
-                ['--auth0-popover-foreground', 'Text inside popovers'],
-                ['--auth0-input', 'Input field background'],
-                ['--auth0-border', 'Border color'],
-                ['--auth0-ring', 'Focus ring color'],
-              ].map(([variable, description]) => (
+                [
+                  '--auth0-background',
+                  'oklch(100% 0 0)',
+                  'oklch(13% 0 0)',
+                  'Page / container background',
+                ],
+                ['--auth0-foreground', 'oklch(9% 0 0)', 'oklch(96% 0 0)', 'Default text color'],
+                [
+                  '--auth0-primary',
+                  'oklch(37% 0 0)',
+                  'oklch(70% 0 0)',
+                  'Primary action color (buttons, links, active states)',
+                ],
+                [
+                  '--auth0-primary-foreground',
+                  'oklch(100% 0 0)',
+                  'oklch(9% 0 0)',
+                  'Text on primary-colored surfaces',
+                ],
+                [
+                  '--auth0-secondary',
+                  'oklch(96% 0 0)',
+                  'oklch(22% 0 0)',
+                  'Secondary surfaces and subtle backgrounds',
+                ],
+                [
+                  '--auth0-secondary-foreground',
+                  'oklch(100% 0 0)',
+                  'oklch(96% 0 0)',
+                  'Text on secondary surfaces',
+                ],
+                [
+                  '--auth0-muted',
+                  'oklch(96% 0 0)',
+                  'oklch(22% 0 0)',
+                  'Muted / disabled backgrounds',
+                ],
+                [
+                  '--auth0-muted-foreground',
+                  'oklch(45% 0 0)',
+                  'oklch(60% 0 0)',
+                  'Muted / placeholder text',
+                ],
+                [
+                  '--auth0-accent',
+                  'oklch(97% 0 0)',
+                  'oklch(25% 0 0)',
+                  'Hover and highlight backgrounds',
+                ],
+                [
+                  '--auth0-accent-foreground',
+                  'oklch(9% 0 0)',
+                  'oklch(96% 0 0)',
+                  'Text on accent surfaces',
+                ],
+                [
+                  '--auth0-destructive',
+                  'oklch(93% 0.03 17)',
+                  'oklch(25% 0.05 17)',
+                  'Error and destructive action color',
+                ],
+                [
+                  '--auth0-destructive-foreground',
+                  'oklch(36% 0.14 17)',
+                  'oklch(80% 0.08 17)',
+                  'Text on destructive surfaces',
+                ],
+                ['--auth0-card', 'oklch(100% 0 0)', 'oklch(17% 0 0)', 'Card background'],
+                ['--auth0-card-foreground', 'oklch(0% 0 0)', 'oklch(96% 0 0)', 'Text inside cards'],
+                [
+                  '--auth0-popover',
+                  'oklch(100% 0 0)',
+                  'oklch(17% 0 0)',
+                  'Popover / dropdown / dialog background',
+                ],
+                [
+                  '--auth0-popover-foreground',
+                  'oklch(9% 0 0)',
+                  'oklch(96% 0 0)',
+                  'Text inside popovers',
+                ],
+                ['--auth0-input', 'oklch(100% 0 0)', 'oklch(22% 0 0)', 'Input field background'],
+                ['--auth0-border', 'oklch(89% 0 0)', 'oklch(30% 0 0)', 'Border color'],
+                ['--auth0-ring', 'oklch(89% 0 0)', 'oklch(40% 0 0)', 'Focus ring color'],
+              ].map(([variable, light, dark, description]) => (
                 <tr key={variable}>
                   <td className="px-4 py-2 font-mono text-xs text-violet-700 whitespace-nowrap">
                     {variable}
+                  </td>
+                  <td className="px-4 py-2 font-mono text-xs text-gray-500 whitespace-nowrap">
+                    {light}
+                  </td>
+                  <td className="px-4 py-2 font-mono text-xs text-gray-500 whitespace-nowrap">
+                    {dark}
                   </td>
                   <td className="px-4 py-2 text-gray-600">{description}</td>
                 </tr>
@@ -416,6 +326,35 @@ export default function Styling() {
             </tbody>
           </table>
         </div>
+
+        {/* Dark mode */}
+        <h3 className="text-lg font-medium text-gray-900">Dark mode</h3>
+        <p className="text-gray-600">
+          Set <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">themeSettings.mode</code> to{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">"dark"</code> on{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">Auth0ComponentProvider</code> to
+          switch to the built-in dark palette. To customise dark mode colors, override the{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-*</code> variables
+          inside a <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">.dark</code> selector
+          (or your app's equivalent dark mode scope).
+        </p>
+        <CodeBlock
+          code={`/* In your root CSS, use the dark variant */
+@theme {
+  /* light tokens ... */
+}
+
+.dark {
+  --auth0-background: oklch(13% 0 0);
+  --auth0-foreground: oklch(96% 0 0);
+  --auth0-primary:    oklch(70% 0 0);
+  --auth0-card:       oklch(17% 0 0);
+  --auth0-border:     oklch(30% 0 0);
+  /* ... other tokens from the table above */
+}`}
+          language="css"
+          title="Tailwind v4 dark mode overrides"
+        />
 
         <h3 className="text-lg font-medium text-gray-900">Border radius variables</h3>
         <div className="overflow-x-auto">

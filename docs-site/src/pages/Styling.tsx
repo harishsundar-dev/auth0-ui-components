@@ -1,5 +1,4 @@
 import CodeBlock from '../components/CodeBlock';
-import TabbedCodeBlock from '../components/TabbedCodeBlock';
 
 export default function Styling() {
   return (

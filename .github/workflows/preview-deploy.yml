@@ -27,9 +27,7 @@ jobs:
     if: |
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request' &&
-        (github.event.pull_request.author_association == 'COLLABORATOR' ||
-         github.event.pull_request.author_association == 'MEMBER' ||
-         github.event.pull_request.author_association == 'OWNER'))
+        github.event.pull_request.head.repo.fork == false)
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:

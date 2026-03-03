@@ -6,7 +6,6 @@ import * as React from 'react';
  * React context that stores the target HTML element used as a portal container
  * for overlay-based UI (for example, dialogs, popovers, and tooltips).
  *
- * A `null` value indicates that no explicit portal root is configured.
  */
 export const PortalContext = React.createContext<HTMLElement | null>(null);
 

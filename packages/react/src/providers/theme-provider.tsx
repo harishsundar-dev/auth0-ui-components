@@ -9,7 +9,6 @@
 import { applyStyleOverrides, type StylingVariables } from '@auth0/universal-components-core';
 import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { PortalContext } from '@/providers/portal-context';
 import type { ThemeContextValue, ThemeInput } from '@/types/theme-types';
 
@@ -58,17 +57,10 @@ export const ThemeProvider: React.FC<{
   return (
     <ThemeContext.Provider value={{ isDarkMode: mode === 'dark', theme, variables, loader }}>
       <PortalContext.Provider value={portalContainer}>
-        <div
-          className={cn('auth0-universal not-prose', mode === 'dark' && 'dark')}
-          data-theme={theme}
-        >
+        <div className="auth0-universal" data-theme={theme}>
           {children}
         </div>
-        <div
-          className={cn('auth0-universal not-prose', mode === 'dark' && 'dark')}
-          data-theme={theme}
-          ref={setPortalContainer}
-        />
+        <div className="auth0-universal" data-theme={theme} ref={setPortalContainer} />
       </PortalContext.Provider>
     </ThemeContext.Provider>
   );

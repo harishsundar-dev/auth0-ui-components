@@ -179,7 +179,7 @@ function SsoProviderEditView({ logic, handlers }: SsoProviderEditViewProps) {
   }
 
   return (
-    <div style={currentStyles.variables}>
+    <div style={currentStyles.variables} className="w-full">
       {!hideHeader && (
         <Header
           title={provider?.display_name || provider?.name || ''}

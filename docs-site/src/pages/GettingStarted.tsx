@@ -625,19 +625,20 @@ export default function OrganizationManagementPage() {
             </div>
             <h3 className="text-lg font-semibold text-gray-900">Tailwind v4 theme variables</h3>
             <p className="text-gray-600 text-sm">
-              If your app already uses Tailwind v4, define the Auth0 design tokens in your{' '}
-              <code className="text-xs">@theme</code> block using the{' '}
-              <code className="text-xs">--auth0-</code> prefix (e.g.{' '}
-              <code className="text-xs">--auth0-background</code>,{' '}
-              <code className="text-xs">--auth0-primary</code>).
+              If your app already uses Tailwind v4, import the Auth0 CSS alongside Tailwind and
+              define standard design tokens in your <code className="text-xs">:root</code> /{' '}
+              <code className="text-xs">.dark</code> blocks (e.g.{' '}
+              <code className="text-xs">--background</code>,{' '}
+              <code className="text-xs">--primary</code>).
             </p>
             <CodeBlock
               code={`/* app.css */
 @import "tailwindcss";
+@import "@auth0/universal-components-react/tailwind";
 
-@theme {
-  --auth0-background: oklch(100% 0 0);
-  --auth0-primary:    oklch(37% 0 0);
+:root {
+  --background: oklch(1 0 0);
+  --primary:    oklch(0.205 0 0);
   /* ... see Styling page for full list */
 }`}
               language="css"
@@ -649,9 +650,10 @@ export default function OrganizationManagementPage() {
           <p className="text-sm text-blue-800">
             <strong>When to use which:</strong> If your app does not use Tailwind, import{' '}
             <code className="text-xs">styles.css</code> — it is self-contained and works without
-            Tailwind. If your app uses Tailwind v4, define the{' '}
-            <code className="text-xs">--auth0-*</code> tokens in your{' '}
-            <code className="text-xs">@theme</code> block instead.
+            Tailwind. If your app uses Tailwind v4, import{' '}
+            <code className="text-xs">@auth0/universal-components-react/tailwind</code> and define
+            the standard tokens in your <code className="text-xs">:root</code> /{' '}
+            <code className="text-xs">.dark</code> blocks instead.
           </p>
         </div>
 

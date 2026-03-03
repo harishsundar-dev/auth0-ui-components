@@ -71,11 +71,12 @@ export default function Styling() {
             <h3 className="text-lg font-semibold text-gray-900">Tailwind v4 theme variables</h3>
           </div>
           <p className="text-gray-600">
-            If your app already runs Tailwind v4, define the Auth0 design tokens in your{' '}
-            <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">@theme</code> block using the{' '}
-            <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code> prefix. The
-            components read these variables at runtime, so Tailwind generates them as part of your
-            normal build. See the full token list in the{' '}
+            If your app already runs Tailwind v4, import the Auth0 CSS alongside Tailwind and define
+            standard CSS design tokens in your{' '}
+            <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">:root</code> /
+            <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">.dark</code> blocks. The
+            components read these variables at runtime alongside your own design tokens. See the
+            full token list in the{' '}
             <a href="#css-variables" className="text-blue-600 hover:underline">
               CSS Variables
             </a>{' '}
@@ -84,11 +85,12 @@ export default function Styling() {
           <CodeBlock
             code={`/* app.css */
 @import "tailwindcss";
+@import "@auth0/universal-components-react/tailwind";
 
-@theme {
-  --auth0-background: oklch(100% 0 0);
-  --auth0-foreground: oklch(9% 0 0);
-  --auth0-primary:    oklch(37% 0 0);
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --primary:    oklch(0.205 0 0);
   /* ... see CSS Variables section for the full list */
 }`}
             language="css"
@@ -100,9 +102,10 @@ export default function Styling() {
           <p className="text-sm text-blue-800">
             <strong>When to use which:</strong> If your app does not use Tailwind, import{' '}
             <code className="text-xs">styles.css</code> — it is self-contained and works without
-            Tailwind. If your app uses Tailwind v4, define the{' '}
-            <code className="text-xs">--auth0-*</code> tokens in your{' '}
-            <code className="text-xs">@theme</code> block so Tailwind generates them alongside your
+            Tailwind. If your app uses Tailwind v4, import{' '}
+            <code className="text-xs">@auth0/universal-components-react/tailwind</code> and define
+            the standard CSS design tokens in your <code className="text-xs">:root</code> /{' '}
+            <code className="text-xs">.dark</code> blocks so Tailwind generates them alongside your
             other design tokens.
           </p>
         </div>
@@ -198,9 +201,15 @@ export default function Styling() {
       <section id="css-variables" className="space-y-6">
         <h2 className="text-2xl font-semibold text-gray-900">CSS Variables</h2>
         <p className="text-gray-600">
-          All colors, border radii, and font sizes are driven by CSS custom properties prefixed with{' '}
-          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-</code>. The table below
-          lists every token with its light and dark defaults.
+          All colors, border radii, and font sizes are driven by standard CSS custom properties.
+          When using Tailwind v4, define these in your{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">:root</code> /{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">.dark</code> blocks alongside
+          the{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">
+            @auth0/universal-components-react/tailwind
+          </code>{' '}
+          CSS import. The table below lists every token with its light and dark defaults.
         </p>
 
         <h3 className="text-lg font-medium text-gray-900">Color variables</h3>
@@ -224,90 +233,74 @@ export default function Styling() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {[
+                ['--background', 'oklch(1 0 0)', 'oklch(0.145 0 0)', 'Page / container background'],
+                ['--foreground', 'oklch(0.145 0 0)', 'oklch(0.985 0 0)', 'Default text color'],
                 [
-                  '--auth0-background',
-                  'oklch(100% 0 0)',
-                  'oklch(13% 0 0)',
-                  'Page / container background',
-                ],
-                ['--auth0-foreground', 'oklch(9% 0 0)', 'oklch(96% 0 0)', 'Default text color'],
-                [
-                  '--auth0-primary',
-                  'oklch(37% 0 0)',
-                  'oklch(70% 0 0)',
+                  '--primary',
+                  'oklch(0.205 0 0)',
+                  'oklch(0.922 0 0)',
                   'Primary action color (buttons, links, active states)',
                 ],
                 [
-                  '--auth0-primary-foreground',
-                  'oklch(100% 0 0)',
-                  'oklch(9% 0 0)',
+                  '--primary-foreground',
+                  'oklch(0.985 0 0)',
+                  'oklch(0.205 0 0)',
                   'Text on primary-colored surfaces',
                 ],
                 [
-                  '--auth0-secondary',
-                  'oklch(96% 0 0)',
-                  'oklch(22% 0 0)',
+                  '--secondary',
+                  'oklch(0.97 0 0)',
+                  'oklch(0.269 0 0)',
                   'Secondary surfaces and subtle backgrounds',
                 ],
                 [
-                  '--auth0-secondary-foreground',
-                  'oklch(100% 0 0)',
-                  'oklch(96% 0 0)',
+                  '--secondary-foreground',
+                  'oklch(0.205 0 0)',
+                  'oklch(0.985 0 0)',
                   'Text on secondary surfaces',
                 ],
+                ['--muted', 'oklch(0.97 0 0)', 'oklch(0.269 0 0)', 'Muted / disabled backgrounds'],
                 [
-                  '--auth0-muted',
-                  'oklch(96% 0 0)',
-                  'oklch(22% 0 0)',
-                  'Muted / disabled backgrounds',
-                ],
-                [
-                  '--auth0-muted-foreground',
-                  'oklch(45% 0 0)',
-                  'oklch(60% 0 0)',
+                  '--muted-foreground',
+                  'oklch(0.556 0 0)',
+                  'oklch(0.708 0 0)',
                   'Muted / placeholder text',
                 ],
                 [
-                  '--auth0-accent',
-                  'oklch(97% 0 0)',
-                  'oklch(25% 0 0)',
+                  '--accent',
+                  'oklch(0.97 0 0)',
+                  'oklch(0.371 0 0)',
                   'Hover and highlight backgrounds',
                 ],
                 [
-                  '--auth0-accent-foreground',
-                  'oklch(9% 0 0)',
-                  'oklch(96% 0 0)',
+                  '--accent-foreground',
+                  'oklch(0.205 0 0)',
+                  'oklch(0.985 0 0)',
                   'Text on accent surfaces',
                 ],
                 [
-                  '--auth0-destructive',
-                  'oklch(93% 0.03 17)',
-                  'oklch(25% 0.05 17)',
+                  '--destructive',
+                  '—',
+                  'oklch(0.704 0.191 22.216)',
                   'Error and destructive action color',
                 ],
+                ['--card', 'oklch(1 0 0)', 'oklch(0.205 0 0)', 'Card background'],
+                ['--card-foreground', 'oklch(0.145 0 0)', 'oklch(0.985 0 0)', 'Text inside cards'],
                 [
-                  '--auth0-destructive-foreground',
-                  'oklch(36% 0.14 17)',
-                  'oklch(80% 0.08 17)',
-                  'Text on destructive surfaces',
-                ],
-                ['--auth0-card', 'oklch(100% 0 0)', 'oklch(17% 0 0)', 'Card background'],
-                ['--auth0-card-foreground', 'oklch(0% 0 0)', 'oklch(96% 0 0)', 'Text inside cards'],
-                [
-                  '--auth0-popover',
-                  'oklch(100% 0 0)',
-                  'oklch(17% 0 0)',
+                  '--popover',
+                  'oklch(1 0 0)',
+                  'oklch(0.269 0 0)',
                   'Popover / dropdown / dialog background',
                 ],
                 [
-                  '--auth0-popover-foreground',
-                  'oklch(9% 0 0)',
-                  'oklch(96% 0 0)',
+                  '--popover-foreground',
+                  'oklch(0.145 0 0)',
+                  'oklch(0.985 0 0)',
                   'Text inside popovers',
                 ],
-                ['--auth0-input', 'oklch(100% 0 0)', 'oklch(22% 0 0)', 'Input field background'],
-                ['--auth0-border', 'oklch(89% 0 0)', 'oklch(30% 0 0)', 'Border color'],
-                ['--auth0-ring', 'oklch(89% 0 0)', 'oklch(40% 0 0)', 'Focus ring color'],
+                ['--input', 'oklch(0.922 0 0)', 'oklch(1 0 0 / 15%)', 'Input field background'],
+                ['--border', 'oklch(0.922 0 0)', 'oklch(1 0 0 / 10%)', 'Border color'],
+                ['--ring', 'oklch(0.708 0 0)', 'oklch(0.556 0 0)', 'Focus ring color'],
               ].map(([variable, light, dark, description]) => (
                 <tr key={variable}>
                   <td className="px-4 py-2 font-mono text-xs text-violet-700 whitespace-nowrap">
@@ -332,24 +325,30 @@ export default function Styling() {
           Set <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">themeSettings.mode</code> to{' '}
           <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">"dark"</code> on{' '}
           <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">Auth0ComponentProvider</code> to
-          switch to the built-in dark palette. To customise dark mode colors, override the{' '}
-          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">--auth0-*</code> variables
-          inside a <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">.dark</code> selector
-          (or your app's equivalent dark mode scope).
+          switch to the built-in dark palette. To customise dark mode colors, override the standard
+          CSS variables inside a{' '}
+          <code className="text-sm bg-gray-100 px-1 py-0.5 rounded">.dark</code> selector (or your
+          app's equivalent dark mode scope).
         </p>
         <CodeBlock
-          code={`/* In your root CSS, use the dark variant */
-@theme {
-  /* light tokens ... */
+          code={`/* app.css */
+@import "tailwindcss";
+@import "@auth0/universal-components-react/tailwind";
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --primary:    oklch(0.205 0 0);
+  /* ... other light tokens from the table above */
 }
 
 .dark {
-  --auth0-background: oklch(13% 0 0);
-  --auth0-foreground: oklch(96% 0 0);
-  --auth0-primary:    oklch(70% 0 0);
-  --auth0-card:       oklch(17% 0 0);
-  --auth0-border:     oklch(30% 0 0);
-  /* ... other tokens from the table above */
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --primary:    oklch(0.922 0 0);
+  --card:       oklch(0.205 0 0);
+  --border:     oklch(1 0 0 / 10%);
+  /* ... other dark tokens from the table above */
 }`}
           language="css"
           title="Tailwind v4 dark mode overrides"

@@ -3,6 +3,8 @@ name: Preview Deployment
 on:
   pull_request:
     types: [opened, synchronize]
+    paths:
+      - 'docs-site/**'
   workflow_dispatch:
     inputs:
       branch:

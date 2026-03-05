@@ -1,4 +1,2 @@
 @import 'tailwindcss' important;
 @import '@auth0/universal-components-core/styles/globals.css';
-
-@custom-variant dark (&:where(.dark, .dark *));

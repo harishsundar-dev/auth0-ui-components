@@ -1,6 +1,12 @@
+/**
+ * Form label component.
+ * @module label
+ * @internal
+ */
+
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 export function Label({ children, className, ...props }: React.ComponentPropsWithoutRef<'label'>) {
   return (

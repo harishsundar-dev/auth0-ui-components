@@ -1,10 +1,16 @@
+/**
+ * Accordion component using Radix primitives.
+ * @module accordion
+ * @internal
+ */
+
 'use client';
 
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { ChevronDown } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 function Accordion({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
   return (

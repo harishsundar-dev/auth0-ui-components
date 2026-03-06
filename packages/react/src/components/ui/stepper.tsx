@@ -1,12 +1,17 @@
+/**
+ * Multi-step progress stepper component.
+ * @module stepper
+ * @internal
+ */
+
 'use client';
 
 import { Check } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
-
-import { Card } from './card';
-import { Separator } from './separator';
+import { Card } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 interface StepperContextValue {
   currentStep: number;

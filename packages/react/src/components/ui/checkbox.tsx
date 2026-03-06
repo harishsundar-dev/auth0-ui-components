@@ -1,8 +1,14 @@
+/**
+ * Checkbox component using Radix primitives.
+ * @module checkbox
+ * @internal
+ */
+
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { CheckIcon, MinusIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 function Checkbox({ className, ...props }: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
   return (

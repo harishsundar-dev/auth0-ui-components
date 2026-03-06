@@ -1,8 +1,14 @@
+/**
+ * Loading spinner component.
+ * @module spinner
+ * @internal
+ */
+
 import type { VariantProps } from 'class-variance-authority';
 import { cva } from 'class-variance-authority';
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 const spinnerVariants = cva(
   'inline-block h-8 w-8 animate-spin rounded-full border-2 border-transparent',

@@ -1,9 +1,15 @@
+/**
+ * Text field with image preview.
+ * @module image-preview-field
+ * @internal
+ */
+
 import { ImageIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { TextField } from '../../components/ui/text-field';
-import type { TextFieldProps } from '../../components/ui/text-field';
-import { cn } from '../../lib/theme-utils';
+import { TextField } from '@/components/ui/text-field';
+import type { TextFieldProps } from '@/components/ui/text-field';
+import { cn } from '@/lib/utils';
 
 export interface ImagePreviewFieldProps extends Omit<TextFieldProps, 'onChange'> {
   previewClassName?: string;

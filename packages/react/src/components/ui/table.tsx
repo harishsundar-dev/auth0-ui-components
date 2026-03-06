@@ -1,7 +1,13 @@
+/**
+ * Table component with sorting support.
+ * @module table
+ * @internal
+ */
+
 import { ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
 import React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   className?: string;

@@ -1,7 +1,21 @@
+/**
+ * My Organization API service initialization.
+ * @module my-organization-api-service
+ * @internal
+ */
+
 import { MyOrganizationClient } from '@auth0/myorganization-js';
 import type { AuthDetails } from '@core/auth/auth-types';
 import type { createTokenManager } from '@core/auth/token-manager';
 
+/**
+ * Initializes the My Organization API client for organization, SSO, and domain operations.
+ * @internal
+ *
+ * @param auth - Authentication configuration details
+ * @param tokenManagerService - Token manager for handling access tokens
+ * @returns Object containing the client and scope setter function
+ */
 export function initializeMyOrganizationClient(
   auth: AuthDetails,
   tokenManagerService: ReturnType<typeof createTokenManager>,

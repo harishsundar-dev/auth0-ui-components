@@ -1,20 +1,29 @@
+/**
+ * SPA provider using @auth0/auth0-react.
+ * @module spa-provider
+ */
+
 'use client';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import type { BasicAuth0ContextInterface } from '@auth0/universal-components-core';
 import * as React from 'react';
 
-import { Toaster } from '../components/ui/sonner';
-import { Spinner } from '../components/ui/spinner';
-import { CoreClientContext } from '../hooks/use-core-client';
-import { useCoreClientInitialization } from '../hooks/use-core-client-initialization';
-import { useToastProvider } from '../hooks/use-toast-provider';
-import type { Auth0ComponentProviderProps } from '../types/auth-types';
+import { Toaster } from '@/components/auth0/shared/sonner';
+import { Spinner } from '@/components/ui/spinner';
+import { CoreClientContext } from '@/hooks/shared/use-core-client';
+import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
+import { useToastProvider } from '@/hooks/shared/use-toast-provider';
+import { QueryProvider } from '@/providers/query-provider';
+import { ScopeManagerProvider } from '@/providers/scope-manager-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
+import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
-import { QueryProvider } from './query-provider';
-import { ScopeManagerProvider } from './scope-manager-provider';
-import { ThemeProvider } from './theme-provider';
-
+/**
+ * Auth0 provider for SPAs. Wraps components with required contexts.
+ * @param props - Provider configuration including i18n, authDetails, themeSettings, toastSettings, cacheConfig, loader, and children.
+ * @returns Provider component tree
+ */
 export const Auth0ComponentProvider = ({
   i18n,
   authDetails,
@@ -38,7 +47,9 @@ export const Auth0ComponentProvider = ({
 
   const auth0ContextInterface = React.useMemo(() => {
     if (auth0ReactContext && 'isAuthenticated' in auth0ReactContext) {
-      return auth0ReactContext as BasicAuth0ContextInterface;
+      // Cast via unknown because @auth0/auth0-react's Auth0ContextInterface
+      // doesn't include getConfiguration which our BasicAuth0ContextInterface requires
+      return auth0ReactContext as unknown as BasicAuth0ContextInterface;
     }
 
     if (authDetails?.contextInterface) {

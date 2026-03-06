@@ -1,6 +1,12 @@
+/**
+ * Card layout component.
+ * @module card
+ * @internal
+ */
+
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 function Card({ className, ...props }: React.ComponentProps<'div'>) {
   return (

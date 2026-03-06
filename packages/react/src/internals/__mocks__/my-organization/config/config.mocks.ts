@@ -1,6 +1,12 @@
+/**
+ * Mock factory for useConfig hook.
+ * @module config.mocks
+ * @internal
+ */
+
 import { vi } from 'vitest';
 
-import type { UseConfigResult } from '../../../../types/my-organization/config/config-types';
+import type { UseConfigResult } from '@/types/my-organization/config/config-types';
 
 type MockUseConfig = UseConfigResult;
 

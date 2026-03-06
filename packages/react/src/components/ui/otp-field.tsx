@@ -1,11 +1,16 @@
+/**
+ * One-time password input field.
+ * @module otp-field
+ * @internal
+ */
+
 'use client';
 
 import type { ClipboardEvent, KeyboardEvent } from 'react';
 import React, { useRef, useState } from 'react';
 
-import { cn } from '../../lib/theme-utils';
-
-import { TextField } from './text-field';
+import { TextField } from '@/components/ui/text-field';
+import { cn } from '@/lib/utils';
 
 export interface OTPFieldProps {
   length?: number;

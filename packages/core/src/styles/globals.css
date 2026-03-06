@@ -48,6 +48,10 @@
   }
 }
 
+.auth0-universal * {
+  all: revert-layer;
+}
+
 @theme inline {
   /**
    * STANDARD SHADCN VARIABLES (with auth0 fallbacks)

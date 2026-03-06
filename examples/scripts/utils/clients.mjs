@@ -6,7 +6,21 @@ import { ChangeAction, createChangeItem } from "./change-plan.mjs"
 
 // Constants
 export const APP_BASE_URL = "http://localhost:5173"
-export const DASHBOARD_CLIENT_NAME = "Universal Components Demo"
+
+/**
+ * Get the dashboard client name based on example type
+ * Each example type gets its own dedicated client
+ * @param {string} exampleType - The example type (next-rwa, react-spa-shadcn, react-spa-npm)
+ * @returns {string} The client name
+ */
+export function getDashboardClientName(exampleType) {
+  const exampleNames = {
+    'next-rwa': 'Universal Components Demo (Next.js)',
+    'react-spa-shadcn': 'Universal Components Demo (React SPA - shadcn)',
+    'react-spa-npm': 'Universal Components Demo (React SPA - npm)',
+  }
+  return exampleNames[exampleType] || 'Universal Components Demo'
+}
 
 // ============================================================================
 // CHECK FUNCTIONS - Determine what changes are needed
@@ -26,8 +40,9 @@ export async function checkDashboardClientChanges(
   myAccountApiScopes,
   featureConfig = { enableMyOrg: true, enableMyAccount: true }
 ) {
+  const clientName = getDashboardClientName(exampleType)
   const existingClient = existingClients.find(
-    (c) => c.name === DASHBOARD_CLIENT_NAME
+    (c) => c.name === clientName
   )
 
   const desiredCallbacks = (exampleType === 'next-rwa') ? [`${APP_BASE_URL}/auth/callback`] : [APP_BASE_URL]
@@ -35,13 +50,13 @@ export async function checkDashboardClientChanges(
   const desiredAllowedWebOrigins = (exampleType === 'next-rwa') ? [] : [APP_BASE_URL]
 
   if (!existingClient) {
-    const appType = (exampleType === 'next-rwa') ? 'Regular Web Application' : 'Single Page Application';
     return createChangeItem(ChangeAction.CREATE, {
       resource: "Dashboard Client",
-      name: `${DASHBOARD_CLIENT_NAME} - ${appType}`,
+      name: clientName,
       connectionProfileId,
       userAttributeProfileId,
       featureConfig,
+      exampleType,
     })
   }
 
@@ -145,10 +160,9 @@ export async function checkDashboardClientChanges(
     if (refreshTokenNeedsUpdate)
       changes.push("Update refresh token settings")
 
-    const appType = (clientToCheck.app_type === 'regular_web') ? 'Regular Web Application' : 'Single Page Application';
     return createChangeItem(ChangeAction.UPDATE, {
-      resource: "Universal Components Demo Client",
-      name: `${DASHBOARD_CLIENT_NAME} - ${appType}`,
+      resource: "Dashboard Client",
+      name: clientName,
       existing: clientToCheck,
       updates: {
         missingCallbacks,
@@ -162,14 +176,14 @@ export async function checkDashboardClientChanges(
         refreshTokenNeedsUpdate
       },
       featureConfig,
+      exampleType,
       summary: `\n     - ${changes.join("\n     - ")}`,
     })
   }
 
-  const appType = (clientToCheck.app_type === 'regular_web') ? 'Regular Web Application' : 'Single Page Application';
   return createChangeItem(ChangeAction.SKIP, {
-    resource: "Universal Components Demo Client",
-    name: `${DASHBOARD_CLIENT_NAME} - ${appType}`,
+    resource: "Dashboard Client",
+    name: clientName,
     existing: clientToCheck,
   })
 }
@@ -310,9 +324,11 @@ export async function applyDashboardClientChanges(
   myAccountApiScopes,
   featureConfig = { enableMyOrg: true, enableMyAccount: true }
 ) {
+  const clientName = getDashboardClientName(exampleType)
+
   if (changePlan.action === ChangeAction.SKIP) {
     const spinner = ora({
-      text: `${DASHBOARD_CLIENT_NAME} client is up to date`,
+      text: `${clientName} client is up to date`,
     }).start()
     spinner.succeed()
     return changePlan.existing
@@ -323,7 +339,7 @@ export async function applyDashboardClientChanges(
 
   if (changePlan.action === ChangeAction.CREATE) {
     const spinner = ora({
-      text: `Creating ${DASHBOARD_CLIENT_NAME} client`,
+      text: `Creating ${clientName} client`,
     }).start()
 
     try {
@@ -343,7 +359,7 @@ export async function applyDashboardClientChanges(
 
       // Build client data conditionally based on features
       const clientData = {
-        name: DASHBOARD_CLIENT_NAME,
+        name: clientName,
         description: "The client to facilitate login to the dashboard in the context of an organization.",
         callbacks: desiredCallbacks,
         allowed_logout_urls: desiredLogoutUrls,
@@ -404,10 +420,10 @@ export async function applyDashboardClientChanges(
         await $`auth0 api get clients/${client.client_id}?fields=client_id,name,client_secret,app_type,callbacks,allowed_logout_urls,my_organization_configuration,organization_require_behavior,organization_usage,refresh_token`
       const fullClient = JSON.parse(fullClientStdout)
 
-      spinner.succeed(`Created ${DASHBOARD_CLIENT_NAME} client`)
+      spinner.succeed(`Created ${clientName} client`)
       return fullClient
     } catch (e) {
-      spinner.fail(`Failed to create the ${DASHBOARD_CLIENT_NAME} client`)
+      spinner.fail(`Failed to create the ${clientName} client`)
       if (effectiveFeatureConfig.enableMyOrg) {
         spinner.fail(`Ensure your tenant supports My Organization feature.`)
       }
@@ -417,7 +433,7 @@ export async function applyDashboardClientChanges(
 
   if (changePlan.action === ChangeAction.UPDATE) {
     const spinner = ora({
-      text: `Updating ${DASHBOARD_CLIENT_NAME} client configuration`,
+      text: `Updating ${clientName} client configuration`,
     }).start()
 
     try {
@@ -526,7 +542,7 @@ export async function applyDashboardClientChanges(
       }
 
       await auth0ApiCall("patch", `clients/${existing.client_id}`, updateData)
-      spinner.succeed(`Updated ${DASHBOARD_CLIENT_NAME} client`)
+      spinner.succeed(`Updated ${clientName} client`)
 
       // Fetch updated client with client_secret to return
       const { stdout } =
@@ -534,7 +550,7 @@ export async function applyDashboardClientChanges(
       const updated = JSON.parse(stdout)
       return updated
     } catch (e) {
-      spinner.fail(`Failed to update ${DASHBOARD_CLIENT_NAME} client`)
+      spinner.fail(`Failed to update ${clientName} client`)
       throw e
     }
   }
@@ -558,7 +574,7 @@ export async function applyMyOrgClientGrantChanges(
 
   if (changePlan.action === ChangeAction.CREATE) {
     const spinner = ora({
-      text: `Creating ${DASHBOARD_CLIENT_NAME} client grants for My Org API`,
+      text: `Creating client grant for My Org API`,
     }).start()
 
     try {
@@ -576,9 +592,7 @@ export async function applyMyOrgClientGrantChanges(
       await $`auth0 ${createClientGrantArgs}`
       spinner.succeed(`Created My Org API Client Grant`)
     } catch (e) {
-      spinner.fail(
-        `Failed to create the ${DASHBOARD_CLIENT_NAME} client grants for My Organization API`
-      )
+      spinner.fail(`Failed to create client grant for My Organization API`)
       throw e
     }
   }
@@ -625,7 +639,7 @@ export async function applyMyAccountClientGrantChanges(
 
   if (changePlan.action === ChangeAction.CREATE) {
     const spinner = ora({
-      text: `Creating ${DASHBOARD_CLIENT_NAME} client grants for My Account API`,
+      text: `Creating client grant for My Account API`,
     }).start()
 
     try {
@@ -643,9 +657,7 @@ export async function applyMyAccountClientGrantChanges(
       await $`auth0 ${createClientGrantArgs}`
       spinner.succeed(`Created My Account API Client Grant`)
     } catch (e) {
-      spinner.fail(
-        `Failed to create the ${DASHBOARD_CLIENT_NAME} client grants for My Account API`
-      )
+      spinner.fail(`Failed to create client grant for My Account API`)
       throw e
     }
   }

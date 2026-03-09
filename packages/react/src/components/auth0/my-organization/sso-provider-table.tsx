@@ -236,59 +236,57 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
 
   return (
     <StyledScope style={currentStyles.variables}>
-      <div>
-        <div className={currentStyles.classes?.['SsoProviderTable-header']}>
-          <Header
-            title={t('header.title')}
-            description={t('header.description')}
-            actions={[
-              {
-                type: 'button',
-                label: t('header.create_button_text'),
-                onClick: () => handleCreate(),
-                icon: Plus,
-                hidden: shouldHideCreate || isViewLoading,
-                disabled: createAction?.disabled || readOnly,
-              },
-            ]}
-          />
-        </div>
-
-        <DataTable
-          loading={isViewLoading}
-          columns={columns}
-          data={data}
-          emptyState={{ title: t('table.empty_message') }}
-          className={currentStyles.classes?.['SsoProviderTable-table']}
+      <div className={currentStyles.classes?.['SsoProviderTable-header']}>
+        <Header
+          title={t('header.title')}
+          description={t('header.description')}
+          actions={[
+            {
+              type: 'button',
+              label: t('header.create_button_text'),
+              onClick: () => handleCreate(),
+              icon: Plus,
+              hidden: shouldHideCreate || isViewLoading,
+              disabled: createAction?.disabled || readOnly,
+            },
+          ]}
         />
-
-        {selectedIdp && (
-          <SsoProviderDeleteModal
-            className={currentStyles.classes?.['SsoProviderTable-deleteProviderModal']}
-            isOpen={showDeleteModal}
-            onClose={() => setShowDeleteModal(false)}
-            provider={selectedIdp}
-            onDelete={handleDeleteConfirm}
-            isLoading={isDeleting}
-            customMessages={customMessages?.delete_modal}
-          />
-        )}
-
-        {selectedIdp && (
-          <SsoProviderRemoveFromOrganizationModal
-            className={
-              currentStyles.classes?.['SsoProviderTable-deleteProviderFromOrganizationModal']
-            }
-            isOpen={showRemoveModal}
-            onClose={() => setShowRemoveModal(false)}
-            provider={selectedIdp}
-            organizationName={organization?.name}
-            onRemove={handleRemoveConfirm}
-            isLoading={isRemoving}
-            customMessages={customMessages?.remove_modal}
-          />
-        )}
       </div>
+
+      <DataTable
+        loading={isViewLoading}
+        columns={columns}
+        data={data}
+        emptyState={{ title: t('table.empty_message') }}
+        className={currentStyles.classes?.['SsoProviderTable-table']}
+      />
+
+      {selectedIdp && (
+        <SsoProviderDeleteModal
+          className={currentStyles.classes?.['SsoProviderTable-deleteProviderModal']}
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          provider={selectedIdp}
+          onDelete={handleDeleteConfirm}
+          isLoading={isDeleting}
+          customMessages={customMessages?.delete_modal}
+        />
+      )}
+
+      {selectedIdp && (
+        <SsoProviderRemoveFromOrganizationModal
+          className={
+            currentStyles.classes?.['SsoProviderTable-deleteProviderFromOrganizationModal']
+          }
+          isOpen={showRemoveModal}
+          onClose={() => setShowRemoveModal(false)}
+          provider={selectedIdp}
+          organizationName={organization?.name}
+          onRemove={handleRemoveConfirm}
+          isLoading={isRemoving}
+          customMessages={customMessages?.remove_modal}
+        />
+      )}
     </StyledScope>
   );
 }

@@ -184,79 +184,77 @@ function DomainTableView({
 
   return (
     <StyledScope style={currentStyles.variables}>
-      <div>
-        {!hideHeader && (
-          <div className={currentStyles.classes?.['DomainTable-header']}>
-            <Header
-              title={t('domain_table.header.title')}
-              description={t('domain_table.header.description')}
-              actions={[
-                {
-                  type: 'button',
-                  label: t('domain_table.header.create_button_text'),
-                  onClick: () => handleCreateClick(),
-                  icon: Plus,
-                  disabled: createAction?.disabled || readOnly || isFetching,
-                },
-              ]}
-            />
-          </div>
-        )}
+      {!hideHeader && (
+        <div className={currentStyles.classes?.['DomainTable-header']}>
+          <Header
+            title={t('domain_table.header.title')}
+            description={t('domain_table.header.description')}
+            actions={[
+              {
+                type: 'button',
+                label: t('domain_table.header.create_button_text'),
+                onClick: () => handleCreateClick(),
+                icon: Plus,
+                disabled: createAction?.disabled || readOnly || isFetching,
+              },
+            ]}
+          />
+        </div>
+      )}
 
-        <DataTable
-          columns={columns}
-          data={domains}
-          loading={isFetching}
-          emptyState={{ title: t('domain_table.table.empty_message') }}
-          className={currentStyles.classes?.['DomainTable-table']}
-        />
+      <DataTable
+        columns={columns}
+        data={domains}
+        loading={isFetching}
+        emptyState={{ title: t('domain_table.table.empty_message') }}
+        className={currentStyles.classes?.['DomainTable-table']}
+      />
 
-        <DomainCreateModal
-          className={currentStyles.classes?.['DomainTable-createModal']}
-          isOpen={showCreateModal}
-          isLoading={isCreating}
-          schema={schema?.create}
-          onClose={() => setShowCreateModal(false)}
-          onCreate={handleCreate}
-          customMessages={customMessages?.create}
-        />
+      <DomainCreateModal
+        className={currentStyles.classes?.['DomainTable-createModal']}
+        isOpen={showCreateModal}
+        isLoading={isCreating}
+        schema={schema?.create}
+        onClose={() => setShowCreateModal(false)}
+        onCreate={handleCreate}
+        customMessages={customMessages?.create}
+      />
 
-        <DomainConfigureProvidersModal
-          className={currentStyles.classes?.['DomainTable-configureModal']}
-          domain={selectedDomain}
-          providers={providers}
-          isOpen={showConfigureModal}
-          isLoading={isLoadingProviders}
-          isLoadingSwitch={false}
-          onClose={() => setShowConfigureModal(false)}
-          onToggleSwitch={handleToggleSwitch}
-          onOpenProvider={onOpenProvider}
-          onCreateProvider={onCreateProvider}
-          customMessages={customMessages?.configure}
-        />
+      <DomainConfigureProvidersModal
+        className={currentStyles.classes?.['DomainTable-configureModal']}
+        domain={selectedDomain}
+        providers={providers}
+        isOpen={showConfigureModal}
+        isLoading={isLoadingProviders}
+        isLoadingSwitch={false}
+        onClose={() => setShowConfigureModal(false)}
+        onToggleSwitch={handleToggleSwitch}
+        onOpenProvider={onOpenProvider}
+        onCreateProvider={onCreateProvider}
+        customMessages={customMessages?.configure}
+      />
 
-        <DomainVerifyModal
-          className={currentStyles.classes?.['DomainTable-verifyModal']}
-          isOpen={showVerifyModal}
-          isLoading={isVerifying}
-          domain={selectedDomain}
-          error={verifyError}
-          onClose={handleCloseVerifyModal}
-          onVerify={handleVerify}
-          onDelete={handleDeleteClick}
-          customMessages={customMessages?.verify}
-        />
+      <DomainVerifyModal
+        className={currentStyles.classes?.['DomainTable-verifyModal']}
+        isOpen={showVerifyModal}
+        isLoading={isVerifying}
+        domain={selectedDomain}
+        error={verifyError}
+        onClose={handleCloseVerifyModal}
+        onVerify={handleVerify}
+        onDelete={handleDeleteClick}
+        customMessages={customMessages?.verify}
+      />
 
-        <DomainDeleteModal
-          className={currentStyles.classes?.['DomainTable-deleteModal']}
-          domain={selectedDomain}
-          isOpen={showDeleteModal}
-          isLoading={isDeleting}
-          onClose={() => setShowDeleteModal(false)}
-          onDelete={handleDelete}
-          customMessages={customMessages?.delete}
-        />
-      </div>
+      <DomainDeleteModal
+        className={currentStyles.classes?.['DomainTable-deleteModal']}
+        domain={selectedDomain}
+        isOpen={showDeleteModal}
+        isLoading={isDeleting}
+        onClose={() => setShowDeleteModal(false)}
+        onDelete={handleDelete}
+        customMessages={customMessages?.delete}
+      />
     </StyledScope>
   );
 }

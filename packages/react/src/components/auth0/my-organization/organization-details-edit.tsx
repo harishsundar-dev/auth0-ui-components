@@ -8,6 +8,7 @@ import * as React from 'react';
 
 import { OrganizationDetails } from '@/components/auth0/my-organization/shared/organization-management/organization-details/organization-details';
 import { Header } from '@/components/auth0/shared/header';
+import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Spinner } from '@/components/ui/spinner';
 import { withMyOrganizationService } from '@/hoc/with-services';
 import { useOrganizationDetailsEdit } from '@/hooks/my-organization/use-organization-details-edit';
@@ -107,44 +108,45 @@ function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEdi
 
   if (isFetchLoading) {
     return (
-      <div
-        style={currentStyles.variables}
-        className="flex items-center justify-center min-h-96 w-full"
-      >
-        <Spinner />
-      </div>
+      <StyledScope style={currentStyles.variables}>
+        <div className="flex items-center justify-center min-h-96 w-full">
+          <Spinner />
+        </div>
+      </StyledScope>
     );
   }
 
   return (
-    <div className="w-full" style={currentStyles.variables}>
-      {!hideHeader && (
-        <div className="mb-8">
-          <Header
-            title={t('header.title', {
-              organizationName: organization.display_name || organization.name || '',
-            })}
-            backButton={
-              backButton && {
-                ...backButton,
-                text: t('header.back_button_text'),
+    <StyledScope style={currentStyles.variables}>
+      <div className="w-full">
+        {!hideHeader && (
+          <div className="mb-8">
+            <Header
+              title={t('header.title', {
+                organizationName: organization.display_name || organization.name || '',
+              })}
+              backButton={
+                backButton && {
+                  ...backButton,
+                  text: t('header.back_button_text'),
+                }
               }
-            }
+            />
+          </div>
+        )}
+
+        <div className="mb-8">
+          <OrganizationDetails
+            organization={organization}
+            schema={schema?.details}
+            customMessages={customMessages?.details}
+            styling={styling}
+            readOnly={readOnly}
+            formActions={formActions}
           />
         </div>
-      )}
-
-      <div className="mb-8">
-        <OrganizationDetails
-          organization={organization}
-          schema={schema?.details}
-          customMessages={customMessages?.details}
-          styling={styling}
-          readOnly={readOnly}
-          formActions={formActions}
-        />
       </div>
-    </div>
+    </StyledScope>
   );
 }
 

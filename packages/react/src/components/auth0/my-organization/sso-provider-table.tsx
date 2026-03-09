@@ -14,6 +14,7 @@ import { SsoProviderRemoveFromOrganizationModal } from '@/components/auth0/my-or
 import { SsoProviderTableActionsColumn } from '@/components/auth0/my-organization/shared/idp-management/sso-provider-table/sso-provider-table-action';
 import { DataTable, type Column } from '@/components/auth0/shared/data-table';
 import { Header } from '@/components/auth0/shared/header';
+import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { withMyOrganizationService } from '@/hoc/with-services';
 import { useSsoProviderTable } from '@/hooks/my-organization/use-sso-provider-table';
 import { useSsoProviderTableLogic } from '@/hooks/my-organization/use-sso-provider-table-logic';
@@ -234,7 +235,7 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
   );
 
   return (
-    <div style={currentStyles.variables}>
+    <StyledScope style={currentStyles.variables}>
       <div className={currentStyles.classes?.['SsoProviderTable-header']}>
         <Header
           title={t('header.title')}
@@ -286,7 +287,7 @@ function SsoProviderTableView({ logic, handlers }: SsoProviderTableViewProps) {
           customMessages={customMessages?.remove_modal}
         />
       )}
-    </div>
+    </StyledScope>
   );
 }
 

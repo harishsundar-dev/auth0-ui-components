@@ -15,6 +15,7 @@ import { DomainTableActionsColumn } from '@/components/auth0/my-organization/sha
 import { DomainVerifyModal } from '@/components/auth0/my-organization/shared/domain-management/domain-verify/domain-verify-modal';
 import { DataTable, type Column } from '@/components/auth0/shared/data-table';
 import { Header } from '@/components/auth0/shared/header';
+import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Badge } from '@/components/ui/badge';
 import { withMyOrganizationService } from '@/hoc/with-services';
 import { useDomainTable } from '@/hooks/my-organization/use-domain-table';
@@ -182,7 +183,7 @@ function DomainTableView({
   );
 
   return (
-    <div style={currentStyles.variables}>
+    <StyledScope style={currentStyles.variables}>
       {!hideHeader && (
         <div className={currentStyles.classes?.['DomainTable-header']}>
           <Header
@@ -254,7 +255,7 @@ function DomainTableView({
         onDelete={handleDelete}
         customMessages={customMessages?.delete}
       />
-    </div>
+    </StyledScope>
   );
 }
 

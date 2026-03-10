@@ -5,7 +5,13 @@ import type { initializeMyOrganizationClient } from '../../my-organization-api-s
 
 // Re-export shared API service mocks
 export {
-  // Auth Details Mocks
+  // ClientAuthConfig Mocks
+  mockProxyConfig,
+  mockProxyConfigTrailingSlash,
+  mockProxyConfigWhitespace,
+  mockSpaConfigWhitespaceDomain,
+  createMockSpaConfig,
+  // AuthDetails Mocks (for core-client tests)
   mockAuthWithDomain,
   mockAuthWithProxyUrl,
   mockAuthWithProxyUrlTrailingSlash,
@@ -15,10 +21,6 @@ export {
   mockAuthWithEmptyProxyUrl,
   mockAuthWithDomainWhitespace,
   mockAuthWithProxyUrlWhitespace,
-  // Token Manager Mocks
-  createMockTokenManager,
-  createMockTokenManagerWithScopes,
-  createMockTokenManagerWithError,
   // Token Test Data
   mockTokens,
   // Headers Helpers
@@ -81,10 +83,10 @@ export const mockRequestInits = {
   },
 };
 
-// Error Messages (MyOrganization-specific)
+// Error Messages (MyOrganization-specific — thrown by createCoreClient, not the service directly)
 export const expectedErrors = {
-  missingDomainOrProxy: 'Missing domain or proxy URL for MyOrganizationClient',
-  tokenManagerError: 'Token retrieval failed',
+  missingContextInterface: 'Missing context interface',
+  missingDomain: 'Missing domain',
 };
 
 // MyOrganizationClient Mock Methods

@@ -11,6 +11,7 @@ import { initializeMyOrganizationClient } from '../my-organization-api-service';
 
 import {
   mockProxyConfig,
+  createMockContextInterface,
   createMockSpaConfig,
   mockScopes,
   mockTokens,
@@ -434,19 +435,8 @@ describe('initializeMyOrganizationClient', () => {
           mode: 'spa',
           domain: 'test.auth0.com',
           contextInterface: {
-            isAuthenticated: true,
+            ...createMockContextInterface(),
             getAccessTokenSilently: vi.fn().mockRejectedValue(new Error('Token retrieval failed')),
-            getAccessTokenWithPopup: vi.fn(),
-            loginWithRedirect: vi.fn(),
-            getConfiguration: vi
-              .fn()
-              .mockReturnValue({ domain: 'test.auth0.com', clientId: 'client-id' }),
-            mfa: {
-              getAuthenticators: vi.fn().mockResolvedValue([]),
-              enroll: vi.fn().mockResolvedValue({}),
-              challenge: vi.fn().mockResolvedValue({}),
-              verify: vi.fn().mockResolvedValue({}),
-            },
           },
         };
         initializeMyOrganizationClient(auth);

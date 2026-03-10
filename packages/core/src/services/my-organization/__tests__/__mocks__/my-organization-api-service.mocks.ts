@@ -5,6 +5,7 @@ import type { initializeMyOrganizationClient } from '../../my-organization-api-s
 
 // Re-export shared API service mocks
 export {
+  createMockContextInterface,
   // ClientAuthConfig Mocks
   mockProxyConfig,
   mockProxyConfigTrailingSlash,

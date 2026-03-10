@@ -112,12 +112,6 @@ export async function createCoreClient(
       return myOrganizationApiClient;
     },
 
-    getMFAStepUpApiClient: () => {
-      if (!mfaApiClient)
-        throw new Error(
-          'MFA Step-Up API client is not enabled. Please use it within Auth0ComponentProvider.',
-        );
-      return mfaApiClient;
-    },
+    getMFAStepUpApiClient: () => mfaApiClient,
   };
 }

@@ -4,11 +4,11 @@ import type { MFA_REQUIRED_ERROR } from './mfa-step-up-api-constants';
 
 export type MfaRequiredErrorCode = typeof MFA_REQUIRED_ERROR;
 
-export type AuthenticatorType = 'otp' | 'oob' | 'recovery-code';
+export type MfaAuthenticatorType = 'otp' | 'oob' | 'recovery-code';
 
-export interface Authenticator {
+export interface MfaAuthenticator {
   id: string;
-  authenticatorType: AuthenticatorType;
+  authenticatorType: MfaAuthenticatorType;
   active: boolean;
   name?: string;
   createdAt?: string;
@@ -87,7 +87,7 @@ export interface OobEnrollmentResponse {
 
 export type EnrollmentResponse = OtpEnrollmentResponse | OobEnrollmentResponse;
 
-export interface ChallengeAuthenticatorParams {
+export interface ChallengeMfaAuthenticatorParams {
   mfaToken: string;
   challengeType: 'otp' | 'oob';
   authenticatorId?: string;
@@ -124,9 +124,9 @@ export interface MfaRequiredError extends Error {
 }
 
 export interface MfaApiClient {
-  getAuthenticators(mfaToken: string): Promise<Authenticator[]>;
+  getAuthenticators(mfaToken: string): Promise<MfaAuthenticator[]>;
   enroll(params: EnrollParams): Promise<EnrollmentResponse>;
-  challenge(params: ChallengeAuthenticatorParams): Promise<ChallengeResponse>;
+  challenge(params: ChallengeMfaAuthenticatorParams): Promise<ChallengeResponse>;
   getEnrollmentFactors?(mfaToken: string): Promise<EnrollmentFactor[]>;
   verify(params: VerifyParams): Promise<TokenEndpointResponse>;
 }

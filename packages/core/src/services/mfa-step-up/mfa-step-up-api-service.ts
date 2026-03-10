@@ -1,8 +1,8 @@
 import type { ClientAuthConfig, TokenEndpointResponse } from '../../auth/auth-types';
 
 import type {
-  Authenticator,
-  ChallengeAuthenticatorParams,
+  MfaAuthenticator,
+  ChallengeMfaAuthenticatorParams,
   ChallengeResponse,
   EnrollmentResponse,
   EnrollParams,
@@ -46,7 +46,7 @@ function createProxyMfaClient(authProxyUrl: string): MfaApiClient {
 
   return {
     getAuthenticators: (mfaToken: string) =>
-      get<Authenticator[]>('/auth/mfa/authenticators', { mfa_token: mfaToken }),
+      get<MfaAuthenticator[]>('/auth/mfa/authenticators', { mfa_token: mfaToken }),
 
     enroll: (params: EnrollParams) =>
       post<EnrollmentResponse>('/auth/mfa/enroll', {
@@ -56,7 +56,7 @@ function createProxyMfaClient(authProxyUrl: string): MfaApiClient {
         ...('email' in params && params.email && { email: params.email }),
       }),
 
-    challenge: (params: ChallengeAuthenticatorParams) =>
+    challenge: (params: ChallengeMfaAuthenticatorParams) =>
       post<ChallengeResponse>('/auth/mfa/challenge', {
         mfaToken: params.mfaToken,
         challengeType: params.challengeType,

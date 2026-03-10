@@ -114,6 +114,12 @@ export const createMockCoreClient = (authDetails?: Partial<AuthDetails>): CoreCl
     getMyOrganizationApiClient: vi.fn(
       () => mockMyOrgApiService,
     ) as CoreClientInterface['getMyOrganizationApiClient'],
+    getMFAStepUpApiClient: vi.fn().mockReturnValue({
+      getAuthenticators: vi.fn().mockResolvedValue([]),
+      enroll: vi.fn().mockResolvedValue({}),
+      challenge: vi.fn().mockResolvedValue({}),
+      verify: vi.fn().mockResolvedValue({}),
+    }) as CoreClientInterface['getMFAStepUpApiClient'],
     isProxyMode: () => false,
     ensureScopes() {
       return Promise.resolve();

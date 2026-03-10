@@ -1,7 +1,11 @@
 import { vi } from 'vitest';
 
-import type { AuthDetails, BasicAuth0ContextInterface } from '../../../auth/auth-types';
-import type { createTokenManager } from '../../../auth/token-manager';
+import type {
+  AuthDetails,
+  BasicAuth0ContextInterface,
+  ProxyAuthConfig,
+  SpaAuthConfig,
+} from '../../../auth/auth-types';
 
 // =============================================================================
 // Test Constants
@@ -16,7 +20,11 @@ export const TEST_CLIENT_ID = 'test-client-id';
 
 export const createMockContextInterface = (): BasicAuth0ContextInterface => ({
   isAuthenticated: true,
-  getAccessTokenSilently: vi.fn().mockResolvedValue('mock-access-token'),
+  getAccessTokenSilently: vi.fn().mockResolvedValue({
+    access_token: 'mock-access-token',
+    id_token: '',
+    expires_in: 3600,
+  }),
   getAccessTokenWithPopup: vi.fn().mockResolvedValue('mock-access-token'),
   loginWithRedirect: vi.fn().mockResolvedValue(undefined),
   getConfiguration: vi.fn().mockReturnValue({ domain: TEST_DOMAIN, clientId: TEST_CLIENT_ID }),
@@ -63,40 +71,29 @@ export const mockAuthWithProxyUrlWhitespace: AuthDetails = {
 };
 
 // =============================================================================
-// Token Manager Mocks
+// ClientAuthConfig Mocks (for service tests)
 // =============================================================================
 
-export const createMockTokenManager = (
-  tokenValue: string | undefined = 'mock-access-token',
-): ReturnType<typeof createTokenManager> => ({
-  getToken: vi.fn(async () => tokenValue),
-});
-
-export const createMockTokenManagerWithScopes = (
-  tokenValue: string | undefined = 'mock-access-token',
-): ReturnType<typeof createTokenManager> & {
-  lastScope?: string;
-  lastAudiencePath?: string;
-} => {
-  const mockManager = {
-    lastScope: undefined as string | undefined,
-    lastAudiencePath: undefined as string | undefined,
-    getToken: vi.fn(async (scope: string, audiencePath: string) => {
-      mockManager.lastScope = scope;
-      mockManager.lastAudiencePath = audiencePath;
-      return tokenValue;
-    }),
-  };
-  return mockManager;
+export const mockProxyConfig: ProxyAuthConfig = {
+  mode: 'proxy',
+  proxyUrl: 'https://proxy.example.com',
 };
 
-export const createMockTokenManagerWithError = (
-  error: Error = new Error('Token retrieval failed'),
-): ReturnType<typeof createTokenManager> => ({
-  getToken: async () => {
-    throw error;
-  },
-});
+export const mockProxyConfigTrailingSlash: ProxyAuthConfig = {
+  mode: 'proxy',
+  proxyUrl: 'https://proxy.example.com/',
+};
+
+export const mockProxyConfigWhitespace: ProxyAuthConfig = {
+  mode: 'proxy',
+  proxyUrl: '  https://proxy.example.com  ',
+};
+
+export const mockSpaConfigWhitespaceDomain: SpaAuthConfig = {
+  mode: 'spa',
+  domain: '  test.auth0.com  ',
+  contextInterface: createMockContextInterface(),
+};
 
 // =============================================================================
 // Token Test Data
@@ -108,6 +105,28 @@ export const mockTokens = {
   withSpecialChars: 'token+with/special=chars',
   empty: '',
 };
+
+/**
+ * Creates a fresh SpaAuthConfig with a controlled token. Use a factory rather than
+ * a static constant to keep contextInterface mocks isolated between tests.
+ */
+export function createMockSpaConfig(token = mockTokens.standard): SpaAuthConfig {
+  return {
+    mode: 'spa',
+    domain: TEST_DOMAIN,
+    contextInterface: {
+      isAuthenticated: true,
+      getAccessTokenSilently: vi.fn().mockResolvedValue({
+        access_token: token,
+        id_token: '',
+        expires_in: 3600,
+      }),
+      getAccessTokenWithPopup: vi.fn(),
+      loginWithRedirect: vi.fn(),
+      getConfiguration: vi.fn().mockReturnValue({ domain: TEST_DOMAIN, clientId: TEST_CLIENT_ID }),
+    },
+  };
+}
 
 // =============================================================================
 // Headers Validation Helpers

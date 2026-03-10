@@ -6,21 +6,17 @@
 
 import { MyAccountClient } from '@auth0/myaccount-js';
 
-import type { AuthDetails } from '../../auth/auth-types';
-import type { createTokenManager } from '../../auth/token-manager';
+import type { ClientAuthConfig } from '../../auth/auth-types';
+import { AuthUtils } from '../../auth/auth-utils';
 
 /**
  * Initializes the My Account API client for MFA and user profile operations.
  * @internal
  *
- * @param auth - Authentication configuration details
- * @param tokenManagerService - Token manager for handling access tokens
+ * @param config - Auth configuration — either proxy or domain mode
  * @returns Object containing the client and scope setter function
  */
-export function initializeMyAccountClient(
-  auth: AuthDetails,
-  tokenManagerService: ReturnType<typeof createTokenManager>,
-): {
+export function initializeMyAccountClient(config: ClientAuthConfig): {
   client: MyAccountClient;
   setLatestScopes: (scopes: string) => void;
 } {
@@ -30,9 +26,7 @@ export function initializeMyAccountClient(
     latestScopes = scopes;
   };
 
-  if (auth.authProxyUrl) {
-    const myAccountProxyPath = 'me';
-    const myAccountBaseUrl = `${auth.authProxyUrl.replace(/\/$/, '')}/${myAccountProxyPath}`;
+  if (config.mode === 'proxy') {
     const fetcher = async (url: string, init?: RequestInit) => {
       return fetch(url, {
         ...init,
@@ -46,7 +40,7 @@ export function initializeMyAccountClient(
     return {
       client: new MyAccountClient({
         domain: '',
-        baseUrl: myAccountBaseUrl.trim(),
+        baseUrl: `${config.proxyUrl}/me`,
         telemetry: false,
         fetcher,
       }),
@@ -54,31 +48,29 @@ export function initializeMyAccountClient(
     };
   }
 
-  const domain = auth.domain ?? auth.contextInterface?.getConfiguration()?.domain;
-  if (domain) {
-    const fetcher = async (url: string, init?: RequestInit) => {
-      const token = await tokenManagerService.getToken(latestScopes, 'me');
+  const fetcher = async (url: string, init?: RequestInit) => {
+    const token = await AuthUtils.getToken(
+      config.contextInterface,
+      config.domain,
+      'me',
+      latestScopes,
+    );
 
-      const headers = new Headers(init?.headers);
-      if (init?.body && !headers.has('Content-Type')) {
-        headers.set('Content-Type', 'application/json');
-      }
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
+    const headers = new Headers(init?.headers);
+    if (init?.body && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
 
-      return fetch(url, {
-        ...init,
-        headers,
-      });
-    };
-    return {
-      client: new MyAccountClient({
-        domain: domain.trim(),
-        fetcher,
-      }),
-      setLatestScopes,
-    };
-  }
-  throw new Error('Missing domain or proxy URL for MyAccountClient');
+    return fetch(url, { ...init, headers });
+  };
+  return {
+    client: new MyAccountClient({
+      domain: config.domain,
+      fetcher,
+    }),
+    setLatestScopes,
+  };
 }

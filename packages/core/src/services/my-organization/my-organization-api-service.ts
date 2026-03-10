@@ -5,21 +5,17 @@
  */
 
 import { MyOrganizationClient } from '@auth0/myorganization-js';
-import type { AuthDetails } from '@core/auth/auth-types';
-import type { createTokenManager } from '@core/auth/token-manager';
+import type { ClientAuthConfig } from '@core/auth/auth-types';
+import { AuthUtils } from '@core/auth/auth-utils';
 
 /**
  * Initializes the My Organization API client for organization, SSO, and domain operations.
  * @internal
  *
- * @param auth - Authentication configuration details
- * @param tokenManagerService - Token manager for handling access tokens
+ * @param config - Auth configuration — either proxy or domain mode
  * @returns Object containing the client and scope setter function
  */
-export function initializeMyOrganizationClient(
-  auth: AuthDetails,
-  tokenManagerService: ReturnType<typeof createTokenManager>,
-): {
+export function initializeMyOrganizationClient(config: ClientAuthConfig): {
   client: MyOrganizationClient;
   setLatestScopes: (scopes: string) => void;
 } {
@@ -29,9 +25,7 @@ export function initializeMyOrganizationClient(
     latestScopes = scopes;
   };
 
-  if (auth.authProxyUrl) {
-    const myOrganizationProxyPath = 'my-org';
-    const myOrganizationProxyBaseUrl = `${auth.authProxyUrl.replace(/\/$/, '')}/${myOrganizationProxyPath}`;
+  if (config.mode === 'proxy') {
     const fetcher = async (url: string, init?: RequestInit) => {
       return fetch(url, {
         ...init,
@@ -45,7 +39,7 @@ export function initializeMyOrganizationClient(
     return {
       client: new MyOrganizationClient({
         domain: '',
-        baseUrl: myOrganizationProxyBaseUrl.trim(),
+        baseUrl: `${config.proxyUrl}/my-org`,
         telemetry: false,
         fetcher,
       }),
@@ -53,31 +47,29 @@ export function initializeMyOrganizationClient(
     };
   }
 
-  const domain = auth.domain ?? auth.contextInterface?.getConfiguration()?.domain;
-  if (domain) {
-    const fetcher = async (url: string, init?: RequestInit) => {
-      const token = await tokenManagerService.getToken(latestScopes, 'my-org');
+  const fetcher = async (url: string, init?: RequestInit) => {
+    const token = await AuthUtils.getToken(
+      config.contextInterface,
+      config.domain,
+      'my-org',
+      latestScopes,
+    );
 
-      const headers = new Headers(init?.headers);
-      if (init?.body && !headers.has('Content-Type')) {
-        headers.set('Content-Type', 'application/json');
-      }
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
+    const headers = new Headers(init?.headers);
+    if (init?.body && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
 
-      return fetch(url, {
-        ...init,
-        headers,
-      });
-    };
-    return {
-      client: new MyOrganizationClient({
-        domain: domain.trim(),
-        fetcher,
-      }),
-      setLatestScopes,
-    };
-  }
-  throw new Error('Missing domain or proxy URL for MyOrganizationClient');
+    return fetch(url, { ...init, headers });
+  };
+  return {
+    client: new MyOrganizationClient({
+      domain: config.domain,
+      fetcher,
+    }),
+    setLatestScopes,
+  };
 }

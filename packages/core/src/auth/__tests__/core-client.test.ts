@@ -12,27 +12,22 @@ import {
 } from '../../internals/__mocks__/shared/api-service.mocks';
 import { createMockMyAccountClient } from '../../services/my-account/__tests__/__mocks__/my-account-api-service.mocks';
 import { createMockMyOrganizationClient } from '../../services/my-organization/__tests__/__mocks__/my-organization-api-service.mocks';
-import { createMockTokenManager } from '../__mocks__/token-manager.mocks';
 import type { AuthDetails } from '../auth-types';
 import { createCoreClient } from '../core-client';
-import { createTokenManager } from '../token-manager';
 
 // Mock the modules
 vi.mock('@core/i18n');
-vi.mock('@core/auth/token-manager');
 vi.mock('@core/services/my-organization/my-organization-api-service');
 vi.mock('@core/services/my-account/my-account-api-service');
 
 describe('createCoreClient', () => {
   // Create mock instances using mock utilities
   const mockI18nService = createMockI18nService();
-  const mockTokenManager = createMockTokenManager();
   const mockMyOrganizationClient = createMockMyOrganizationClient();
   const mockMyAccountClient = createMockMyAccountClient();
 
   // Get the mocked functions
   const createI18nServiceMock = vi.mocked(createI18nService);
-  const createTokenManagerMock = vi.mocked(createTokenManager);
   const initializeMyOrganizationClientMock = vi.mocked(initializeMyOrganizationClient);
   const initializeMyAccountClientMock = vi.mocked(initializeMyAccountClient);
 
@@ -50,12 +45,8 @@ describe('createCoreClient', () => {
 
     // Setup default mock implementations
     createI18nServiceMock.mockResolvedValue(mockI18nService);
-    createTokenManagerMock.mockReturnValue(mockTokenManager);
     initializeMyOrganizationClientMock.mockReturnValue(mockMyOrganizationClient);
     initializeMyAccountClientMock.mockReturnValue(mockMyAccountClient);
-
-    // Reset token manager mock to return successful token
-    vi.mocked(mockTokenManager.getToken).mockResolvedValue('mock-token');
   });
 
   describe('i18n initialization', () => {
@@ -108,36 +99,6 @@ describe('createCoreClient', () => {
     });
   });
 
-  describe('getToken', () => {
-    it('delegates to token manager with all parameters', async () => {
-      const authDetails = createAuthDetails();
-      const client = await createCoreClient(authDetails);
-
-      await client.getToken('read:org', 'my-org', true);
-
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith('read:org', 'my-org', true);
-    });
-
-    it('delegates to token manager with default ignoreCache', async () => {
-      const authDetails = createAuthDetails();
-      const client = await createCoreClient(authDetails);
-
-      await client.getToken('read:me', 'me');
-
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith('read:me', 'me', undefined);
-    });
-
-    it('returns the token from token manager', async () => {
-      const authDetails = createAuthDetails();
-      vi.mocked(mockTokenManager.getToken).mockResolvedValueOnce('specific-token-value');
-      const client = await createCoreClient(authDetails);
-
-      const token = await client.getToken('read:me', 'me');
-
-      expect(token).toBe('specific-token-value');
-    });
-  });
-
   describe('ensureScopes - proxy mode', () => {
     it('sets org scopes without token fetch in proxy mode', async () => {
       const authDetails = createAuthDetails({ authProxyUrl: 'https://proxy.auth0.com' });
@@ -146,7 +107,7 @@ describe('createCoreClient', () => {
       await client.ensureScopes('read:org', 'my-org');
 
       expect(mockMyOrganizationClient.setLatestScopes).toHaveBeenCalledWith('read:org');
-      expect(mockTokenManager.getToken).not.toHaveBeenCalled();
+      expect(authDetails.contextInterface?.getAccessTokenSilently).not.toHaveBeenCalled();
     });
 
     it('sets account scopes without token fetch in proxy mode', async () => {
@@ -156,7 +117,7 @@ describe('createCoreClient', () => {
       await client.ensureScopes('read:me', 'me');
 
       expect(mockMyAccountClient.setLatestScopes).toHaveBeenCalledWith('read:me');
-      expect(mockTokenManager.getToken).not.toHaveBeenCalled();
+      expect(authDetails.contextInterface?.getAccessTokenSilently).not.toHaveBeenCalled();
     });
 
     it('does not set scopes for unknown audience in proxy mode', async () => {
@@ -167,20 +128,17 @@ describe('createCoreClient', () => {
 
       expect(mockMyOrganizationClient.setLatestScopes).not.toHaveBeenCalled();
       expect(mockMyAccountClient.setLatestScopes).not.toHaveBeenCalled();
-      expect(mockTokenManager.getToken).not.toHaveBeenCalled();
+      expect(authDetails.contextInterface?.getAccessTokenSilently).not.toHaveBeenCalled();
     });
   });
 
   describe('ensureScopes - non-proxy mode', () => {
     it('throws when domain is missing in non-proxy mode', async () => {
       const authDetails = createAuthDetails({ domain: '', contextInterface: undefined });
-      const client = await createCoreClient(authDetails);
 
-      await expect(client.ensureScopes('read:org', 'my-org')).rejects.toThrow(
-        'Authentication domain is missing, cannot initialize SPA service.',
+      await expect(createCoreClient(authDetails)).rejects.toThrow(
+        'Initialization failed: Auth0 context not found. Ensure the component is rendered within Auth0ComponentProvider.',
       );
-      expect(mockMyOrganizationClient.setLatestScopes).not.toHaveBeenCalled();
-      expect(mockTokenManager.getToken).not.toHaveBeenCalled();
     });
 
     it('uses domain from contextInterface.getConfiguration() when auth.domain is undefined', async () => {
@@ -196,7 +154,7 @@ describe('createCoreClient', () => {
       await client.ensureScopes('read:org', 'my-org');
 
       expect(mockMyOrganizationClient.setLatestScopes).toHaveBeenCalledWith('read:org');
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith('read:org', 'my-org', true);
+      expect(mockContext.getAccessTokenSilently).toHaveBeenCalled();
     });
 
     it('prefers auth.domain over contextInterface.getConfiguration().domain', async () => {
@@ -214,9 +172,8 @@ describe('createCoreClient', () => {
 
       await client.ensureScopes('read:org', 'my-org');
 
-      // Should not throw, meaning domain was found
       expect(mockMyOrganizationClient.setLatestScopes).toHaveBeenCalledWith('read:org');
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith('read:org', 'my-org', true);
+      expect(mockContext.getAccessTokenSilently).toHaveBeenCalled();
     });
 
     it('throws when contextInterface.getConfiguration() returns undefined domain', async () => {
@@ -225,10 +182,9 @@ describe('createCoreClient', () => {
         getConfiguration: vi.fn().mockReturnValue({ clientId: 'test-client-id' }),
       };
       const authDetails = createAuthDetails({ domain: undefined, contextInterface: mockContext });
-      const client = await createCoreClient(authDetails);
 
-      await expect(client.ensureScopes('read:org', 'my-org')).rejects.toThrow(
-        'Authentication domain is missing, cannot initialize SPA service.',
+      await expect(createCoreClient(authDetails)).rejects.toThrow(
+        'Initialization failed: Auth0 domain is not configured. Provide a domain to Auth0ComponentProvider.',
       );
     });
 
@@ -238,45 +194,60 @@ describe('createCoreClient', () => {
         getConfiguration: vi.fn().mockReturnValue(undefined),
       };
       const authDetails = createAuthDetails({ domain: undefined, contextInterface: mockContext });
-      const client = await createCoreClient(authDetails);
 
-      await expect(client.ensureScopes('read:org', 'my-org')).rejects.toThrow(
-        'Authentication domain is missing, cannot initialize SPA service.',
+      await expect(createCoreClient(authDetails)).rejects.toThrow(
+        'Initialization failed: Auth0 domain is not configured. Provide a domain to Auth0ComponentProvider.',
       );
     });
 
     it('throws when contextInterface is undefined and domain is not provided', async () => {
       const authDetails = createAuthDetails({ domain: undefined, contextInterface: undefined });
-      const client = await createCoreClient(authDetails);
 
-      await expect(client.ensureScopes('read:org', 'my-org')).rejects.toThrow(
-        'Authentication domain is missing, cannot initialize SPA service.',
+      await expect(createCoreClient(authDetails)).rejects.toThrow(
+        'Initialization failed: Auth0 context not found. Ensure the component is rendered within Auth0ComponentProvider.',
       );
     });
 
     it('sets org scopes and fetches token in non-proxy mode', async () => {
-      const authDetails = createAuthDetails();
+      const mockContext = createMockContextInterface();
+      const authDetails = createAuthDetails({ contextInterface: mockContext });
       const client = await createCoreClient(authDetails);
 
       await client.ensureScopes('read:org', 'my-org');
 
       expect(mockMyOrganizationClient.setLatestScopes).toHaveBeenCalledWith('read:org');
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith('read:org', 'my-org', true);
+      expect(mockContext.getAccessTokenSilently).toHaveBeenCalledWith(
+        expect.objectContaining({
+          authorizationParams: expect.objectContaining({ scope: 'read:org' }),
+          cacheMode: 'off',
+        }),
+      );
     });
 
     it('sets account scopes and fetches token in non-proxy mode', async () => {
-      const authDetails = createAuthDetails();
+      const mockContext = createMockContextInterface();
+      const authDetails = createAuthDetails({ contextInterface: mockContext });
       const client = await createCoreClient(authDetails);
 
       await client.ensureScopes('read:me', 'me');
 
       expect(mockMyAccountClient.setLatestScopes).toHaveBeenCalledWith('read:me');
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith('read:me', 'me', true);
+      expect(mockContext.getAccessTokenSilently).toHaveBeenCalledWith(
+        expect.objectContaining({
+          authorizationParams: expect.objectContaining({ scope: 'read:me' }),
+          cacheMode: 'off',
+        }),
+      );
     });
 
-    it('throws when token retrieval returns undefined in non-proxy mode', async () => {
-      vi.mocked(mockTokenManager.getToken).mockResolvedValueOnce(undefined);
-      const authDetails = createAuthDetails();
+    it('throws when token retrieval returns empty access_token in non-proxy mode', async () => {
+      const mockContext = createMockContextInterface();
+      vi.mocked(mockContext.getAccessTokenSilently).mockResolvedValue({
+        access_token: '',
+        id_token: '',
+        expires_in: 3600,
+      });
+      const authDetails = createAuthDetails({ contextInterface: mockContext });
       const client = await createCoreClient(authDetails);
 
       await expect(client.ensureScopes('read:me', 'me')).rejects.toThrow(
@@ -285,45 +256,35 @@ describe('createCoreClient', () => {
     });
 
     it('does not set scopes for unknown audience in non-proxy mode', async () => {
-      const authDetails = createAuthDetails();
+      const mockContext = createMockContextInterface();
+      const authDetails = createAuthDetails({ contextInterface: mockContext });
       const client = await createCoreClient(authDetails);
 
       await client.ensureScopes('read:something', 'unknown-audience');
 
       expect(mockMyOrganizationClient.setLatestScopes).not.toHaveBeenCalled();
       expect(mockMyAccountClient.setLatestScopes).not.toHaveBeenCalled();
-      // Token fetch still happens for unknown audiences in non-proxy mode
-      expect(mockTokenManager.getToken).toHaveBeenCalledWith(
-        'read:something',
-        'unknown-audience',
-        true,
-      );
+      expect(mockContext.getAccessTokenSilently).toHaveBeenCalled();
     });
   });
 
   describe('API client initialization', () => {
-    it('initializes token manager with auth details', async () => {
-      const authDetails = createAuthDetails();
-      await createCoreClient(authDetails);
-
-      expect(createTokenManagerMock).toHaveBeenCalledWith(authDetails);
-    });
-
-    it('initializes MyOrg client with auth and token manager', async () => {
+    it('initializes MyOrg client with auth details', async () => {
       const authDetails = createAuthDetails();
       await createCoreClient(authDetails);
 
       expect(initializeMyOrganizationClientMock).toHaveBeenCalledWith(
-        authDetails,
-        mockTokenManager,
+        expect.objectContaining({ mode: 'spa', domain: TEST_DOMAIN }),
       );
     });
 
-    it('initializes MyAccount client with auth and token manager', async () => {
+    it('initializes MyAccount client with auth details', async () => {
       const authDetails = createAuthDetails();
       await createCoreClient(authDetails);
 
-      expect(initializeMyAccountClientMock).toHaveBeenCalledWith(authDetails, mockTokenManager);
+      expect(initializeMyAccountClientMock).toHaveBeenCalledWith(
+        expect.objectContaining({ mode: 'spa', domain: TEST_DOMAIN }),
+      );
     });
   });
 
@@ -408,7 +369,6 @@ describe('createCoreClient', () => {
     });
   });
 
-  // --- New tests for previewMode ---
   describe('previewMode', () => {
     it('returns a core client with previewMode and disables API clients', async () => {
       const authDetails = { ...createAuthDetails(), previewMode: true };
@@ -417,17 +377,8 @@ describe('createCoreClient', () => {
       expect(client.auth).toEqual({});
       expect(client.myAccountApiClient).toBeUndefined();
       expect(client.myOrganizationApiClient).toBeUndefined();
-      expect(typeof client.getToken).toBe('function');
       expect(typeof client.ensureScopes).toBe('function');
       expect(typeof client.isProxyMode).toBe('function');
-    });
-
-    it('getToken returns undefined in previewMode', async () => {
-      const authDetails = { ...createAuthDetails(), previewMode: true };
-      const client = await createCoreClient(authDetails);
-
-      const token = await client.getToken('scope', 'aud');
-      expect(token).toBeUndefined();
     });
 
     it('isProxyMode returns false in previewMode', async () => {
@@ -451,11 +402,11 @@ describe('createCoreClient', () => {
       expect(() => client.getMyOrganizationApiClient()).toThrow('Function not implemented.');
     });
 
-    it('getDomain not defined in previewMode', async () => {
+    it('getDomain returns undefined in previewMode', async () => {
       const authDetails = { ...createAuthDetails(), previewMode: true };
       const client = await createCoreClient(authDetails);
 
-      expect(() => client.getDomain()).toBeUndefined;
+      expect(client.getDomain()).toBeUndefined();
     });
   });
 });

@@ -4,6 +4,7 @@
  * @internal
  */
 
+import { initializeMfaStepUpClient } from '@core/services/mfa-step-up/mfa-step-up-api-service';
 import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
 import { initializeMyOrganizationClient } from '@core/services/my-organization/my-organization-api-service';
 
@@ -46,6 +47,9 @@ export async function createCoreClient(
       getMyOrganizationApiClient: function () {
         throw new Error('Function not implemented.');
       },
+      getMFAStepUpApiClient: function () {
+        throw new Error('Function not implemented.');
+      },
       getDomain: function (): string | undefined {
         return undefined;
       },
@@ -59,6 +63,8 @@ export async function createCoreClient(
 
   const { client: myAccountApiClient, setLatestScopes: setAccountScopes } =
     initializeMyAccountClient(authConfig);
+
+  const mfaApiClient = initializeMfaStepUpClient(authConfig);
 
   return {
     auth: authDetails,
@@ -104,6 +110,14 @@ export async function createCoreClient(
           'myOrganizationApiClient is not enabled. Please ensure you are in an Auth0 Organization context.',
         );
       return myOrganizationApiClient;
+    },
+
+    getMFAStepUpApiClient: () => {
+      if (!mfaApiClient)
+        throw new Error(
+          'MFA Step-Up API client is not enabled. Please use it within Auth0ComponentProvider.',
+        );
+      return mfaApiClient;
     },
   };
 }

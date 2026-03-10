@@ -9,6 +9,7 @@ import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import type { ArbitraryObject } from '@core/types';
 
 import type { I18nServiceInterface } from '../i18n';
+import type { MfaApiClient } from '../services/mfa-step-up/mfa-step-up-api-types';
 
 /**
  * Response structure from the token endpoint.
@@ -135,6 +136,7 @@ export interface BasicAuth0ContextInterface<TUser = User> {
   getAccessTokenWithPopup: (options?: unknown) => Promise<string | undefined>;
   loginWithRedirect: (options?: unknown) => Promise<void>;
   getConfiguration: () => Readonly<ClientConfiguration>;
+  mfa: MfaApiClient;
 }
 
 /**
@@ -194,4 +196,5 @@ export interface CoreClientInterface extends BaseCoreClientInterface {
   myOrganizationApiClient: MyOrganizationClient | undefined;
   getMyAccountApiClient: () => MyAccountClient;
   getMyOrganizationApiClient: () => MyOrganizationClient;
+  getMFAStepUpApiClient: () => MfaApiClient;
 }

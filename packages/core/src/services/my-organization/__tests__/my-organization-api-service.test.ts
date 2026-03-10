@@ -441,6 +441,12 @@ describe('initializeMyOrganizationClient', () => {
             getConfiguration: vi
               .fn()
               .mockReturnValue({ domain: 'test.auth0.com', clientId: 'client-id' }),
+            mfa: {
+              getAuthenticators: vi.fn().mockResolvedValue([]),
+              enroll: vi.fn().mockResolvedValue({}),
+              challenge: vi.fn().mockResolvedValue({}),
+              verify: vi.fn().mockResolvedValue({}),
+            },
           },
         };
         initializeMyOrganizationClient(auth);

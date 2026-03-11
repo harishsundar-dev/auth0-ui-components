@@ -26,8 +26,7 @@ export function initializeMfaStepUpClient(auth: ClientAuthConfig): MfaApiClient 
  */
 function createProxyMfaClient(authProxyUrl: string): MfaApiClient {
   const get = async <T>(path: string, query?: Record<string, string>): Promise<T> => {
-    const params = new URLSearchParams(query ?? {}).toString();
-    const qs = params ? `?${params}` : '';
+    const qs = query ? `?${new URLSearchParams(query)}` : '';
     const res = await fetch(`${authProxyUrl}${path}${qs}`);
     if (!res.ok) throw await res.json().catch(() => ({ status: res.status }));
     return res.json();

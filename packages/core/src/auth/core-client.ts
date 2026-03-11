@@ -11,7 +11,7 @@ import type { I18nInitOptions } from '../i18n';
 import { createI18nService } from '../i18n';
 
 import type { AuthDetails, CoreClientInterface } from './auth-types';
-import { createTokenManager } from './token-manager';
+import { AuthUtils } from './auth-utils';
 
 /**
  * Creates and initializes the core client with all necessary services.
@@ -31,12 +31,9 @@ export async function createCoreClient(
 
   // Skip API clients for docs sites
   if (authDetails.previewMode) {
-    const baseCoreClient: CoreClientInterface = {
+    return {
       auth: {},
       i18nService,
-      async getToken() {
-        return undefined;
-      },
       isProxyMode() {
         return false;
       },
@@ -53,19 +50,15 @@ export async function createCoreClient(
         return undefined;
       },
     };
-
-    return {
-      ...baseCoreClient,
-    };
   }
 
-  const tokenManagerService = createTokenManager(authDetails);
+  const authConfig = AuthUtils.resolveAuthConfig(authDetails);
 
   const { client: myOrganizationApiClient, setLatestScopes: setOrgScopes } =
-    initializeMyOrganizationClient(authDetails, tokenManagerService);
+    initializeMyOrganizationClient(authConfig);
 
   const { client: myAccountApiClient, setLatestScopes: setAccountScopes } =
-    initializeMyAccountClient(authDetails, tokenManagerService);
+    initializeMyAccountClient(authConfig);
 
   return {
     auth: authDetails,
@@ -73,34 +66,25 @@ export async function createCoreClient(
     myAccountApiClient,
     myOrganizationApiClient,
 
-    getToken: (scope, aud, ignoreCache) => tokenManagerService.getToken(scope, aud, ignoreCache),
-    isProxyMode: () => !!authDetails.authProxyUrl,
+    isProxyMode: () => authConfig.mode === 'proxy',
 
-    getDomain: () => authDetails.domain ?? authDetails.contextInterface?.getConfiguration()?.domain,
+    getDomain: () => (authConfig.mode === 'spa' ? authConfig.domain : undefined),
 
     ensureScopes: async (requiredScopes: string, audiencePath: string) => {
-      const isProxyMode = !!authDetails.authProxyUrl;
-
-      if (!isProxyMode) {
-        const domain =
-          authDetails.domain ?? authDetails.contextInterface?.getConfiguration()?.domain;
-
-        if (!domain) {
-          throw new Error('Authentication domain is missing, cannot initialize SPA service.');
-        }
-      }
-
       if (audiencePath === 'my-org') setOrgScopes(requiredScopes);
       if (audiencePath === 'me') setAccountScopes(requiredScopes);
 
-      if (isProxyMode) {
+      if (authConfig.mode === 'proxy') {
         return;
       }
 
-      const token = await tokenManagerService.getToken(requiredScopes, audiencePath, true);
-      if (!token) {
-        throw new Error(`Failed to retrieve token for audience: ${audiencePath}`);
-      }
+      await AuthUtils.getToken(
+        authConfig.contextInterface,
+        authConfig.domain,
+        audiencePath,
+        requiredScopes,
+        'off',
+      );
     },
 
     getMyAccountApiClient: () => {

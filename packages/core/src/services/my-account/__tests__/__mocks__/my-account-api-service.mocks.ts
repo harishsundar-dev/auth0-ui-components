@@ -16,7 +16,13 @@ export const createMockMyAccountClient = (): ReturnType<typeof initializeMyAccou
 // Re-export shared API service mocks
 export {
   createMockContextInterface,
-  // Auth Details Mocks
+  // ClientAuthConfig Mocks
+  mockProxyConfig,
+  mockProxyConfigTrailingSlash,
+  mockProxyConfigWhitespace,
+  mockSpaConfigWhitespaceDomain,
+  createMockSpaConfig,
+  // AuthDetails Mocks (for core-client tests)
   mockAuthWithDomain,
   mockAuthWithProxyUrl,
   mockAuthWithProxyUrlTrailingSlash,
@@ -26,10 +32,6 @@ export {
   mockAuthWithEmptyProxyUrl,
   mockAuthWithDomainWhitespace,
   mockAuthWithProxyUrlWhitespace,
-  // Token Manager Mocks
-  createMockTokenManager,
-  createMockTokenManagerWithScopes,
-  createMockTokenManagerWithError,
   // Token Test Data
   mockTokens,
   // Headers Helpers
@@ -87,10 +89,10 @@ export const mockRequestInits = {
   },
 };
 
-// Error Messages (MyAccount-specific)
+// Error Messages (MyAccount-specific — thrown by createCoreClient, not the service directly)
 export const expectedErrors = {
-  missingDomainOrProxy: 'Missing domain or proxy URL for MyAccountClient',
-  tokenManagerError: 'Token retrieval failed',
+  missingContextInterface: 'Missing context interface',
+  missingDomain: 'Missing domain',
 };
 
 // MyAccountClient Mock Methods

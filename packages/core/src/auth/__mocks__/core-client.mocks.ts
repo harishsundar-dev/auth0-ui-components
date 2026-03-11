@@ -226,7 +226,6 @@ export const createMockCoreClient = (authDetails?: Partial<AuthDetails>): CoreCl
     getMyOrganizationApiClient: vi.fn(
       () => mockMyOrganizationApiClient,
     ) as CoreClientInterface['getMyOrganizationApiClient'],
-    getToken: vi.fn().mockResolvedValue('mock-access-token'),
     isProxyMode: vi.fn().mockReturnValue(false),
     ensureScopes: vi.fn().mockResolvedValue(undefined),
     getDomain: vi.fn(

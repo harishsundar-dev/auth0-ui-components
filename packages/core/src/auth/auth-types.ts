@@ -138,6 +138,31 @@ export interface BasicAuth0ContextInterface<TUser = User> {
 }
 
 /**
+ * Auth config for proxy mode — routes requests through an auth proxy URL.
+ * @internal
+ */
+export type ProxyAuthConfig = {
+  mode: 'proxy';
+  proxyUrl: string;
+};
+
+/**
+ * Auth config for SPA mode — uses a context interface and Auth0 domain directly.
+ * @internal
+ */
+export type SpaAuthConfig = {
+  mode: 'spa';
+  contextInterface: BasicAuth0ContextInterface;
+  domain: string;
+};
+
+/**
+ * Discriminated union of the two supported auth configurations.
+ * @internal
+ */
+export type ClientAuthConfig = ProxyAuthConfig | SpaAuthConfig;
+
+/**
  * Authentication details for provider configuration.
  * @internal
  */
@@ -155,11 +180,6 @@ export interface AuthDetails {
 export interface BaseCoreClientInterface {
   auth: AuthDetails;
   i18nService: I18nServiceInterface;
-  getToken: (
-    scope: string,
-    audiencePath: string,
-    ignoreCache?: boolean,
-  ) => Promise<string | undefined>;
   isProxyMode: () => boolean;
   ensureScopes: (requiredScopes: string, audiencePath: string) => Promise<void>;
   getDomain: () => string | undefined;

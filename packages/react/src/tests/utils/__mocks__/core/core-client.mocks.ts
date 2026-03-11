@@ -12,6 +12,7 @@ import { createMockOrganization } from '@/tests/utils/__mocks__/my-organization/
 
 const createMockMyAccountApiService = (): CoreClientInterface['myAccountApiClient'] => {
   const service = {
+    withScopes: vi.fn(),
     factors: {
       list: vi.fn().mockResolvedValue(createMockAvailableFactors()),
     },
@@ -24,9 +25,8 @@ const createMockMyAccountApiService = (): CoreClientInterface['myAccountApiClien
     mfa: {
       fetchFactors: vi.fn().mockResolvedValue([]),
     },
-  } as unknown as CoreClientInterface['myAccountApiClient'];
-  // Use factory fn (not mockReturnValue) so it survives vi.clearAllMocks()
-  (service as unknown as { withScopes: unknown }).withScopes = vi.fn(() => service);
+  } as unknown as NonNullable<CoreClientInterface['myAccountApiClient']>;
+  service.withScopes = vi.fn(() => service) as typeof service.withScopes;
   return service;
 };
 
@@ -99,9 +99,8 @@ const createMockMyOrgApiService = (): CoreClientInterface['myOrganizationApiClie
         },
       },
     },
-  } as unknown as CoreClientInterface['myOrganizationApiClient'];
-  // Use factory fn (not mockReturnValue) so it survives vi.clearAllMocks()
-  (service as unknown as { withScopes: unknown }).withScopes = vi.fn(() => service);
+  } as unknown as NonNullable<CoreClientInterface['myOrganizationApiClient']>;
+  service.withScopes = vi.fn(() => service) as typeof service.withScopes;
   return service;
 };
 

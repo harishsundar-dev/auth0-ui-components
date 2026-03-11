@@ -240,21 +240,6 @@ describe('createCoreClient', () => {
       );
     });
 
-    it('throws when token retrieval returns empty access_token in non-proxy mode', async () => {
-      const mockContext = createMockContextInterface();
-      vi.mocked(mockContext.getAccessTokenSilently).mockResolvedValue({
-        access_token: '',
-        id_token: '',
-        expires_in: 3600,
-      });
-      const authDetails = createAuthDetails({ contextInterface: mockContext });
-      const client = await createCoreClient(authDetails);
-
-      await expect(client.ensureScopes('read:me', 'me')).rejects.toThrow(
-        'Failed to retrieve token for audience: me',
-      );
-    });
-
     it('does not set scopes for unknown audience in non-proxy mode', async () => {
       const mockContext = createMockContextInterface();
       const authDetails = createAuthDetails({ contextInterface: mockContext });

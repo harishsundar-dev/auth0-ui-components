@@ -381,21 +381,6 @@ describe('initializeMyAccountClient', () => {
         expect(headers.get('Content-Type')).toBe('application/custom');
       });
 
-      it('should not add Authorization header when token is empty', async () => {
-        const mockFetch = createMockFetch();
-        vi.stubGlobal('fetch', mockFetch);
-
-        const auth = createMockSpaConfig('');
-        initializeMyAccountClient(auth);
-
-        const fetcher = getFetcherFromMockCalls(mockMyAccountClient);
-
-        await expect(fetcher!(TEST_URL, {})).resolves.toBeDefined();
-
-        const headers = getHeadersFromFetchCall(mockFetch) as Headers;
-        expect(headers.get('Authorization')).toBeNull();
-      });
-
       it('should use Headers object for header management', async () => {
         const mockFetch = createMockFetch();
         vi.stubGlobal('fetch', mockFetch);

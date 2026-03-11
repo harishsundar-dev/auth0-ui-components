@@ -1,7 +1,6 @@
-import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import { vi } from 'vitest';
 
-import type { initializeMyOrganizationClient } from '../../my-organization-api-service';
+import type { MyOrganizationApiClient } from '../../my-organization-api-service';
 
 // Re-export shared API service mocks
 export {
@@ -102,11 +101,12 @@ export const mockMyOrganizationClientMethods = {
 /**
  * Creates a mock MyOrganization API client
  */
-export const createMockMyOrganizationClient = (): ReturnType<
-  typeof initializeMyOrganizationClient
-> => {
-  return {
-    client: {} as MyOrganizationClient,
-    setLatestScopes: vi.fn(),
+export const createMockMyOrganizationClient = (): MyOrganizationApiClient => {
+  const mock = {
+    withScopes: vi.fn(),
+    organization: {} as MyOrganizationApiClient['organization'],
+    organizationDetails: {} as MyOrganizationApiClient['organizationDetails'],
   };
+  mock.withScopes.mockReturnValue(mock);
+  return mock as unknown as MyOrganizationApiClient;
 };

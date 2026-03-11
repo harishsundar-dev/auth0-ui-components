@@ -1,16 +1,12 @@
 /** @module organization-details-edit */
 
-import {
-  getComponentStyles,
-  MY_ORGANIZATION_DETAILS_EDIT_SCOPES,
-} from '@auth0/universal-components-core';
+import { getComponentStyles } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { OrganizationDetails } from '@/components/auth0/my-organization/shared/organization-management/organization-details/organization-details';
 import { Header } from '@/components/auth0/shared/header';
 import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Spinner } from '@/components/ui/spinner';
-import { withMyOrganizationService } from '@/hoc/with-services';
 import { useOrganizationDetailsEdit } from '@/hooks/my-organization/use-organization-details-edit';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
@@ -183,7 +179,6 @@ function OrganizationDetailsEditView({ logic, handlers }: OrganizationDetailsEdi
  * />
  * ```
  */
-const OrganizationDetailsEdit: React.ComponentType<OrganizationDetailsEditProps> =
-  withMyOrganizationService(OrganizationDetailsEditContainer, MY_ORGANIZATION_DETAILS_EDIT_SCOPES);
+const OrganizationDetailsEdit = OrganizationDetailsEditContainer;
 
 export { OrganizationDetailsEdit, OrganizationDetailsEditView };

@@ -326,18 +326,6 @@ describe('initializeMyOrganizationClient', () => {
         expect(headers.get('Content-Type')).toBe('application/json');
       });
 
-      it('should not add Authorization header when token is empty', async () => {
-        const auth = createMockSpaConfig('');
-        initializeMyOrganizationClient(auth);
-
-        const fetcher = getFetcherFromMockCalls(mockMyOrganizationClient);
-
-        await fetcher!(TEST_URL, mockRequestInits.post);
-
-        const headers = getHeadersFromFetchCall(mockFetch) as Headers;
-        expect(headers.get('Authorization')).toBeNull();
-      });
-
       it('should not override existing Content-Type header', async () => {
         const auth = createMockSpaConfig();
         initializeMyOrganizationClient(auth);

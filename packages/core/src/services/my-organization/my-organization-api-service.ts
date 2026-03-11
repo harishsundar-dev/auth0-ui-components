@@ -59,9 +59,7 @@ export function initializeMyOrganizationClient(config: ClientAuthConfig): {
     if (init?.body && !headers.has('Content-Type')) {
       headers.set('Content-Type', 'application/json');
     }
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
+    headers.set('Authorization', `Bearer ${token}`);
 
     return fetch(url, { ...init, headers });
   };

@@ -1,5 +1,6 @@
 import type { MyAccountClient } from '@auth0/myaccount-js';
 import type { MyOrganizationClient } from '@auth0/myorganization-js';
+import { initializeMfaStepUpClient } from '@core/services/mfa-step-up/mfa-step-up-api-service';
 import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
 import { initializeMyOrganizationClient } from '@core/services/my-organization/my-organization-api-service';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -19,17 +20,25 @@ import { createCoreClient } from '../core-client';
 vi.mock('@core/i18n');
 vi.mock('@core/services/my-organization/my-organization-api-service');
 vi.mock('@core/services/my-account/my-account-api-service');
+vi.mock('@core/services/mfa-step-up/mfa-step-up-api-service');
 
 describe('createCoreClient', () => {
   // Create mock instances using mock utilities
   const mockI18nService = createMockI18nService();
   const mockMyOrganizationClient = createMockMyOrganizationClient();
   const mockMyAccountClient = createMockMyAccountClient();
+  const mockMfaApiClient = {
+    getAuthenticators: vi.fn().mockResolvedValue([]),
+    enroll: vi.fn().mockResolvedValue({}),
+    challenge: vi.fn().mockResolvedValue({}),
+    verify: vi.fn().mockResolvedValue({}),
+  };
 
   // Get the mocked functions
   const createI18nServiceMock = vi.mocked(createI18nService);
   const initializeMyOrganizationClientMock = vi.mocked(initializeMyOrganizationClient);
   const initializeMyAccountClientMock = vi.mocked(initializeMyAccountClient);
+  const initializeMfaStepUpClientMock = vi.mocked(initializeMfaStepUpClient);
 
   const createAuthDetails = (overrides: Partial<AuthDetails> = {}): AuthDetails => {
     return {
@@ -47,6 +56,7 @@ describe('createCoreClient', () => {
     createI18nServiceMock.mockResolvedValue(mockI18nService);
     initializeMyOrganizationClientMock.mockReturnValue(mockMyOrganizationClient);
     initializeMyAccountClientMock.mockReturnValue(mockMyAccountClient);
+    initializeMfaStepUpClientMock.mockReturnValue(mockMfaApiClient);
   });
 
   describe('i18n initialization', () => {
@@ -328,6 +338,13 @@ describe('createCoreClient', () => {
         'myOrganizationApiClient is not enabled. Please ensure you are in an Auth0 Organization context.',
       );
     });
+
+    it('returns mfaApiClient via getter', async () => {
+      const authDetails = createAuthDetails();
+      const client = await createCoreClient(authDetails);
+
+      expect(client.getMFAStepUpApiClient()).toBe(mockMfaApiClient);
+    });
   });
 
   describe('client properties', () => {
@@ -385,6 +402,13 @@ describe('createCoreClient', () => {
       const client = await createCoreClient(authDetails);
 
       expect(() => client.getMyOrganizationApiClient()).toThrow('Function not implemented.');
+    });
+
+    it('getMFAStepUpApiClient throws in previewMode', async () => {
+      const authDetails = { ...createAuthDetails(), previewMode: true };
+      const client = await createCoreClient(authDetails);
+
+      expect(() => client.getMFAStepUpApiClient()).toThrow('Function not implemented.');
     });
 
     it('getDomain returns undefined in previewMode', async () => {

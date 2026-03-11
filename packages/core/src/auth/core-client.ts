@@ -4,6 +4,7 @@
  * @internal
  */
 
+import { initializeMfaStepUpClient } from '@core/services/mfa-step-up/mfa-step-up-api-service';
 import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
 import { initializeMyOrganizationClient } from '@core/services/my-organization/my-organization-api-service';
 
@@ -46,6 +47,9 @@ export async function createCoreClient(
       getMyOrganizationApiClient: function () {
         throw new Error('Function not implemented.');
       },
+      getMFAStepUpApiClient: function () {
+        throw new Error('Function not implemented.');
+      },
       getDomain: function (): string | undefined {
         return undefined;
       },
@@ -59,6 +63,8 @@ export async function createCoreClient(
 
   const { client: myAccountApiClient, setLatestScopes: setAccountScopes } =
     initializeMyAccountClient(authConfig);
+
+  const mfaApiClient = initializeMfaStepUpClient(authConfig);
 
   return {
     auth: authDetails,
@@ -102,5 +108,7 @@ export async function createCoreClient(
         );
       return myOrganizationApiClient;
     },
+
+    getMFAStepUpApiClient: () => mfaApiClient,
   };
 }

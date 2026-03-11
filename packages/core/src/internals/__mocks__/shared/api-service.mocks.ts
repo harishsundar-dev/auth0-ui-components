@@ -28,6 +28,12 @@ export const createMockContextInterface = (): BasicAuth0ContextInterface => ({
   getAccessTokenWithPopup: vi.fn().mockResolvedValue('mock-access-token'),
   loginWithRedirect: vi.fn().mockResolvedValue(undefined),
   getConfiguration: vi.fn().mockReturnValue({ domain: TEST_DOMAIN, clientId: TEST_CLIENT_ID }),
+  mfa: {
+    getAuthenticators: vi.fn().mockResolvedValue([]),
+    enroll: vi.fn().mockResolvedValue({}),
+    challenge: vi.fn().mockResolvedValue({}),
+    verify: vi.fn().mockResolvedValue({}),
+  },
 });
 
 // =============================================================================
@@ -120,6 +126,12 @@ export function createMockSpaConfig(token = mockTokens.standard): SpaAuthConfig 
       getAccessTokenWithPopup: vi.fn(),
       loginWithRedirect: vi.fn(),
       getConfiguration: vi.fn().mockReturnValue({ domain: TEST_DOMAIN, clientId: TEST_CLIENT_ID }),
+      mfa: {
+        getAuthenticators: vi.fn().mockResolvedValue([]),
+        enroll: vi.fn().mockResolvedValue({}),
+        challenge: vi.fn().mockResolvedValue({}),
+        verify: vi.fn().mockResolvedValue({}),
+      },
     },
   };
 }

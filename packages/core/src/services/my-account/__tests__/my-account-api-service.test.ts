@@ -16,6 +16,7 @@ import {
   getExpectedProxyBaseUrl,
   mockScopes,
   mockTokens,
+  mockRequestInits,
 } from './__mocks__/my-account-api-service.mocks';
 
 const TEST_URL = 'https://test.com';
@@ -511,6 +512,24 @@ describe('initializeMyAccountClient', () => {
         expect(contextInterface.getConfiguration).not.toHaveBeenCalled();
         expect(mockMyAccountClient).toHaveBeenCalledWith(
           expect.objectContaining({ domain: 'direct.auth0.com' }),
+        );
+      });
+
+      it('should propagate token retrieval errors', async () => {
+        const auth: SpaAuthConfig = {
+          mode: 'spa',
+          domain: 'test.auth0.com',
+          contextInterface: {
+            ...createMockContextInterface(),
+            getAccessTokenSilently: vi.fn().mockRejectedValue(new Error('Token retrieval failed')),
+          },
+        };
+        initializeMyAccountClient(auth);
+
+        const fetcher = getFetcherFromMockCalls(mockMyAccountClient);
+
+        await expect(fetcher!(TEST_URL, mockRequestInits.post)).rejects.toThrow(
+          'Token retrieval failed',
         );
       });
     });

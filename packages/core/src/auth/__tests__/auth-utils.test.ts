@@ -12,6 +12,12 @@ const createMockContext = (overrides: object = {}) => ({
   getAccessTokenWithPopup: vi.fn(),
   loginWithRedirect: vi.fn(),
   getConfiguration: vi.fn().mockReturnValue({ domain: 'test.auth0.com', clientId: 'test-client' }),
+  mfa: {
+    getAuthenticators: vi.fn().mockResolvedValue([]),
+    enroll: vi.fn().mockResolvedValue({}),
+    challenge: vi.fn().mockResolvedValue({}),
+    verify: vi.fn().mockResolvedValue({}),
+  },
   ...overrides,
 });
 

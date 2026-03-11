@@ -208,7 +208,7 @@ export function useMFALogic({
         },
       });
       await loadFactors();
-    } catch (err) {
+    } catch {
       toast.dismiss();
       toast.error(t('errors.factors_loading_error'));
     }

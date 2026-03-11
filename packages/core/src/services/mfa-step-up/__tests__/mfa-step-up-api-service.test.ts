@@ -8,14 +8,9 @@ import {
 import { initializeMfaStepUpClient } from '../mfa-step-up-api-service';
 
 const PROXY_URL = 'https://proxy.example.com';
-const PROXY_URL_TRAILING_SLASH = 'https://proxy.example.com/';
 const MFA_TOKEN = 'test-mfa-token';
 
 const PROXY_AUTH: ProxyAuthConfig = { mode: 'proxy', proxyUrl: PROXY_URL };
-const PROXY_AUTH_TRAILING_SLASH: ProxyAuthConfig = {
-  mode: 'proxy',
-  proxyUrl: PROXY_URL_TRAILING_SLASH,
-};
 
 const createFetchMock = (ok = true, body: unknown = {}) =>
   vi.fn().mockResolvedValue({
@@ -46,20 +41,6 @@ describe('initializeMfaStepUpClient', () => {
       expect(typeof client.enroll).toBe('function');
       expect(typeof client.challenge).toBe('function');
       expect(typeof client.verify).toBe('function');
-    });
-  });
-
-  describe('proxy client - URL construction', () => {
-    it('removes trailing slash from base URL', async () => {
-      const mockFetch = createFetchMock(true, []);
-      vi.stubGlobal('fetch', mockFetch);
-
-      const client = initializeMfaStepUpClient(PROXY_AUTH_TRAILING_SLASH);
-      await client.getAuthenticators(MFA_TOKEN);
-
-      const [url] = mockFetch.mock.calls[0]!;
-      expect(url).not.toContain('//auth');
-      expect(url).toContain(`${PROXY_URL}/auth/mfa/authenticators`);
     });
   });
 

@@ -25,17 +25,15 @@ export function initializeMfaStepUpClient(auth: ClientAuthConfig): MfaApiClient 
  * @returns Proxy-based MFA client.
  */
 function createProxyMfaClient(authProxyUrl: string): MfaApiClient {
-  const base = authProxyUrl.replace(/\/$/, '');
-
   const get = async <T>(path: string, query?: Record<string, string>): Promise<T> => {
     const qs = query ? `?${new URLSearchParams(query)}` : '';
-    const res = await fetch(`${base}${path}${qs}`);
+    const res = await fetch(`${authProxyUrl}${path}${qs}`);
     if (!res.ok) throw await res.json().catch(() => ({ status: res.status }));
     return res.json();
   };
 
   const post = async <T>(path: string, body: unknown): Promise<T> => {
-    const res = await fetch(`${base}${path}`, {
+    const res = await fetch(`${authProxyUrl}${path}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),

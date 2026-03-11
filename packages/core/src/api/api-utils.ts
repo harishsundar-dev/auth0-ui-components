@@ -51,7 +51,7 @@ export function buildServiceConfig(
     sdkConfig: { domain: config.domain, telemetry: false },
     authHeaders: async (headers, scopes) => {
       const token = await AuthUtils.getToken(config.contextInterface, config.domain, path, scopes);
-      if (token) headers.set('Authorization', `Bearer ${token}`);
+      headers.set('Authorization', `Bearer ${token}`);
     },
   };
 }

@@ -18,6 +18,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { showToast } from '@/components/auth0/shared/toast';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
+import { useErrorHandler } from '@/hooks/shared/use-error-handler';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { UseSsoProviderTableReturn } from '@/types/my-organization/idp-management/sso-provider/sso-provider-table-types';
 
@@ -44,6 +45,7 @@ export function useSsoProviderTable(
   const { t } = useTranslator('idp_management.notifications', customMessages);
   const { coreClient } = useCoreClient();
   const queryClient = useQueryClient();
+  const handleError = useErrorHandler();
   const hasShownProvidersError = useRef(false);
   const hasShownOrganizationError = useRef(false);
 
@@ -73,31 +75,25 @@ export function useSsoProviderTable(
 
   useEffect(() => {
     if (providersQuery.isError && !hasShownProvidersError.current) {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(providersQuery.error, { fallbackMessage: t('general_error') });
       hasShownProvidersError.current = true;
     }
 
     if (!providersQuery.isError) {
       hasShownProvidersError.current = false;
     }
-  }, [providersQuery.isError, t]);
+  }, [providersQuery.isError, providersQuery.error, t, handleError]);
 
   useEffect(() => {
     if (organizationQuery.isError && !hasShownOrganizationError.current) {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(organizationQuery.error, { fallbackMessage: t('general_error') });
       hasShownOrganizationError.current = true;
     }
 
     if (!organizationQuery.isError) {
       hasShownOrganizationError.current = false;
     }
-  }, [organizationQuery.isError, t]);
+  }, [organizationQuery.isError, organizationQuery.error, t, handleError]);
 
   const enableProviderMutation = useMutation({
     mutationFn: async ({
@@ -148,11 +144,8 @@ export function useSsoProviderTable(
         );
       });
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -179,11 +172,8 @@ export function useSsoProviderTable(
 
       queryClient.invalidateQueries({ queryKey: ssoProviderQueryKeys.list() });
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -217,12 +207,8 @@ export function useSsoProviderTable(
 
       queryClient.invalidateQueries({ queryKey: ssoProviderQueryKeys.list() });
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
-      return;
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -286,13 +272,14 @@ export function useSsoProviderTable(
       });
       return data;
     } catch (error) {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
       return null;
     }
-  }, [coreClient, queryClient, t]);
+  }, [coreClient, queryClient, t, handleError]);
+
+  const onRetry = useCallback(async (): Promise<void> => {
+    await Promise.all([providersQuery.refetch(), organizationQuery.refetch()]);
+  }, [providersQuery.refetch, organizationQuery.refetch]);
 
   return {
     // Data from TanStack Query - single source of truth
@@ -314,5 +301,14 @@ export function useSsoProviderTable(
     onDeleteConfirm,
     onRemoveConfirm,
     onEnableProvider,
+
+    // GateKeeper
+    error:
+      providersQuery.error ??
+      organizationQuery.error ??
+      enableProviderMutation.error ??
+      deleteProviderMutation.error ??
+      removeProviderMutation.error,
+    onRetry,
   };
 }

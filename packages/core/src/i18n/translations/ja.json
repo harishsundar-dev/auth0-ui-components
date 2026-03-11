@@ -1,7 +1,10 @@
 {
   "common": {
     "copy": "コピー",
-    "copied": "コピーしました"
+    "copied": "コピーしました",
+    "error": {
+      "generic": "リクエストの処理中に問題が発生しました。もう一度お試しいただくか、問題が解決しない場合はサポートにお問い合わせください。"
+    }
   },
   "domain_management": {
     "domain_table": {

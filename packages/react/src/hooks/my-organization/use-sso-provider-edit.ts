@@ -21,6 +21,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { showToast } from '@/components/auth0/shared/toast';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
+import { useErrorHandler } from '@/hooks/shared/use-error-handler';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type {
   UseSsoProviderEditOptions,
@@ -57,6 +58,7 @@ export function useSsoProviderEdit(
   const { coreClient } = useCoreClient();
   const { t } = useTranslator('idp_management.notifications', customMessages);
   const queryClient = useQueryClient();
+  const handleError = useErrorHandler();
   const hasShownProviderError = useRef(false);
   const hasShownProvisioningError = useRef(false);
   const hasShownOrganizationError = useRef(false);
@@ -120,50 +122,36 @@ export function useSsoProviderEdit(
 
   useEffect(() => {
     if (providerQuery.isError && !hasShownProviderError.current) {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(providerQuery.error, { fallbackMessage: t('general_error') });
       hasShownProviderError.current = true;
     }
 
     if (!providerQuery.isError) {
       hasShownProviderError.current = false;
     }
-  }, [providerQuery.isError, t]);
+  }, [providerQuery.isError, providerQuery.error, t, handleError]);
 
   useEffect(() => {
     if (organizationQuery.isError && !hasShownOrganizationError.current) {
-      const errorMessage =
-        organizationQuery.error instanceof Error
-          ? t('general_error', { message: organizationQuery.error.message })
-          : t('general_error');
-
-      showToast({
-        type: 'error',
-        message: errorMessage,
-      });
+      handleError(organizationQuery.error, { fallbackMessage: t('general_error') });
       hasShownOrganizationError.current = true;
     }
 
     if (!organizationQuery.isError) {
       hasShownOrganizationError.current = false;
     }
-  }, [organizationQuery.error, organizationQuery.isError, t]);
+  }, [organizationQuery.error, organizationQuery.isError, t, handleError]);
 
   useEffect(() => {
     if (provisioningQuery.isError && !hasShownProvisioningError.current) {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(provisioningQuery.error, { fallbackMessage: t('general_error') });
       hasShownProvisioningError.current = true;
     }
 
     if (!provisioningQuery.isError) {
       hasShownProvisioningError.current = false;
     }
-  }, [provisioningQuery.isError, t]);
+  }, [provisioningQuery.isError, provisioningQuery.error, t, handleError]);
 
   /**
    * Update provider mutation - updates SSO provider configuration.
@@ -213,10 +201,7 @@ export function useSsoProviderEdit(
       if (isActionCancelledError(error)) {
         return;
       }
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -266,10 +251,7 @@ export function useSsoProviderEdit(
       if (isActionCancelledError(error)) {
         return;
       }
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -317,10 +299,7 @@ export function useSsoProviderEdit(
       if (isActionCancelledError(error)) {
         return;
       }
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -369,10 +348,7 @@ export function useSsoProviderEdit(
       if (isActionCancelledError(error)) {
         return;
       }
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -419,10 +395,7 @@ export function useSsoProviderEdit(
       if (isActionCancelledError(error)) {
         return;
       }
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -464,11 +437,8 @@ export function useSsoProviderEdit(
         await sso.deleteAction.onAfter(provider);
       }
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -524,10 +494,7 @@ export function useSsoProviderEdit(
       if (isActionCancelledError(error)) {
         return;
       }
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -549,13 +516,10 @@ export function useSsoProviderEdit(
       });
       return data;
     } catch (error) {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+      handleError(error, { fallbackMessage: t('general_error') });
       return null;
     }
-  }, [coreClient, idpId, queryClient, t]);
+  }, [coreClient, idpId, queryClient, t, handleError]);
 
   const fetchOrganizationDetails = useCallback(async (): Promise<void> => {
     if (!coreClient) {
@@ -594,14 +558,11 @@ export function useSsoProviderEdit(
       } catch (error) {
         const status = getStatusCode(error);
         if (status !== 404) {
-          showToast({
-            type: 'error',
-            message: t('general_error'),
-          });
+          handleError(error, { fallbackMessage: t('general_error') });
         }
         return null;
       }
-    }, [coreClient, idpId, queryClient, t]);
+    }, [coreClient, idpId, queryClient, t, handleError]);
 
   const updateProvider = useCallback(
     async (data: UpdateIdentityProviderRequestContent): Promise<void> => {
@@ -669,11 +630,8 @@ export function useSsoProviderEdit(
         .organization.identityProviders.provisioning.scimTokens.list(idpId);
       return result;
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -738,11 +696,8 @@ export function useSsoProviderEdit(
         message: t('sso_attributes_sync_success'),
       });
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -770,11 +725,8 @@ export function useSsoProviderEdit(
         message: t('provisioning_attributes_sync_success'),
       });
     },
-    onError: () => {
-      showToast({
-        type: 'error',
-        message: t('general_error'),
-      });
+    onError: (error) => {
+      handleError(error, { fallbackMessage: t('general_error') });
     },
   });
 
@@ -828,6 +780,14 @@ export function useSsoProviderEdit(
     return attributes.some((attr) => attr.is_extra || attr.is_missing);
   }, [provisioningQuery.data]);
 
+  const onRetry = useCallback(async (): Promise<void> => {
+    await Promise.all([
+      providerQuery.refetch(),
+      organizationQuery.refetch(),
+      provisioningQuery.refetch(),
+    ]);
+  }, [providerQuery.refetch, organizationQuery.refetch, provisioningQuery.refetch]);
+
   return {
     // Data from TanStack Query - single source of truth
     provider: providerQuery.data ?? null,
@@ -866,5 +826,22 @@ export function useSsoProviderEdit(
     syncProvisioningAttributes,
     onDeleteConfirm,
     onRemoveConfirm,
+
+    // GateKeeper
+    error:
+      providerQuery.error ??
+      organizationQuery.error ??
+      provisioningQuery.error ??
+      updateProviderMutation.error ??
+      createProvisioningMutation.error ??
+      deleteProvisioningMutation.error ??
+      createScimTokenMutation.error ??
+      deleteScimTokenMutation.error ??
+      deleteProviderMutation.error ??
+      detachProviderMutation.error ??
+      listScimTokensMutation.error ??
+      syncSsoAttributesMutation.error ??
+      syncProvisioningAttributesMutation.error,
+    onRetry,
   };
 }

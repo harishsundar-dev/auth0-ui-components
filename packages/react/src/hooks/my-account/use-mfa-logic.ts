@@ -9,8 +9,9 @@ import {
   type Authenticator,
 } from '@auth0/universal-components-core';
 import { useCallback, useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
+import { showToast } from '@/components/auth0/shared/toast';
+import { useErrorHandler } from '@/hooks/shared/use-error-handler';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { ENROLL, type CONFIRM } from '@/lib/constants/my-account/mfa/mfa-constants';
 import type { UseMFALogicOptions, UseMFALogicResult } from '@/types/my-account/mfa/mfa-types';
@@ -35,6 +36,7 @@ export function useMFALogic({
   onBeforeAction,
 }: UseMFALogicOptions): UseMFALogicResult {
   const { t } = useTranslator('mfa', customMessages);
+  const handleError = useErrorHandler();
   const [factorsByType, setFactorsByType] = useState<Record<MFAType, Authenticator[]>>(
     {} as Record<MFAType, Authenticator[]>,
   );
@@ -167,15 +169,16 @@ export function useMFALogic({
         await deleteMfa(factorId);
       } catch (err) {
         const error = err instanceof Error ? err : new Error(t('errors.delete_factor'));
-        toast.error(t('errors.delete_factor'));
+        handleError(err, { fallbackMessage: t('errors.delete_factor') });
         onErrorAction?.(error, 'delete');
         cleanUp();
         return;
       }
 
-      toast.success(t('remove_factor'), {
-        duration: 2000,
-        onAutoClose: () => onDelete?.(),
+      showToast({
+        type: 'success',
+        message: t('remove_factor'),
+        data: { duration: 2000, onAutoClose: () => onDelete?.() },
       });
 
       try {
@@ -187,7 +190,7 @@ export function useMFALogic({
         cleanUp();
       }
     },
-    [deleteMfa, loadFactors, onDelete, onErrorAction, t],
+    [deleteMfa, handleError, loadFactors, onDelete, onErrorAction, t],
   );
 
   /**
@@ -201,18 +204,16 @@ export function useMFALogic({
     setDialogOpen(false);
     setEnrollFactor(null);
     try {
-      toast.success(t('enroll_factor'), {
-        duration: 2000,
-        onAutoClose: () => {
-          onEnroll?.();
-        },
+      showToast({
+        type: 'success',
+        message: t('enroll_factor'),
+        data: { duration: 2000, onAutoClose: () => onEnroll?.() },
       });
       await loadFactors();
-    } catch {
-      toast.dismiss();
-      toast.error(t('errors.factors_loading_error'));
+    } catch (err) {
+      handleError(err, { fallbackMessage: t('errors.factors_loading_error') });
     }
-  }, [loadFactors, onEnroll, t]);
+  }, [handleError, loadFactors, onEnroll, t]);
 
   /**
    * Handles errors during the enrollment or confirmation process.
@@ -223,9 +224,10 @@ export function useMFALogic({
    */
   const handleEnrollError = useCallback(
     (error: Error, stage: typeof ENROLL | typeof CONFIRM) => {
-      toast.error(
-        `${stage === ENROLL ? t('enrollment') : t('confirmation')} ${t('errors.failed', { message: error.message })}`,
-      );
+      showToast({
+        type: 'error',
+        message: `${stage === ENROLL ? t('enrollment') : t('confirmation')} ${t('errors.failed', { message: error.message })}`,
+      });
       onErrorAction?.(error, stage);
     },
     [onErrorAction, t],

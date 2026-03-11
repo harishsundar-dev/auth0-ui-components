@@ -97,6 +97,8 @@ export interface UseDomainTableResult extends SharedComponentProps {
   onDeleteDomain: (domain: Domain) => Promise<void>;
   onAssociateToProvider: (domain: Domain, provider: IdentityProvider) => Promise<void>;
   onDeleteFromProvider: (domain: Domain, provider: IdentityProvider) => Promise<void>;
+  error: unknown;
+  onRetry: () => Promise<void>;
 }
 
 export interface UseDomainTableLogicOptions {

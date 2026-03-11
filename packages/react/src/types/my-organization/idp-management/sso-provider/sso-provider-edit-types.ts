@@ -118,6 +118,8 @@ export interface UseSsoProviderEditReturn {
   syncProvisioningAttributes: () => Promise<void>;
   onDeleteConfirm: () => Promise<void>;
   onRemoveConfirm: () => Promise<void>;
+  error: unknown;
+  onRetry: () => Promise<void>;
 }
 
 export interface SsoProviderAttributeMappingsProps

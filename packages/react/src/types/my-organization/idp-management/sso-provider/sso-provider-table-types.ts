@@ -56,6 +56,8 @@ export interface UseSsoProviderTableReturn extends SharedComponentProps {
   onDeleteConfirm: (selectedIdp: IdentityProvider) => Promise<void>;
   onRemoveConfirm: (selectedIdp: IdentityProvider) => Promise<void>;
   onEnableProvider: (selectedIdp: IdentityProvider, enabled: boolean) => Promise<boolean>;
+  error: unknown;
+  onRetry: () => Promise<void>;
 }
 
 /** Props for SsoProviderTable actions column. */

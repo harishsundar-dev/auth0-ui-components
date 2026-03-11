@@ -12,7 +12,7 @@ import {
   MY_ORGANIZATION_DOMAIN_SCOPES,
 } from '@auth0/universal-components-core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { useTranslator } from '@/hooks/shared/use-translator';
@@ -178,6 +178,10 @@ export function useDomainTable({
     },
   });
 
+  const onRetry = useCallback(async (): Promise<void> => {
+    await domainsQuery.refetch();
+  }, [domainsQuery.refetch]);
+
   return {
     domains: domainsQuery.data ?? [],
     providers: providersQuery.data ?? [],
@@ -186,6 +190,15 @@ export function useDomainTable({
     isDeleting: deleteDomainMutation.isPending,
     isVerifying: verifyDomainMutation.isPending,
     isLoadingProviders: providersQuery.isLoading,
+    error:
+      domainsQuery.error ??
+      providersQuery.error ??
+      createDomainMutation.error ??
+      verifyDomainMutation.error ??
+      deleteDomainMutation.error ??
+      associateToProviderMutation.error ??
+      deleteFromProviderMutation.error,
+    onRetry,
     fetchProviders: async (domain: Domain) => {
       setSelectedDomainId(domain.id);
       await queryClient.ensureQueryData({

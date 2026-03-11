@@ -63,6 +63,8 @@ export interface UseOrganizationDetailsEditResult {
   formActions: OrganizationDetailsFormActions;
   fetchOrgDetails: () => Promise<void>;
   updateOrgDetails: (data: OrganizationPrivate) => Promise<boolean>;
+  error: unknown;
+  onRetry: () => Promise<void>;
 }
 
 export interface OrganizationDetailsEditViewProps {

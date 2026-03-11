@@ -17,6 +17,7 @@ import { useCallback } from 'react';
 import { showToast } from '@/components/auth0/shared/toast';
 import { ssoProviderQueryKeys } from '@/hooks/my-organization/use-sso-provider-table';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
+import { useErrorHandler } from '@/hooks/shared/use-error-handler';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type { UseSsoProviderCreateOptions } from '@/types/my-organization/idp-management/sso-provider/sso-provider-create-types';
 
@@ -35,6 +36,8 @@ function extractDomainFromDiscoveryError(detail?: string): string | null {
 export interface UseSsoProviderCreateReturn {
   createProvider: (data: CreateIdentityProviderRequestContentPrivate) => Promise<void>;
   isCreating: boolean;
+  error: unknown;
+  onRetry: () => Promise<void>;
 }
 
 /**
@@ -51,6 +54,7 @@ export function useSsoProviderCreate({
   const { coreClient } = useCoreClient();
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const queryClient = useQueryClient();
+  const handleError = useErrorHandler();
 
   const createProviderMutation = useMutation({
     mutationFn: async (
@@ -118,10 +122,7 @@ export function useSsoProviderCreate({
         }
       }
 
-      showToast({
-        type: 'error',
-        message: t('notifications.general_error'),
-      });
+      handleError(error, { fallbackMessage: t('notifications.general_error') });
     },
   });
 
@@ -150,5 +151,7 @@ export function useSsoProviderCreate({
   return {
     createProvider,
     isCreating: createProviderMutation.isPending,
+    error: createProviderMutation.error,
+    onRetry: async () => {},
   };
 }

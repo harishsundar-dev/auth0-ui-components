@@ -1,7 +1,10 @@
 {
   "common": {
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "error": {
+      "generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
+    }
   },
   "domain_management": {
     "domain_table": {

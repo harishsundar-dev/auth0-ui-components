@@ -59,6 +59,8 @@ describe('useSsoProviderEditLogic', () => {
     hasProvisioningAttributeSyncWarning: false,
     provisioningConfig: null,
     isProvisioningLoading: false,
+    error: undefined,
+    onRetry: vi.fn(),
   };
   const mockProvider = {
     provider: {

@@ -37,7 +37,6 @@ export interface UseSsoProviderCreateReturn {
   createProvider: (data: CreateIdentityProviderRequestContentPrivate) => Promise<void>;
   isCreating: boolean;
   error: unknown;
-  onRetry: () => Promise<void>;
 }
 
 /**
@@ -55,7 +54,6 @@ export function useSsoProviderCreate({
   const { t } = useTranslator('idp_management.create_sso_provider', customMessages);
   const queryClient = useQueryClient();
   const handleError = useErrorHandler();
-
   const createProviderMutation = useMutation({
     mutationFn: async (
       data: CreateIdentityProviderRequestContentPrivate,
@@ -152,6 +150,5 @@ export function useSsoProviderCreate({
     createProvider,
     isCreating: createProviderMutation.isPending,
     error: createProviderMutation.error,
-    onRetry: async () => {},
   };
 }

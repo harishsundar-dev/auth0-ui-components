@@ -4,6 +4,7 @@
  * @internal
  */
 
+import { isMfaRequiredError } from '@auth0/universal-components-core';
 import {
   QueryClient,
   QueryClientProvider as TanStackQueryClientProvider,
@@ -74,7 +75,8 @@ function createQueryClient(cacheConfig: Required<QueryCacheConfig>): QueryClient
         staleTime: cacheConfig.staleTime,
         gcTime: cacheConfig.gcTime,
         refetchOnWindowFocus: cacheConfig.refetchOnWindowFocus,
-        retry: QUERY_RETRY_CONFIG.maxRetries,
+        retry: (failureCount, error) =>
+          !isMfaRequiredError(error) && failureCount < QUERY_RETRY_CONFIG.maxRetries,
         retryDelay: (attemptIndex: number) =>
           Math.min(
             1000 * QUERY_RETRY_CONFIG.backoffMultiplier ** attemptIndex,

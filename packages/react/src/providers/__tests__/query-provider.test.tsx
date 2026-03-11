@@ -160,7 +160,14 @@ describe('QueryProvider', () => {
     const client = result.current;
     const defaultOptions = client.getDefaultOptions();
 
-    expect(defaultOptions.queries?.retry).toBe(3);
+    const retryFn = defaultOptions.queries?.retry as (
+      failureCount: number,
+      error: unknown,
+    ) => boolean;
+    expect(typeof retryFn).toBe('function');
+    expect(retryFn(0, new Error('test'))).toBe(true);
+    expect(retryFn(2, new Error('test'))).toBe(true);
+    expect(retryFn(3, new Error('test'))).toBe(false);
     expect(typeof defaultOptions.queries?.retryDelay).toBe('function');
   });
 

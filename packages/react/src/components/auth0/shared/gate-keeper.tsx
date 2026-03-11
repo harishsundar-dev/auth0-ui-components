@@ -125,31 +125,30 @@ export function GateKeeper({ styling, isLoading, error, onRetry, children }: Gat
 
   useEffect(() => setMfaInterrupted(false), [error]);
 
-  const handleRetry = useCallback(
-    async (resetInterruption = false) => {
-      setIsRetrying(true);
-      try {
-        await onRetry();
-        if (resetInterruption) setMfaInterrupted(false);
-      } finally {
-        setIsRetrying(false);
-      }
-    },
-    [onRetry],
-  );
+  const handleRetry = useCallback(async () => {
+    setIsRetrying(true);
+    try {
+      await onRetry();
+    } finally {
+      setIsRetrying(false);
+    }
+  }, [onRetry]);
 
-  const statusCode = getStatusCode(error);
-  const isSystemError = !!error && !!statusCode && statusCode >= 500;
-  const isMfaStepUp = isMfaRequiredError(error);
+  const view = useMemo((): GateKeeperView => {
+    if (isLoading || isRetrying) return GateKeeperViews.LOADING;
 
-  const view: GateKeeperView =
-    isLoading || isRetrying
-      ? GateKeeperViews.LOADING
-      : isMfaStepUp && !mfaInterrupted
-        ? GateKeeperViews.MFA_CHALLENGE
-        : isSystemError || (isMfaStepUp && mfaInterrupted)
-          ? GateKeeperViews.ERROR_FALLBACK
-          : GateKeeperViews.SUCCESS;
+    const isMfaStepUp = isMfaRequiredError(error);
+    const statusCode = getStatusCode(error);
+    const isSystemError = !!error && !!statusCode && statusCode >= 500;
+
+    if (isMfaStepUp && !mfaInterrupted) return GateKeeperViews.MFA_CHALLENGE;
+
+    if (isSystemError || (isMfaStepUp && mfaInterrupted)) {
+      return GateKeeperViews.ERROR_FALLBACK;
+    }
+
+    return GateKeeperViews.SUCCESS;
+  }, [isLoading, isRetrying, error, mfaInterrupted]);
 
   return (
     <StyledScope style={styles.variables}>
@@ -162,7 +161,7 @@ export function GateKeeper({ styling, isLoading, error, onRetry, children }: Gat
         <MfaDialog onClose={() => setMfaInterrupted(true)} />
       )}
       {view === GateKeeperViews.ERROR_FALLBACK && (
-        <ErrorFallback onRetry={() => handleRetry(true)} isRetrying={isRetrying} />
+        <ErrorFallback onRetry={handleRetry} isRetrying={isRetrying} />
       )}
       {view === GateKeeperViews.SUCCESS && children}
     </StyledScope>

@@ -11,7 +11,6 @@ import { useTranslator } from '@/hooks/shared/use-translator';
 
 interface ErrorHandlerCallOptions {
   fallbackMessage?: string;
-  showToast?: boolean;
 }
 
 /**
@@ -38,16 +37,10 @@ export function useErrorHandler() {
     (error: unknown, options: ErrorHandlerCallOptions = {}): void => {
       if (!isNotifiableError(error)) return;
 
-      const { fallbackMessage, showToast: shouldShowToast = true } = options;
-
-      const errorMessage = resolveErrorMessage(error, fallbackMessage ?? t('error.generic'));
-
-      if (shouldShowToast) {
-        showToast({
-          type: 'error',
-          message: errorMessage,
-        });
-      }
+      showToast({
+        type: 'error',
+        message: resolveErrorMessage(error, options.fallbackMessage ?? t('error.generic')),
+      });
     },
     [t],
   );

@@ -159,6 +159,12 @@ describe('AuthUtils', () => {
         );
       });
 
+      it('throws when domain is provided but contextInterface is missing', () => {
+        expect(() => AuthUtils.resolveAuthConfig({ domain: 'test.auth0.com' })).toThrow(
+          'Initialization failed: Auth0 context not found. Ensure the component is rendered within Auth0ComponentProvider.',
+        );
+      });
+
       it('throws when contextInterface exists but domain cannot be resolved', () => {
         const context = createMockContext({
           getConfiguration: vi.fn().mockReturnValue(undefined),

@@ -106,10 +106,6 @@ export const mockTokens = {
   empty: '',
 };
 
-/**
- * Creates a fresh SpaAuthConfig with a controlled token. Use a factory rather than
- * a static constant to keep contextInterface mocks isolated between tests.
- */
 export function createMockSpaConfig(token = mockTokens.standard): SpaAuthConfig {
   return {
     mode: 'spa',

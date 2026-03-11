@@ -78,16 +78,13 @@ export async function createCoreClient(
         return;
       }
 
-      const token = await AuthUtils.getToken(
+      await AuthUtils.getToken(
         authConfig.contextInterface,
         authConfig.domain,
         audiencePath,
         requiredScopes,
         'off',
       );
-      if (!token) {
-        throw new Error(`Failed to retrieve token for audience: ${audiencePath}`);
-      }
     },
 
     getMyAccountApiClient: () => {

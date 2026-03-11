@@ -199,6 +199,63 @@
       "save_organization_changes_message": "The changes have been saved for ${organizationName}.",
       "organization_changes_error_message": "There was an issue processing your request. ${message}.",
       "organization_changes_error_message_generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
+    },
+    "members_list": {
+      "back": "Back",
+      "title": "Members",
+      "description": "Manage the members of your organization.",
+      "invite_member": "Invite Member",
+      "tabs": {
+        "members": "Members",
+        "invitations": "Invitations"
+      },
+      "search": {
+        "placeholder": "Search for a member by name or email"
+      },
+      "filter": {
+        "role_label": "Filter By Role: ${role}",
+        "role_all": "All",
+        "reset": "Reset"
+      },
+      "selection": {
+        "members_selected": "${count} members selected",
+        "member_selected": "1 member selected"
+      },
+      "table": {
+        "header_name": "Name",
+        "header_roles": "Roles",
+        "header_last_login": "Last Login",
+        "select_all": "Select all members",
+        "select_member": "Select ${name}"
+      },
+      "roles": {
+        "more_roles": "+${count}"
+      },
+      "last_login": {
+        "just_now": "Just now",
+        "minutes_ago": "${count} minutes ago",
+        "hours_ago": "${count} hours ago",
+        "days_ago": "${count} days ago",
+        "weeks_ago": "${count} weeks ago",
+        "months_ago": "${count} months ago",
+        "years_ago": "${count} years ago",
+        "never": "Never"
+      },
+      "pagination": {
+        "showing": "Showing ${start}-${end} of ${total}",
+        "per_page": "per page"
+      },
+      "empty": {
+        "title": "No members",
+        "description": "This organization does not have any members."
+      },
+      "errors": {
+        "load_failed": "Failed to load members",
+        "remove_failed": "Failed to remove members"
+      },
+      "actions": {
+        "remove_selected": "Remove Selected"
+      }
     }
   },
   "idp_management": {

@@ -6,6 +6,10 @@ import {
   createMockEmptyAuthenticationMethods,
 } from '../my-account/mfa/mfa.mocks';
 import { createMockIdentityProvider } from '../my-organization/domain-management/domain.mocks';
+import {
+  createMockMembersApiResponse,
+  createMockRolesApiResponse,
+} from '../my-organization/members/members.mocks';
 import { createMockOrganization } from '../my-organization/organization-management/organization-details.mocks';
 
 import { createMockAuth } from './auth.mocks';
@@ -94,6 +98,13 @@ const createMockMyOrgApiService = (): CoreClientInterface['myOrganizationApiClie
             },
           }),
         },
+      },
+      members: {
+        list: vi.fn().mockResolvedValue(createMockMembersApiResponse()),
+        remove: vi.fn().mockResolvedValue(undefined),
+      },
+      roles: {
+        list: vi.fn().mockResolvedValue(createMockRolesApiResponse()),
       },
     },
   } as unknown as CoreClientInterface['myOrganizationApiClient'];

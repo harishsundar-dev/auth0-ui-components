@@ -23,33 +23,33 @@ mkdir -p apps/docs/src/registry/ui/<component-name>/{default,radix-ui,base-ui,he
 ### 2. Create the Default Variant (`default/index.tsx`)
 
 ```tsx
-"use client";
+'use client';
 
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
+import { cn } from '@/lib/utils';
 
 const componentVariants = cva(
   // Base classes that apply to all variants
-  "inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+  'inline-flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground",
-        secondary: "bg-secondary text-secondary-foreground",
+        default: 'bg-primary text-primary-foreground',
+        secondary: 'bg-secondary text-secondary-foreground',
         // Add more variants as needed
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-8 px-3 text-sm",
-        lg: "h-12 px-6 text-lg",
+        default: 'h-10 px-4 py-2',
+        sm: 'h-8 px-3 text-sm',
+        lg: 'h-12 px-6 text-lg',
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: 'default',
+      size: 'default',
     },
-  }
+  },
 );
 
 export interface ComponentNameProps
@@ -57,12 +57,7 @@ export interface ComponentNameProps
     VariantProps<typeof componentVariants> {}
 
 function ComponentName({ className, variant, size, ...props }: ComponentNameProps) {
-  return (
-    <div
-      className={cn(componentVariants({ variant, size }), className)}
-      {...props}
-    />
-  );
+  return <div className={cn(componentVariants({ variant, size }), className)} {...props} />;
 }
 
 export { ComponentName, componentVariants };
@@ -102,7 +97,7 @@ export { ComponentName, componentVariants };
 
 ```ts
 // apps/docs/src/registry/ui/<component-name>/index.ts
-export * from "./default";
+export * from './default';
 // Uncomment as variants are implemented:
 // export * as RadixUI from "./radix-ui";
 // export * as BaseUI from "./base-ui";
@@ -161,10 +156,10 @@ export default function Example() {
 
 ## Props
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| variant | "default" \| "secondary" | "default" | Visual style variant |
-| size | "default" \| "sm" \| "lg" | "default" | Size of the component |
+| Prop    | Type                      | Default   | Description           |
+| ------- | ------------------------- | --------- | --------------------- |
+| variant | "default" \| "secondary"  | "default" | Visual style variant  |
+| size    | "default" \| "sm" \| "lg" | "default" | Size of the component |
 ```
 
 ### 7. Create Example Component
@@ -172,14 +167,10 @@ export default function Example() {
 Create `apps/docs/src/registry/examples/<component-name>-demo.tsx`:
 
 ```tsx
-import { ComponentName } from "@/registry/ui/<component-name>";
+import { ComponentName } from '@/registry/ui/<component-name>';
 
 export default function ComponentNameDemo() {
-  return (
-    <ComponentName>
-      Example content
-    </ComponentName>
-  );
+  return <ComponentName>Example content</ComponentName>;
 }
 ```
 
@@ -222,6 +213,7 @@ npx shadcn@latest add https://universal-design.vercel.app/r/ui/<component-name>/
 ```
 
 The CLI will:
+
 - Download the component to `components/ui/<component-name>.tsx`
 - Install required dependencies automatically
 - Prompt for any registry dependencies (other components this one needs)
@@ -244,47 +236,47 @@ pnpm add @radix-ui/react-slot class-variance-authority
 Ensure your `tailwind.config.ts` includes the component paths:
 
 ```ts
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
 
 export default {
   content: [
-    "./src/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",  // Include UI components
+    './src/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}', // Include UI components
   ],
   theme: {
     extend: {
       colors: {
         // Map CSS variables to Tailwind
-        background: "var(--color-background)",
-        foreground: "var(--color-foreground)",
+        background: 'var(--color-background)',
+        foreground: 'var(--color-foreground)',
         primary: {
-          DEFAULT: "var(--color-primary)",
-          foreground: "var(--color-primary-foreground)",
+          DEFAULT: 'var(--color-primary)',
+          foreground: 'var(--color-primary-foreground)',
         },
         secondary: {
-          DEFAULT: "var(--color-secondary)",
-          foreground: "var(--color-secondary-foreground)",
+          DEFAULT: 'var(--color-secondary)',
+          foreground: 'var(--color-secondary-foreground)',
         },
         destructive: {
-          DEFAULT: "var(--color-destructive)",
-          foreground: "var(--color-destructive-foreground)",
+          DEFAULT: 'var(--color-destructive)',
+          foreground: 'var(--color-destructive-foreground)',
         },
         muted: {
-          DEFAULT: "var(--color-muted)",
-          foreground: "var(--color-muted-foreground)",
+          DEFAULT: 'var(--color-muted)',
+          foreground: 'var(--color-muted-foreground)',
         },
         accent: {
-          DEFAULT: "var(--color-accent)",
-          foreground: "var(--color-accent-foreground)",
+          DEFAULT: 'var(--color-accent)',
+          foreground: 'var(--color-accent-foreground)',
         },
-        border: "var(--color-border)",
-        input: "var(--color-input)",
-        ring: "var(--color-ring)",
+        border: 'var(--color-border)',
+        input: 'var(--color-input)',
+        ring: 'var(--color-ring)',
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
       },
     },
   },
@@ -347,9 +339,9 @@ Add the required CSS variables to your global stylesheet:
 #### Basic Import and Usage
 
 ```tsx
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 export function MyComponent() {
   return (
@@ -368,7 +360,7 @@ export function MyComponent() {
 #### Using Variant Props
 
 ```tsx
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 
 export function ButtonExamples() {
   return (
@@ -435,24 +427,21 @@ Once installed, components are yours to modify. Common customizations:
 ```tsx
 // components/ui/button.tsx - after installation
 
-const buttonVariants = cva(
-  "...",
-  {
-    variants: {
-      variant: {
-        // Modify existing variants
-        default: "bg-brand text-brand-foreground hover:bg-brand/90",
-        // Add new variants
-        gradient: "bg-gradient-to-r from-indigo-500 to-purple-500 text-white",
-      },
-      size: {
-        // Add custom sizes
-        xs: "h-7 px-2 text-xs",
-        "2xl": "h-14 px-8 text-xl",
-      },
+const buttonVariants = cva('...', {
+  variants: {
+    variant: {
+      // Modify existing variants
+      default: 'bg-brand text-brand-foreground hover:bg-brand/90',
+      // Add new variants
+      gradient: 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white',
     },
-  }
-);
+    size: {
+      // Add custom sizes
+      xs: 'h-7 px-2 text-xs',
+      '2xl': 'h-14 px-8 text-xl',
+    },
+  },
+});
 ```
 
 #### Creating Wrapper Components
@@ -461,8 +450,8 @@ Extend functionality without modifying the source:
 
 ```tsx
 // components/ui/loading-button.tsx
-import { Button, ButtonProps } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Button, ButtonProps } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 interface LoadingButtonProps extends ButtonProps {
   loading?: boolean;
@@ -491,28 +480,29 @@ npx shadcn@latest diff https://universal-design.vercel.app/r/ui/button/default/r
 ```
 
 **Note**: If you've customized a component, re-running the add command will overwrite your changes. Consider:
+
 - Keeping customizations in wrapper components
 - Using git to track and merge updates manually
 - Documenting your customizations for easy re-application
 
 ### Choosing Between Variants
 
-| Variant | Best For | Trade-offs |
-|---------|----------|------------|
-| **default** | Simple projects, minimal dependencies | Limited interactivity patterns |
-| **radix-ui** | Production apps, complex interactions | Larger bundle size, more dependencies |
-| **base-ui** | Unstyled flexibility, full control | More styling work required |
-| **headless-ui** | Tailwind-first projects | Tied to Tailwind ecosystem |
+| Variant         | Best For                              | Trade-offs                            |
+| --------------- | ------------------------------------- | ------------------------------------- |
+| **default**     | Simple projects, minimal dependencies | Limited interactivity patterns        |
+| **radix-ui**    | Production apps, complex interactions | Larger bundle size, more dependencies |
+| **base-ui**     | Unstyled flexibility, full control    | More styling work required            |
+| **headless-ui** | Tailwind-first projects               | Tied to Tailwind ecosystem            |
 
 ### Troubleshooting Consumption
 
-| Issue | Solution |
-|-------|----------|
+| Issue                                         | Solution                                                    |
+| --------------------------------------------- | ----------------------------------------------------------- |
 | `Cannot find module '@/components/ui/button'` | Check tsconfig.json paths alias points to components folder |
-| Styles not applying | Ensure Tailwind config includes components path |
-| CSS variables undefined | Add the CSS variables to your global stylesheet |
-| Type errors after install | Run `pnpm add -D @types/react` if types are missing |
-| Dark mode not working | Add `dark` class toggle to your theme provider |
+| Styles not applying                           | Ensure Tailwind config includes components path             |
+| CSS variables undefined                       | Add the CSS variables to your global stylesheet             |
+| Type errors after install                     | Run `pnpm add -D @types/react` if types are missing         |
+| Dark mode not working                         | Add `dark` class toggle to your theme provider              |
 
 ---
 
@@ -641,12 +631,12 @@ export { ComponentName };
 
 ### Common Dependencies by Library
 
-| Library | Common Dependencies |
-|---------|---------------------|
-| Radix UI | `@radix-ui/react-*`, `@radix-ui/react-slot` |
-| Base UI | `@base-ui-components/react` |
-| Headless UI | `@headlessui/react` |
-| All | `class-variance-authority`, `clsx`, `tailwind-merge` |
+| Library     | Common Dependencies                                  |
+| ----------- | ---------------------------------------------------- |
+| Radix UI    | `@radix-ui/react-*`, `@radix-ui/react-slot`          |
+| Base UI     | `@base-ui-components/react`                          |
+| Headless UI | `@headlessui/react`                                  |
+| All         | `class-variance-authority`, `clsx`, `tailwind-merge` |
 
 ---
 
@@ -761,31 +751,31 @@ pnpm test <component>        # Test specific component
 
 ```tsx
 // apps/docs/src/__tests__/components/button.test.tsx
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Button } from "@/registry/ui/button";
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Button } from '@/registry/ui/button';
 
-describe("Button", () => {
-  it("renders with default variant", () => {
+describe('Button', () => {
+  it('renders with default variant', () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole("button")).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it("applies variant classes", () => {
+  it('applies variant classes', () => {
     render(<Button variant="destructive">Delete</Button>);
-    expect(screen.getByRole("button")).toHaveClass("bg-destructive");
+    expect(screen.getByRole('button')).toHaveClass('bg-destructive');
   });
 
-  it("handles click events", async () => {
+  it('handles click events', async () => {
     const onClick = vi.fn();
     render(<Button onClick={onClick}>Click</Button>);
-    await userEvent.click(screen.getByRole("button"));
+    await userEvent.click(screen.getByRole('button'));
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  it("is accessible", () => {
+  it('is accessible', () => {
     render(<Button aria-label="Submit form">Submit</Button>);
-    expect(screen.getByLabelText("Submit form")).toBeInTheDocument();
+    expect(screen.getByLabelText('Submit form')).toBeInTheDocument();
   });
 });
 ```
@@ -796,14 +786,14 @@ describe("Button", () => {
 
 ### Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| `cn is not defined` | Import from `@/lib/utils` |
-| `Module not found: @radix-ui/*` | Run `pnpm install` |
-| Styles not applying | Check Tailwind config includes registry path |
-| Dark mode not working | Ensure `.dark` class on `<html>` or `<body>` |
-| Registry not updating | Run `pnpm build:registry` |
-| TypeScript errors | Run `pnpm typecheck` to see all issues |
+| Issue                           | Solution                                     |
+| ------------------------------- | -------------------------------------------- |
+| `cn is not defined`             | Import from `@/lib/utils`                    |
+| `Module not found: @radix-ui/*` | Run `pnpm install`                           |
+| Styles not applying             | Check Tailwind config includes registry path |
+| Dark mode not working           | Ensure `.dark` class on `<html>` or `<body>` |
+| Registry not updating           | Run `pnpm build:registry`                    |
+| TypeScript errors               | Run `pnpm typecheck` to see all issues       |
 
 ### Build Errors
 

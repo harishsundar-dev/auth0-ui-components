@@ -99,8 +99,8 @@ The SDK provides a TypeScript client for Auth0's MyAccount API, enabling end-use
 
 ### 2.3 Entry Points
 
-| Entry Point | Description |
-|-------------|-------------|
+| Entry Point           | Description                     |
+| --------------------- | ------------------------------- |
 | `@auth0/myaccount-js` | Main client for browser/Node.js |
 
 ### 2.4 Runtime Support
@@ -159,34 +159,37 @@ client.connectedAccounts.list({ connection: "google-oauth2" });
 ### 3.3 Authentication Patterns
 
 **Static Token:**
+
 ```typescript
 const client = new MyAccountClient({
-    domain: "tenant.auth0.com",
-    token: "static_access_token",
+  domain: 'tenant.auth0.com',
+  token: 'static_access_token',
 });
 ```
 
 **Token Supplier (Recommended):**
+
 ```typescript
 const client = new MyAccountClient({
-    domain: "tenant.auth0.com",
-    token: async ({ scope }) => {
-        return await getAccessToken({ scope });
-    },
+  domain: 'tenant.auth0.com',
+  token: async ({ scope }) => {
+    return await getAccessToken({ scope });
+  },
 });
 ```
 
 **Custom Fetcher:**
+
 ```typescript
 const client = new MyAccountClient({
-    domain: "tenant.auth0.com",
-    fetcher: async (url, init, authParams) => {
-        const token = await getAccessToken({ scope: authParams?.scope });
-        return fetch(url, {
-            ...init,
-            headers: { ...init?.headers, Authorization: `Bearer ${token}` },
-        });
-    },
+  domain: 'tenant.auth0.com',
+  fetcher: async (url, init, authParams) => {
+    const token = await getAccessToken({ scope: authParams?.scope });
+    return fetch(url, {
+      ...init,
+      headers: { ...init?.headers, Authorization: `Bearer ${token}` },
+    });
+  },
 });
 ```
 
@@ -201,19 +204,19 @@ const client = new MyAccountClient({
 
 ### 4.2 Common Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm install` | Install dependencies |
-| `pnpm build` | Build CJS and ESM outputs |
-| `pnpm test` | Run all tests |
-| `pnpm test:unit` | Run unit tests only |
-| `pnpm test:wire` | Run wire/integration tests |
-| `pnpm lint` | Check code style |
-| `pnpm lint:fix` | Fix linting issues |
-| `pnpm format` | Format code with Prettier |
-| `pnpm format:check` | Check formatting |
-| `pnpm check:fix` | Run all checks and auto-fix |
-| `pnpm docs` | Generate TypeDoc documentation |
+| Command             | Description                    |
+| ------------------- | ------------------------------ |
+| `pnpm install`      | Install dependencies           |
+| `pnpm build`        | Build CJS and ESM outputs      |
+| `pnpm test`         | Run all tests                  |
+| `pnpm test:unit`    | Run unit tests only            |
+| `pnpm test:wire`    | Run wire/integration tests     |
+| `pnpm lint`         | Check code style               |
+| `pnpm lint:fix`     | Fix linting issues             |
+| `pnpm format`       | Format code with Prettier      |
+| `pnpm format:check` | Check formatting               |
+| `pnpm check:fix`    | Run all checks and auto-fix    |
+| `pnpm docs`         | Generate TypeDoc documentation |
 
 ### 4.3 Build Process
 
@@ -254,15 +257,15 @@ The SDK uses **Vitest** with **MSW** (Mock Service Worker) for API mocking:
 import { describe, it, expect } from 'vitest';
 
 describe('MyAccountClient', () => {
-    it('should list authentication methods', async () => {
-        const client = new MyAccountClient({
-            domain: 'test.auth0.com',
-            token: 'test_token',
-        });
-
-        const methods = await client.authenticationMethods.list();
-        expect(methods.authentication_methods).toBeDefined();
+  it('should list authentication methods', async () => {
+    const client = new MyAccountClient({
+      domain: 'test.auth0.com',
+      token: 'test_token',
     });
+
+    const methods = await client.authenticationMethods.list();
+    expect(methods.authentication_methods).toBeDefined();
+  });
 });
 ```
 
@@ -289,17 +292,17 @@ pnpm test -- --watch
 ### 6.1 Error Handling
 
 ```typescript
-import { MyAccountClient, MyAccountError } from "@auth0/myaccount-js";
+import { MyAccountClient, MyAccountError } from '@auth0/myaccount-js';
 
 try {
-    await client.authenticationMethods.create({ type: "totp" });
+  await client.authenticationMethods.create({ type: 'totp' });
 } catch (err) {
-    if (err instanceof MyAccountError) {
-        console.log(err.statusCode);  // HTTP status code
-        console.log(err.message);     // Error message
-        console.log(err.body);        // Response body
-        console.log(err.rawResponse); // Raw fetch Response
-    }
+  if (err instanceof MyAccountError) {
+    console.log(err.statusCode); // HTTP status code
+    console.log(err.message); // Error message
+    console.log(err.body); // Response body
+    console.log(err.rawResponse); // Raw fetch Response
+  }
 }
 ```
 
@@ -307,8 +310,8 @@ try {
 
 ```typescript
 let page = await client.connectedAccounts.list({
-    connection: "google-oauth2",
-    take: 10,
+  connection: 'google-oauth2',
+  take: 10,
 });
 
 // Process first page
@@ -316,8 +319,8 @@ console.log(page.data);
 
 // Iterate through pages
 while (page.hasNextPage()) {
-    page = await page.getNextPage();
-    console.log(page.data);
+  page = await page.getNextPage();
+  console.log(page.data);
 }
 ```
 
@@ -327,14 +330,14 @@ All methods accept optional request options:
 
 ```typescript
 await client.authenticationMethods.create(
-    { type: "totp" },
-    {
-        headers: { "X-Custom-Header": "value" },
-        queryParams: { customParam: "value" },
-        maxRetries: 3,
-        timeoutInSeconds: 30,
-        abortSignal: controller.signal,
-    }
+  { type: 'totp' },
+  {
+    headers: { 'X-Custom-Header': 'value' },
+    queryParams: { customParam: 'value' },
+    maxRetries: 3,
+    timeoutInSeconds: 30,
+    abortSignal: controller.signal,
+  },
 );
 ```
 
@@ -342,15 +345,16 @@ await client.authenticationMethods.create(
 
 ```typescript
 const { data, rawResponse } = await client.authenticationMethods
-    .create({ type: "totp" })
-    .withRawResponse();
+  .create({ type: 'totp' })
+  .withRawResponse();
 
-console.log(rawResponse.headers.get("X-RateLimit-Remaining"));
+console.log(rawResponse.headers.get('X-RateLimit-Remaining'));
 ```
 
 ### 6.5 Retry Behavior
 
 The SDK automatically retries on:
+
 - 408 (Timeout)
 - 429 (Rate Limited)
 - 5xx (Server Errors)
@@ -364,15 +368,17 @@ Default: 2 retries with exponential backoff.
 ### 7.1 Adding Custom Functionality
 
 1. Add file pattern to `.fernignore`:
+
    ```
    src/custom/
    ```
 
 2. Create custom module:
+
    ```typescript
    // src/custom/helpers.ts
    export function customHelper() {
-       // Your custom code
+     // Your custom code
    }
    ```
 
@@ -381,6 +387,7 @@ Default: 2 retries with exponential backoff.
 ### 7.2 Updating Documentation
 
 Safe to modify:
+
 - `README.md` - Main documentation
 - `reference.md` - API reference (may be generated)
 - `CONTRIBUTING.md` - Contribution guide
@@ -394,9 +401,9 @@ Create test files in `tests/unit/` or `tests/wire/`:
 import { describe, it, expect } from 'vitest';
 
 describe('My Feature', () => {
-    it('should work correctly', () => {
-        // Test implementation
-    });
+  it('should work correctly', () => {
+    // Test implementation
+  });
 });
 ```
 
@@ -415,37 +422,37 @@ If you find bugs in generated code:
 
 ### 8.1 Main Classes
 
-| Class | Description |
-|-------|-------------|
+| Class             | Description                |
+| ----------------- | -------------------------- |
 | `MyAccountClient` | Main client for API access |
-| `MyAccountError` | Base error class |
+| `MyAccountError`  | Base error class           |
 
 ### 8.2 Namespaces
 
-| Namespace | Description |
-|-----------|-------------|
+| Namespace   | Description                                   |
+| ----------- | --------------------------------------------- |
 | `MyAccount` | Type namespace for all request/response types |
 
 ### 8.3 Resource Endpoints
 
 ```typescript
-client.factors                  // Available MFA factors
-client.authenticationMethods    // Enrolled authentication methods (MFA)
-client.connectedAccounts        // Social/external connections
-client.sessions                 // User sessions
+client.factors; // Available MFA factors
+client.authenticationMethods; // Enrolled authentication methods (MFA)
+client.connectedAccounts; // Social/external connections
+client.sessions; // User sessions
 ```
 
 ### 8.4 MFA Authentication Methods Types
 
-| Type | Description |
-|------|-------------|
-| `totp` | Time-based One-Time Password (Authenticator apps) |
-| `phone` | SMS-based verification |
-| `email` | Email-based verification |
-| `push-notification` | Push notification (Auth0 Guardian) |
-| `webauthn-roaming` | Security keys (FIDO2) |
-| `webauthn-platform` | Platform authenticators (Touch ID, Face ID) |
-| `recovery-code` | Backup recovery codes |
+| Type                | Description                                       |
+| ------------------- | ------------------------------------------------- |
+| `totp`              | Time-based One-Time Password (Authenticator apps) |
+| `phone`             | SMS-based verification                            |
+| `email`             | Email-based verification                          |
+| `push-notification` | Push notification (Auth0 Guardian)                |
+| `webauthn-roaming`  | Security keys (FIDO2)                             |
+| `webauthn-platform` | Platform authenticators (Touch ID, Face ID)       |
+| `recovery-code`     | Backup recovery codes                             |
 
 ---
 
@@ -513,7 +520,9 @@ export function initializeMyAccountClient(
           });
         },
       }),
-      setLatestScopes: (scopes) => { latestScopes = scopes; },
+      setLatestScopes: (scopes) => {
+        latestScopes = scopes;
+      },
     };
   }
 
@@ -529,7 +538,9 @@ export function initializeMyAccountClient(
         });
       },
     }),
-    setLatestScopes: (scopes) => { latestScopes = scopes; },
+    setLatestScopes: (scopes) => {
+      latestScopes = scopes;
+    },
   };
 }
 ```
@@ -544,39 +555,51 @@ import { MFAMappers } from '@auth0/universal-components-core';
 export function useMFA(): UseMFAResult {
   const { coreClient } = useCoreClient();
 
-  const fetchFactors = useCallback(async (onlyActive = false) => {
-    const client = coreClient.getMyAccountApiClient();
+  const fetchFactors = useCallback(
+    async (onlyActive = false) => {
+      const client = coreClient.getMyAccountApiClient();
 
-    // Parallel fetch of available factors and enrolled methods
-    const [availableFactorsResponse, enrolledFactorsResponse] = await Promise.all([
-      client.factors.list(),
-      client.authenticationMethods.list(),
-    ]);
+      // Parallel fetch of available factors and enrolled methods
+      const [availableFactorsResponse, enrolledFactorsResponse] = await Promise.all([
+        client.factors.list(),
+        client.authenticationMethods.list(),
+      ]);
 
-    // Transform SDK response to UI-friendly format
-    return MFAMappers.fromAPI(availableFactorsResponse, enrolledFactorsResponse, onlyActive);
-  }, [coreClient]);
+      // Transform SDK response to UI-friendly format
+      return MFAMappers.fromAPI(availableFactorsResponse, enrolledFactorsResponse, onlyActive);
+    },
+    [coreClient],
+  );
 
-  const enrollMfa = useCallback((factorName: MFAType, options: EnrollOptions = {}) => {
-    const client = coreClient.getMyAccountApiClient();
-    const params = MFAMappers.buildEnrollParams(factorName, options);
-    return client.authenticationMethods.create(params);
-  }, [coreClient]);
+  const enrollMfa = useCallback(
+    (factorName: MFAType, options: EnrollOptions = {}) => {
+      const client = coreClient.getMyAccountApiClient();
+      const params = MFAMappers.buildEnrollParams(factorName, options);
+      return client.authenticationMethods.create(params);
+    },
+    [coreClient],
+  );
 
-  const deleteMfa = useCallback((authenticatorId: string) => {
-    return coreClient.getMyAccountApiClient().authenticationMethods.delete(authenticatorId);
-  }, [coreClient]);
+  const deleteMfa = useCallback(
+    (authenticatorId: string) => {
+      return coreClient.getMyAccountApiClient().authenticationMethods.delete(authenticatorId);
+    },
+    [coreClient],
+  );
 
-  const confirmEnrollment = useCallback((
-    factorType: MFAType,
-    authSession: string,
-    authenticationMethodId: string,
-    options: ConfirmEnrollmentOptions,
-  ) => {
-    const client = coreClient.getMyAccountApiClient();
-    const params = MFAMappers.buildConfirmEnrollmentParams(factorType, authSession, options);
-    return client.authenticationMethods.verify(authenticationMethodId, params);
-  }, [coreClient]);
+  const confirmEnrollment = useCallback(
+    (
+      factorType: MFAType,
+      authSession: string,
+      authenticationMethodId: string,
+      options: ConfirmEnrollmentOptions,
+    ) => {
+      const client = coreClient.getMyAccountApiClient();
+      const params = MFAMappers.buildConfirmEnrollmentParams(factorType, authSession, options);
+      return client.authenticationMethods.verify(authenticationMethodId, params);
+    },
+    [coreClient],
+  );
 
   return { fetchFactors, enrollMfa, deleteMfa, confirmEnrollment };
 }
@@ -631,23 +654,23 @@ export const UserMFAMgmt = withMyAccountService(
 
 ### 9.5 Key Files in auth0-ui-components
 
-| File | Purpose |
-|------|---------|
-| `packages/core/src/services/my-account/my-account-api-service.ts` | SDK initialization |
-| `packages/core/src/services/my-account/mfa/mfa-types.ts` | MFA type definitions using SDK types |
-| `packages/core/src/services/my-account/mfa/mfa-mappers.ts` | SDK → UI data transformation |
-| `packages/core/src/auth/core-client.ts` | Client factory with token management |
-| `packages/react/src/hooks/my-account/use-mfa.ts` | React hook wrapping SDK |
-| `packages/react/src/components/auth0/my-account/user-mfa-management.tsx` | Main MFA component |
+| File                                                                     | Purpose                              |
+| ------------------------------------------------------------------------ | ------------------------------------ |
+| `packages/core/src/services/my-account/my-account-api-service.ts`        | SDK initialization                   |
+| `packages/core/src/services/my-account/mfa/mfa-types.ts`                 | MFA type definitions using SDK types |
+| `packages/core/src/services/my-account/mfa/mfa-mappers.ts`               | SDK → UI data transformation         |
+| `packages/core/src/auth/core-client.ts`                                  | Client factory with token management |
+| `packages/react/src/hooks/my-account/use-mfa.ts`                         | React hook wrapping SDK              |
+| `packages/react/src/components/auth0/my-account/user-mfa-management.tsx` | Main MFA component                   |
 
 ### 9.6 SDK API Endpoints Used
 
-| Hook/Function | SDK Methods Called |
-|---------------|-------------------|
-| `fetchFactors` | `factors.list()`, `authenticationMethods.list()` |
-| `enrollMfa` | `authenticationMethods.create()` |
-| `confirmEnrollment` | `authenticationMethods.verify()` |
-| `deleteMfa` | `authenticationMethods.delete()` |
+| Hook/Function       | SDK Methods Called                               |
+| ------------------- | ------------------------------------------------ |
+| `fetchFactors`      | `factors.list()`, `authenticationMethods.list()` |
+| `enrollMfa`         | `authenticationMethods.create()`                 |
+| `confirmEnrollment` | `authenticationMethods.verify()`                 |
+| `deleteMfa`         | `authenticationMethods.delete()`                 |
 
 ### 9.7 Type Re-exports from SDK
 
@@ -658,11 +681,16 @@ The core package re-exports SDK types for use in components:
 import type { MyAccount } from '@auth0/myaccount-js';
 
 export type ListFactorsResponseContent = MyAccount.ListFactorsResponseContent;
-export type ListAuthenticationMethodsResponseContent = MyAccount.ListAuthenticationMethodsResponseContent;
-export type CreateAuthenticationMethodRequestContent = MyAccount.CreateAuthenticationMethodRequestContent;
-export type CreateAuthenticationMethodResponseContent = MyAccount.CreateAuthenticationMethodResponseContent;
-export type VerifyAuthenticationMethodRequestContent = MyAccount.VerifyAuthenticationMethodRequestContent;
-export type VerifyAuthenticationMethodResponseContent = MyAccount.VerifyAuthenticationMethodResponseContent;
+export type ListAuthenticationMethodsResponseContent =
+  MyAccount.ListAuthenticationMethodsResponseContent;
+export type CreateAuthenticationMethodRequestContent =
+  MyAccount.CreateAuthenticationMethodRequestContent;
+export type CreateAuthenticationMethodResponseContent =
+  MyAccount.CreateAuthenticationMethodResponseContent;
+export type VerifyAuthenticationMethodRequestContent =
+  MyAccount.VerifyAuthenticationMethodRequestContent;
+export type VerifyAuthenticationMethodResponseContent =
+  MyAccount.VerifyAuthenticationMethodResponseContent;
 ```
 
 ### 9.8 Token & Scope Management
@@ -672,8 +700,8 @@ The integration uses dynamic scope injection:
 ```typescript
 // Before rendering a component, ensureScopes() is called
 await coreClient.ensureScopes(
-  'read:authenticators delete:authenticators',  // Required scopes
-  'me'                                           // Audience path
+  'read:authenticators delete:authenticators', // Required scopes
+  'me', // Audience path
 );
 
 // This updates latestScopes in the SDK client
@@ -685,13 +713,16 @@ await coreClient.ensureScopes(
 ```typescript
 import { MyAccountError } from '@auth0/myaccount-js';
 
-const handleEnrollError = useCallback((error: Error, stage: 'enroll' | 'confirm') => {
-  if (error instanceof MyAccountError) {
-    // Handle API errors (4xx, 5xx)
-    toast.error(`${stage === 'enroll' ? 'Enrollment' : 'Confirmation'} failed: ${error.message}`);
-  }
-  onErrorAction?.(error, stage);
-}, [onErrorAction]);
+const handleEnrollError = useCallback(
+  (error: Error, stage: 'enroll' | 'confirm') => {
+    if (error instanceof MyAccountError) {
+      // Handle API errors (4xx, 5xx)
+      toast.error(`${stage === 'enroll' ? 'Enrollment' : 'Confirmation'} failed: ${error.message}`);
+    }
+    onErrorAction?.(error, stage);
+  },
+  [onErrorAction],
+);
 ```
 
 ### 9.10 MFA Enrollment Flow

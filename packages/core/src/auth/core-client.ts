@@ -38,7 +38,6 @@ export async function createCoreClient(
       isProxyMode() {
         return false;
       },
-      ensureScopes: async () => {},
       myAccountApiClient: undefined,
       myOrganizationApiClient: undefined,
       getMyAccountApiClient: function () {
@@ -58,11 +57,8 @@ export async function createCoreClient(
 
   const authConfig = AuthUtils.resolveAuthConfig(authDetails);
 
-  const { client: myOrganizationApiClient, setLatestScopes: setOrgScopes } =
-    initializeMyOrganizationClient(authConfig);
-
-  const { client: myAccountApiClient, setLatestScopes: setAccountScopes } =
-    initializeMyAccountClient(authConfig);
+  const myOrganizationApiClient = initializeMyOrganizationClient(authConfig);
+  const myAccountApiClient = initializeMyAccountClient(authConfig);
 
   const mfaApiClient = initializeMfaStepUpClient(authConfig);
 
@@ -75,26 +71,6 @@ export async function createCoreClient(
     isProxyMode: () => authConfig.mode === 'proxy',
 
     getDomain: () => (authConfig.mode === 'spa' ? authConfig.domain : undefined),
-
-    ensureScopes: async (requiredScopes: string, audiencePath: string) => {
-      if (audiencePath === 'my-org') setOrgScopes(requiredScopes);
-      if (audiencePath === 'me') setAccountScopes(requiredScopes);
-
-      if (authConfig.mode === 'proxy') {
-        return;
-      }
-
-      const token = await AuthUtils.getToken(
-        authConfig.contextInterface,
-        authConfig.domain,
-        audiencePath,
-        requiredScopes,
-        'off',
-      );
-      if (!token) {
-        throw new Error(`Failed to retrieve token for audience: ${audiencePath}`);
-      }
-    },
 
     getMyAccountApiClient: () => {
       if (!myAccountApiClient)

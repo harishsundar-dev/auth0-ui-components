@@ -4,12 +4,12 @@
  * @internal
  */
 
-import type { MyAccountClient } from '@auth0/myaccount-js';
-import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import type { ArbitraryObject } from '@core/types';
 
 import type { I18nServiceInterface } from '../i18n';
 import type { MfaApiClient } from '../services/mfa-step-up/mfa-step-up-api-types';
+import type { MyAccountApiClient } from '../services/my-account/my-account-api-service';
+import type { MyOrganizationApiClient } from '../services/my-organization/my-organization-api-service';
 
 /**
  * Response structure from the token endpoint.
@@ -183,7 +183,6 @@ export interface BaseCoreClientInterface {
   auth: AuthDetails;
   i18nService: I18nServiceInterface;
   isProxyMode: () => boolean;
-  ensureScopes: (requiredScopes: string, audiencePath: string) => Promise<void>;
   getDomain: () => string | undefined;
 }
 
@@ -192,9 +191,9 @@ export interface BaseCoreClientInterface {
  * @internal
  */
 export interface CoreClientInterface extends BaseCoreClientInterface {
-  myAccountApiClient: MyAccountClient | undefined;
-  myOrganizationApiClient: MyOrganizationClient | undefined;
-  getMyAccountApiClient: () => MyAccountClient;
-  getMyOrganizationApiClient: () => MyOrganizationClient;
+  myAccountApiClient: MyAccountApiClient | undefined;
+  myOrganizationApiClient: MyOrganizationApiClient | undefined;
+  getMyAccountApiClient: () => MyAccountApiClient;
+  getMyOrganizationApiClient: () => MyOrganizationApiClient;
   getMFAStepUpApiClient: () => MfaApiClient;
 }

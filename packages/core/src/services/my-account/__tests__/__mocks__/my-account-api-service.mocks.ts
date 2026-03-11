@@ -1,16 +1,18 @@
-import type { MyAccountClient } from '@auth0/myaccount-js';
 import { vi } from 'vitest';
 
-import type { initializeMyAccountClient } from '../../my-account-api-service';
+import type { MyAccountApiClient } from '../../my-account-api-service';
 
 /**
  * Creates a mock MyAccount API client
  */
-export const createMockMyAccountClient = (): ReturnType<typeof initializeMyAccountClient> => {
-  return {
-    client: {} as MyAccountClient,
-    setLatestScopes: vi.fn(),
+export const createMockMyAccountClient = (): MyAccountApiClient => {
+  const mock = {
+    withScopes: vi.fn(),
+    factors: {} as MyAccountApiClient['factors'],
+    authenticationMethods: {} as MyAccountApiClient['authenticationMethods'],
   };
+  mock.withScopes.mockReturnValue(mock);
+  return mock as unknown as MyAccountApiClient;
 };
 
 // Re-export shared API service mocks

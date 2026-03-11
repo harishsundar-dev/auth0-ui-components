@@ -247,7 +247,6 @@ export const createMockCoreClient = (authDetails?: Partial<AuthDetails>): CoreCl
       () => mockMfaApiClient,
     ) as CoreClientInterface['getMFAStepUpApiClient'],
     isProxyMode: vi.fn().mockReturnValue(false),
-    ensureScopes: vi.fn().mockResolvedValue(undefined),
     getDomain: vi.fn(
       () => mockAuth.domain ?? mockAuth.contextInterface?.getConfiguration()?.domain,
     ),

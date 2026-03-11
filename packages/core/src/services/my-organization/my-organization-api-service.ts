@@ -5,71 +5,45 @@
  */
 
 import { MyOrganizationClient } from '@auth0/myorganization-js';
+import { buildBaseHeaders, buildServiceConfig } from '@core/api/api-utils';
 import type { ClientAuthConfig } from '@core/auth/auth-types';
-import { AuthUtils } from '@core/auth/auth-utils';
+
+export type MyOrganizationApiClient = {
+  withScopes(scopes: string): MyOrganizationApiClient;
+  readonly organization: MyOrganizationClient['organization'];
+  readonly organizationDetails: MyOrganizationClient['organizationDetails'];
+};
 
 /**
  * Initializes the My Organization API client for organization, SSO, and domain operations.
  * @internal
  *
  * @param config - Auth configuration — either proxy or domain mode
- * @returns Object containing the client and scope setter function
+ * @returns My Organization API client with withScopes chaining
  */
-export function initializeMyOrganizationClient(config: ClientAuthConfig): {
-  client: MyOrganizationClient;
-  setLatestScopes: (scopes: string) => void;
-} {
-  let latestScopes = '';
+export function initializeMyOrganizationClient(config: ClientAuthConfig): MyOrganizationApiClient {
+  const { sdkConfig, authHeaders } = buildServiceConfig(config, 'my-org');
 
-  const setLatestScopes = (scopes: string) => {
-    latestScopes = scopes;
-  };
+  const createInstance = (scopes = ''): MyOrganizationApiClient => {
+    const rawClient = new MyOrganizationClient({
+      ...sdkConfig,
+      fetcher: async (url: string, init?: RequestInit) => {
+        const headers = buildBaseHeaders(init);
+        await authHeaders(headers, scopes);
+        return fetch(url, { ...init, headers });
+      },
+    });
 
-  if (config.mode === 'proxy') {
-    const fetcher = async (url: string, init?: RequestInit) => {
-      return fetch(url, {
-        ...init,
-        headers: {
-          ...init?.headers,
-          ...(init?.body && { 'Content-Type': 'application/json' }),
-          ...(latestScopes && { 'auth0-scope': latestScopes }),
-        },
-      });
-    };
     return {
-      client: new MyOrganizationClient({
-        domain: '',
-        baseUrl: `${config.proxyUrl}/my-org`,
-        telemetry: false,
-        fetcher,
-      }),
-      setLatestScopes,
+      withScopes: (newScopes: string): MyOrganizationApiClient => createInstance(newScopes),
+      get organization() {
+        return rawClient.organization;
+      },
+      get organizationDetails() {
+        return rawClient.organizationDetails;
+      },
     };
-  }
-
-  const fetcher = async (url: string, init?: RequestInit) => {
-    const token = await AuthUtils.getToken(
-      config.contextInterface,
-      config.domain,
-      'my-org',
-      latestScopes,
-    );
-
-    const headers = new Headers(init?.headers);
-    if (init?.body && !headers.has('Content-Type')) {
-      headers.set('Content-Type', 'application/json');
-    }
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
-
-    return fetch(url, { ...init, headers });
   };
-  return {
-    client: new MyOrganizationClient({
-      domain: config.domain,
-      fetcher,
-    }),
-    setLatestScopes,
-  };
+
+  return createInstance();
 }

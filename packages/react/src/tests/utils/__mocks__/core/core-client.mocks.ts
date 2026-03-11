@@ -11,7 +11,7 @@ import { createMockIdentityProvider } from '@/tests/utils/__mocks__/my-organizat
 import { createMockOrganization } from '@/tests/utils/__mocks__/my-organization/organization-management/organization-details.mocks';
 
 const createMockMyAccountApiService = (): CoreClientInterface['myAccountApiClient'] => {
-  return {
+  const service = {
     factors: {
       list: vi.fn().mockResolvedValue(createMockAvailableFactors()),
     },
@@ -25,13 +25,17 @@ const createMockMyAccountApiService = (): CoreClientInterface['myAccountApiClien
       fetchFactors: vi.fn().mockResolvedValue([]),
     },
   } as unknown as CoreClientInterface['myAccountApiClient'];
+  // Use factory fn (not mockReturnValue) so it survives vi.clearAllMocks()
+  (service as unknown as { withScopes: unknown }).withScopes = vi.fn(() => service);
+  return service;
 };
 
 const createMockMyOrgApiService = (): CoreClientInterface['myOrganizationApiClient'] => {
   const mockOrganization = createMockOrganization();
   const mockProvider = createMockIdentityProvider();
 
-  return {
+  const service = {
+    withScopes: vi.fn(),
     organizationDetails: {
       get: vi.fn().mockResolvedValue(mockOrganization),
       update: vi.fn().mockResolvedValue(mockOrganization),
@@ -96,6 +100,9 @@ const createMockMyOrgApiService = (): CoreClientInterface['myOrganizationApiClie
       },
     },
   } as unknown as CoreClientInterface['myOrganizationApiClient'];
+  // Use factory fn (not mockReturnValue) so it survives vi.clearAllMocks()
+  (service as unknown as { withScopes: unknown }).withScopes = vi.fn(() => service);
+  return service;
 };
 
 export const createMockCoreClient = (authDetails?: Partial<AuthDetails>): CoreClientInterface => {
@@ -121,9 +128,6 @@ export const createMockCoreClient = (authDetails?: Partial<AuthDetails>): CoreCl
       verify: vi.fn().mockResolvedValue({}),
     }) as CoreClientInterface['getMFAStepUpApiClient'],
     isProxyMode: () => false,
-    ensureScopes() {
-      return Promise.resolve();
-    },
     getDomain: () => mockAuth.domain ?? mockAuth.contextInterface?.getConfiguration()?.domain,
   };
 };

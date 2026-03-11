@@ -199,6 +199,63 @@
       "save_organization_changes_message": "${organizationName}の変更が保存されました。",
       "organization_changes_error_message": "リクエストの処理中に問題が発生しました。${message}.",
       "organization_changes_error_message_generic": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。"
+    },
+    "members_list": {
+      "back": "戻る",
+      "title": "メンバー",
+      "description": "組織のメンバーを管理します。",
+      "invite_member": "メンバーを招待",
+      "tabs": {
+        "members": "メンバー",
+        "invitations": "招待"
+      },
+      "search": {
+        "placeholder": "名前またはメールでメンバーを検索"
+      },
+      "filter": {
+        "role_label": "ロールでフィルター: ${role}",
+        "role_all": "すべて",
+        "reset": "リセット"
+      },
+      "selection": {
+        "members_selected": "${count}人のメンバーを選択中",
+        "member_selected": "1人のメンバーを選択中"
+      },
+      "table": {
+        "header_name": "名前",
+        "header_roles": "ロール",
+        "header_last_login": "最終ログイン",
+        "select_all": "すべてのメンバーを選択",
+        "select_member": "${name}を選択"
+      },
+      "roles": {
+        "more_roles": "+${count}"
+      },
+      "last_login": {
+        "just_now": "たった今",
+        "minutes_ago": "${count}分前",
+        "hours_ago": "${count}時間前",
+        "days_ago": "${count}日前",
+        "weeks_ago": "${count}週間前",
+        "months_ago": "${count}ヶ月前",
+        "years_ago": "${count}年前",
+        "never": "なし"
+      },
+      "pagination": {
+        "showing": "${start}-${end} / ${total}件",
+        "per_page": "件/ページ"
+      },
+      "empty": {
+        "title": "メンバーがいません",
+        "description": "この組織にはメンバーがいません。"
+      },
+      "errors": {
+        "load_failed": "メンバーの読み込みに失敗しました",
+        "remove_failed": "メンバーの削除に失敗しました"
+      },
+      "actions": {
+        "remove_selected": "選択を削除"
+      }
     }
   },
   "idp_management": {

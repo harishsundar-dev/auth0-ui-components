@@ -18,11 +18,10 @@ export const AuthUtils = {
    * Builds an audience URL from a domain and audience path.
    * @param domain - The Auth0 tenant domain.
    * @param audiencePath - The API audience path segment.
-   * @returns The constructed audience URL string, or empty string if the domain is invalid.
+   * @returns The constructed audience URL string.
    */
   buildAudience(domain: string, audiencePath: string): string {
-    const domainURL = AuthUtils.toURL(domain);
-    return domainURL ? `${domainURL}${audiencePath}/` : '';
+    return `${AuthUtils.toURL(domain)}${audiencePath}/`;
   },
 
   /**
@@ -66,13 +65,14 @@ export const AuthUtils = {
     }
 
     const { contextInterface } = auth;
-    const domain = auth.domain ?? contextInterface?.getConfiguration()?.domain;
 
     if (!contextInterface) {
       throw new Error(
         'Initialization failed: Auth0 context not found. Ensure the component is rendered within Auth0ComponentProvider.',
       );
     }
+
+    const domain = auth.domain ?? contextInterface.getConfiguration()?.domain;
 
     if (!domain) {
       throw new Error(

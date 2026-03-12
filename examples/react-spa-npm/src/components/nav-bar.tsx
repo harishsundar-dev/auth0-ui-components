@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { ProfileDropdown } from './profile-dropdown';
-import { useIsDarkMode } from '../hooks/use-is-dark-mode';
+import { useDarkMode } from '../hooks/use-dark-mode';
 import { Button } from './ui/button';
 
 const LOGO_ON_LIGHT =
@@ -15,7 +15,7 @@ const LOGO_ON_DARK =
 export const Navbar: React.FC = () => {
   const { isAuthenticated, loginWithRedirect } = useAuth0();
   const { t } = useTranslation();
-  const isDarkMode = useIsDarkMode();
+  const isDarkMode = useDarkMode();
 
   return (
     <>

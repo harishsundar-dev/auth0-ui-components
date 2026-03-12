@@ -1,4 +1,4 @@
-// import { DomainTable } from '@auth0/universal-components-react/spa';
+import { DomainTable } from '@auth0/universal-components-react/spa';
 
 const DomainManagementPage = () => {
   return (
@@ -13,7 +13,7 @@ const DomainManagementPage = () => {
         </a>{' '}
         on how to add Domain Management component.
       </p>
-      {/* <DomainTable /> */}
+      <DomainTable />
     </div>
   );
 };

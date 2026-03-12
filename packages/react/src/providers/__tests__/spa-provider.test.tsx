@@ -2,14 +2,14 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-import { useCoreClientInitialization } from '../../hooks/use-core-client-initialization';
-import { Auth0ComponentProvider } from '../spa-provider';
+import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
+import { Auth0ComponentProvider } from '@/providers/spa-provider';
 
 vi.mock('@auth0/auth0-react', () => ({
   useAuth0: vi.fn(),
 }));
 
-vi.mock('../../hooks/use-core-client-initialization', () => ({
+vi.mock('@/hooks/shared/use-core-client-initialization', () => ({
   useCoreClientInitialization: vi.fn(),
 }));
 
@@ -173,5 +173,17 @@ describe('Auth0ComponentProvider (SPA)', () => {
 
     expect(mockUseCoreClientInitialization).toHaveBeenCalled();
     expect(screen.getByTestId('child-content')).toBeInTheDocument();
+  });
+
+  it('should render fallback when coreClient is not initialized', () => {
+    mockUseCoreClientInitialization.mockReturnValueOnce(null as never);
+
+    render(
+      <Auth0ComponentProvider authDetails={{}}>
+        <div data-testid="child-content">Test Content</div>
+      </Auth0ComponentProvider>,
+    );
+
+    expect(screen.queryByTestId('child-content')).not.toBeInTheDocument();
   });
 });

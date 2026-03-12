@@ -1,3 +1,8 @@
+/**
+ * Organization details types.
+ * @module organization-details-types
+ */
+
 import type {
   SharedComponentProps,
   OrganizationPrivate,
@@ -7,9 +12,7 @@ import type {
 } from '@auth0/universal-components-core';
 import type { UseFormReturn } from 'react-hook-form';
 
-import type { FormActionsProps } from '../../../components/ui/form-actions';
-
-/* ============ Components ============ */
+import type { FormActionsProps } from '@/components/auth0/shared/form-actions';
 
 /**
  * Styling that can be used to override default styles.
@@ -26,6 +29,9 @@ export interface OrganizationDetailsClasses {
  */
 export type OrganizationDetailsSchemas = CoreOrganizationDetailsSchemas;
 
+/**
+ * Form action configuration for organization details.
+ */
 export interface OrganizationDetailsFormActions extends Omit<FormActionsProps, 'nextAction'> {
   nextAction?: {
     disabled: boolean;
@@ -43,8 +49,6 @@ export interface OrganizationDetailsProps
   isLoading?: boolean;
   formActions: OrganizationDetailsFormActions;
 }
-
-/* ============ Subcomponents ============ */
 
 export interface BrandingDetailsProps
   extends SharedComponentProps<OrganizationDetailsMessages, OrganizationDetailsClasses> {

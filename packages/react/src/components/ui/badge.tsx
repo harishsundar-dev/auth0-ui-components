@@ -1,8 +1,14 @@
+/**
+ * Badge component with variants.
+ * @module badge
+ * @internal
+ */
+
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { cn } from '../../lib/theme-utils';
+import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
   'theme-default:shadow-xs box-border inline-flex items-center overflow-clip rounded-2xl border border-transparent font-medium',

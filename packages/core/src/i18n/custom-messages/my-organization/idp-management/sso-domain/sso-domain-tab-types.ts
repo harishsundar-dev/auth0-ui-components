@@ -1,3 +1,8 @@
+/**
+ * Custom message type definitions for SSO domain tab component.
+ * @module sso-domain-tab-types
+ * @internal
+ */
 export interface DomainTabCreateMessages {
   modal: {
     title?: string;
@@ -64,6 +69,10 @@ export interface SsoDomainTabMessages {
       name?: string;
       status?: string;
       verify?: string;
+    };
+    actions?: {
+      enable_domain_tooltip?: string;
+      disable_domain_tooltip?: string;
     };
     domain_statuses?: {
       pending?: string;

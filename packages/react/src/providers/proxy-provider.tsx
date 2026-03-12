@@ -1,33 +1,25 @@
+/**
+ * RWA proxy provider for server-side auth.
+ * @module proxy-provider
+ */
+
 'use client';
 
 import * as React from 'react';
 
-import { Toaster } from '../components/ui/sonner';
-import { Spinner } from '../components/ui/spinner';
-import { CoreClientContext } from '../hooks/use-core-client';
-import { useCoreClientInitialization } from '../hooks/use-core-client-initialization';
-import { useToastProvider } from '../hooks/use-toast-provider';
-import type { Auth0ComponentProviderProps } from '../types/auth-types';
-
-import { QueryProvider } from './query-provider';
-import { ScopeManagerProvider } from './scope-manager-provider';
-import { ThemeProvider } from './theme-provider';
+import { Toaster } from '@/components/auth0/shared/sonner';
+import { Spinner } from '@/components/ui/spinner';
+import { CoreClientContext } from '@/hooks/shared/use-core-client';
+import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
+import { useToastProvider } from '@/hooks/shared/use-toast-provider';
+import { QueryProvider } from '@/providers/query-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
+import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
 /**
- * Auth0 Proxy Provider for Next.js and server-side authentication
- *
- * Use this when you have a backend proxy that handles Auth0 authentication.
- *
- * @example
- * ```tsx
- * <Auth0ProxyProvider
- *   authDetails={{ authProxyUrl: '/api/auth' }}
- *   themeSettings={{ mode: 'dark', theme: 'rounded' }}
- *   toastSettings={{ provider: 'custom', customMethods: {...} }}
- * >
- *   <YourApp />
- * </Auth0ProxyProvider>
- * ```
+ * Auth0 provider for RWAs using backend proxy auth.
+ * @param props - Provider configuration including i18n, authDetails, themeSettings, toastSettings, cacheConfig, loader, and children.
+ * @returns Provider component tree
  */
 export const Auth0ComponentProvider = ({
   i18n,
@@ -68,6 +60,12 @@ export const Auth0ComponentProvider = ({
     [coreClient],
   );
 
+  const fallback = loader || (
+    <div className="flex items-center justify-center min-h-[200px]">
+      <Spinner />
+    </div>
+  );
+
   return (
     <ThemeProvider
       themeSettings={{
@@ -83,21 +81,13 @@ export const Auth0ComponentProvider = ({
           closeButton={mergedToastSettings.settings?.closeButton ?? true}
         />
       )}
-      <React.Suspense
-        fallback={
-          loader || (
-            <div className="flex items-center justify-center min-h-[200px]">
-              <Spinner />
-            </div>
-          )
-        }
-      >
+      {coreClient ? (
         <CoreClientContext.Provider value={coreClientValue}>
-          <QueryProvider cacheConfig={cacheConfig}>
-            <ScopeManagerProvider>{children}</ScopeManagerProvider>
-          </QueryProvider>
+          <QueryProvider cacheConfig={cacheConfig}>{children}</QueryProvider>
         </CoreClientContext.Provider>
-      </React.Suspense>
+      ) : (
+        fallback
+      )}
     </ThemeProvider>
   );
 };

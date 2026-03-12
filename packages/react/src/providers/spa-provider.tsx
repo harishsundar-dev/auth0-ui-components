@@ -1,20 +1,28 @@
+/**
+ * SPA provider using @auth0/auth0-react.
+ * @module spa-provider
+ */
+
 'use client';
 
 import { useAuth0 } from '@auth0/auth0-react';
 import type { BasicAuth0ContextInterface } from '@auth0/universal-components-core';
 import * as React from 'react';
 
-import { Toaster } from '../components/ui/sonner';
-import { Spinner } from '../components/ui/spinner';
-import { CoreClientContext } from '../hooks/use-core-client';
-import { useCoreClientInitialization } from '../hooks/use-core-client-initialization';
-import { useToastProvider } from '../hooks/use-toast-provider';
-import type { Auth0ComponentProviderProps } from '../types/auth-types';
+import { Toaster } from '@/components/auth0/shared/sonner';
+import { Spinner } from '@/components/ui/spinner';
+import { CoreClientContext } from '@/hooks/shared/use-core-client';
+import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
+import { useToastProvider } from '@/hooks/shared/use-toast-provider';
+import { QueryProvider } from '@/providers/query-provider';
+import { ThemeProvider } from '@/providers/theme-provider';
+import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
-import { QueryProvider } from './query-provider';
-import { ScopeManagerProvider } from './scope-manager-provider';
-import { ThemeProvider } from './theme-provider';
-
+/**
+ * Auth0 provider for SPAs. Wraps components with required contexts.
+ * @param props - Provider configuration including i18n, authDetails, themeSettings, toastSettings, cacheConfig, loader, and children.
+ * @returns Provider component tree
+ */
 export const Auth0ComponentProvider = ({
   i18n,
   authDetails,
@@ -70,6 +78,12 @@ export const Auth0ComponentProvider = ({
     [coreClient],
   );
 
+  const fallback = loader || (
+    <div className="flex items-center justify-center min-h-[200px]">
+      <Spinner />
+    </div>
+  );
+
   return (
     <ThemeProvider
       themeSettings={{
@@ -85,21 +99,13 @@ export const Auth0ComponentProvider = ({
           closeButton={mergedToastSettings.settings?.closeButton ?? true}
         />
       )}
-      <React.Suspense
-        fallback={
-          loader || (
-            <div className="flex items-center justify-center min-h-[200px]">
-              <Spinner />
-            </div>
-          )
-        }
-      >
+      {coreClient ? (
         <CoreClientContext.Provider value={coreClientValue}>
-          <QueryProvider cacheConfig={cacheConfig}>
-            <ScopeManagerProvider>{children}</ScopeManagerProvider>
-          </QueryProvider>
+          <QueryProvider cacheConfig={cacheConfig}>{children}</QueryProvider>
         </CoreClientContext.Provider>
-      </React.Suspense>
+      ) : (
+        fallback
+      )}
     </ThemeProvider>
   );
 };

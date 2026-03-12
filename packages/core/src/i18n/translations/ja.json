@@ -810,7 +810,6 @@
       "modal": {
         "title": "${organizationName}から${providerName}を削除",
         "description": "この操作により、この組織のすべてのユーザーの<bold>${providerName}</bold>へのアクセスが取り消されます。ユーザーは削除されませんが、このプロバイダーを使用してサインインできなくなります",
-
         "content": {
           "description": "確認のためプロバイダー名を入力してください。",
           "field": {
@@ -996,6 +995,104 @@
         "enter_verify_code": "${verifier}に送信された6桁のコードを入力してください",
         "enter_opt_code": "認証アプリのコードを入力してください",
         "install_guardian_description": "続行するには、お使いのモバイルデバイスからアプリストア経由でAuth0 Guardianアプリをインストールしてください。"
+      }
+    }
+  },
+  "members_management": {
+    "organization_members_manager": {
+      "header": {
+        "title": "メンバー",
+        "invite_button_text": "メンバーを招待"
+      },
+      "tabs": {
+        "members": "メンバー",
+        "invitations": "招待"
+      },
+      "members_tab": {
+        "search_placeholder": "メンバーを検索...",
+        "role_filter_placeholder": "すべてのロール",
+        "table": {
+          "columns": {
+            "name": "名前",
+            "email": "メール",
+            "roles": "ロール",
+            "last_login": "最終ログイン",
+            "actions": "アクション"
+          },
+          "empty_message": "メンバーが見つかりません",
+          "actions": {
+            "update_roles": "ロールを更新",
+            "remove": "メンバーを削除"
+          }
+        }
+      },
+      "invitations_tab": {
+        "table": {
+          "columns": {
+            "email": "メール",
+            "roles": "ロール",
+            "invited_by": "招待者",
+            "expires_at": "有効期限",
+            "status": "ステータス",
+            "actions": "アクション"
+          },
+          "empty_message": "保留中の招待はありません",
+          "actions": {
+            "delete": "招待を取り消す"
+          }
+        }
+      },
+      "invite_member_dialog": {
+        "title": "メンバーを招待",
+        "description": "組織に新しいメンバーを招待します。",
+        "tabs": {
+          "single": "個別招待",
+          "bulk": "一括招待"
+        },
+        "single_invite": {
+          "email_label": "メールアドレス",
+          "email_placeholder": "user@example.com",
+          "roles_label": "ロール",
+          "submit_button": "招待を送信"
+        },
+        "bulk_invite": {
+          "emails_label": "メールアドレス",
+          "emails_placeholder": "カンマまたは改行でメールアドレスを入力",
+          "roles_label": "ロール",
+          "submit_button": "招待を送信"
+        },
+        "cancel_button": "キャンセル"
+      },
+      "update_roles_dialog": {
+        "title": "ロールを更新",
+        "description": "${memberName}のロールを更新します。",
+        "roles_label": "ロール",
+        "submit_button": "ロールを更新",
+        "cancel_button": "キャンセル"
+      },
+      "remove_member_dialog": {
+        "title": "メンバーを削除",
+        "description": "${memberName}を組織から削除してもよいですか？",
+        "submit_button": "削除",
+        "cancel_button": "キャンセル"
+      },
+      "delete_invitation_dialog": {
+        "title": "招待を取り消す",
+        "description": "${email}への招待を取り消してもよいですか？",
+        "submit_button": "取り消す",
+        "cancel_button": "キャンセル"
+      },
+      "notifications": {
+        "invite_success": "${email}に招待を送信しました",
+        "invite_error": "招待の送信に失敗しました",
+        "bulk_invite_success": "招待を正常に送信しました",
+        "bulk_invite_partial_success": "一部の招待が送信されましたが、${failedCount}件が失敗しました",
+        "remove_success": "${memberName}が組織から削除されました",
+        "remove_error": "メンバーの削除に失敗しました",
+        "delete_invitation_success": "${email} への招待が取り消されました",
+        "delete_invitation_error": "招待の取り消しに失敗しました",
+        "update_roles_success": "${memberName}のロールが更新されました",
+        "update_roles_error": "ロールの更新に失敗しました"
       }
     }
   }

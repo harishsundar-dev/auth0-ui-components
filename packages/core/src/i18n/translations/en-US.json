@@ -996,5 +996,103 @@
         "install_guardian_description": "In order to continue, install the Auth0 Guardian app via the app store from your mobile device"
       }
     }
+  },
+  "members_management": {
+    "organization_members_manager": {
+      "header": {
+        "title": "Members",
+        "invite_button_text": "Invite Members"
+      },
+      "tabs": {
+        "members": "Members",
+        "invitations": "Invitations"
+      },
+      "members_tab": {
+        "search_placeholder": "Search members...",
+        "role_filter_placeholder": "All Roles",
+        "table": {
+          "columns": {
+            "name": "Name",
+            "email": "Email",
+            "roles": "Roles",
+            "last_login": "Last Login",
+            "actions": "Actions"
+          },
+          "empty_message": "No members found",
+          "actions": {
+            "update_roles": "Update Roles",
+            "remove": "Remove Member"
+          }
+        }
+      },
+      "invitations_tab": {
+        "table": {
+          "columns": {
+            "email": "Email",
+            "roles": "Roles",
+            "invited_by": "Invited By",
+            "expires_at": "Expires",
+            "status": "Status",
+            "actions": "Actions"
+          },
+          "empty_message": "No pending invitations",
+          "actions": {
+            "delete": "Revoke Invitation"
+          }
+        }
+      },
+      "invite_member_dialog": {
+        "title": "Invite Member",
+        "description": "Invite a new member to your organization.",
+        "tabs": {
+          "single": "Single Invite",
+          "bulk": "Bulk Invite"
+        },
+        "single_invite": {
+          "email_label": "Email Address",
+          "email_placeholder": "user@example.com",
+          "roles_label": "Roles",
+          "submit_button": "Send Invite"
+        },
+        "bulk_invite": {
+          "emails_label": "Email Addresses",
+          "emails_placeholder": "Enter email addresses separated by commas or newlines",
+          "roles_label": "Roles",
+          "submit_button": "Send Invites"
+        },
+        "cancel_button": "Cancel"
+      },
+      "update_roles_dialog": {
+        "title": "Update Roles",
+        "description": "Update the roles for ${memberName}.",
+        "roles_label": "Roles",
+        "submit_button": "Update Roles",
+        "cancel_button": "Cancel"
+      },
+      "remove_member_dialog": {
+        "title": "Remove Member",
+        "description": "Are you sure you want to remove ${memberName} from the organization?",
+        "submit_button": "Remove",
+        "cancel_button": "Cancel"
+      },
+      "delete_invitation_dialog": {
+        "title": "Revoke Invitation",
+        "description": "Are you sure you want to revoke the invitation for ${email}?",
+        "submit_button": "Revoke",
+        "cancel_button": "Cancel"
+      },
+      "notifications": {
+        "invite_success": "Invitation sent to ${email}",
+        "invite_error": "Failed to send invitation",
+        "bulk_invite_success": "Invitations sent successfully",
+        "bulk_invite_partial_success": "Some invitations were sent, but ${failedCount} failed",
+        "remove_success": "${memberName} has been removed from the organization",
+        "remove_error": "Failed to remove member",
+        "delete_invitation_success": "Invitation for ${email} has been revoked",
+        "delete_invitation_error": "Failed to revoke invitation",
+        "update_roles_success": "Roles updated for ${memberName}",
+        "update_roles_error": "Failed to update roles"
+      }
+    }
   }
 }

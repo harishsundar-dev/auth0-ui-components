@@ -5,9 +5,8 @@
  */
 
 import { initializeMfaStepUpClient } from '@core/services/mfa-step-up/mfa-step-up-api-service';
-import { initializeMyAccountClient } from '@core/services/my-account/my-account-api-service';
-import { initializeMyOrganizationClient } from '@core/services/my-organization/my-organization-api-service';
 
+import { createMyAccountClient, createMyOrganizationClient } from '../api/api-clients';
 import type { I18nInitOptions } from '../i18n';
 import { createI18nService } from '../i18n';
 
@@ -57,8 +56,8 @@ export async function createCoreClient(
 
   const authConfig = AuthUtils.resolveAuthConfig(authDetails);
 
-  const myOrganizationApiClient = initializeMyOrganizationClient(authConfig);
-  const myAccountApiClient = initializeMyAccountClient(authConfig);
+  const myOrganizationApiClient = createMyOrganizationClient(authConfig);
+  const myAccountApiClient = createMyAccountClient(authConfig);
 
   const mfaApiClient = initializeMfaStepUpClient(authConfig);
 

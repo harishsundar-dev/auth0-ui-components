@@ -4,12 +4,68 @@
  * @internal
  */
 
+import type { MyAccountClient } from '@auth0/myaccount-js';
+import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import type { ArbitraryObject } from '@core/types';
 
 import type { I18nServiceInterface } from '../i18n';
 import type { MfaApiClient } from '../services/mfa-step-up/mfa-step-up-api-types';
-import type { MyAccountApiClient } from '../services/my-account/my-account-api-service';
-import type { MyOrganizationApiClient } from '../services/my-organization/my-organization-api-service';
+
+/**
+ * Auth parameters expected by SPA SDK's fetchWithAuth.
+ * Scope is a space-separated string.
+ * @internal
+ */
+export interface SpaFetcherAuthParams {
+  scope?: string;
+  audience?: string;
+}
+
+/**
+ * Authorization parameters passed by MyAccount/MyOrganization SDKs to custom fetchers.
+ * Scope is an array that needs to be joined before passing to SPA SDK.
+ * @internal
+ */
+export interface SdkFetcherAuthParams {
+  scope?: string[];
+  audience: string;
+}
+
+/**
+ * Custom fetcher function signature expected by Auth0 SDK clients.
+ * @internal
+ */
+export type SdkFetcherSupplier = (
+  url: string,
+  init?: RequestInit,
+  authParams?: SdkFetcherAuthParams,
+) => Promise<Response>;
+
+/**
+ * Options for creating a fetcher.
+ * @internal
+ */
+export interface CreateFetcherOptions {
+  dpopNonceId?: string;
+}
+
+/**
+ * Fetcher interface returned by createFetcher.
+ * @internal
+ */
+export interface Auth0Fetcher {
+  fetchWithAuth: (
+    url: string,
+    init: RequestInit | undefined,
+    authParams: SpaFetcherAuthParams | undefined,
+  ) => Promise<Response>;
+}
+
+/**
+ * Function signature for createFetcher.
+ * @internal
+ */
+export type CreateFetcherFunction = (options: CreateFetcherOptions) => Auth0Fetcher;
 
 /**
  * Response structure from the token endpoint.
@@ -137,6 +193,7 @@ export interface BasicAuth0ContextInterface<TUser = User> {
   loginWithRedirect: (options?: unknown) => Promise<void>;
   getConfiguration: () => Readonly<ClientConfiguration>;
   mfa: MfaApiClient;
+  createFetcher?: CreateFetcherFunction;
 }
 
 /**
@@ -192,9 +249,9 @@ export interface BaseCoreClientInterface {
  * @internal
  */
 export interface CoreClientInterface extends BaseCoreClientInterface {
-  myAccountApiClient: MyAccountApiClient | undefined;
-  myOrganizationApiClient: MyOrganizationApiClient | undefined;
-  getMyAccountApiClient: () => MyAccountApiClient;
-  getMyOrganizationApiClient: () => MyOrganizationApiClient;
+  myAccountApiClient: MyAccountClient | undefined;
+  myOrganizationApiClient: MyOrganizationClient | undefined;
+  getMyAccountApiClient: () => MyAccountClient;
+  getMyOrganizationApiClient: () => MyOrganizationClient;
   getMFAStepUpApiClient: () => MfaApiClient;
 }

@@ -15,9 +15,6 @@
   --color-primary: var(--color-primary);
   --color-primary-foreground: var(--color-primary-foreground);
 
-  --color-secondary: var(--color-secondary);
-  --color-secondary-foreground: var(--color-secondary-foreground);
-
   --color-accent: var(--color-accent);
   --color-accent-foreground: var(--color-accent-foreground);
 
@@ -25,60 +22,7 @@
   --color-muted-foreground: var(--color-muted-foreground);
 
   --color-border: var(--color-border);
-
   --color-ring: oklch(from var(--color-ring) l c h / 50%);
-
-  --color-info: var(--color-info);
-  --color-info-foreground: var(--color-info-foreground);
-  --color-success: var(--color-success);
-  --color-success-foreground: var(--color-success-foreground);
-  --color-warning: var(--color-warning);
-  --color-warning-foreground: var(--color-warning-foreground);
-
-  --color-destructive: var(--color-destructive);
-  --color-destructive-foreground: var(--color-destructive-foreground);
-  --color-destructive-border: var(--color-destructive-border);
-
-  --color-popover: var(--color-popover);
-  --color-popover-foreground: var(--color-popover-foreground);
-
-  --color-input: var(--color-input);
-  --color-input-foreground: var(--color-input-foreground);
-  --color-input-muted: var(--color-input-muted);
-
-  --shadow-bevel-xs: var(--shadow-bevel-xs);
-  --shadow-bevel-sm: var(--shadow-bevel-sm);
-  --shadow-bevel-md: var(--shadow-bevel-md);
-  --shadow-bevel-lg: var(--shadow-bevel-md);
-  --shadow-bevel-xl: var(--shadow-bevel-xl);
-  --shadow-bevel-2xl: var(--shadow-bevel-2xl);
-
-  --shadow-button-resting: var(--shadow-button-resting);
-  --shadow-button-hover: var(--shadow-button-hover);
-  --shadow-button-focus: var(--shadow-button-hover);
-
-  --shadow-button-destructive-resting: var(--shadow-button-destructive-resting);
-  --shadow-button-destructive-hover: var(--shadow-button-destructive-hover);
-  --shadow-button-destructive-focus: var(--shadow-button-destructive-focus);
-
-  --shadow-button-outlined-resting: var(--shadow-button-outlined-resting);
-  --shadow-button-outlined-hover: var(--shadow-button-outlined-resting);
-  --shadow-button-outlined-focus: var(--shadow-button-outlined-resting);
-
-  --shadow-input-resting: var(--shadow-input-resting);
-  --shadow-input-hover: var(--shadow-input-hover);
-  --shadow-input-focus: var(--shadow-input-focus);
-  --shadow-input-destructive-resting: var(--shadow-input-destructive-resting);
-  --shadow-input-destructive-hover: var(--shadow-input-destructive-hover);
-  --shadow-input-destructive-focus: var(--shadow-input-destructive-focus);
-
-  --shadow-checkbox-resting: var(--shadow-checkbox-resting);
-  --shadow-checkbox-hover: var(--shadow-checkbox-hover);
-
-  --shadow-switch-resting: var(--shadow-switch-resting);
-  --shadow-switch-hover: var(--shadow-switch-resting);
-  --shadow-switch-focus: var(--shadow-switch-focus);
-  --shadow-switch-thumb: var(--shadow-switch-thumb);
 }
 
 /* Minimal Next.js specific fixes - keep only essential z-index fixes */

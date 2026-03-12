@@ -58,6 +58,8 @@ function OrganizationMembersManagerComponent({
     search,
     removeMember,
     isRemoving,
+    updateMemberRoles,
+    isUpdatingRoles,
   } = useOrganizationMembers({ customMessages });
 
   const {
@@ -123,6 +125,8 @@ function OrganizationMembersManagerComponent({
   };
 
   const handleUpdateRolesConfirm = async () => {
+    if (!selectedMember) return;
+    await updateMemberRoles(selectedMember.userId, selectedMember.name, pendingRoleIds);
     setShowUpdateRolesDialog(false);
     setSelectedMember(null);
     setPendingRoleIds([]);
@@ -210,7 +214,7 @@ function OrganizationMembersManagerComponent({
         member={selectedMember}
         availableRoles={roles}
         selectedRoleIds={pendingRoleIds}
-        isLoading={false}
+        isLoading={isUpdatingRoles}
         onClose={() => {
           setShowUpdateRolesDialog(false);
           setSelectedMember(null);

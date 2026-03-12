@@ -26,6 +26,8 @@ export interface UseOrganizationMembersResult {
   filterByRole: (roleId: string) => void;
   removeMember: (userId: string, memberName: string) => Promise<void>;
   isRemoving: boolean;
+  updateMemberRoles: (userId: string, memberName: string, roleIds: string[]) => Promise<void>;
+  isUpdatingRoles: boolean;
   refetch: () => void;
 }
 
@@ -115,6 +117,36 @@ export function useOrganizationMembers({
     }
   };
 
+  const updateRolesMutation = useMutation({
+    mutationFn: async ({ userId, roleIds }: { userId: string; roleIds: string[] }) => {
+      await (
+        coreClient!.getMyOrganizationApiClient().organization as unknown as {
+          memberRoles: {
+            update: (params: { user_id: string; roles: Array<{ id: string }> }) => Promise<void>;
+          };
+        }
+      ).memberRoles.update({ user_id: userId, roles: roleIds.map((id) => ({ id })) });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: membersQueryKeys.all });
+    },
+  });
+
+  const updateMemberRoles = async (userId: string, memberName: string, roleIds: string[]) => {
+    try {
+      await updateRolesMutation.mutateAsync({ userId, roleIds });
+      showToast({
+        type: 'success',
+        message: t('update_roles_success', { memberName }),
+      });
+    } catch {
+      showToast({
+        type: 'error',
+        message: t('update_roles_error'),
+      });
+    }
+  };
+
   return {
     members: membersQuery.data ?? [],
     isLoading: membersQuery.isLoading,
@@ -125,6 +157,8 @@ export function useOrganizationMembers({
     filterByRole: setRoleFilter,
     removeMember,
     isRemoving: removeMutation.isPending,
+    updateMemberRoles,
+    isUpdatingRoles: updateRolesMutation.isPending,
     refetch: () => queryClient.invalidateQueries({ queryKey: membersQueryKeys.all }),
   };
 }

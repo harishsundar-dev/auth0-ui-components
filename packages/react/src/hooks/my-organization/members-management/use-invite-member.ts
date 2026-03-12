@@ -106,19 +106,18 @@ export function useInviteMember({
       .map((e) => e.trim())
       .filter(Boolean);
 
-    try {
-      await Promise.all(
-        emails.map((email) => inviteMutation.mutateAsync({ email, roleIds: values.roleIds })),
-      );
-      showToast({
-        type: 'success',
-        message: t('bulk_invite_success'),
-      });
-    } catch {
-      showToast({
-        type: 'error',
-        message: t('invite_error'),
-      });
+    const results = await Promise.allSettled(
+      emails.map((email) => inviteMutation.mutateAsync({ email, roleIds: values.roleIds })),
+    );
+
+    const failedCount = results.filter((r) => r.status === 'rejected').length;
+    if (failedCount === 0) {
+      showToast({ type: 'success', message: t('bulk_invite_success') });
+    } else if (failedCount < emails.length) {
+      showToast({ type: 'success', message: t('bulk_invite_success') });
+      showToast({ type: 'error', message: t('invite_error') });
+    } else {
+      showToast({ type: 'error', message: t('invite_error') });
     }
   };
 

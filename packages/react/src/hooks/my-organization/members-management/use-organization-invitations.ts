@@ -86,7 +86,7 @@ export function useOrganizationInvitations({
     },
   });
 
-  const deleteInvitation = async (invitationId: string, email: string) => {
+  const deleteInvitation = async (invitationId: string, _email: string) => {
     try {
       await deleteMutation.mutateAsync(invitationId);
       showToast({
@@ -99,7 +99,6 @@ export function useOrganizationInvitations({
         message: t('delete_invitation_error'),
       });
     }
-    void email;
   };
 
   return {

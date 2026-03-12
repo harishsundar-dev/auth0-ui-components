@@ -86,12 +86,12 @@ export function useOrganizationInvitations({
     },
   });
 
-  const deleteInvitation = async (invitationId: string, _email: string) => {
+  const deleteInvitation = async (invitationId: string, email: string) => {
     try {
       await deleteMutation.mutateAsync(invitationId);
       showToast({
         type: 'success',
-        message: t('delete_invitation_success'),
+        message: t('delete_invitation_success', { email }),
       });
     } catch {
       showToast({

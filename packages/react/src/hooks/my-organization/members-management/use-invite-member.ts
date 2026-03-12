@@ -114,8 +114,10 @@ export function useInviteMember({
     if (failedCount === 0) {
       showToast({ type: 'success', message: t('bulk_invite_success') });
     } else if (failedCount < emails.length) {
-      showToast({ type: 'success', message: t('bulk_invite_success') });
-      showToast({ type: 'error', message: t('invite_error') });
+      showToast({
+        type: 'error',
+        message: t('bulk_invite_partial_success', { failedCount: String(failedCount) }),
+      });
     } else {
       showToast({ type: 'error', message: t('invite_error') });
     }

@@ -1085,9 +1085,10 @@
         "invite_success": "Invitation sent to ${email}",
         "invite_error": "Failed to send invitation",
         "bulk_invite_success": "Invitations sent successfully",
+        "bulk_invite_partial_success": "Some invitations were sent, but ${failedCount} failed",
         "remove_success": "${memberName} has been removed from the organization",
         "remove_error": "Failed to remove member",
-        "delete_invitation_success": "Invitation revoked",
+        "delete_invitation_success": "Invitation for ${email} has been revoked",
         "delete_invitation_error": "Failed to revoke invitation",
         "update_roles_success": "Roles updated for ${memberName}",
         "update_roles_error": "Failed to update roles"

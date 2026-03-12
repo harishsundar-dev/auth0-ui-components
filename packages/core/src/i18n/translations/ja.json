@@ -1086,9 +1086,10 @@
         "invite_success": "${email}に招待を送信しました",
         "invite_error": "招待の送信に失敗しました",
         "bulk_invite_success": "招待を正常に送信しました",
+        "bulk_invite_partial_success": "一部の招待が送信されましたが、${failedCount}件が失敗しました",
         "remove_success": "${memberName}が組織から削除されました",
         "remove_error": "メンバーの削除に失敗しました",
-        "delete_invitation_success": "招待が取り消されました",
+        "delete_invitation_success": "${email} への招待が取り消されました",
         "delete_invitation_error": "招待の取り消しに失敗しました",
         "update_roles_success": "${memberName}のロールが更新されました",
         "update_roles_error": "ロールの更新に失敗しました"

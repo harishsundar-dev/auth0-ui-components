@@ -19,17 +19,14 @@ export function HeroSection() {
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button
-                className="cursor-pointer"
-                onClick={() =>
-                  window.open(
-                    'https://auth0-ui-components.vercel.app/',
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-              >
-                {t('hero-section.get-started-button')}
+              <Button className="cursor-pointer">
+                <a
+                  href="https://auth0-ui-components.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('hero-section.get-started-button')}
+                </a>
               </Button>
               <a
                 href="https://auth0.com/docs"

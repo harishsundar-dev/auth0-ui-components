@@ -144,8 +144,6 @@ export const createMockLogic = (
   onDeleteDomain: vi.fn(),
   onAssociateToProvider: vi.fn(),
   onDeleteFromProvider: vi.fn(),
-  error: undefined,
-  onRetry: vi.fn(),
   ...overrides,
 });
 

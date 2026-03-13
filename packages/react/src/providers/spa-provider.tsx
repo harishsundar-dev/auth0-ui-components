@@ -43,8 +43,8 @@ export const Auth0ComponentProvider = (
     cacheConfig,
     loader,
     children,
+    authContext,
   } = props;
-  const authContext = props.authContext;
   const mergedToastSettings = useToastProvider(toastSettings);
 
   const auth0ReactContext = useAuth0();

@@ -15,12 +15,11 @@ import type { ToastSettings } from '@/types/toast-types';
 export type Auth0ComponentProviderProps = (
   | {
       mode?: 'direct';
-      domain: string;
+      domain?: string;
       authContext?: AuthDetails['contextInterface'];
-      previewMode?: boolean;
       proxyConfig?: never;
     }
-  | { mode: 'proxy'; domain: string; proxyConfig: { baseUrl: string }; previewMode?: boolean }
+  | { mode: 'proxy'; domain: string; proxyConfig: { baseUrl: string } }
 ) & {
   i18n?: I18nOptions;
   themeSettings?: ThemeSettings;
@@ -28,4 +27,5 @@ export type Auth0ComponentProviderProps = (
   toastSettings?: ToastSettings;
   /** TanStack Query cache config. Use `{ enabled: false }` to disable. */
   cacheConfig?: QueryCacheConfig;
+  previewMode?: boolean;
 };

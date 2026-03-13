@@ -114,9 +114,9 @@ export function StepUpVerifyForm({
             type="button"
             variant="primary"
             onClick={onComplete}
-            aria-label={t('mfa.challenge.push_continue')}
+            aria-label={t('mfa.continue')}
           >
-            {t('mfa.challenge.push_continue')}
+            {t('mfa.continue')}
           </Button>
         </div>
       </>

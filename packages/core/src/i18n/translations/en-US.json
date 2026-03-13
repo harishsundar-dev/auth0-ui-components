@@ -28,6 +28,7 @@
       "enroll_button": "Set up",
       "cancel": "Cancel",
       "back": "Back",
+      "continue": "Continue",
       "challenge": {
         "otp_description": "Please enter the one-time code shown in your authenticator app.",
         "phone_title": "Verify your phone number",
@@ -36,7 +37,6 @@
         "push_title": "We just sent you a push notification",
         "push_description": "Verify it's you on your Guardian App",
         "push_waiting": "Waiting for verification...",
-        "push_continue": "Continue",
         "recovery_code_description": "Enter your saved recovery codes.",
         "resend_prompt": "Didn't receive the code?",
         "resend": "Resend",
@@ -58,11 +58,9 @@
         "scan_helper": "Complete the setup by scanning this code with your Authenticator App. If you can't scan the code, manually enter the code below.",
         "push_scan_description": "Scan this QR code with the Guardian app",
         "qr_alt": "Enrollment QR code",
-        "continue_button": "Continue",
         "recovery_title": "Generate recovery codes",
         "recovery_description": "Copy these recovery codes and store them somewhere safe. You will need them if you ever lose access to your authentication method.",
         "recovery_confirmed": "I have safely recorded these codes",
-        "recovery_continue": "Continue",
         "invalid_email": "Please enter a valid email address.",
         "invalid_phone_number": "Please enter a valid phone number."
       }

@@ -203,10 +203,10 @@ export function StepUpEnrollmentForm({
             variant="primary"
             onClick={handlePushEnroll}
             disabled={isLoading}
-            aria-label={t('mfa.enroll.continue_button')}
+            aria-label={t('mfa.continue')}
           >
             {isLoading && <Spinner size="sm" colorScheme="foreground" />}
-            {t('mfa.enroll.continue_button')}
+            {t('mfa.continue')}
           </Button>
         </div>
       </>
@@ -363,10 +363,10 @@ export function StepUpEnrollmentForm({
             variant="primary"
             onClick={() => (isOtp ? setStep('verify') : handleVerifyComplete())}
             disabled={isLoading}
-            aria-label={t('mfa.enroll.continue_button')}
+            aria-label={t('mfa.continue')}
           >
             {isLoading && <Spinner size="sm" colorScheme="foreground" />}
-            {t('mfa.enroll.continue_button')}
+            {t('mfa.continue')}
           </Button>
         </div>
       </>
@@ -405,9 +405,9 @@ export function StepUpEnrollmentForm({
           variant="primary"
           onClick={onComplete}
           disabled={!recoveryConfirmed}
-          aria-label={t('mfa.enroll.recovery_continue')}
+          aria-label={t('mfa.continue')}
         >
-          {t('mfa.enroll.recovery_continue')}
+          {t('mfa.continue')}
         </Button>
       </div>
     </>

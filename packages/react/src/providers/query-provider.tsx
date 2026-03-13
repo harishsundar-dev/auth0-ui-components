@@ -99,10 +99,10 @@ function createQueryClient(
               await queryClient.refetchQueries({
                 predicate: (query) => shouldInterceptForGateKeeper(query.state.error),
               });
-              const stillFailing =
-                queryClient.getQueryCache().findAll({
-                  predicate: (query) => shouldInterceptForGateKeeper(query.state.error),
-                }).length > 0;
+              const stillFailing = queryClient
+                .getQueryCache()
+                .getAll()
+                .some((query) => shouldInterceptForGateKeeper(query.state.error));
               if (!stillFailing) setGateKeeperState(null);
               return !stillFailing;
             },

@@ -13,17 +13,16 @@ import type { MfaApiClient } from '../services/mfa-step-up/mfa-step-up-api-types
 
 /**
  * Auth parameters expected by SPA SDK's fetchWithAuth.
- * Scope is a space-separated string.
+ * Scope is an array - SDK joins it internally.
  * @internal
  */
 export interface SpaFetcherAuthParams {
-  scope?: string;
+  scope?: string[];
   audience?: string;
 }
 
 /**
  * Authorization parameters passed by MyAccount/MyOrganization SDKs to custom fetchers.
- * Scope is an array that needs to be joined before passing to SPA SDK.
  * @internal
  */
 export interface SdkFetcherAuthParams {

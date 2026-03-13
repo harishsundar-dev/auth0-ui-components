@@ -35,7 +35,6 @@ function createProxyFetcher(): SdkFetcherSupplier {
 
 /**
  * Creates a fetcher function for SPA mode using Auth0 SDK's createFetcher.
- * Converts SDK's scope array to space-separated string and forwards audience.
  * @param config - SPA auth configuration with context interface
  * @param dpopNonceId - Unique identifier for DPoP nonce management
  * @returns Fetcher function that delegates to SDK's fetchWithAuth
@@ -45,7 +44,7 @@ function createSpaFetcher(config: SpaAuthConfig, dpopNonceId: string): SdkFetche
   const sdkFetcher = config.contextInterface.createFetcher!({ dpopNonceId });
   return (url, init, authParams) =>
     sdkFetcher.fetchWithAuth(url, init, {
-      scope: authParams?.scope?.join(' '),
+      scope: authParams?.scope,
       audience: authParams?.audience,
     });
 }

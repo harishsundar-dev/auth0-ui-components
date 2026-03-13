@@ -133,7 +133,7 @@ describe('api-clients', () => {
         expect(mockFetchWithAuth).toHaveBeenCalledWith(
           'https://example.com',
           { method: 'GET' },
-          { scope: 'read:users write:users', audience: 'https://tenant.auth0.com/me/' },
+          { scope: ['read:users', 'write:users'], audience: 'https://tenant.auth0.com/me/' },
         );
       });
 
@@ -224,7 +224,7 @@ describe('api-clients', () => {
         expect(mockFetchWithAuth).toHaveBeenCalledWith(
           'https://example.com',
           { method: 'POST', body: '{}' },
-          { scope: 'read:org', audience: 'https://tenant.auth0.com/my-org/' },
+          { scope: ['read:org'], audience: 'https://tenant.auth0.com/my-org/' },
         );
       });
     });

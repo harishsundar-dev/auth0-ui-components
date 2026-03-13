@@ -99,12 +99,7 @@ function SsoProviderEdit(props: SsoProviderEditProps) {
   };
 
   return (
-    <GateKeeper
-      error={ssoProviderEdit.error}
-      onRetry={ssoProviderEdit.onRetry}
-      isLoading={ssoProviderEdit.isLoading}
-      styling={styling}
-    >
+    <GateKeeper isLoading={ssoProviderEdit.isLoading} styling={styling}>
       <SsoProviderEditView
         logic={ssoProviderCreateLogicProps}
         handlers={ssoProviderCreateHandlerProps}

@@ -179,6 +179,11 @@ describe('QueryProvider', () => {
     const client = result.current;
     const defaultOptions = client.getDefaultOptions();
 
-    expect(defaultOptions.mutations?.retry).toBe(1);
+    const retryFn = defaultOptions.mutations?.retry;
+    expect(typeof retryFn).toBe('function');
+    expect((retryFn as Function)(0, new Error('server error'))).toBe(true);
+    expect((retryFn as Function)(1, new Error('server error'))).toBe(false);
+    const mfaError = Object.assign(new Error('mfa'), { error: 'mfa_required' });
+    expect((retryFn as Function)(0, mfaError)).toBe(false);
   });
 });

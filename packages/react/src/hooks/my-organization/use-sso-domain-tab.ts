@@ -431,10 +431,6 @@ export function useSsoDomainTab(
     [associateToProviderMutation, t, provider, handleError, deleteFromProviderMutation],
   );
 
-  const onRetry = useCallback(async (): Promise<void> => {
-    await domainsQuery.refetch();
-  }, [domainsQuery.refetch]);
-
   return {
     isLoading,
     domainsList,
@@ -458,13 +454,5 @@ export function useSsoDomainTab(
     isUpdating,
     isUpdatingId,
     handleToggleSwitch,
-    error:
-      domainsQuery.error ??
-      createDomainMutation.error ??
-      verifyDomainMutation.error ??
-      deleteDomainMutation.error ??
-      associateToProviderMutation.error ??
-      deleteFromProviderMutation.error,
-    onRetry,
   };
 }

@@ -90,6 +90,4 @@ export interface UseSsoDomainTabReturn {
   handleDelete: (domain: Domain) => void;
   handleVerifyActionColumn: (domain: Domain) => Promise<void>;
   handleToggleSwitch: (domain: Domain, newCheckedValue: boolean) => Promise<void>;
-  error: unknown;
-  onRetry: () => Promise<void>;
 }

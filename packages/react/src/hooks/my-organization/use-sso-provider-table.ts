@@ -277,10 +277,6 @@ export function useSsoProviderTable(
     }
   }, [coreClient, queryClient, t, handleError]);
 
-  const onRetry = useCallback(async (): Promise<void> => {
-    await Promise.all([providersQuery.refetch(), organizationQuery.refetch()]);
-  }, [providersQuery.refetch, organizationQuery.refetch]);
-
   return {
     // Data from TanStack Query - single source of truth
     providers: providersQuery.data ?? [],
@@ -301,14 +297,5 @@ export function useSsoProviderTable(
     onDeleteConfirm,
     onRemoveConfirm,
     onEnableProvider,
-
-    // GateKeeper
-    error:
-      providersQuery.error ??
-      organizationQuery.error ??
-      enableProviderMutation.error ??
-      deleteProviderMutation.error ??
-      removeProviderMutation.error,
-    onRetry,
   };
 }

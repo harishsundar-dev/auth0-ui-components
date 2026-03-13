@@ -15,7 +15,6 @@ interface ErrorHandlerCallOptions {
 
 /**
  * Hook for consistent error handling across the app.
- * Skips MFA/500+ errors (GateKeeper handles), shows toast for others.
  *
  * @returns Error handler function.
  *

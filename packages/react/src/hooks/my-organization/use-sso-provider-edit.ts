@@ -780,14 +780,6 @@ export function useSsoProviderEdit(
     return attributes.some((attr) => attr.is_extra || attr.is_missing);
   }, [provisioningQuery.data]);
 
-  const onRetry = useCallback(async (): Promise<void> => {
-    await Promise.all([
-      providerQuery.refetch(),
-      organizationQuery.refetch(),
-      provisioningQuery.refetch(),
-    ]);
-  }, [providerQuery.refetch, organizationQuery.refetch, provisioningQuery.refetch]);
-
   return {
     // Data from TanStack Query - single source of truth
     provider: providerQuery.data ?? null,
@@ -826,22 +818,5 @@ export function useSsoProviderEdit(
     syncProvisioningAttributes,
     onDeleteConfirm,
     onRemoveConfirm,
-
-    // GateKeeper
-    error:
-      providerQuery.error ??
-      organizationQuery.error ??
-      provisioningQuery.error ??
-      updateProviderMutation.error ??
-      createProvisioningMutation.error ??
-      deleteProvisioningMutation.error ??
-      createScimTokenMutation.error ??
-      deleteScimTokenMutation.error ??
-      deleteProviderMutation.error ??
-      detachProviderMutation.error ??
-      listScimTokensMutation.error ??
-      syncSsoAttributesMutation.error ??
-      syncProvisioningAttributesMutation.error,
-    onRetry,
   };
 }

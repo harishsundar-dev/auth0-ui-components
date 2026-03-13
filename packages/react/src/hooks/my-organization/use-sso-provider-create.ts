@@ -36,7 +36,6 @@ function extractDomainFromDiscoveryError(detail?: string): string | null {
 export interface UseSsoProviderCreateReturn {
   createProvider: (data: CreateIdentityProviderRequestContentPrivate) => Promise<void>;
   isCreating: boolean;
-  error: unknown;
 }
 
 /**
@@ -149,6 +148,5 @@ export function useSsoProviderCreate({
   return {
     createProvider,
     isCreating: createProviderMutation.isPending,
-    error: createProviderMutation.error,
   };
 }

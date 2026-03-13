@@ -120,12 +120,7 @@ function SsoProviderTable(props: SsoProviderTableProps) {
   };
 
   return (
-    <GateKeeper
-      error={ssoProviderTable.error}
-      onRetry={ssoProviderTable.onRetry}
-      isLoading={isLoading}
-      styling={styling}
-    >
+    <GateKeeper isLoading={isLoading} styling={styling}>
       <SsoProviderTableView
         logic={ssoProviderCreateLogicProps}
         handlers={ssoProviderCreateHandlerProps}

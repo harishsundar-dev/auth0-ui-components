@@ -48,7 +48,7 @@ function SsoProviderCreate(props: SsoProviderCreateProps) {
     onPrevious,
   } = props;
 
-  const { createProvider, isCreating, error } = useSsoProviderCreate({
+  const { createProvider, isCreating } = useSsoProviderCreate({
     createAction,
     customMessages,
   });
@@ -97,7 +97,7 @@ function SsoProviderCreate(props: SsoProviderCreateProps) {
   };
 
   return (
-    <GateKeeper error={error} onRetry={handleCreate} styling={styling}>
+    <GateKeeper styling={styling}>
       <SsoProviderCreateView
         logic={ssoProviderCreateLogicProps}
         handlers={ssoProviderCreateHandlerProps}

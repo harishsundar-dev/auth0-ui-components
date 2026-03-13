@@ -146,10 +146,6 @@ export function useOrganizationDetailsEdit({
     ],
   );
 
-  const onRetry = useCallback(async (): Promise<void> => {
-    await organizationQuery.refetch();
-  }, [organizationQuery.refetch]);
-
   return {
     organization,
     isFetchLoading: organizationQuery.isFetching,
@@ -158,7 +154,5 @@ export function useOrganizationDetailsEdit({
     formActions,
     fetchOrgDetails,
     updateOrgDetails,
-    error: organizationQuery.error ?? updateMutation.error,
-    onRetry,
   };
 }

@@ -45,7 +45,7 @@ function OrganizationDetailsEdit(props: OrganizationDetailsEditProps): React.JSX
     backButton,
   } = props;
 
-  const { organization, isFetchLoading, formActions, error, onRetry } = useOrganizationDetailsEdit({
+  const { organization, isFetchLoading, formActions } = useOrganizationDetailsEdit({
     saveAction,
     cancelAction,
     readOnly,
@@ -53,7 +53,7 @@ function OrganizationDetailsEdit(props: OrganizationDetailsEditProps): React.JSX
   });
 
   return (
-    <GateKeeper error={error} onRetry={onRetry} isLoading={isFetchLoading} styling={styling}>
+    <GateKeeper isLoading={isFetchLoading} styling={styling}>
       <OrganizationDetailsEditView
         organization={organization}
         isFetchLoading={false}

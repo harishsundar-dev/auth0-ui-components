@@ -4,12 +4,16 @@
  * @internal
  */
 
-import { isMfaRequiredError } from '@auth0/universal-components-core';
+import { getStatusCode, isMfaRequiredError } from '@auth0/universal-components-core';
 import {
+  MutationCache,
+  QueryCache,
   QueryClient,
   QueryClientProvider as TanStackQueryClientProvider,
 } from '@tanstack/react-query';
-import { useState, type ReactElement, type ReactNode } from 'react';
+import { useCallback, useMemo, useState, type ReactElement, type ReactNode } from 'react';
+
+import { GateKeeperContext } from '@/providers/gate-keeper-context';
 
 /** Query cache configuration. */
 export interface QueryCacheConfig {
@@ -63,13 +67,65 @@ export function resolveCacheConfig(userConfig?: QueryCacheConfig): Required<Quer
 }
 
 /**
- * Creates a QueryClient with config.
+ * Returns true for errors that should be handled by GateKeeper (MFA required or 5xx).
+ * @param error - The error to check.
+ * @returns Whether the error should be intercepted.
+ * @internal
+ */
+function shouldInterceptForGateKeeper(error: unknown): boolean {
+  if (isMfaRequiredError(error)) return true;
+  const statusCode = getStatusCode(error);
+  return !!statusCode && statusCode >= 500;
+}
+
+/**
+ * Creates a QueryClient with config and global GateKeeper error interception.
  * @param cacheConfig - Cache configuration.
+ * @param setGateKeeperState - Setter for GateKeeper context state.
  * @returns The configured QueryClient instance
  * @internal
  */
-function createQueryClient(cacheConfig: Required<QueryCacheConfig>): QueryClient {
-  return new QueryClient({
+function createQueryClient(
+  cacheConfig: Required<QueryCacheConfig>,
+  setGateKeeperState: (state: { error: unknown; onRetry: () => Promise<boolean> } | null) => void,
+): QueryClient {
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error) => {
+        if (shouldInterceptForGateKeeper(error)) {
+          setGateKeeperState({
+            error,
+            onRetry: async () => {
+              await queryClient.refetchQueries({
+                predicate: (query) => shouldInterceptForGateKeeper(query.state.error),
+              });
+              const stillFailing =
+                queryClient.getQueryCache().findAll({
+                  predicate: (query) => shouldInterceptForGateKeeper(query.state.error),
+                }).length > 0;
+              return !stillFailing;
+            },
+          });
+        }
+      },
+    }),
+    mutationCache: new MutationCache({
+      onError: (error, variables, _context, mutation) => {
+        if (isMfaRequiredError(error)) {
+          setGateKeeperState({
+            error,
+            onRetry: async () => {
+              try {
+                await mutation.execute(variables);
+                return true;
+              } catch {
+                return false;
+              }
+            },
+          });
+        }
+      },
+    }),
     defaultOptions: {
       queries: {
         staleTime: cacheConfig.staleTime,
@@ -85,10 +141,13 @@ function createQueryClient(cacheConfig: Required<QueryCacheConfig>): QueryClient
         refetchOnReconnect: true,
       },
       mutations: {
-        retry: MUTATION_RETRY_CONFIG.maxRetries,
+        retry: (failureCount, error) =>
+          !isMfaRequiredError(error) && failureCount < MUTATION_RETRY_CONFIG.maxRetries,
       },
     },
   });
+
+  return queryClient;
 }
 
 /** Props for QueryProvider. */
@@ -107,7 +166,27 @@ export interface QueryProviderProps {
  * @internal
  */
 export function QueryProvider({ children, cacheConfig }: QueryProviderProps): ReactElement {
-  const [queryClient] = useState(() => createQueryClient(resolveCacheConfig(cacheConfig)));
+  const [gateKeeperState, setGateKeeperState] = useState<{
+    error: unknown;
+    onRetry: () => Promise<boolean>;
+  } | null>(null);
+  const [queryClient] = useState(() =>
+    createQueryClient(resolveCacheConfig(cacheConfig), setGateKeeperState),
+  );
 
-  return <TanStackQueryClientProvider client={queryClient}>{children}</TanStackQueryClientProvider>;
+  const clearError = useCallback(() => setGateKeeperState(null), []);
+  const contextValue = useMemo(
+    () => ({
+      error: gateKeeperState?.error ?? null,
+      onRetry: gateKeeperState?.onRetry ?? (async () => true),
+      clearError,
+    }),
+    [gateKeeperState, clearError],
+  );
+
+  return (
+    <GateKeeperContext.Provider value={contextValue}>
+      <TanStackQueryClientProvider client={queryClient}>{children}</TanStackQueryClientProvider>
+    </GateKeeperContext.Provider>
+  );
 }

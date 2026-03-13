@@ -23,12 +23,11 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
+import { useGateKeeperContext } from '@/providers/gate-keeper-context';
 
 interface GateKeeperProps {
   styling?: ComponentStyling<Record<string, string>>;
   isLoading?: boolean;
-  error: unknown;
-  onRetry: () => Promise<void>;
   children: React.ReactNode;
 }
 
@@ -69,7 +68,7 @@ function ErrorFallback({ onRetry, isRetrying }: { onRetry: () => void; isRetryin
  * MFA step-up dialog.
  *
  * @param props - Component props.
- * @param props.token - MFA token from the step-up error.
+ * @param props.error - MFA error containing the token and challenge details.
  * @param props.onComplete - Callback when MFA is completed successfully; triggers a retry.
  * @param props.onClose - Callback when the dialog is dismissed without completing.
  * @returns MFA dialog element.
@@ -104,12 +103,11 @@ function MfaDialog({
  * @param props - Component props.
  * @param props.styling - Styling configuration forwarded to the styled scope.
  * @param props.isLoading - Whether content is loading.
- * @param props.error - Error object, if any.
- * @param props.onRetry - Retry handler.
  * @param props.children - Child elements to render on success.
  * @returns GateKeeper element.
  */
-export function GateKeeper({ styling, isLoading, error, onRetry, children }: GateKeeperProps) {
+export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
+  const { error, onRetry, clearError } = useGateKeeperContext();
   const { isDarkMode } = useTheme();
   const [isRetrying, setIsRetrying] = useState(false);
   const [dismissedMfaToken, setDismissedMfaToken] = useState<string | null>(null);
@@ -118,12 +116,14 @@ export function GateKeeper({ styling, isLoading, error, onRetry, children }: Gat
 
   const handleRetry = useCallback(async () => {
     setIsRetrying(true);
+    setDismissedMfaToken(null);
     try {
-      await onRetry();
+      const succeeded = await onRetry();
+      if (succeeded) clearError();
     } finally {
       setIsRetrying(false);
     }
-  }, [onRetry]);
+  }, [onRetry, clearError]);
 
   const isMfaStepUp = isMfaRequiredError(error);
   const mfaError = isMfaStepUp ? normalizeMfaRequiredError(error) : null;

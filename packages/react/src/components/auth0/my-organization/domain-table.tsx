@@ -79,12 +79,7 @@ function DomainTable(props: DomainTableProps) {
   };
 
   return (
-    <GateKeeper
-      error={domainTableState.error}
-      onRetry={domainTableState.onRetry}
-      isLoading={domainTableState.isFetching}
-      styling={styling}
-    >
+    <GateKeeper isLoading={domainTableState.isFetching} styling={styling}>
       <DomainTableView logic={domainTableLogic} handlers={domainTableHandlers} />
     </GateKeeper>
   );

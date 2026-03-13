@@ -26,6 +26,7 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
+import { useGateKeeperContext } from '@/providers/gate-keeper-context';
 
 const GateKeeperViews = {
   LOADING: 'LOADING',
@@ -39,8 +40,6 @@ type GateKeeperView = keyof typeof GateKeeperViews;
 interface GateKeeperProps {
   styling?: ComponentStyling<Record<string, string>>;
   isLoading?: boolean;
-  error: unknown;
-  onRetry: () => Promise<void>;
   children: React.ReactNode;
 }
 
@@ -85,7 +84,7 @@ function ErrorFallback({ onRetry, isRetrying }: { onRetry: () => void; isRetryin
  * @returns MFA dialog element.
  * @internal
  */
-function MfaDialog({ onClose }: { onClose: () => void }) {
+function MfaDialog({ onClose, onRetry }: { onClose: () => void; onRetry: () => void }) {
   const { t } = useTranslator('gate_keeper');
 
   return (
@@ -96,6 +95,9 @@ function MfaDialog({ onClose }: { onClose: () => void }) {
           <DialogDescription>{t('mfa.subtitle')}</DialogDescription>
         </DialogHeader>
         {/* TODO: Replace with MFA challenge/enrollment flow */}
+        <Button variant="primary" onClick={onRetry}>
+          {t('fallback.retry')}
+        </Button>
       </DialogContent>
     </Dialog>
   );
@@ -116,7 +118,8 @@ function MfaDialog({ onClose }: { onClose: () => void }) {
  * @param props.children - Child elements to render on success.
  * @returns GateKeeper element.
  */
-export function GateKeeper({ styling, isLoading, error, onRetry, children }: GateKeeperProps) {
+export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
+  const { error, onRetry, clearError } = useGateKeeperContext();
   const { isDarkMode } = useTheme();
   const [isRetrying, setIsRetrying] = useState(false);
   const [mfaInterrupted, setMfaInterrupted] = useState(false);
@@ -127,12 +130,14 @@ export function GateKeeper({ styling, isLoading, error, onRetry, children }: Gat
 
   const handleRetry = useCallback(async () => {
     setIsRetrying(true);
+    setMfaInterrupted(false);
     try {
-      await onRetry();
+      const succeeded = await onRetry();
+      if (succeeded) clearError();
     } finally {
       setIsRetrying(false);
     }
-  }, [onRetry]);
+  }, [onRetry, clearError]);
 
   const view = useMemo((): GateKeeperView => {
     if (isLoading || isRetrying) return GateKeeperViews.LOADING;
@@ -158,7 +163,7 @@ export function GateKeeper({ styling, isLoading, error, onRetry, children }: Gat
         </div>
       )}
       {view === GateKeeperViews.MFA_CHALLENGE && (
-        <MfaDialog onClose={() => setMfaInterrupted(true)} />
+        <MfaDialog onClose={() => setMfaInterrupted(true)} onRetry={handleRetry} />
       )}
       {view === GateKeeperViews.ERROR_FALLBACK && (
         <ErrorFallback onRetry={handleRetry} isRetrying={isRetrying} />

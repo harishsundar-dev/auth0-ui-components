@@ -7,7 +7,7 @@
 import { MyAccountClient } from '@auth0/myaccount-js';
 import { MyOrganizationClient } from '@auth0/myorganization-js';
 
-import type { ClientAuthConfig, SpaAuthConfig, SdkFetcherSupplier } from '../auth/auth-types';
+import type { ClientAuthConfig, FetcherSupplier, SpaAuthConfig } from '../auth/auth-types';
 
 export const AUTH0_SCOPE_HEADER = 'auth0-scope';
 
@@ -23,7 +23,7 @@ export const MY_ORGANIZATION_DPOP_NONCE_ID = '__auth0_my_organization_api__';
  * @returns Fetcher function that sets auth0-scope header
  * @internal
  */
-function createProxyFetcher(): SdkFetcherSupplier {
+function createProxyFetcher(): FetcherSupplier {
   return async (url, init, authParams) => {
     const headers = new Headers(init?.headers);
     if (authParams?.scope?.length) {
@@ -40,7 +40,7 @@ function createProxyFetcher(): SdkFetcherSupplier {
  * @returns Fetcher function that delegates to SDK's fetchWithAuth
  * @internal
  */
-function createSpaFetcher(config: SpaAuthConfig, dpopNonceId: string): SdkFetcherSupplier {
+function createSpaFetcher(config: SpaAuthConfig, dpopNonceId: string): FetcherSupplier {
   const sdkFetcher = config.contextInterface.createFetcher!({ dpopNonceId });
   return (url, init, authParams) =>
     sdkFetcher.fetchWithAuth(url, init, {

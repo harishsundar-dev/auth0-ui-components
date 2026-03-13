@@ -12,32 +12,23 @@ import type { I18nServiceInterface } from '../i18n';
 import type { MfaApiClient } from '../services/mfa-step-up/mfa-step-up-api-types';
 
 /**
- * Auth parameters expected by SPA SDK's fetchWithAuth.
- * Scope is an array - SDK joins it internally.
+ * Auth parameters for fetcher functions.
+ * Used by both MyAccount/MyOrganization SDKs and Auth0 SDK's fetchWithAuth.
  * @internal
  */
-export interface SpaFetcherAuthParams {
+export interface FetcherAuthParams {
   scope?: string[];
   audience?: string;
-}
-
-/**
- * Authorization parameters passed by MyAccount/MyOrganization SDKs to custom fetchers.
- * @internal
- */
-export interface SdkFetcherAuthParams {
-  scope?: string[];
-  audience: string;
 }
 
 /**
  * Custom fetcher function signature expected by Auth0 SDK clients.
  * @internal
  */
-export type SdkFetcherSupplier = (
+export type FetcherSupplier = (
   url: string,
   init?: RequestInit,
-  authParams?: SdkFetcherAuthParams,
+  authParams?: FetcherAuthParams,
 ) => Promise<Response>;
 
 /**
@@ -56,7 +47,7 @@ export interface Auth0Fetcher {
   fetchWithAuth: (
     url: string,
     init: RequestInit | undefined,
-    authParams: SpaFetcherAuthParams | undefined,
+    authParams: FetcherAuthParams | undefined,
   ) => Promise<Response>;
 }
 

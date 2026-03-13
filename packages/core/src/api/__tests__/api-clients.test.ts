@@ -2,7 +2,7 @@ import { MyAccountClient } from '@auth0/myaccount-js';
 import { MyOrganizationClient } from '@auth0/myorganization-js';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { SdkFetcherSupplier, SpaAuthConfig } from '../../auth/auth-types';
+import type { FetcherSupplier, SpaAuthConfig } from '../../auth/auth-types';
 import {
   createMockContextInterface,
   mockProxyConfig,
@@ -79,7 +79,7 @@ describe('api-clients', () => {
         createMyAccountClient(mockProxyConfig);
 
         const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-        const fetcher = constructorOptions.fetcher as SdkFetcherSupplier;
+        const fetcher = constructorOptions.fetcher as FetcherSupplier;
         const mockFetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response());
 
         await fetcher(
@@ -105,7 +105,7 @@ describe('api-clients', () => {
         createMyAccountClient(mockProxyConfig);
 
         const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-        const fetcher = constructorOptions.fetcher as SdkFetcherSupplier;
+        const fetcher = constructorOptions.fetcher as FetcherSupplier;
         const mockFetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response());
 
         await fetcher('https://example.com', { method: 'GET' }, { scope: [], audience: 'test' });
@@ -122,7 +122,7 @@ describe('api-clients', () => {
         createMyAccountClient(createSpaConfig());
 
         const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-        const fetcher = constructorOptions.fetcher as SdkFetcherSupplier;
+        const fetcher = constructorOptions.fetcher as FetcherSupplier;
 
         await fetcher(
           'https://example.com',
@@ -141,7 +141,7 @@ describe('api-clients', () => {
         createMyAccountClient(createSpaConfig());
 
         const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-        const fetcher = constructorOptions.fetcher as SdkFetcherSupplier;
+        const fetcher = constructorOptions.fetcher as FetcherSupplier;
 
         await fetcher('https://example.com', { method: 'GET' }, undefined);
 
@@ -190,7 +190,7 @@ describe('api-clients', () => {
         createMyOrganizationClient(mockProxyConfig);
 
         const constructorOptions = vi.mocked(MyOrganizationClient).mock.calls[0]![0];
-        const fetcher = constructorOptions.fetcher as SdkFetcherSupplier;
+        const fetcher = constructorOptions.fetcher as FetcherSupplier;
         const mockFetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response());
 
         await fetcher(
@@ -213,7 +213,7 @@ describe('api-clients', () => {
         createMyOrganizationClient(createSpaConfig());
 
         const constructorOptions = vi.mocked(MyOrganizationClient).mock.calls[0]![0];
-        const fetcher = constructorOptions.fetcher as SdkFetcherSupplier;
+        const fetcher = constructorOptions.fetcher as FetcherSupplier;
 
         await fetcher(
           'https://example.com',

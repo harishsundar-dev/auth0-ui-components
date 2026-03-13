@@ -107,7 +107,7 @@ function MfaDialog({
  * @returns GateKeeper element.
  */
 export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
-  const { error, onRetry, clearError } = useGateKeeperContext();
+  const { error, onRetry } = useGateKeeperContext();
   const { isDarkMode } = useTheme();
   const [isRetrying, setIsRetrying] = useState(false);
   const [dismissedMfaToken, setDismissedMfaToken] = useState<string | null>(null);
@@ -118,12 +118,11 @@ export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
     setIsRetrying(true);
     setDismissedMfaToken(null);
     try {
-      const succeeded = await onRetry();
-      if (succeeded) clearError();
+      await onRetry?.();
     } finally {
       setIsRetrying(false);
     }
-  }, [onRetry, clearError]);
+  }, [onRetry]);
 
   const isMfaStepUp = isMfaRequiredError(error);
   const mfaError = isMfaStepUp ? normalizeMfaRequiredError(error) : null;

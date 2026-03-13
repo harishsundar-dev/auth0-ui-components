@@ -82,13 +82,12 @@ export const Auth0ComponentProvider = (
     children,
   } = props;
 
+  const proxyBaseUrl = props.mode === 'proxy' ? props.proxyConfig.baseUrl : undefined;
+
   const proxyAuthDetails = React.useMemo<AuthDetails | null>(
-    () =>
-      props.mode === 'proxy'
-        ? { domain: props.domain, authProxyUrl: props.proxyConfig.baseUrl }
-        : null,
+    () => (props.mode === 'proxy' ? { domain: props.domain, authProxyUrl: proxyBaseUrl } : null),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [props.mode, props.domain, props.mode === 'proxy' ? props.proxyConfig.baseUrl : null],
+    [props.mode, props.domain, proxyBaseUrl],
   );
 
   return (

@@ -24,7 +24,7 @@ import type { Auth0ComponentProviderProps } from '@/types/auth-types';
  * @returns Provider component tree
  */
 export const Auth0ComponentProvider = (
-  props: Auth0ComponentProviderProps & { children: React.ReactNode },
+  props: Extract<Auth0ComponentProviderProps, { mode?: 'direct' }> & { children: React.ReactNode },
 ) => {
   const {
     i18n,
@@ -44,7 +44,7 @@ export const Auth0ComponentProvider = (
     loader,
     children,
   } = props;
-  const authContext = props.mode !== 'proxy' ? props.authContext : undefined;
+  const authContext = props.authContext;
   const mergedToastSettings = useToastProvider(toastSettings);
 
   const auth0ReactContext = useAuth0();

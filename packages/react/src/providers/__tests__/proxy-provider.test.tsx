@@ -146,7 +146,11 @@ describe('Auth0ComponentProvider', () => {
     mockUseCoreClientInitialization.mockReturnValueOnce(null as never);
 
     render(
-      <Auth0ComponentProvider authDetails={{ authProxyUrl: '/api/auth' }}>
+      <Auth0ComponentProvider
+        domain="test.auth0.com"
+        mode="proxy"
+        proxyConfig={{ baseUrl: '/api/auth' }}
+      >
         <div data-testid="child-content">Test Content</div>
       </Auth0ComponentProvider>,
     );

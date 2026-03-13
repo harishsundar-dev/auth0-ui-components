@@ -179,7 +179,7 @@ describe('Auth0ComponentProvider (SPA)', () => {
     mockUseCoreClientInitialization.mockReturnValueOnce(null as never);
 
     render(
-      <Auth0ComponentProvider authDetails={{}}>
+      <Auth0ComponentProvider domain="test.auth0.com">
         <div data-testid="child-content">Test Content</div>
       </Auth0ComponentProvider>,
     );

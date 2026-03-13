@@ -6,35 +6,23 @@
 
 import {
   type ComponentStyling,
+  type MfaRequiredError,
   getComponentStyles,
   getStatusCode,
   isMfaRequiredError,
+  normalizeMfaRequiredError,
 } from '@auth0/universal-components-core';
 import { RefreshCcw } from 'lucide-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
+import { MfaStepUp } from '@/components/auth0/shared/mfa-step-up/mfa-step-up';
 import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import { useTheme } from '@/hooks/shared/use-theme';
 import { useTranslator } from '@/hooks/shared/use-translator';
-
-const GateKeeperViews = {
-  LOADING: 'LOADING',
-  MFA_CHALLENGE: 'MFA_CHALLENGE',
-  ERROR_FALLBACK: 'ERROR_FALLBACK',
-  SUCCESS: 'SUCCESS',
-} as const;
-
-type GateKeeperView = keyof typeof GateKeeperViews;
 
 interface GateKeeperProps {
   styling?: ComponentStyling<Record<string, string>>;
@@ -81,31 +69,36 @@ function ErrorFallback({ onRetry, isRetrying }: { onRetry: () => void; isRetryin
  * MFA step-up dialog.
  *
  * @param props - Component props.
- * @param props.onClose - Callback when the dialog is dismissed.
+ * @param props.token - MFA token from the step-up error.
+ * @param props.onComplete - Callback when MFA is completed successfully; triggers a retry.
+ * @param props.onClose - Callback when the dialog is dismissed without completing.
  * @returns MFA dialog element.
  * @internal
  */
-function MfaDialog({ onClose }: { onClose: () => void }) {
-  const { t } = useTranslator('gate_keeper');
-
+function MfaDialog({
+  error,
+  onComplete,
+  onClose,
+}: {
+  error: MfaRequiredError;
+  onComplete: () => void;
+  onClose: () => void;
+}) {
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{t('mfa.title')}</DialogTitle>
-          <DialogDescription>{t('mfa.subtitle')}</DialogDescription>
-        </DialogHeader>
-        {/* TODO: Replace with MFA challenge/enrollment flow */}
+        <MfaStepUp error={error} onComplete={onComplete} onCancel={onClose} />
       </DialogContent>
     </Dialog>
   );
 }
 
 /**
- * Guards children from rendering during loading/error states.
- * - Loading → spinner
- * - MFA required error → MFA step-up dialog, then retries on completion
- * - 5xx error → blocking error fallback with retry
+ * Guards children from rendering during loading/error states. MFA step-up overlays
+ * children without unmounting them, preserving any in-progress form state.
+ * - Loading → spinner (blocks children)
+ * - MFA required error → MFA step-up dialog overlaid on children
+ * - 5xx error or dismissed MFA → blocking error fallback with retry
  * - No error → children
  *
  * @param props - Component props.
@@ -119,11 +112,9 @@ function MfaDialog({ onClose }: { onClose: () => void }) {
 export function GateKeeper({ styling, isLoading, error, onRetry, children }: GateKeeperProps) {
   const { isDarkMode } = useTheme();
   const [isRetrying, setIsRetrying] = useState(false);
-  const [mfaInterrupted, setMfaInterrupted] = useState(false);
+  const [dismissedMfaToken, setDismissedMfaToken] = useState<string | null>(null);
 
   const styles = useMemo(() => getComponentStyles(styling, isDarkMode), [styling, isDarkMode]);
-
-  useEffect(() => setMfaInterrupted(false), [error]);
 
   const handleRetry = useCallback(async () => {
     setIsRetrying(true);
@@ -134,36 +125,40 @@ export function GateKeeper({ styling, isLoading, error, onRetry, children }: Gat
     }
   }, [onRetry]);
 
-  const view = useMemo((): GateKeeperView => {
-    if (isLoading || isRetrying) return GateKeeperViews.LOADING;
+  const isMfaStepUp = isMfaRequiredError(error);
+  const mfaError = isMfaStepUp ? normalizeMfaRequiredError(error) : null;
+  const isMfaDismissed = dismissedMfaToken === mfaError?.mfa_token;
+  const statusCode = getStatusCode(error);
+  const isSystemError = !!error && !!statusCode && statusCode >= 500;
 
-    const isMfaStepUp = isMfaRequiredError(error);
-    const statusCode = getStatusCode(error);
-    const isSystemError = !!error && !!statusCode && statusCode >= 500;
-
-    if (isMfaStepUp && !mfaInterrupted) return GateKeeperViews.MFA_CHALLENGE;
-
-    if (isSystemError || (isMfaStepUp && mfaInterrupted)) {
-      return GateKeeperViews.ERROR_FALLBACK;
-    }
-
-    return GateKeeperViews.SUCCESS;
-  }, [isLoading, isRetrying, error, mfaInterrupted]);
-
-  return (
-    <StyledScope style={styles.variables}>
-      {view === GateKeeperViews.LOADING && (
+  if (isLoading || isRetrying) {
+    return (
+      <StyledScope style={styles.variables}>
         <div className="flex items-center justify-center p-8">
           <Spinner />
         </div>
-      )}
-      {view === GateKeeperViews.MFA_CHALLENGE && (
-        <MfaDialog onClose={() => setMfaInterrupted(true)} />
-      )}
-      {view === GateKeeperViews.ERROR_FALLBACK && (
+      </StyledScope>
+    );
+  }
+
+  if (isSystemError || (isMfaStepUp && isMfaDismissed)) {
+    return (
+      <StyledScope style={styles.variables}>
         <ErrorFallback onRetry={handleRetry} isRetrying={isRetrying} />
+      </StyledScope>
+    );
+  }
+
+  return (
+    <StyledScope style={styles.variables}>
+      {children}
+      {mfaError && !isMfaDismissed && (
+        <MfaDialog
+          error={mfaError}
+          onComplete={handleRetry}
+          onClose={() => setDismissedMfaToken(mfaError.mfa_token)}
+        />
       )}
-      {view === GateKeeperViews.SUCCESS && children}
     </StyledScope>
   );
 }

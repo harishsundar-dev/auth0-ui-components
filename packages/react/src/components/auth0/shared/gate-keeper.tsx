@@ -81,6 +81,7 @@ function ErrorFallback({ onRetry, isRetrying }: { onRetry: () => void; isRetryin
  *
  * @param props - Component props.
  * @param props.onClose - Callback when the dialog is dismissed.
+ * @param props.onRetry - Callback to retry after MFA completion.
  * @returns MFA dialog element.
  * @internal
  */
@@ -113,8 +114,6 @@ function MfaDialog({ onClose, onRetry }: { onClose: () => void; onRetry: () => v
  * @param props - Component props.
  * @param props.styling - Styling configuration forwarded to the styled scope.
  * @param props.isLoading - Whether content is loading.
- * @param props.error - Error object, if any.
- * @param props.onRetry - Retry handler.
  * @param props.children - Child elements to render on success.
  * @returns GateKeeper element.
  */

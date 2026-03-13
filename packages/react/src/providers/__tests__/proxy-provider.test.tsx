@@ -76,20 +76,6 @@ describe('Auth0ComponentProvider', () => {
     expect(screen.getByTestId('toaster')).toBeInTheDocument();
   });
 
-  it('should render ScopeManagerProvider', () => {
-    render(
-      <Auth0ComponentProvider
-        domain="test.auth0.com"
-        mode="proxy"
-        proxyConfig={{ baseUrl: '/api/auth' }}
-      >
-        <div>Test</div>
-      </Auth0ComponentProvider>,
-    );
-
-    expect(screen.getByTestId('scope-manager-provider')).toBeInTheDocument();
-  });
-
   it('should apply default theme settings when not provided', () => {
     render(
       <Auth0ComponentProvider

@@ -1,36 +1,26 @@
 'use client';
 
-/**
- * GateKeeper context for provider-level error interception.
- * @module gate-keeper-context
- * @internal
- */
-
 import { createContext, useContext } from 'react';
 
-/** GateKeeper context value — error state plus retry and clear callbacks. */
 export interface GateKeeperContextValue {
-  error: unknown;
-  onRetry: () => Promise<boolean>;
-  clearError: () => void;
+  error: Error | null;
+  /** Defined only when an error is active. */
+  onRetry?: () => Promise<boolean>;
 }
 
-const GATE_KEEPER_DEFAULT_CONTEXT: GateKeeperContextValue = {
-  error: null,
-  onRetry: () => {
-    throw new Error('GateKeeperContext must be used within QueryProvider');
-  },
-  clearError: () => {
-    throw new Error('GateKeeperContext must be used within QueryProvider');
-  },
-};
-
-export const GateKeeperContext = createContext<GateKeeperContextValue>(GATE_KEEPER_DEFAULT_CONTEXT);
+export const GateKeeperContext = createContext<GateKeeperContextValue | null>(null);
 
 /**
  * @internal
  * @returns Current GateKeeper context value
+ * @throws Error if used outside of the GateKeeperProvider
  */
 export function useGateKeeperContext(): GateKeeperContextValue {
-  return useContext(GateKeeperContext);
+  const context = useContext(GateKeeperContext);
+
+  if (!context) {
+    throw new Error('useGateKeeperContext must be used within a GateKeeperProvider');
+  }
+
+  return context;
 }

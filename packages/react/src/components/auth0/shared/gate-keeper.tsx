@@ -119,7 +119,7 @@ function MfaDialog({ onClose, onRetry }: { onClose: () => void; onRetry: () => v
  * @returns GateKeeper element.
  */
 export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
-  const { error, onRetry, clearError } = useGateKeeperContext();
+  const { error, onRetry } = useGateKeeperContext();
   const { isDarkMode } = useTheme();
   const [isRetrying, setIsRetrying] = useState(false);
   const [mfaInterrupted, setMfaInterrupted] = useState(false);
@@ -132,12 +132,11 @@ export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
     setIsRetrying(true);
     setMfaInterrupted(false);
     try {
-      const succeeded = await onRetry();
-      if (succeeded) clearError();
+      await onRetry?.();
     } finally {
       setIsRetrying(false);
     }
-  }, [onRetry, clearError]);
+  }, [onRetry]);
 
   const view = useMemo((): GateKeeperView => {
     if (isLoading || isRetrying) return GateKeeperViews.LOADING;

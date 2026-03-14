@@ -1001,6 +1001,28 @@ describe('useSsoProviderEdit', () => {
       });
     });
 
+    it('should call onAfter callback after successful provider delete', async () => {
+      mockDelete.mockResolvedValue(undefined);
+      const onAfter = vi.fn();
+
+      const { result } = renderUseSsoProviderEdit(mockIdpId, {
+        sso: {
+          deleteAction: { onAfter },
+          deleteFromOrganizationAction: {},
+        },
+      });
+
+      await waitFor(() => {
+        expect(result.current.provider).toEqual(mockProvider);
+      });
+
+      await result.current.onDeleteConfirm();
+
+      await waitFor(() => {
+        expect(onAfter).toHaveBeenCalledWith(mockProvider);
+      });
+    });
+
     it('should call onAfter callback after successful SCIM token delete', async () => {
       mockScimTokensDelete.mockResolvedValue(undefined);
       const onAfter = vi.fn();

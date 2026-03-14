@@ -1,3 +1,5 @@
+'use client';
+
 /**
  * TanStack Query provider wrapper.
  * @module query-provider

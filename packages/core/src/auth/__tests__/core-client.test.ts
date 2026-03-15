@@ -24,11 +24,13 @@ describe('createCoreClient', () => {
   const mockMyOrganizationClient = {
     organizationDetails: { get: vi.fn(), update: vi.fn() },
     organization: { identityProviders: { list: vi.fn() } },
-  } as unknown as MyOrganizationClient;
+    withScopes: vi.fn().mockReturnThis(),
+  } as unknown as MyOrganizationClient & { withScopes: (scopes: string) => MyOrganizationClient };
   const mockMyAccountClient = {
     factors: { list: vi.fn() },
     authenticationMethods: { list: vi.fn(), create: vi.fn(), delete: vi.fn(), verify: vi.fn() },
-  } as unknown as MyAccountClient;
+    withScopes: vi.fn().mockReturnThis(),
+  } as unknown as MyAccountClient & { withScopes: (scopes: string) => MyAccountClient };
   const mockMfaApiClient = {
     getAuthenticators: vi.fn().mockResolvedValue([]),
     enroll: vi.fn().mockResolvedValue({}),
@@ -161,7 +163,9 @@ describe('createCoreClient', () => {
     });
 
     it('throws when myAccountApiClient is not available', async () => {
-      createMyAccountClientMock.mockReturnValueOnce(null as unknown as MyAccountClient);
+      createMyAccountClientMock.mockReturnValueOnce(
+        null as unknown as MyAccountClient & { withScopes: (scopes: string) => MyAccountClient },
+      );
 
       const authDetails = createAuthDetails();
       const client = await createCoreClient(authDetails);
@@ -172,7 +176,11 @@ describe('createCoreClient', () => {
     });
 
     it('throws when myOrganizationApiClient is not available', async () => {
-      createMyOrganizationClientMock.mockReturnValueOnce(null as unknown as MyOrganizationClient);
+      createMyOrganizationClientMock.mockReturnValueOnce(
+        null as unknown as MyOrganizationClient & {
+          withScopes: (scopes: string) => MyOrganizationClient;
+        },
+      );
       const authDetails = createAuthDetails();
       const client = await createCoreClient(authDetails);
 

@@ -235,13 +235,19 @@ export interface BaseCoreClientInterface {
 }
 
 /**
+ * Client with deprecated withScopes method for backward compatibility.
+ * @internal
+ */
+type WithScopes<T> = T & { withScopes: (scopes: string) => T };
+
+/**
  * Full CoreClient interface with API clients.
  * @internal
  */
 export interface CoreClientInterface extends BaseCoreClientInterface {
-  myAccountApiClient: MyAccountClient | undefined;
-  myOrganizationApiClient: MyOrganizationClient | undefined;
-  getMyAccountApiClient: () => MyAccountClient;
-  getMyOrganizationApiClient: () => MyOrganizationClient;
+  myAccountApiClient: WithScopes<MyAccountClient> | undefined;
+  myOrganizationApiClient: WithScopes<MyOrganizationClient> | undefined;
+  getMyAccountApiClient: () => WithScopes<MyAccountClient>;
+  getMyOrganizationApiClient: () => WithScopes<MyOrganizationClient>;
   getMFAStepUpApiClient: () => MfaApiClient;
 }

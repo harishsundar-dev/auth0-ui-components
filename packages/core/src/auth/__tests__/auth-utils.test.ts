@@ -10,6 +10,9 @@ const createMockContext = (overrides: object = {}) => ({
     challenge: vi.fn().mockResolvedValue({}),
     verify: vi.fn().mockResolvedValue({}),
   },
+  createFetcher: vi.fn().mockReturnValue({
+    fetchWithAuth: vi.fn().mockResolvedValue(new Response()),
+  }),
   ...overrides,
 });
 

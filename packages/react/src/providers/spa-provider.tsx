@@ -54,8 +54,6 @@ export const Auth0ComponentProvider = (
       return authContext;
     }
     if (auth0ReactContext && 'isAuthenticated' in auth0ReactContext) {
-      // Cast via unknown because @auth0/auth0-react's Auth0ContextInterface
-      // doesn't include getConfiguration which our BasicAuth0ContextInterface requires
       return auth0ReactContext as BasicAuth0ContextInterface;
     }
 

@@ -34,7 +34,7 @@ export function ProfileDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 p-2 rounded-md transition-colors hover:bg-accent/60"
+        className="flex items-center space-x-2 p-2 rounded-md transition-colors hover:bg-accent/60 cursor-pointer"
       >
         {user.picture ? (
           <img className="h-8 w-8 rounded-full" src={user.picture} alt={user.name || 'Profile'} />
@@ -62,7 +62,7 @@ export function ProfileDropdown() {
           </Link>
           <a
             href="/auth/logout"
-            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-accent/60"
+            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-accent/60 cursor-pointer"
           >
             <div className="flex items-center space-x-2">
               <LogOut className="h-4 w-4" />

@@ -36,7 +36,9 @@ export const Navbar: React.FC = () => {
               {isAuthenticated ? (
                 <ProfileDropdown />
               ) : (
-                <Button onClick={() => loginWithRedirect()}>{t('nav-bar.sign-in-button')}</Button>
+                <Button className="cursor-pointer" onClick={() => loginWithRedirect()}>
+                  {t('nav-bar.sign-in-button')}
+                </Button>
               )}
             </div>
           </div>

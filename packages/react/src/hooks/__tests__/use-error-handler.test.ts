@@ -27,6 +27,8 @@ vi.mock('@/components/auth0/shared/toast');
 describe('useErrorHandler', () => {
   const mockT = createMockI18nService().translator('common');
 
+  let handleError: ReturnType<typeof useErrorHandler>;
+
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(useTranslatorModule, 'useTranslator').mockReturnValue({
@@ -36,11 +38,6 @@ describe('useErrorHandler', () => {
       fallbackLanguage: undefined,
     });
     mockResolveErrorMessage.mockReturnValue('resolved error message');
-  });
-
-  let handleError: ReturnType<typeof useErrorHandler>;
-
-  beforeEach(() => {
     const { result } = renderHook(() => useErrorHandler());
     handleError = result.current;
   });
@@ -82,10 +79,15 @@ describe('useErrorHandler', () => {
       });
 
       it.each([
-        [true, { body: { type: 'A0E-403-0002' } }, 'error.insufficient_scope'],
-        [true, { body: { type: 'some-other-code' } }, 'error.forbidden'],
-        [false, new Error('forbidden'), 'error.forbidden'],
-      ] as const)('hasApiErrorBody=%s should show %s', (hasBody, error, expectedMessage) => {
+        [
+          'insufficient scope body type',
+          true,
+          { body: { type: 'A0E-403-0002' } },
+          'error.insufficient_scope',
+        ],
+        ['unrecognised body type', true, { body: { type: 'some-other-code' } }, 'error.forbidden'],
+        ['no body', false, new Error('forbidden'), 'error.forbidden'],
+      ] as const)('should show correct toast for %s', (_label, hasBody, error, expectedMessage) => {
         mockHasApiErrorBody.mockReturnValue(hasBody);
 
         handleError(error);

@@ -47,7 +47,7 @@ export function createProxyFetcher(): FetcherSupplier {
  * @internal
  */
 export function createSpaFetcher(config: SpaAuthConfig, dpopNonceId: string): FetcherSupplier {
-  const sdkFetcher = config.contextInterface.createFetcher!({ dpopNonceId });
+  const sdkFetcher = config.contextInterface.createFetcher({ dpopNonceId });
   return (url, init, authParams) =>
     sdkFetcher.fetchWithAuth(url, init, {
       scope: authParams?.scope,

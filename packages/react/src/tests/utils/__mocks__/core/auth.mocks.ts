@@ -15,6 +15,9 @@ export const createMockAuth = (overrides?: Partial<AuthDetails>): AuthDetails =>
       challenge: vi.fn().mockResolvedValue({}),
       verify: vi.fn().mockResolvedValue({}),
     },
+    createFetcher: vi.fn().mockReturnValue({
+      fetchWithAuth: vi.fn().mockResolvedValue(new Response()),
+    }),
   },
   ...overrides,
 });

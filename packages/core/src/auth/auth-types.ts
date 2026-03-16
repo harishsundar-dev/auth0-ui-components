@@ -90,7 +90,7 @@ export interface ClientConfiguration {
 export interface BasicAuth0ContextInterface {
   getConfiguration: () => Readonly<ClientConfiguration>;
   mfa: MfaApiClient;
-  createFetcher?: CreateFetcherFunction;
+  createFetcher: CreateFetcherFunction;
 }
 
 /**

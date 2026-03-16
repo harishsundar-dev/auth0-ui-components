@@ -38,14 +38,18 @@ describe('useErrorHandler', () => {
     mockResolveErrorMessage.mockReturnValue('resolved error message');
   });
 
-  const renderUseErrorHandler = () => renderHook(() => useErrorHandler());
+  let handleError: ReturnType<typeof useErrorHandler>;
+
+  beforeEach(() => {
+    const { result } = renderHook(() => useErrorHandler());
+    handleError = result.current;
+  });
 
   describe('when error is not notifiable', () => {
     it('should return early without showing a toast', () => {
       mockIsNotifiableError.mockReturnValue(false);
 
-      const { result } = renderUseErrorHandler();
-      result.current(new Error('non-notifiable'));
+      handleError(new Error('non-notifiable'));
 
       expect(showToast).not.toHaveBeenCalled();
     });
@@ -64,8 +68,7 @@ describe('useErrorHandler', () => {
     ])('%i error should show %s toast', (status, expectedMessage) => {
       mockGetStatusCode.mockReturnValue(status);
 
-      const { result } = renderUseErrorHandler();
-      result.current(new Error('error'));
+      handleError(new Error('error'));
 
       expect(showToast).toHaveBeenCalledWith({
         type: 'error',
@@ -78,46 +81,23 @@ describe('useErrorHandler', () => {
         mockGetStatusCode.mockReturnValue(403);
       });
 
-      it('should show insufficient_scope toast when error body type includes INSUFFICIENT_SCOPE', () => {
-        mockHasApiErrorBody.mockReturnValue(true);
-        const error = { body: { type: 'A0E-403-0002' } };
+      it.each([
+        [true, { body: { type: 'A0E-403-0002' } }, 'error.insufficient_scope'],
+        [true, { body: { type: 'some-other-code' } }, 'error.forbidden'],
+        [false, new Error('forbidden'), 'error.forbidden'],
+      ] as const)('hasApiErrorBody=%s should show %s', (hasBody, error, expectedMessage) => {
+        mockHasApiErrorBody.mockReturnValue(hasBody);
 
-        const { result } = renderUseErrorHandler();
-        result.current(error);
-
-        expect(showToast).toHaveBeenCalledWith({
-          type: 'error',
-          message: 'error.insufficient_scope',
-        });
-      });
-
-      it('should show forbidden toast when error body type does not include INSUFFICIENT_SCOPE', () => {
-        mockHasApiErrorBody.mockReturnValue(true);
-        const error = { body: { type: 'some-other-code' } };
-
-        const { result } = renderUseErrorHandler();
-        result.current(error);
+        handleError(error);
 
         expect(showToast).toHaveBeenCalledWith({
           type: 'error',
-          message: 'error.forbidden',
-        });
-      });
-
-      it('should show forbidden toast when error has no body', () => {
-        mockHasApiErrorBody.mockReturnValue(false);
-
-        const { result } = renderUseErrorHandler();
-        result.current(new Error('forbidden'));
-
-        expect(showToast).toHaveBeenCalledWith({
-          type: 'error',
-          message: 'error.forbidden',
+          message: expectedMessage,
         });
       });
     });
 
-    describe('unknown / unmapped status code', () => {
+    describe('when status code is not mapped', () => {
       beforeEach(() => {
         mockGetStatusCode.mockReturnValue(500);
         mockResolveErrorMessage.mockReturnValue('resolved error');
@@ -126,35 +106,28 @@ describe('useErrorHandler', () => {
       it('should use resolveErrorMessage with provided fallbackMessage', () => {
         const error = new Error('server error');
 
-        const { result } = renderUseErrorHandler();
-        result.current(error, { fallbackMessage: 'custom fallback' });
+        handleError(error, { fallbackMessage: 'custom fallback' });
 
         expect(mockResolveErrorMessage).toHaveBeenCalledWith(error, 'custom fallback');
-        expect(showToast).toHaveBeenCalledWith({
-          type: 'error',
-          message: 'resolved error',
-        });
+        expect(showToast).toHaveBeenCalledWith({ type: 'error', message: 'resolved error' });
       });
 
       it('should fall back to generic error message when no fallbackMessage is provided', () => {
         const error = new Error('server error');
 
-        const { result } = renderUseErrorHandler();
-        result.current(error);
+        handleError(error);
 
         expect(mockResolveErrorMessage).toHaveBeenCalledWith(error, 'error.generic');
-        expect(showToast).toHaveBeenCalledWith({
-          type: 'error',
-          message: 'resolved error',
-        });
+        expect(showToast).toHaveBeenCalledWith({ type: 'error', message: 'resolved error' });
       });
+    });
 
-      it('should fall back to generic error message when status is undefined', () => {
+    describe('when status code is absent', () => {
+      it('should fall back to generic error message', () => {
         mockGetStatusCode.mockReturnValue(undefined);
         const error = new Error('unknown error');
 
-        const { result } = renderUseErrorHandler();
-        result.current(error);
+        handleError(error);
 
         expect(mockResolveErrorMessage).toHaveBeenCalledWith(error, 'error.generic');
       });

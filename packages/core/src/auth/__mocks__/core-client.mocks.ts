@@ -1,37 +1,15 @@
 import { vi } from 'vitest';
 
 import { createMockI18nService } from '../../i18n/__mocks__/i18n-service.mocks';
-import { TEST_CLIENT_ID, TEST_DOMAIN } from '../../internals/__mocks__/shared/api-service.mocks';
-import type { AuthDetails, BasicAuth0ContextInterface, CoreClientInterface } from '../auth-types';
-
-/**
- * Creates a mock BasicAuth0ContextInterface
- */
-export const createMockBasicAuth0Context = (
-  overrides?: Partial<BasicAuth0ContextInterface>,
-): BasicAuth0ContextInterface => ({
-  getConfiguration: vi.fn().mockReturnValue({
-    domain: TEST_DOMAIN,
-    clientId: TEST_CLIENT_ID,
-  }),
-  mfa: {
-    getAuthenticators: vi.fn().mockResolvedValue([]),
-    enroll: vi.fn().mockResolvedValue({}),
-    challenge: vi.fn().mockResolvedValue({}),
-    verify: vi.fn().mockResolvedValue({}),
-  },
-  createFetcher: vi.fn().mockReturnValue({
-    fetchWithAuth: vi.fn().mockResolvedValue(new Response()),
-  }),
-  ...overrides,
-});
+import { createMockContextInterface } from '../../internals/__mocks__/shared/api-service.mocks';
+import type { AuthDetails, CoreClientInterface } from '../auth-types';
 
 /**
  * Creates a mock AuthDetails object
  */
 export const createMockAuthDetails = (overrides?: Partial<AuthDetails>): AuthDetails => ({
   authProxyUrl: 'https://mock-auth-proxy.com',
-  contextInterface: createMockBasicAuth0Context(),
+  contextInterface: createMockContextInterface(),
   ...overrides,
 });
 
@@ -198,6 +176,6 @@ export const createMockProxyCoreClient = (
  */
 export const createMockUnauthenticatedCoreClient = (): CoreClientInterface => {
   return createMockCoreClient({
-    contextInterface: createMockBasicAuth0Context(),
+    contextInterface: createMockContextInterface(),
   });
 };

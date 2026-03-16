@@ -1,0 +1,212 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import type { SpaAuthConfig } from '../../auth/auth-types';
+import {
+  createMockContextInterface,
+  TEST_DOMAIN,
+} from '../../internals/__mocks__/shared/api-service.mocks';
+import {
+  addDeprecatedWithScopes,
+  AUTH0_SCOPE_HEADER,
+  createProxyFetcher,
+  createSpaFetcher,
+} from '../api-utils';
+
+import { stubFetch } from './__mocks__/api-utils.mocks';
+
+describe('api-utils', () => {
+  describe('addDeprecatedWithScopes', () => {
+    it('returns the same client instance with withScopes method', () => {
+      const mockClient = { someMethod: vi.fn() };
+      const wrappedClient = addDeprecatedWithScopes(mockClient);
+
+      expect(wrappedClient).toHaveProperty('withScopes');
+      expect(wrappedClient.someMethod).toBe(mockClient.someMethod);
+    });
+
+    it('withScopes method is a no-op that returns the same client', () => {
+      const mockClient = { someMethod: vi.fn() };
+      const wrappedClient = addDeprecatedWithScopes(mockClient);
+
+      const result = wrappedClient.withScopes('read:users write:users');
+      expect(result).toBe(mockClient);
+    });
+
+    it('preserves all original client properties', () => {
+      const mockClient = {
+        method1: vi.fn(),
+        method2: vi.fn(),
+        property: 'value',
+      };
+      const wrappedClient = addDeprecatedWithScopes(mockClient);
+
+      expect(wrappedClient.method1).toBe(mockClient.method1);
+      expect(wrappedClient.method2).toBe(mockClient.method2);
+      expect(wrappedClient.property).toBe('value');
+    });
+  });
+
+  describe('createProxyFetcher', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
+    it('sets auth0-scope header when scope array is provided', async () => {
+      const mockFetch = stubFetch();
+      const fetcher = createProxyFetcher();
+
+      await fetcher(
+        'https://example.com/api',
+        { method: 'POST' },
+        { scope: ['read:users', 'write:users'] },
+      );
+
+      const [url, requestInit] = mockFetch.mock.calls[0]!;
+      expect(url).toBe('https://example.com/api');
+      expect((requestInit?.headers as Headers).get(AUTH0_SCOPE_HEADER)).toBe(
+        'read:users write:users',
+      );
+    });
+
+    it('does not set auth0-scope header when scope array is empty', async () => {
+      const mockFetch = stubFetch();
+      const fetcher = createProxyFetcher();
+
+      await fetcher('https://example.com/api', { method: 'GET' }, { scope: [] });
+
+      const [, requestInit] = mockFetch.mock.calls[0]!;
+      expect((requestInit?.headers as Headers).get(AUTH0_SCOPE_HEADER)).toBeNull();
+    });
+
+    it('does not set auth0-scope header when authParams is undefined', async () => {
+      const mockFetch = stubFetch();
+      const fetcher = createProxyFetcher();
+
+      await fetcher('https://example.com/api', { method: 'GET' }, undefined);
+
+      const [, requestInit] = mockFetch.mock.calls[0]!;
+      expect((requestInit?.headers as Headers).get(AUTH0_SCOPE_HEADER)).toBeNull();
+    });
+
+    it('preserves existing headers from init', async () => {
+      const mockFetch = stubFetch();
+      const fetcher = createProxyFetcher();
+      const customHeaders = new Headers({ 'X-Custom': 'value' });
+
+      await fetcher(
+        'https://example.com/api',
+        { method: 'POST', headers: customHeaders },
+        { scope: ['read:users'] },
+      );
+
+      const [, requestInit] = mockFetch.mock.calls[0]!;
+      const headers = requestInit?.headers as Headers;
+      expect(headers.get('X-Custom')).toBe('value');
+      expect(headers.get(AUTH0_SCOPE_HEADER)).toBe('read:users');
+    });
+
+    it('preserves other init options', async () => {
+      const mockFetch = stubFetch();
+      const fetcher = createProxyFetcher();
+      const body = JSON.stringify({ data: 'test' });
+
+      await fetcher(
+        'https://example.com/api',
+        { method: 'PUT', body, credentials: 'include' },
+        undefined,
+      );
+
+      const [, requestInit] = mockFetch.mock.calls[0]!;
+      expect(requestInit?.method).toBe('PUT');
+      expect(requestInit?.body).toBe(body);
+      expect(requestInit?.credentials).toBe('include');
+    });
+  });
+
+  describe('createSpaFetcher', () => {
+    const mockFetchWithAuth = vi.fn().mockResolvedValue(new Response());
+    const mockCreateFetcher = vi.fn().mockReturnValue({
+      fetchWithAuth: mockFetchWithAuth,
+    });
+
+    const createSpaConfig = (): SpaAuthConfig => ({
+      mode: 'spa',
+      domain: TEST_DOMAIN,
+      contextInterface: {
+        ...createMockContextInterface(),
+        createFetcher: mockCreateFetcher,
+      },
+    });
+
+    beforeEach(() => {
+      vi.clearAllMocks();
+      mockCreateFetcher.mockReturnValue({
+        fetchWithAuth: mockFetchWithAuth,
+      });
+    });
+
+    it('calls createFetcher with correct dpopNonceId', () => {
+      const config = createSpaConfig();
+      const dpopNonceId = '__test_dpop_nonce__';
+
+      createSpaFetcher(config, dpopNonceId);
+
+      expect(mockCreateFetcher).toHaveBeenCalledWith({ dpopNonceId });
+    });
+
+    it('delegates to SDK fetchWithAuth with scope and audience', async () => {
+      const config = createSpaConfig();
+      const fetcher = createSpaFetcher(config, '__test_nonce__');
+
+      await fetcher(
+        'https://example.com/api',
+        { method: 'POST', body: '{}' },
+        { scope: ['read:org', 'write:org'], audience: 'https://tenant.auth0.com/api/' },
+      );
+
+      expect(mockFetchWithAuth).toHaveBeenCalledWith(
+        'https://example.com/api',
+        { method: 'POST', body: '{}' },
+        { scope: ['read:org', 'write:org'], audience: 'https://tenant.auth0.com/api/' },
+      );
+    });
+
+    it('handles undefined authParams', async () => {
+      const config = createSpaConfig();
+      const fetcher = createSpaFetcher(config, '__test_nonce__');
+
+      await fetcher('https://example.com/api', { method: 'GET' }, undefined);
+
+      expect(mockFetchWithAuth).toHaveBeenCalledWith(
+        'https://example.com/api',
+        { method: 'GET' },
+        { scope: undefined, audience: undefined },
+      );
+    });
+
+    it('handles empty scope array', async () => {
+      const config = createSpaConfig();
+      const fetcher = createSpaFetcher(config, '__test_nonce__');
+
+      await fetcher('https://example.com/api', { method: 'GET' }, { scope: [] });
+
+      expect(mockFetchWithAuth).toHaveBeenCalledWith(
+        'https://example.com/api',
+        { method: 'GET' },
+        { scope: [], audience: undefined },
+      );
+    });
+
+    it('handles undefined init parameter', async () => {
+      const config = createSpaConfig();
+      const fetcher = createSpaFetcher(config, '__test_nonce__');
+
+      await fetcher('https://example.com/api', undefined, { scope: ['read:users'] });
+
+      expect(mockFetchWithAuth).toHaveBeenCalledWith('https://example.com/api', undefined, {
+        scope: ['read:users'],
+        audience: undefined,
+      });
+    });
+  });
+});

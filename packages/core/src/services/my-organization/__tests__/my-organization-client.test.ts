@@ -1,6 +1,7 @@
 import { MyOrganizationClient } from '@auth0/myorganization-js';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { stubFetch } from '../../../api/__tests__/__mocks__/api-utils.mocks';
 import { AUTH0_SCOPE_HEADER } from '../../../api/api-utils';
 import type { FetcherSupplier, SpaAuthConfig } from '../../../auth/auth-types';
 import {
@@ -69,12 +70,16 @@ describe('createMyOrganizationClient', () => {
   });
 
   describe('proxy mode fetcher', () => {
+    afterEach(() => {
+      vi.unstubAllGlobals();
+    });
+
     it('sets auth0-scope header when authParams has scope array', async () => {
+      const mockFetch = stubFetch();
       createMyOrganizationClient(mockProxyConfig);
 
       const constructorOptions = vi.mocked(MyOrganizationClient).mock.calls[0]![0];
       const fetcher = constructorOptions.fetcher as FetcherSupplier;
-      const mockFetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response());
 
       await fetcher(
         'https://example.com',
@@ -84,8 +89,6 @@ describe('createMyOrganizationClient', () => {
 
       const [, requestInit] = mockFetch.mock.calls[0]!;
       expect((requestInit?.headers as Headers).get(AUTH0_SCOPE_HEADER)).toBe('read:org write:org');
-
-      mockFetch.mockRestore();
     });
   });
 

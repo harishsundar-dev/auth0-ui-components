@@ -26,6 +26,9 @@ export const createMockContextInterface = (): BasicAuth0ContextInterface => ({
     challenge: vi.fn().mockResolvedValue({}),
     verify: vi.fn().mockResolvedValue({}),
   },
+  createFetcher: vi.fn().mockReturnValue({
+    fetchWithAuth: vi.fn().mockResolvedValue(new Response()),
+  }),
 });
 
 // =============================================================================
@@ -116,6 +119,9 @@ export function createMockSpaConfig(): SpaAuthConfig {
         challenge: vi.fn().mockResolvedValue({}),
         verify: vi.fn().mockResolvedValue({}),
       },
+      createFetcher: vi.fn().mockReturnValue({
+        fetchWithAuth: vi.fn().mockResolvedValue(new Response()),
+      }),
     },
   };
 }

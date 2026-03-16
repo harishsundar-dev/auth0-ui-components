@@ -6,9 +6,10 @@
 
 import { initializeMfaStepUpClient } from '@core/services/mfa-step-up/mfa-step-up-api-service';
 
-import { createMyAccountClient, createMyOrganizationClient } from '../api/api-clients';
 import type { I18nInitOptions } from '../i18n';
 import { createI18nService } from '../i18n';
+import { createMyAccountClient } from '../services/my-account/my-account-client';
+import { createMyOrganizationClient } from '../services/my-organization/my-organization-client';
 
 import type { AuthDetails, CoreClientInterface } from './auth-types';
 import { AuthUtils } from './auth-utils';

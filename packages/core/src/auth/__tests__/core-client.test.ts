@@ -3,20 +3,22 @@ import type { MyOrganizationClient } from '@auth0/myorganization-js';
 import { initializeMfaStepUpClient } from '@core/services/mfa-step-up/mfa-step-up-api-service';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createMyAccountClient, createMyOrganizationClient } from '../../api/api-clients';
 import { createI18nService } from '../../i18n';
 import { createMockI18nService } from '../../i18n/__mocks__/i18n-service.mocks';
 import {
   createMockContextInterface,
   TEST_DOMAIN,
 } from '../../internals/__mocks__/shared/api-service.mocks';
+import { createMyAccountClient } from '../../services/my-account/my-account-client';
+import { createMyOrganizationClient } from '../../services/my-organization/my-organization-client';
 import type { AuthDetails } from '../auth-types';
 import { createCoreClient } from '../core-client';
 
 // Mock the modules
 vi.mock('@core/i18n');
 vi.mock('@core/services/mfa-step-up/mfa-step-up-api-service');
-vi.mock('../../api/api-clients');
+vi.mock('../../services/my-account/my-account-client');
+vi.mock('../../services/my-organization/my-organization-client');
 
 describe('createCoreClient', () => {
   // Create mock instances

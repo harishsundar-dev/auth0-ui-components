@@ -9,14 +9,16 @@ import {
   TEST_DOMAIN,
 } from '../../internals/__mocks__/shared/api-service.mocks';
 import {
-  AUTH0_SCOPE_HEADER,
   createMyAccountClient,
-  createMyOrganizationClient,
   MY_ACCOUNT_DPOP_NONCE_ID,
   MY_ACCOUNT_PROXY_PATH,
+} from '../../services/my-account/my-account-client';
+import {
+  createMyOrganizationClient,
   MY_ORGANIZATION_DPOP_NONCE_ID,
   MY_ORGANIZATION_PROXY_PATH,
-} from '../api-clients';
+} from '../../services/my-organization/my-organization-client';
+import { AUTH0_SCOPE_HEADER } from '../api-utils';
 
 vi.mock('@auth0/myaccount-js', () => ({ MyAccountClient: vi.fn() }));
 vi.mock('@auth0/myorganization-js', () => ({ MyOrganizationClient: vi.fn() }));

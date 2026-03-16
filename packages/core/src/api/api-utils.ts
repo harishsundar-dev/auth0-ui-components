@@ -1,0 +1,56 @@
+/**
+ * Shared client initialization helpers.
+ * @module api-utils
+ * @internal
+ */
+
+import type { FetcherSupplier, SpaAuthConfig } from '../auth/auth-types';
+
+export const AUTH0_SCOPE_HEADER = 'auth0-scope';
+
+/**
+ * Adds deprecated withScopes method for backward compatibility.
+ * @param client - SDK client instance
+ * @returns Client with noop withScopes method
+ * @deprecated This wrapper will be removed in next major version. Scopes are handled automatically.
+ * @internal
+ */
+export function addDeprecatedWithScopes<T extends object>(
+  client: T,
+): T & { withScopes: (scopes: string) => T } {
+  return Object.assign(client, {
+    withScopes: (_scopes: string) => client,
+  }) as T & { withScopes: (scopes: string) => T };
+}
+
+/**
+ * Creates a fetcher function for proxy mode that injects scopes via auth0-scope header.
+ * The proxy will extract scopes from the header and request the appropriate token.
+ * @returns Fetcher function that sets auth0-scope header
+ * @internal
+ */
+export function createProxyFetcher(): FetcherSupplier {
+  return async (url, init, authParams) => {
+    const headers = new Headers(init?.headers);
+    if (authParams?.scope?.length) {
+      headers.set(AUTH0_SCOPE_HEADER, authParams.scope.join(' '));
+    }
+    return fetch(url, { ...init, headers });
+  };
+}
+
+/**
+ * Creates a fetcher function for SPA mode using Auth0 SDK's createFetcher.
+ * @param config - SPA auth configuration with context interface
+ * @param dpopNonceId - Unique identifier for DPoP nonce management
+ * @returns Fetcher function that delegates to SDK's fetchWithAuth
+ * @internal
+ */
+export function createSpaFetcher(config: SpaAuthConfig, dpopNonceId: string): FetcherSupplier {
+  const sdkFetcher = config.contextInterface.createFetcher!({ dpopNonceId });
+  return (url, init, authParams) =>
+    sdkFetcher.fetchWithAuth(url, init, {
+      scope: authParams?.scope,
+      audience: authParams?.audience,
+    });
+}

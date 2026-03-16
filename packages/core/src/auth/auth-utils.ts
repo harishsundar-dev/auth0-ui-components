@@ -1,54 +1,6 @@
-import type { AuthDetails, BasicAuth0ContextInterface, ClientAuthConfig } from './auth-types';
+import type { AuthDetails, ClientAuthConfig } from './auth-types';
 
 export const AuthUtils = {
-  /**
-   * Converts a domain string to a properly formatted URL with HTTPS protocol and trailing slash.
-   * @param domain - The domain string to convert.
-   * @returns A properly formatted URL with HTTPS protocol and trailing slash.
-   */
-  toURL(domain: string): string {
-    const domainWithSlash = domain.endsWith('/') ? domain : `${domain}/`;
-    if (domainWithSlash.startsWith('http://') || domainWithSlash.startsWith('https://')) {
-      return domainWithSlash;
-    }
-    return `https://${domainWithSlash}`;
-  },
-
-  /**
-   * Builds an audience URL from a domain and audience path.
-   * @param domain - The Auth0 tenant domain.
-   * @param audiencePath - The API audience path segment.
-   * @returns The constructed audience URL string.
-   */
-  buildAudience(domain: string, audiencePath: string): string {
-    return `${AuthUtils.toURL(domain)}${audiencePath}/`;
-  },
-
-  /**
-   * Retrieves an access token silently for the given domain and audience path.
-   * @param contextInterface - The Auth0 context interface.
-   * @param domain - The Auth0 tenant domain.
-   * @param audiencePath - The API audience path segment.
-   * @param scope - The required scopes.
-   * @param cacheMode - Optional cache mode override.
-   * @returns The access token string.
-   */
-  async getToken(
-    contextInterface: BasicAuth0ContextInterface,
-    domain: string,
-    audiencePath: string,
-    scope: string,
-    cacheMode?: 'on' | 'off' | 'cache-only',
-  ): Promise<string> {
-    const audience = AuthUtils.buildAudience(domain, audiencePath);
-    const tokenResponse = await contextInterface.getAccessTokenSilently({
-      authorizationParams: { audience, scope },
-      detailedResponse: true,
-      ...(cacheMode && { cacheMode }),
-    });
-    return tokenResponse.access_token;
-  },
-
   /**
    * Resolves the appropriate ClientAuthConfig based on provided AuthDetails.
    * @internal

@@ -2,42 +2,7 @@ import { vi } from 'vitest';
 
 import { createMockI18nService } from '../../i18n/__mocks__/i18n-service.mocks';
 import { TEST_CLIENT_ID, TEST_DOMAIN } from '../../internals/__mocks__/shared/api-service.mocks';
-import type {
-  AuthDetails,
-  BasicAuth0ContextInterface,
-  CoreClientInterface,
-  User,
-  Auth0ContextInterface,
-  GetTokenSilentlyVerboseResponse,
-  GetTokenSilentlyOptions,
-} from '../auth-types';
-
-/**
- * Creates a mock user object
- */
-export const createMockUser = (overrides?: Partial<User>): User => ({
-  sub: 'auth0|test-user-123',
-  name: 'Test User',
-  given_name: 'Test',
-  family_name: 'User',
-  email: 'user@example.com',
-  email_verified: true,
-  picture: 'https://example.com/avatar.jpg',
-  updated_at: '2024-01-01T00:00:00.000Z',
-  ...overrides,
-});
-
-/**
- * Creates a mock GetTokenSilentlyVerboseResponse
- */
-export const createMockVerboseTokenResponse = (
-  overrides?: Partial<GetTokenSilentlyVerboseResponse>,
-): GetTokenSilentlyVerboseResponse => ({
-  id_token: 'mock-id-token',
-  access_token: 'mock-access-token',
-  expires_in: 3600,
-  ...overrides,
-});
+import type { AuthDetails, BasicAuth0ContextInterface, CoreClientInterface } from '../auth-types';
 
 /**
  * Creates a mock BasicAuth0ContextInterface
@@ -45,16 +10,6 @@ export const createMockVerboseTokenResponse = (
 export const createMockBasicAuth0Context = (
   overrides?: Partial<BasicAuth0ContextInterface>,
 ): BasicAuth0ContextInterface => ({
-  isAuthenticated: true,
-  user: createMockUser(),
-  getAccessTokenSilently: vi.fn().mockImplementation(async (options?: GetTokenSilentlyOptions) => {
-    if (options?.detailedResponse) {
-      return createMockVerboseTokenResponse();
-    }
-    return 'mock-access-token';
-  }),
-  getAccessTokenWithPopup: vi.fn().mockResolvedValue('mock-access-token'),
-  loginWithRedirect: vi.fn().mockResolvedValue(undefined),
   getConfiguration: vi.fn().mockReturnValue({
     domain: TEST_DOMAIN,
     clientId: TEST_CLIENT_ID,
@@ -65,36 +20,6 @@ export const createMockBasicAuth0Context = (
     challenge: vi.fn().mockResolvedValue({}),
     verify: vi.fn().mockResolvedValue({}),
   },
-  ...overrides,
-});
-
-/**
- * Creates a mock Auth0ContextInterface with full properties
- */
-export const createMockAuth0Context = (
-  overrides?: Partial<Auth0ContextInterface>,
-): Auth0ContextInterface => ({
-  isAuthenticated: true,
-  isLoading: false,
-  user: createMockUser(),
-  getAccessTokenSilently: vi.fn().mockImplementation(async (options?: GetTokenSilentlyOptions) => {
-    if (options?.detailedResponse) {
-      return createMockVerboseTokenResponse();
-    }
-    return 'mock-access-token';
-  }),
-  getAccessTokenWithPopup: vi.fn().mockResolvedValue('mock-access-token'),
-  loginWithRedirect: vi.fn().mockResolvedValue(undefined),
-  loginWithPopup: vi.fn().mockResolvedValue(undefined),
-  logout: vi.fn().mockResolvedValue(undefined),
-  getIdTokenClaims: vi.fn().mockResolvedValue({
-    sub: 'auth0|test-user-123',
-    aud: 'test-client-id',
-    iss: 'https://test-domain.auth0.com/',
-  }),
-  handleRedirectCallback: vi.fn().mockResolvedValue({
-    appState: {},
-  }),
   ...overrides,
 });
 
@@ -270,9 +195,6 @@ export const createMockProxyCoreClient = (
  */
 export const createMockUnauthenticatedCoreClient = (): CoreClientInterface => {
   return createMockCoreClient({
-    contextInterface: createMockBasicAuth0Context({
-      isAuthenticated: false,
-      user: undefined,
-    }),
+    contextInterface: createMockBasicAuth0Context(),
   });
 };

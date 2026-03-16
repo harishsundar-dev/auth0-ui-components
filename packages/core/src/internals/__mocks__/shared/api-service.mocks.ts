@@ -19,14 +19,6 @@ export const TEST_CLIENT_ID = 'test-client-id';
 // =============================================================================
 
 export const createMockContextInterface = (): BasicAuth0ContextInterface => ({
-  isAuthenticated: true,
-  getAccessTokenSilently: vi.fn().mockResolvedValue({
-    access_token: 'mock-access-token',
-    id_token: '',
-    expires_in: 3600,
-  }),
-  getAccessTokenWithPopup: vi.fn().mockResolvedValue('mock-access-token'),
-  loginWithRedirect: vi.fn().mockResolvedValue(undefined),
   getConfiguration: vi.fn().mockReturnValue({ domain: TEST_DOMAIN, clientId: TEST_CLIENT_ID }),
   mfa: {
     getAuthenticators: vi.fn().mockResolvedValue([]),
@@ -112,19 +104,11 @@ export const mockTokens = {
   empty: '',
 };
 
-export function createMockSpaConfig(token = mockTokens.standard): SpaAuthConfig {
+export function createMockSpaConfig(): SpaAuthConfig {
   return {
     mode: 'spa',
     domain: TEST_DOMAIN,
     contextInterface: {
-      isAuthenticated: true,
-      getAccessTokenSilently: vi.fn().mockResolvedValue({
-        access_token: token,
-        id_token: '',
-        expires_in: 3600,
-      }),
-      getAccessTokenWithPopup: vi.fn(),
-      loginWithRedirect: vi.fn(),
       getConfiguration: vi.fn().mockReturnValue({ domain: TEST_DOMAIN, clientId: TEST_CLIENT_ID }),
       mfa: {
         getAuthenticators: vi.fn().mockResolvedValue([]),

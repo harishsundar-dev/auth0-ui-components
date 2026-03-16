@@ -3,14 +3,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { AuthUtils } from '../auth-utils';
 
 const createMockContext = (overrides: object = {}) => ({
-  isAuthenticated: true,
-  getAccessTokenSilently: vi.fn().mockResolvedValue({
-    access_token: 'mock-token',
-    id_token: '',
-    expires_in: 3600,
-  }),
-  getAccessTokenWithPopup: vi.fn(),
-  loginWithRedirect: vi.fn(),
   getConfiguration: vi.fn().mockReturnValue({ domain: 'test.auth0.com', clientId: 'test-client' }),
   mfa: {
     getAuthenticators: vi.fn().mockResolvedValue([]),
@@ -22,77 +14,6 @@ const createMockContext = (overrides: object = {}) => ({
 });
 
 describe('AuthUtils', () => {
-  describe('toURL', () => {
-    it.each([
-      { domain: 'https://example.auth0.com', expected: 'https://example.auth0.com/' },
-      { domain: 'example.auth0.com', expected: 'https://example.auth0.com/' },
-      { domain: 'http://localhost:3000', expected: 'http://localhost:3000/' },
-      { domain: 'https://example.auth0.com/', expected: 'https://example.auth0.com/' },
-    ])('converts $domain to $expected', ({ domain, expected }) => {
-      expect(AuthUtils.toURL(domain)).toBe(expected);
-    });
-  });
-
-  describe('buildAudience', () => {
-    it.each([
-      {
-        domain: 'test.auth0.com',
-        path: 'me',
-        expected: 'https://test.auth0.com/me/',
-      },
-      {
-        domain: 'test.auth0.com',
-        path: 'my-org',
-        expected: 'https://test.auth0.com/my-org/',
-      },
-      {
-        domain: 'https://test.auth0.com',
-        path: 'me',
-        expected: 'https://test.auth0.com/me/',
-      },
-    ])('builds $expected from $domain + $path', ({ domain, path, expected }) => {
-      expect(AuthUtils.buildAudience(domain, path)).toBe(expected);
-    });
-  });
-
-  describe('getToken', () => {
-    it('returns access_token from getAccessTokenSilently', async () => {
-      const context = createMockContext();
-      const token = await AuthUtils.getToken(context, 'test.auth0.com', 'me', 'read:me');
-      expect(token).toBe('mock-token');
-    });
-
-    it('builds the audience URL and passes it with scope', async () => {
-      const context = createMockContext();
-      await AuthUtils.getToken(context, 'test.auth0.com', 'me', 'read:me');
-
-      expect(context.getAccessTokenSilently).toHaveBeenCalledWith(
-        expect.objectContaining({
-          authorizationParams: { audience: 'https://test.auth0.com/me/', scope: 'read:me' },
-          detailedResponse: true,
-        }),
-      );
-    });
-
-    it('passes cacheMode when provided', async () => {
-      const context = createMockContext();
-      await AuthUtils.getToken(context, 'test.auth0.com', 'me', 'read:me', 'off');
-
-      expect(context.getAccessTokenSilently).toHaveBeenCalledWith(
-        expect.objectContaining({ cacheMode: 'off' }),
-      );
-    });
-
-    it('omits cacheMode when not provided', async () => {
-      const context = createMockContext();
-      await AuthUtils.getToken(context, 'test.auth0.com', 'me', 'read:me');
-
-      expect(context.getAccessTokenSilently).toHaveBeenCalledWith(
-        expect.not.objectContaining({ cacheMode: expect.anything() }),
-      );
-    });
-  });
-
   describe('resolveAuthConfig', () => {
     describe('proxy mode', () => {
       it('returns proxy config when authProxyUrl is set', () => {

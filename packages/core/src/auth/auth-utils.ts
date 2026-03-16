@@ -25,6 +25,30 @@ export const AuthUtils = {
   },
 
   /**
+   * Normalizes a proxy URL by ensuring it ends with a trailing slash.
+   * This is required for correct path resolution with the URL constructor.
+   *
+   * @example
+   * ```typescript
+   * normalizeProxyUrl('https://example.com/api')  // 'https://example.com/api/'
+   * normalizeProxyUrl('https://example.com/api/') // 'https://example.com/api/'
+   * ```
+   *
+   * @param proxyUrl - The proxy URL to normalize
+   * @returns The proxy URL with a trailing slash
+   * @throws {TypeError} If the proxyUrl is not a valid URL
+   */
+  normalizeProxyUrl(proxyUrl: string): string {
+    const url = new URL(proxyUrl);
+
+    if (url.href.endsWith('/')) {
+      return url.href;
+    }
+
+    return `${url.href}/`;
+  },
+
+  /**
    * Retrieves an access token silently for the given domain and audience path.
    * @param contextInterface - The Auth0 context interface.
    * @param domain - The Auth0 tenant domain.
@@ -60,7 +84,7 @@ export const AuthUtils = {
     if (auth.authProxyUrl) {
       return {
         mode: 'proxy',
-        proxyUrl: auth.authProxyUrl.replace(/\/$/, ''),
+        proxyUrl: AuthUtils.normalizeProxyUrl(auth.authProxyUrl),
         ...(auth.domain && { domain: auth.domain.trim() }),
       };
     }

@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@import '@auth0/universal-components-core/styles/globals.css' reference;
+@import '@auth0/universal-components-core/styles/globals.css';
 
 :root {
   --radius: 0.65rem;

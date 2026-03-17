@@ -11,4 +11,7 @@ export interface OrganizationDeleteMessages {
   modal_description?: string;
   organization_name_field_placeholder?: string;
   organization_name_field_label?: string;
+  organization_name_field_error?: string;
+  cancel_button_label?: string;
+  delete_error_generic?: string;
 }

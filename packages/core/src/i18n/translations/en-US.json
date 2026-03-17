@@ -199,6 +199,17 @@
       "save_organization_changes_message": "The changes have been saved for ${organizationName}.",
       "organization_changes_error_message": "There was an issue processing your request. ${message}.",
       "organization_changes_error_message_generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
+    },
+    "organization_management": {
+      "header": {
+        "title": "${organizationName}",
+        "back_button_text": "Back"
+      },
+      "tabs": {
+        "settings": "Settings",
+        "sso": "SSO",
+        "domains": "Domains"
+      }
     }
   },
   "idp_management": {
@@ -429,8 +440,8 @@
               "title": "Advanced Settings",
               "sign_request": {
                 "label": "Sign Request",
-                "helper_text_metadata_file": "When enabled, the SAML authentication request will be signed. Download the <link>certificate</link> and provide it to the SAMLP that will receive the signed assertion to validate the signature. This needs to be enabled first in the SAMLP. Once enabled, share the metadata URL for integration.",
-                "helper_text_metadata_url": "When enabled, the SAML authentication request will be signed. Download the <link>certificate</link> and provide it to the SAMLP that will receive the signed assertion to validate the signature."
+                "helper_text_metadata_file": "When enabled, the SAML authentication request will be signed. Download the\u00a0<link>certificate</link> and provide it to the SAMLP that will receive the signed assertion to validate the signature. This needs to be enabled first in the SAMLP. Once enabled, share the metadata URL for integration.",
+                "helper_text_metadata_url": "When enabled, the SAML authentication request will be signed. Download the\u00a0<link>certificate</link> and provide it to the SAMLP that will receive the signed assertion to validate the signature."
               },
               "request_protocol_binding": {
                 "label": "Request Protocol Binding",
@@ -507,7 +518,7 @@
               "title": "Advanced Settings",
               "sign_request": {
                 "label": "Sign Request",
-                "helper_text": "When enabled, the SAML authentication request will be signed. Download the <link>certificate</link> and provide it to the SAMLP that will receive the signed assertion to validate the signature. This needs to be enabled first in the SAMLP. Once enabled, share the metadata URL for integration.",
+                "helper_text": "When enabled, the SAML authentication request will be signed. Download the\u00a0<link>certificate</link> and provide it to the SAMLP that will receive the signed assertion to validate the signature. This needs to be enabled first in the SAMLP. Once enabled, share the metadata URL for integration.",
                 "error": "Please select an option"
               },
               "sign_request_algorithm": {
@@ -976,7 +987,7 @@
       "phone_number": "Phone Number",
       "send_code": "Send Code",
       "sending": "Sending...",
-      "enroll_title": "Verify it’s you",
+      "enroll_title": "Verify it\u2019s you",
       "enroll_email_placeholder": "Enter email address",
       "enroll_email_description": "Enter your email to receive a verification code",
       "enroll_sms_placeholder": "Enter phone number",

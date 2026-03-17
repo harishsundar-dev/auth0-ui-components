@@ -1,7 +1,13 @@
+/**
+ * Organization details edit hook.
+ * @module use-organization-details-edit
+ */
+
 import {
   OrganizationDetailsFactory,
   OrganizationDetailsMappers,
   type OrganizationPrivate,
+  MY_ORGANIZATION_DETAILS_EDIT_SCOPES,
 } from '@auth0/universal-components-core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -10,10 +16,10 @@ import { showToast } from '@/components/auth0/shared/toast';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import type {
-  OrganizationDetailsFormActions,
   UseOrganizationDetailsEditOptions,
   UseOrganizationDetailsEditResult,
 } from '@/types/my-organization/organization-management/organization-details-edit-types';
+import type { OrganizationDetailsFormActions } from '@/types/my-organization/organization-management/organization-details-types';
 
 const organizationDetailsQueryKeys = {
   all: ['organization-details'] as const,
@@ -22,6 +28,15 @@ const organizationDetailsQueryKeys = {
 
 const EMPTY_ORGANIZATION = OrganizationDetailsFactory.create();
 
+/**
+ * Hook for fetching and updating organization details.
+ * @param props - Component props.
+ * @param props.saveAction - Configuration for the save action
+ * @param props.cancelAction - Configuration for the cancel action
+ * @param props.readOnly - Whether the component is in read-only mode
+ * @param props.customMessages - Custom translation messages to override defaults
+ * @returns Hook state and methods
+ */
 export function useOrganizationDetailsEdit({
   saveAction,
   cancelAction,
@@ -45,7 +60,10 @@ export function useOrganizationDetailsEdit({
   const organizationQuery = useQuery({
     queryKey: organizationDetailsQueryKeys.details(),
     queryFn: async () => {
-      const response = await coreClient!.getMyOrganizationApiClient().organizationDetails.get();
+      const response = await coreClient!
+        .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_DETAILS_EDIT_SCOPES)
+        .organizationDetails.get();
       return OrganizationDetailsMappers.fromAPI(response);
     },
     enabled: !!coreClient,
@@ -67,6 +85,7 @@ export function useOrganizationDetailsEdit({
       const updateData = OrganizationDetailsMappers.toAPI(data);
       const response = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_DETAILS_EDIT_SCOPES)
         .organizationDetails.update(updateData);
 
       return OrganizationDetailsMappers.fromAPI(response);

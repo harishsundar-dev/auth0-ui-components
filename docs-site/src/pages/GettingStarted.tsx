@@ -183,41 +183,66 @@ export default function GettingStarted() {
           <div>
             <h3 className="text-lg font-medium text-gray-900 mb-3">Option 2: Shadcn CLI</h3>
             <p className="text-gray-600 mb-4">
-              If you're using Shadcn, you can add individual blocks directly to your project. You'll
-              still need to install the core package separately:
+              If you're using Shadcn, you can add individual blocks directly to your project.
             </p>
-            <div className="space-y-3">
-              <TabbedCodeBlock
-                tabs={[
-                  { label: 'npm', code: 'npm install @auth0/universal-components-core' },
-                  { label: 'pnpm', code: 'pnpm add @auth0/universal-components-core' },
-                ]}
-                language="bash"
-                title="1. Install Core Package"
-              />
-              <CodeBlock
-                code="npx shadcn@latest add https://auth0-universal-components.vercel.app/r/my-organization/organization-details-edit.json"
-                language="bash"
-                title="2. Add Shadcn Block (e.g., OrganizationDetailsEdit)"
-              />
-            </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
-              <p className="text-sm text-blue-800 mb-3">
-                <strong>Note:</strong> Shadcn installs the React component source code in your{' '}
-                <code>src/auth0-ui-components/</code> directory along with all UI dependencies, but
-                you must install the core package separately via npm.
+
+            {/* Alias prerequisite */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+              <p className="text-sm font-semibold text-amber-900 mb-2">
+                Prerequisites: configure the <code>@</code> path alias
               </p>
-              <p className="text-sm text-blue-800">
-                <strong>Important:</strong> When using Shadcn components, you must import the global
-                styles in your root file:
+              <p className="text-sm text-amber-800 mb-3">
+                The installed components use <code>@/...</code> imports. Make sure your project has
+                the alias set up before running the add command:
               </p>
+              <div className="space-y-3">
+                <CodeBlock
+                  code={`// tsconfig.json
+"paths": {
+  "@/*": ["./src/*"]
+}`}
+                  language="json"
+                  title="tsconfig.json"
+                />
+                <CodeBlock
+                  code={`// vite.config.ts
+import path from 'path';
+
+resolve: {
+  alias: {
+    '@': path.resolve('./src'),
+  },
+},`}
+                  language="ts"
+                  title="vite.config.ts"
+                />
+                <CodeBlock
+                  code={`// components.json
+"aliases": {
+  "components": "@/components",
+  "utils": "@/lib/utils",
+  "ui": "@/components/ui",
+  "hooks": "@/hooks",
+  "lib": "@/lib"
+}`}
+                  language="json"
+                  title="components.json"
+                />
+              </div>
             </div>
+
             <CodeBlock
-              code={`// In your App.tsx or main entry file
-import 'src/auth0-ui-components/styles/globals.css';`}
-              language="tsx"
-              title="3. Import Global Styles"
+              code="npx shadcn@latest add @auth0/organization-details-edit"
+              language="bash"
+              title="Add Shadcn Block (e.g., OrganizationDetailsEdit)"
             />
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> This installs the React component source code in your{' '}
+                <code>src/components/auth0/</code> directory along with all UI dependencies and the
+                core package.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -565,6 +590,80 @@ export default function OrganizationManagementPage() {
             </div>
           </div>
         )}
+      </section>
+
+      {/* Styling */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold text-gray-900">Styling</h2>
+        <p className="text-gray-600">
+          The package ships two stylesheets. Pick the one that matches how your application handles
+          CSS.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800">
+                Recommended
+              </span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">
+              <code className="text-sm bg-gray-100 px-2 py-1 rounded">styles.css</code>
+            </h3>
+            <p className="text-gray-600 text-sm">
+              A self-contained stylesheet with all Tailwind utilities pre-compiled and scoped to
+              Auth0 components. No Tailwind installation required.
+            </p>
+            <CodeBlock code={`import '@auth0/universal-components-react/styles';`} language="tsx" />
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                Tailwind apps
+              </span>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">Tailwind v4 theme variables</h3>
+            <p className="text-gray-600 text-sm">
+              If your app already uses Tailwind v4, import the Auth0 CSS alongside Tailwind and
+              define standard design tokens in your <code className="text-xs">:root</code> /{' '}
+              <code className="text-xs">.dark</code> blocks (e.g.{' '}
+              <code className="text-xs">--background</code>,{' '}
+              <code className="text-xs">--primary</code>).
+            </p>
+            <CodeBlock
+              code={`/* app.css */
+@import "tailwindcss";
+@import "@auth0/universal-components-react/tailwind";
+
+:root {
+  --background: oklch(1 0 0);
+  --primary:    oklch(0.205 0 0);
+  /* ... see Styling page for full list */
+}`}
+              language="css"
+            />
+          </div>
+        </div>
+
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <p className="text-sm text-blue-800">
+            <strong>When to use which:</strong> If your app does not use Tailwind, import{' '}
+            <code className="text-xs">styles.css</code> — it is self-contained and works without
+            Tailwind. If your app uses Tailwind v4, import{' '}
+            <code className="text-xs">@auth0/universal-components-react/tailwind</code> and define
+            the standard tokens in your <code className="text-xs">:root</code> /{' '}
+            <code className="text-xs">.dark</code> blocks instead.
+          </p>
+        </div>
+
+        <p className="text-gray-600">
+          For full details on CSS variables, theming, and color modes, see the{' '}
+          <a href="/styling" className="text-blue-600 hover:underline font-medium">
+            Styling &amp; Theming
+          </a>{' '}
+          page.
+        </p>
       </section>
 
       {/* Provider Configuration */}

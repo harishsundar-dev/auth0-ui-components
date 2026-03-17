@@ -1,9 +1,20 @@
-import type { MyAccountClient } from '@auth0/myaccount-js';
-import type { MyOrganizationClient } from '@auth0/myorganization-js';
+/**
+ * Authentication type definitions for Auth0 integration.
+ * @module auth-types
+ * @internal
+ */
+
 import type { ArbitraryObject } from '@core/types';
 
 import type { I18nServiceInterface } from '../i18n';
+import type { MfaApiClient } from '../services/mfa-step-up/mfa-step-up-api-types';
+import type { MyAccountApiClient } from '../services/my-account/my-account-api-service';
+import type { MyOrganizationApiClient } from '../services/my-organization/my-organization-api-service';
 
+/**
+ * Response structure from the token endpoint.
+ * @internal
+ */
 export type TokenEndpointResponse = {
   id_token: string;
   access_token: string;
@@ -12,8 +23,16 @@ export type TokenEndpointResponse = {
   scope?: string;
 };
 
+/**
+ * Verbose response from silent token retrieval.
+ * @internal
+ */
 export type GetTokenSilentlyVerboseResponse = Omit<TokenEndpointResponse, 'refresh_token'>;
 
+/**
+ * User profile information from Auth0.
+ * @internal
+ */
 export interface User {
   name?: string;
   given_name?: string;
@@ -38,6 +57,10 @@ export interface User {
   [key: string]: unknown;
 }
 
+/**
+ * Options for silent token retrieval.
+ * @internal
+ */
 export interface GetTokenSilentlyOptions {
   cacheMode?: 'on' | 'off' | 'cache-only';
   authorizationParams?: {
@@ -50,6 +73,10 @@ export interface GetTokenSilentlyOptions {
   detailedResponse?: boolean;
 }
 
+/**
+ * Auth0 context interface for authentication operations.
+ * @internal
+ */
 export interface Auth0ContextInterface<TUser = User> {
   user?: TUser;
   // auth0-spa-js: getUser()
@@ -77,6 +104,10 @@ export interface Auth0ContextInterface<TUser = User> {
   handleRedirectCallback: () => Promise<ArbitraryObject>;
 }
 
+/**
+ * Client configuration for Auth0 SDK.
+ * @internal
+ */
 export interface ClientConfiguration {
   /**
    * The Auth0 domain that was configured
@@ -88,6 +119,10 @@ export interface ClientConfiguration {
   clientId: string;
 }
 
+/**
+ * Basic Auth0 context interface for minimal authentication operations.
+ * @internal
+ */
 export interface BasicAuth0ContextInterface<TUser = User> {
   user?: TUser;
   isAuthenticated: boolean;
@@ -101,30 +136,65 @@ export interface BasicAuth0ContextInterface<TUser = User> {
   getAccessTokenWithPopup: (options?: unknown) => Promise<string | undefined>;
   loginWithRedirect: (options?: unknown) => Promise<void>;
   getConfiguration: () => Readonly<ClientConfiguration>;
+  mfa: MfaApiClient;
 }
 
+/**
+ * Auth config for proxy mode — routes requests through an auth proxy URL.
+ * @internal
+ */
+export type ProxyAuthConfig = {
+  mode: 'proxy';
+  proxyUrl: string;
+  domain?: string;
+};
+
+/**
+ * Auth config for SPA mode — uses a context interface and Auth0 domain directly.
+ * @internal
+ */
+export type SpaAuthConfig = {
+  mode: 'spa';
+  contextInterface: BasicAuth0ContextInterface;
+  domain: string;
+};
+
+/**
+ * Discriminated union of the two supported auth configurations.
+ * @internal
+ */
+export type ClientAuthConfig = ProxyAuthConfig | SpaAuthConfig;
+
+/**
+ * Authentication details for provider configuration.
+ * @internal
+ */
 export interface AuthDetails {
   domain?: string | undefined;
   authProxyUrl?: string | undefined;
   contextInterface?: BasicAuth0ContextInterface | undefined;
+  previewMode?: boolean; // For docs - skip API client initialization
 }
 
+/**
+ * Base interface for CoreClient functionality.
+ * @internal
+ */
 export interface BaseCoreClientInterface {
   auth: AuthDetails;
   i18nService: I18nServiceInterface;
-  getToken: (
-    scope: string,
-    audiencePath: string,
-    ignoreCache?: boolean,
-  ) => Promise<string | undefined>;
   isProxyMode: () => boolean;
-  ensureScopes: (requiredScopes: string, audiencePath: string) => Promise<void>;
   getDomain: () => string | undefined;
 }
 
+/**
+ * Full CoreClient interface with API clients.
+ * @internal
+ */
 export interface CoreClientInterface extends BaseCoreClientInterface {
-  myAccountApiClient: MyAccountClient | undefined;
-  myOrganizationApiClient: MyOrganizationClient | undefined;
-  getMyAccountApiClient: () => MyAccountClient;
-  getMyOrganizationApiClient: () => MyOrganizationClient;
+  myAccountApiClient: MyAccountApiClient | undefined;
+  myOrganizationApiClient: MyOrganizationApiClient | undefined;
+  getMyAccountApiClient: () => MyAccountApiClient;
+  getMyOrganizationApiClient: () => MyOrganizationApiClient;
+  getMFAStepUpApiClient: () => MfaApiClient;
 }

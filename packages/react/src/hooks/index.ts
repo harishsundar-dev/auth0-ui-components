@@ -1,9 +1,13 @@
+/**
+ * Public hooks exports.
+ * @module hooks
+ */
+
 // Shared hooks
 export { useCoreClient, CoreClientContext } from './shared/use-core-client';
 export { useTranslator } from './shared/use-translator';
 export { useTheme } from './shared/use-theme';
 export { useCoreClientInitialization } from './shared/use-core-client-initialization';
-export { useScopeManager } from './shared/use-scope-manager';
 export { useErrorHandler } from './shared/use-error-handler';
 
 // My Account hooks

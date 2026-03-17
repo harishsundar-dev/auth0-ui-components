@@ -1,7 +1,13 @@
+/**
+ * Organization configuration hook.
+ * @module use-config
+ */
+
 import {
   AVAILABLE_STRATEGY_LIST,
   hasApiErrorBody,
   type IdpStrategy,
+  MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES,
 } from '@auth0/universal-components-core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -13,13 +19,21 @@ const configQueryKeys = {
   details: () => [...configQueryKeys.all, 'details'] as const,
 };
 
+/**
+ * Hook for fetching organization configuration.
+ * @returns Config data and allowed strategies.
+ */
 export function useConfig(): UseConfigResult {
   const { coreClient } = useCoreClient();
   const queryClient = useQueryClient();
 
   const configQuery = useQuery({
     queryKey: configQueryKeys.details(),
-    queryFn: () => coreClient!.getMyOrganizationApiClient().organization.configuration.get(),
+    queryFn: () =>
+      coreClient!
+        .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
+        .organization.configuration.get(),
     enabled: !!coreClient,
     retry: (failureCount, error) => {
       if (hasApiErrorBody(error) && error.body?.status === 404) {

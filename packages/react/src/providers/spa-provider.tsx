@@ -1,3 +1,8 @@
+/**
+ * SPA provider using @auth0/auth0-react.
+ * @module spa-provider
+ */
+
 'use client';
 
 import { useAuth0 } from '@auth0/auth0-react';
@@ -10,10 +15,14 @@ import { CoreClientContext } from '@/hooks/shared/use-core-client';
 import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
 import { useToastProvider } from '@/hooks/shared/use-toast-provider';
 import { QueryProvider } from '@/providers/query-provider';
-import { ScopeManagerProvider } from '@/providers/scope-manager-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
+/**
+ * Auth0 provider for SPAs. Wraps components with required contexts.
+ * @param props - Provider configuration including i18n, authDetails, themeSettings, toastSettings, cacheConfig, loader, and children.
+ * @returns Provider component tree
+ */
 export const Auth0ComponentProvider = ({
   i18n,
   authDetails,
@@ -37,9 +46,7 @@ export const Auth0ComponentProvider = ({
 
   const auth0ContextInterface = React.useMemo(() => {
     if (auth0ReactContext && 'isAuthenticated' in auth0ReactContext) {
-      // Cast via unknown because @auth0/auth0-react's Auth0ContextInterface
-      // doesn't include getConfiguration which our BasicAuth0ContextInterface requires
-      return auth0ReactContext as unknown as BasicAuth0ContextInterface;
+      return auth0ReactContext as BasicAuth0ContextInterface;
     }
 
     if (authDetails?.contextInterface) {
@@ -71,6 +78,12 @@ export const Auth0ComponentProvider = ({
     [coreClient],
   );
 
+  const fallback = loader || (
+    <div className="flex items-center justify-center min-h-[200px]">
+      <Spinner />
+    </div>
+  );
+
   return (
     <ThemeProvider
       themeSettings={{
@@ -84,23 +97,16 @@ export const Auth0ComponentProvider = ({
         <Toaster
           position={mergedToastSettings.settings?.position || 'top-right'}
           closeButton={mergedToastSettings.settings?.closeButton ?? true}
+          className="auth0-universal"
         />
       )}
-      <React.Suspense
-        fallback={
-          loader || (
-            <div className="flex items-center justify-center min-h-[200px]">
-              <Spinner />
-            </div>
-          )
-        }
-      >
+      {coreClient ? (
         <CoreClientContext.Provider value={coreClientValue}>
-          <QueryProvider cacheConfig={cacheConfig}>
-            <ScopeManagerProvider>{children}</ScopeManagerProvider>
-          </QueryProvider>
+          <QueryProvider cacheConfig={cacheConfig}>{children}</QueryProvider>
         </CoreClientContext.Provider>
-      </React.Suspense>
+      ) : (
+        fallback
+      )}
     </ThemeProvider>
   );
 };

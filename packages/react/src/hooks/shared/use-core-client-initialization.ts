@@ -1,3 +1,9 @@
+/**
+ * CoreClient initialization hook.
+ * @module use-core-client-initialization
+ * @internal
+ */
+
 import type {
   CoreClientInterface,
   AuthDetails,
@@ -12,14 +18,16 @@ interface UseCoreClientInitializationProps {
 }
 
 /**
- * Custom hook to handle CoreClient initialization
+ * @internal
+ * @param props - Initialization props.
+ * @returns The initialized CoreClient instance, or null while initializing.
  */
 export const useCoreClientInitialization = ({
   authDetails,
   i18nOptions,
-}: UseCoreClientInitializationProps) => {
-  const [coreClient, setCoreClient] = React.useState<CoreClientInterface | null>(null);
+}: UseCoreClientInitializationProps): CoreClientInterface | null => {
   const { authProxyUrl } = authDetails;
+  const [coreClient, setCoreClient] = React.useState<CoreClientInterface | null>(null);
 
   React.useEffect(() => {
     const initializeCoreClient = async () => {

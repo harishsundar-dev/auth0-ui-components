@@ -1,3 +1,8 @@
+/**
+ * SSO provider table data and actions hook.
+ * @module use-sso-provider-table
+ */
+
 import {
   OrganizationDetailsMappers,
   SsoProviderMappers,
@@ -6,6 +11,7 @@ import {
   type IdentityProvider,
   type OrganizationPrivate,
   BusinessError,
+  MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES,
 } from '@auth0/universal-components-core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
@@ -22,8 +28,12 @@ export const ssoProviderQueryKeys = {
 };
 
 /**
- * Custom hook for managing SSO provider table data and actions.
- * Uses TanStack Query for caching, loading states, and data synchronization.
+ * Hook for SSO provider table data and CRUD operations.
+ * @param deleteAction - Delete action handler.
+ * @param removeFromOrg - Remove from org handler.
+ * @param enableAction - Enable/disable handler.
+ * @param customMessages - Translation overrides.
+ * @returns Provider data, mutations, and actions.
  */
 export function useSsoProviderTable(
   deleteAction?: ComponentAction<IdentityProvider, void>,
@@ -37,15 +47,12 @@ export function useSsoProviderTable(
   const hasShownProvidersError = useRef(false);
   const hasShownOrganizationError = useRef(false);
 
-  // ============================================
-  // QUERIES - All data managed by TanStack Query
-  // ============================================
-
   const providersQuery = useQuery({
     queryKey: ssoProviderQueryKeys.list(),
     queryFn: async () => {
       const response = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.list();
       return (response?.identity_providers ?? []) as IdentityProvider[];
     },
@@ -55,7 +62,10 @@ export function useSsoProviderTable(
   const organizationQuery = useQuery({
     queryKey: ssoProviderQueryKeys.organization,
     queryFn: async () => {
-      const response = await coreClient!.getMyOrganizationApiClient().organizationDetails.get();
+      const response = await coreClient!
+        .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
+        .organizationDetails.get();
       return OrganizationDetailsMappers.fromAPI(response);
     },
     enabled: !!coreClient,
@@ -89,10 +99,6 @@ export function useSsoProviderTable(
     }
   }, [organizationQuery.isError, t]);
 
-  // ============================================
-  // MUTATIONS
-  // ============================================
-
   const enableProviderMutation = useMutation({
     mutationFn: async ({
       selectedIdp,
@@ -119,6 +125,7 @@ export function useSsoProviderTable(
 
       const updatedProvider = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.update(selectedIdp.id, apiRequestData);
 
       return updatedProvider as IdentityProvider;
@@ -157,6 +164,7 @@ export function useSsoProviderTable(
 
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.delete(selectedIdp.id);
     },
     onSuccess: async (_, selectedIdp) => {
@@ -187,6 +195,7 @@ export function useSsoProviderTable(
 
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.detach(selectedIdp.id);
     },
     onSuccess: async (_, selectedIdp) => {
@@ -216,10 +225,6 @@ export function useSsoProviderTable(
       return;
     },
   });
-
-  // ============================================
-  // ACTIONS - Wrappers around mutations
-  // ============================================
 
   const onEnableProvider = useCallback(
     async (selectedIdp: IdentityProvider, enabled: boolean): Promise<boolean> => {
@@ -272,7 +277,10 @@ export function useSsoProviderTable(
       const data = await queryClient.ensureQueryData({
         queryKey: ssoProviderQueryKeys.organization,
         queryFn: async () => {
-          const response = await coreClient.getMyOrganizationApiClient().organizationDetails.get();
+          const response = await coreClient
+            .getMyOrganizationApiClient()
+            .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
+            .organizationDetails.get();
           return OrganizationDetailsMappers.fromAPI(response);
         },
       });
@@ -285,10 +293,6 @@ export function useSsoProviderTable(
       return null;
     }
   }, [coreClient, queryClient, t]);
-
-  // ============================================
-  // RETURN
-  // ============================================
 
   return {
     // Data from TanStack Query - single source of truth

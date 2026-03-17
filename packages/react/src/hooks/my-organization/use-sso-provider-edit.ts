@@ -1,3 +1,8 @@
+/**
+ * SSO provider edit hook.
+ * @module use-sso-provider-edit
+ */
+
 import {
   OrganizationDetailsFactory,
   OrganizationDetailsMappers,
@@ -9,6 +14,7 @@ import {
   type CreateIdpProvisioningScimTokenRequestContent,
   type GetIdPProvisioningConfigResponseContent,
   getStatusCode,
+  MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES,
 } from '@auth0/universal-components-core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -35,6 +41,15 @@ export const ssoProviderEditQueryKeys = {
   scimTokens: (idpId: IdpId) => [...ssoProviderEditQueryKeys.all, 'scim-tokens', idpId] as const,
 };
 
+/**
+ * Hook for editing SSO provider settings and provisioning.
+ * @param idpId - Identity provider ID.
+ * @param options - Hook options.
+ * @param options.sso - SSO action callbacks.
+ * @param options.provisioning - Provisioning action callbacks.
+ * @param options.customMessages - Custom translation messages.
+ * @returns Hook state and methods
+ */
 export function useSsoProviderEdit(
   idpId: IdpId,
   { sso, provisioning, customMessages = {} }: Partial<UseSsoProviderEditOptions> = {},
@@ -46,10 +61,6 @@ export function useSsoProviderEdit(
   const hasShownProvisioningError = useRef(false);
   const hasShownOrganizationError = useRef(false);
 
-  // ============================================
-  // QUERIES - All data managed by TanStack Query
-  // ============================================
-
   /**
    * Provider query - fetches the identity provider details.
    * TanStack Query handles caching, loading states, and refetching.
@@ -59,6 +70,7 @@ export function useSsoProviderEdit(
     queryFn: async (): Promise<IdentityProvider> => {
       const response = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.get(idpId);
       return response;
     },
@@ -72,7 +84,10 @@ export function useSsoProviderEdit(
   const organizationQuery = useQuery({
     queryKey: ssoProviderEditQueryKeys.organization(),
     queryFn: async (): Promise<OrganizationPrivate> => {
-      const response = await coreClient!.getMyOrganizationApiClient().organizationDetails.get();
+      const response = await coreClient!
+        .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
+        .organizationDetails.get();
       return OrganizationDetailsMappers.fromAPI(response);
     },
     enabled: !!coreClient,
@@ -89,6 +104,7 @@ export function useSsoProviderEdit(
       try {
         const result = await coreClient!
           .getMyOrganizationApiClient()
+          .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
           .organization.identityProviders.provisioning.get(idpId);
         return result;
       } catch (error) {
@@ -149,10 +165,6 @@ export function useSsoProviderEdit(
     }
   }, [provisioningQuery.isError, t]);
 
-  // ============================================
-  // MUTATIONS - All actions that modify data
-  // ============================================
-
   /**
    * Update provider mutation - updates SSO provider configuration.
    */
@@ -177,6 +189,7 @@ export function useSsoProviderEdit(
 
       const result = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.update(idpId, apiRequestData);
 
       return result;
@@ -226,6 +239,7 @@ export function useSsoProviderEdit(
 
       const result = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.create(idpId);
 
       return result;
@@ -278,6 +292,7 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.delete(idpId);
     },
     onSuccess: async () => {
@@ -328,6 +343,7 @@ export function useSsoProviderEdit(
 
       const result = await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.scimTokens.create(idpId, data);
 
       return result;
@@ -379,6 +395,7 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.scimTokens.delete(idpId, idpScimTokenId);
     },
     onSuccess: async () => {
@@ -421,6 +438,7 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.delete(provider.id);
     },
     onSuccess: async () => {
@@ -478,6 +496,7 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.detach(provider.id);
     },
     onSuccess: async () => {
@@ -512,10 +531,6 @@ export function useSsoProviderEdit(
     },
   });
 
-  // ============================================
-  // ACTION CALLBACKS - Wrapper functions for mutations
-  // ============================================
-
   const fetchProvider = useCallback(async (): Promise<IdentityProvider | null> => {
     if (!coreClient || !idpId) {
       return null;
@@ -527,6 +542,7 @@ export function useSsoProviderEdit(
         queryFn: async () => {
           const response = await coreClient
             .getMyOrganizationApiClient()
+            .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
             .organization.identityProviders.get(idpId);
           return response;
         },
@@ -562,6 +578,7 @@ export function useSsoProviderEdit(
             try {
               const result = await coreClient
                 .getMyOrganizationApiClient()
+                .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
                 .organization.identityProviders.provisioning.get(idpId);
               return result;
             } catch (error) {
@@ -648,6 +665,7 @@ export function useSsoProviderEdit(
 
       const result = await coreClient
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.scimTokens.list(idpId);
       return result;
     },
@@ -708,6 +726,7 @@ export function useSsoProviderEdit(
     mutationFn: async () => {
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.updateAttributes(idpId, {});
     },
     onSuccess: () => {
@@ -739,6 +758,7 @@ export function useSsoProviderEdit(
     mutationFn: async () => {
       await coreClient!
         .getMyOrganizationApiClient()
+        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.updateAttributes(idpId, {});
     },
     onSuccess: () => {

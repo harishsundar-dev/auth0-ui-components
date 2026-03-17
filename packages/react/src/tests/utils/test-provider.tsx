@@ -6,7 +6,6 @@ import type { FieldValues, UseFormReturn } from 'react-hook-form';
 
 import { Form } from '@/components/ui/form';
 import { CoreClientContext } from '@/hooks/shared/use-core-client';
-import { ScopeManagerProvider } from '@/providers/scope-manager-provider';
 import { createMockCoreClient } from '@/tests/utils/__mocks__/core/core-client.mocks';
 
 // Create a new QueryClient for each test to avoid shared state
@@ -42,6 +41,12 @@ export interface TestProviderProps {
 
 /**
  * Test provider that wraps components with the necessary context for testing
+ * @param props - Provider props.
+ * @param props.children - Child components.
+ * @param props.coreClient - Core client instance.
+ * @param props.authDetails - Auth details.
+ * @param props.queryClient - Query client instance.
+ * @returns JSX element
  */
 export const TestProvider: React.FC<TestProviderProps> = ({
   children,
@@ -64,15 +69,19 @@ export const TestProvider: React.FC<TestProviderProps> = ({
 
   return (
     <QueryClientProvider client={testQueryClient}>
-      <CoreClientContext.Provider value={contextValue}>
-        <ScopeManagerProvider>{children}</ScopeManagerProvider>
-      </CoreClientContext.Provider>
+      <CoreClientContext.Provider value={contextValue}>{children}</CoreClientContext.Provider>
     </QueryClientProvider>
   );
 };
 
 /**
  * Utility function to render components with TestProvider
+ * @param component - React component to render
+ * @param options - Configuration options
+ * @param options.coreClient - Core client instance
+ * @param options.authDetails - Authentication details configuration
+ * @param options.queryClient - React Query client instance
+ * @returns JSX element
  */
 export const renderWithProviders = (
   component: React.ReactElement,
@@ -95,6 +104,9 @@ export const renderWithProviders = (
 
 /**
  * Utility function to render components with Form provider
+ * @param component - React component to render
+ * @param form - React Hook Form instance
+ * @returns JSX element
  */
 export function renderWithFormProvider<T extends FieldValues>(
   component: React.ReactElement,

@@ -1,14 +1,23 @@
+/**
+ * MFA operations hook.
+ * @module use-mfa
+ */
+
 import type {
   MFAType,
   EnrollOptions,
   ConfirmEnrollmentOptions,
 } from '@auth0/universal-components-core';
-import { MFAMappers } from '@auth0/universal-components-core';
+import { MFAMappers, USER_MFA_SCOPES } from '@auth0/universal-components-core';
 import { useCallback } from 'react';
 
 import { useCoreClient } from '@/hooks/shared/use-core-client';
 import type { UseMFAResult } from '@/types/my-account/mfa/mfa-types';
 
+/**
+ * Hook for MFA factor operations (fetch, enroll, delete, confirm).
+ * @returns MFA operation functions.
+ */
 export function useMFA(): UseMFAResult {
   const { coreClient } = useCoreClient();
 
@@ -20,7 +29,7 @@ export function useMFA(): UseMFAResult {
 
   const fetchFactors = useCallback(
     async (onlyActive = false) => {
-      const client = coreClient.getMyAccountApiClient();
+      const client = coreClient.getMyAccountApiClient().withScopes(USER_MFA_SCOPES);
       const [availableFactorsResponse, enrolledFactorsResponse] = await Promise.all([
         client.factors.list(),
         client.authenticationMethods.list(),
@@ -32,7 +41,7 @@ export function useMFA(): UseMFAResult {
 
   const enrollMfa = useCallback(
     (factorName: MFAType, options: EnrollOptions = {}) => {
-      const client = coreClient.getMyAccountApiClient();
+      const client = coreClient.getMyAccountApiClient().withScopes(USER_MFA_SCOPES);
       const params = MFAMappers.buildEnrollParams(factorName, options);
       return client.authenticationMethods.create(params);
     },
@@ -41,7 +50,10 @@ export function useMFA(): UseMFAResult {
 
   const deleteMfa = useCallback(
     (authenticatorId: string) =>
-      coreClient.getMyAccountApiClient().authenticationMethods.delete(authenticatorId),
+      coreClient
+        .getMyAccountApiClient()
+        .withScopes(USER_MFA_SCOPES)
+        .authenticationMethods.delete(authenticatorId),
     [coreClient],
   );
 
@@ -52,7 +64,7 @@ export function useMFA(): UseMFAResult {
       authenticationMethodId: string,
       options: ConfirmEnrollmentOptions,
     ) => {
-      const client = coreClient.getMyAccountApiClient();
+      const client = coreClient.getMyAccountApiClient().withScopes(USER_MFA_SCOPES);
       const params = MFAMappers.buildConfirmEnrollmentParams(factorType, authSession, options);
       return client.authenticationMethods.verify(authenticationMethodId, params);
     },

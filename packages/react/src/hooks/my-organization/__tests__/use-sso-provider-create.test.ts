@@ -8,15 +8,18 @@ import { describe, expect, it, vi, beforeEach, type Mock } from 'vitest';
 import { showToast } from '@/components/auth0/shared/toast';
 import { useSsoProviderCreate } from '@/hooks/my-organization/use-sso-provider-create';
 import { useCoreClient } from '@/hooks/shared/use-core-client';
+import { useErrorHandler } from '@/hooks/shared/use-error-handler';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { createTestQueryClientWrapper } from '@/tests/utils/test-provider';
 
 vi.mock('@/hooks/shared/use-core-client');
 vi.mock('@/hooks/shared/use-translator');
 vi.mock('@/components/auth0/shared/toast');
+vi.mock('@/hooks/shared/use-error-handler');
 
 describe('useSsoProviderCreate', () => {
   const mockCreate = vi.fn();
+  let mockHandleError: Mock;
 
   const mockIdentityProvider: IdentityProvider = {
     id: 'idp_123',
@@ -57,6 +60,8 @@ describe('useSsoProviderCreate', () => {
     vi.clearAllMocks();
     (useCoreClient as Mock).mockReturnValue({ coreClient: mockCoreClient });
     (useTranslator as Mock).mockReturnValue({ t: mockT });
+    mockHandleError = vi.fn();
+    (useErrorHandler as Mock).mockReturnValue(mockHandleError);
   });
 
   const renderUseSsoProviderCreate = (...args: Parameters<typeof useSsoProviderCreate>) => {
@@ -222,9 +227,8 @@ describe('useSsoProviderCreate', () => {
       await expect(result.current.createProvider(baseOktaProviderData)).rejects.toBeDefined();
 
       await waitFor(() => {
-        expect(showToast).toHaveBeenCalledWith({
-          type: 'error',
-          message: 'An error occurred',
+        expect(mockHandleError).toHaveBeenCalledWith(error, {
+          fallbackMessage: 'An error occurred',
         });
       });
     });
@@ -243,9 +247,8 @@ describe('useSsoProviderCreate', () => {
       await expect(result.current.createProvider(baseOktaProviderData)).rejects.toBeDefined();
 
       await waitFor(() => {
-        expect(showToast).toHaveBeenCalledWith({
-          type: 'error',
-          message: 'An error occurred',
+        expect(mockHandleError).toHaveBeenCalledWith(error, {
+          fallbackMessage: 'An error occurred',
         });
       });
     });
@@ -266,9 +269,8 @@ describe('useSsoProviderCreate', () => {
     await expect(result.current.createProvider(mockProviderData)).rejects.toBeDefined();
 
     await waitFor(() => {
-      expect(showToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'An error occurred',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'An error occurred',
       });
       expect(result.current.isCreating).toBe(false);
     });

@@ -1,7 +1,27 @@
 {
   "common": {
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "error": {
+      "generic": "There was an issue processing your request. Please try again or contact support if the issue persists.",
+      "bad_request": "The request is invalid. Please check your input and try again.",
+      "missing_token": "Your session has expired. Please log in again.",
+      "insufficient_scope": "You do not have the required scope permissions to perform this action.",
+      "forbidden": "You do not have permissions to perform this action.",
+      "not_found": "The requested resource was not found.",
+      "rate_limit": "Too many requests. Please wait a moment and try again."
+    }
+  },
+  "gate_keeper": {
+    "fallback": {
+      "title": "We couldn't load this information",
+      "description": "Please try again or contact support if the problem persists.",
+      "retry": "Retry"
+    },
+    "mfa": {
+      "title": "Verify your account",
+      "subtitle": "You must provide a second factor from one of the options below to perform this action."
+    }
   },
   "domain_management": {
     "domain_table": {

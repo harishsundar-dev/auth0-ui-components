@@ -1,12 +1,15 @@
+'use client';
+
 /**
  * TanStack Query provider wrapper.
  * @module query-provider
  * @internal
  */
 
-import { getStatusCode, isMfaRequiredError } from '@auth0/universal-components-core';
+import { isMfaRequiredError, isNotifiableError } from '@auth0/universal-components-core';
 import {
   MutationCache,
+  type Query,
   QueryCache,
   QueryClient,
   QueryClientProvider as TanStackQueryClientProvider,
@@ -67,15 +70,12 @@ export function resolveCacheConfig(userConfig?: QueryCacheConfig): Required<Quer
 }
 
 /**
- * Returns true for errors that should be handled by GateKeeper (MFA required or 5xx).
- * @param error - The error to check.
- * @returns Whether the error should be intercepted.
- * @internal
+ * Returns true if a cached query has an error that GateKeeper should handle.
+ * @param query - The cached query to check.
+ * @returns Whether the query error should be intercepted by GateKeeper.
  */
-function shouldInterceptForGateKeeper(error: unknown): boolean {
-  if (isMfaRequiredError(error)) return true;
-  const statusCode = getStatusCode(error);
-  return !!statusCode && statusCode >= 500;
+function isGateKeeperError(query: Query): boolean {
+  return !!query.state.error && !isNotifiableError(query.state.error);
 }
 
 /**
@@ -92,17 +92,12 @@ function createQueryClient(
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error) => {
-        if (shouldInterceptForGateKeeper(error)) {
+        if (!isNotifiableError(error)) {
           setGateKeeperState({
             error,
             onRetry: async () => {
-              await queryClient.refetchQueries({
-                predicate: (query) => shouldInterceptForGateKeeper(query.state.error),
-              });
-              const stillFailing =
-                queryClient.getQueryCache().findAll({
-                  predicate: (query) => shouldInterceptForGateKeeper(query.state.error),
-                }).length > 0;
+              await queryClient.refetchQueries({ predicate: isGateKeeperError });
+              const stillFailing = queryClient.getQueryCache().getAll().some(isGateKeeperError);
               if (!stillFailing) setGateKeeperState(null);
               return !stillFailing;
             },

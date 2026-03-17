@@ -56,7 +56,6 @@ describe('useSsoProviderEdit', () => {
   });
 
   const mockOrgClient = {
-    withScopes: (_scopes: string) => mockOrgClient,
     organization: {
       identityProviders: {
         get: mockGet,
@@ -499,7 +498,6 @@ describe('useSsoProviderEdit', () => {
 
     beforeEach(() => {
       const ssoOrgClient = {
-        withScopes: (_scopes: string) => ssoOrgClient,
         organization: {
           identityProviders: {
             get: mockGet,
@@ -587,7 +585,6 @@ describe('useSsoProviderEdit', () => {
 
     beforeEach(() => {
       const provisioningOrgClient = {
-        withScopes: (_scopes: string) => provisioningOrgClient,
         organization: {
           identityProviders: {
             get: mockGet,
@@ -998,6 +995,28 @@ describe('useSsoProviderEdit', () => {
 
       await waitFor(() => {
         expect(onAfter).toHaveBeenCalledWith(mockProvider, newToken);
+      });
+    });
+
+    it('should call onAfter callback after successful provider delete', async () => {
+      mockDelete.mockResolvedValue(undefined);
+      const onAfter = vi.fn();
+
+      const { result } = renderUseSsoProviderEdit(mockIdpId, {
+        sso: {
+          deleteAction: { onAfter },
+          deleteFromOrganizationAction: {},
+        },
+      });
+
+      await waitFor(() => {
+        expect(result.current.provider).toEqual(mockProvider);
+      });
+
+      await result.current.onDeleteConfirm();
+
+      await waitFor(() => {
+        expect(onAfter).toHaveBeenCalledWith(mockProvider);
       });
     });
 

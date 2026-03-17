@@ -43,6 +43,9 @@ jobs:
           # Copy the API serverless functions to root api/ (Vercel convention)
           cp -r docs-site/api /tmp/static-deploy/
 
+          # Copy package.json so Vercel can install deps for the API function
+          cp docs-site/package.json /tmp/static-deploy/package.json
+
           # Use the docs-site vercel.json (outputDirectory: dist, rewrites, no build needed)
           cp docs-site/vercel.json /tmp/static-deploy/vercel.json
 

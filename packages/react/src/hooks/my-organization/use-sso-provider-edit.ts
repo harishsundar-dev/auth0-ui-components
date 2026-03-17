@@ -14,7 +14,6 @@ import {
   type CreateIdpProvisioningScimTokenRequestContent,
   type GetIdPProvisioningConfigResponseContent,
   getStatusCode,
-  MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES,
 } from '@auth0/universal-components-core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
@@ -72,7 +71,6 @@ export function useSsoProviderEdit(
     queryFn: async (): Promise<IdentityProvider> => {
       const response = await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.get(idpId);
       return response;
     },
@@ -86,10 +84,7 @@ export function useSsoProviderEdit(
   const organizationQuery = useQuery({
     queryKey: ssoProviderEditQueryKeys.organization(),
     queryFn: async (): Promise<OrganizationPrivate> => {
-      const response = await coreClient!
-        .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
-        .organizationDetails.get();
+      const response = await coreClient!.getMyOrganizationApiClient().organizationDetails.get();
       return OrganizationDetailsMappers.fromAPI(response);
     },
     enabled: !!coreClient,
@@ -106,7 +101,6 @@ export function useSsoProviderEdit(
       try {
         const result = await coreClient!
           .getMyOrganizationApiClient()
-          .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
           .organization.identityProviders.provisioning.get(idpId);
         return result;
       } catch (error) {
@@ -177,7 +171,6 @@ export function useSsoProviderEdit(
 
       const result = await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.update(idpId, apiRequestData);
 
       return result;
@@ -224,7 +217,6 @@ export function useSsoProviderEdit(
 
       const result = await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.create(idpId);
 
       return result;
@@ -274,7 +266,6 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.delete(idpId);
     },
     onSuccess: async () => {
@@ -322,7 +313,6 @@ export function useSsoProviderEdit(
 
       const result = await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.scimTokens.create(idpId, data);
 
       return result;
@@ -371,7 +361,6 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.scimTokens.delete(idpId, idpScimTokenId);
     },
     onSuccess: async () => {
@@ -411,7 +400,6 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.delete(provider.id);
     },
     onSuccess: async () => {
@@ -466,7 +454,6 @@ export function useSsoProviderEdit(
 
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.detach(provider.id);
     },
     onSuccess: async () => {
@@ -509,7 +496,6 @@ export function useSsoProviderEdit(
         queryFn: async () => {
           const response = await coreClient
             .getMyOrganizationApiClient()
-            .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
             .organization.identityProviders.get(idpId);
           return response;
         },
@@ -542,7 +528,6 @@ export function useSsoProviderEdit(
             try {
               const result = await coreClient
                 .getMyOrganizationApiClient()
-                .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
                 .organization.identityProviders.provisioning.get(idpId);
               return result;
             } catch (error) {
@@ -626,7 +611,6 @@ export function useSsoProviderEdit(
 
       const result = await coreClient
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.scimTokens.list(idpId);
       return result;
     },
@@ -684,7 +668,6 @@ export function useSsoProviderEdit(
     mutationFn: async () => {
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.updateAttributes(idpId, {});
     },
     onSuccess: () => {
@@ -713,7 +696,6 @@ export function useSsoProviderEdit(
     mutationFn: async () => {
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES)
         .organization.identityProviders.provisioning.updateAttributes(idpId, {});
     },
     onSuccess: () => {

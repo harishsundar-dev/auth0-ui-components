@@ -11,7 +11,6 @@ import {
   type IdentityProvider,
   type OrganizationPrivate,
   BusinessError,
-  MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES,
 } from '@auth0/universal-components-core';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useRef } from 'react';
@@ -54,7 +53,6 @@ export function useSsoProviderTable(
     queryFn: async () => {
       const response = await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.list();
       return (response?.identity_providers ?? []) as IdentityProvider[];
     },
@@ -64,10 +62,7 @@ export function useSsoProviderTable(
   const organizationQuery = useQuery({
     queryKey: ssoProviderQueryKeys.organization,
     queryFn: async () => {
-      const response = await coreClient!
-        .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
-        .organizationDetails.get();
+      const response = await coreClient!.getMyOrganizationApiClient().organizationDetails.get();
       return OrganizationDetailsMappers.fromAPI(response);
     },
     enabled: !!coreClient,
@@ -121,7 +116,6 @@ export function useSsoProviderTable(
 
       const updatedProvider = await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.update(selectedIdp.id, apiRequestData);
 
       return updatedProvider as IdentityProvider;
@@ -157,7 +151,6 @@ export function useSsoProviderTable(
 
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.delete(selectedIdp.id);
     },
     onSuccess: async (_, selectedIdp) => {
@@ -185,7 +178,6 @@ export function useSsoProviderTable(
 
       await coreClient!
         .getMyOrganizationApiClient()
-        .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
         .organization.identityProviders.detach(selectedIdp.id);
     },
     onSuccess: async (_, selectedIdp) => {
@@ -263,10 +255,7 @@ export function useSsoProviderTable(
       const data = await queryClient.ensureQueryData({
         queryKey: ssoProviderQueryKeys.organization,
         queryFn: async () => {
-          const response = await coreClient
-            .getMyOrganizationApiClient()
-            .withScopes(MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES)
-            .organizationDetails.get();
+          const response = await coreClient.getMyOrganizationApiClient().organizationDetails.get();
           return OrganizationDetailsMappers.fromAPI(response);
         },
       });

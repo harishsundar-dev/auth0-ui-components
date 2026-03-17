@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="h-full">
+    <html lang="en" className="h-full" data-theme="default">
       <body className={`${inter.className} h-full overflow-hidden bg-background`}>
         <Auth0Provider>
           <ClientProvider>

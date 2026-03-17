@@ -11,21 +11,6 @@ import { ContentType, HeaderName } from './http-constants';
 export const AUTH0_SCOPE_HEADER = HeaderName.Auth0Scope;
 
 /**
- * Adds deprecated withScopes method for backward compatibility.
- * @param client - SDK client instance
- * @returns Client with noop withScopes method
- * @deprecated This wrapper will be removed in next major version. Scopes are handled automatically.
- * @internal
- */
-export function addDeprecatedWithScopes<T extends object>(
-  client: T,
-): T & { withScopes: (scopes: string) => T } {
-  return Object.assign(client, {
-    withScopes: (_scopes: string) => client,
-  }) as T & { withScopes: (scopes: string) => T };
-}
-
-/**
  * Creates a fetcher function for proxy mode that injects scopes via auth0-scope header.
  * The proxy will extract scopes from the header and request the appropriate token.
  * @returns Fetcher function that sets auth0-scope and content-type headers

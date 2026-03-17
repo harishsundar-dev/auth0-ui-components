@@ -199,6 +199,30 @@
       "save_organization_changes_message": "${organizationName}の変更が保存されました。",
       "organization_changes_error_message": "リクエストの処理中に問題が発生しました。${message}.",
       "organization_changes_error_message_generic": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。"
+    },
+    "member_management": {
+      "header": {
+        "title": "組織管理"
+      },
+      "empty_state": {
+        "title": "組織が設定されていません",
+        "description": "組織の詳細を更新して開始してください"
+      },
+      "table": {
+        "columns": {
+          "name": "名前",
+          "display_name": "表示名",
+          "actions": "操作"
+        }
+      },
+      "actions": {
+        "edit": "編集"
+      },
+      "tabs": {
+        "details": "詳細",
+        "sso_providers": "シングルサインオン",
+        "domains": "ドメイン"
+      }
     }
   },
   "idp_management": {
@@ -810,7 +834,6 @@
       "modal": {
         "title": "${organizationName}から${providerName}を削除",
         "description": "この操作により、この組織のすべてのユーザーの<bold>${providerName}</bold>へのアクセスが取り消されます。ユーザーは削除されませんが、このプロバイダーを使用してサインインできなくなります",
-
         "content": {
           "description": "確認のためプロバイダー名を入力してください。",
           "field": {

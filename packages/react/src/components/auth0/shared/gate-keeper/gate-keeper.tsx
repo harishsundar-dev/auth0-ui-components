@@ -15,7 +15,7 @@ import {
 import { RefreshCcw } from 'lucide-react';
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { MfaStepUp } from '@/components/auth0/shared/mfa-step-up/mfa-step-up';
+import { MfaStepUp } from '@/components/auth0/shared/gate-keeper/mfa-step-up/mfa-step-up';
 import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';

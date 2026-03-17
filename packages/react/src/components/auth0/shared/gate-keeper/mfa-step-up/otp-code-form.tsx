@@ -18,7 +18,7 @@ interface Authenticator {
   name?: string;
 }
 
-interface StepUpCodeFormProps {
+interface OtpCodeFormProps {
   onSubmit: (code: string) => Promise<void>;
   onCancel: () => void;
   isLoading: boolean;
@@ -42,13 +42,13 @@ type CodeForm = { code: string };
  * @returns Code input form element.
  * @internal
  */
-export function StepUpCodeForm({
+export function OtpCodeForm({
   onSubmit,
   onCancel,
   isLoading,
   authenticator,
   onResend,
-}: StepUpCodeFormProps) {
+}: OtpCodeFormProps) {
   const { t } = useTranslator('gate_keeper');
 
   const [isResending, setIsResending] = useState(false);

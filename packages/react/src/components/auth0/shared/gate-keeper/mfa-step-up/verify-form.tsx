@@ -11,7 +11,7 @@ import {
 } from '@auth0/universal-components-core';
 import { useEffect, useState } from 'react';
 
-import { StepUpCodeForm } from './step-up-code-form';
+import { OtpCodeForm } from './otp-code-form';
 
 import { Button } from '@/components/ui/button';
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -28,7 +28,7 @@ interface VerifyAuthenticator {
   name?: string;
 }
 
-interface StepUpVerifyFormProps {
+interface VerifyFormProps {
   error: MfaRequiredError;
   authenticator: VerifyAuthenticator;
   onComplete: () => void;
@@ -42,12 +42,7 @@ interface StepUpVerifyFormProps {
  * @returns Verify form element.
  * @internal
  */
-export function StepUpVerifyForm({
-  error,
-  authenticator,
-  onComplete,
-  onCancel,
-}: StepUpVerifyFormProps) {
+export function VerifyForm({ error, authenticator, onComplete, onCancel }: VerifyFormProps) {
   const { t } = useTranslator('gate_keeper');
   const { challenge, verify, isLoading } = useMfaStepUp({ error, onComplete });
   const mfaToken = error.mfa_token;
@@ -129,7 +124,7 @@ export function StepUpVerifyForm({
         <DialogTitle>{t('mfa.title')}</DialogTitle>
       </DialogHeader>
       <Separator />
-      <StepUpCodeForm
+      <OtpCodeForm
         onSubmit={handleVerify}
         onCancel={onCancel}
         isLoading={isLoading}

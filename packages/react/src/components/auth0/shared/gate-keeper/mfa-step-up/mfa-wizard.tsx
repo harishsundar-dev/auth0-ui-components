@@ -1,6 +1,6 @@
 /**
- * MFA step-up orchestrator.
- * @module mfa-step-up
+ * MFA wizard orchestrator.
+ * @module mfa-wizard
  * @internal
  */
 import {
@@ -12,19 +12,19 @@ import {
 import { useState } from 'react';
 
 import { AuthenticatorsList } from './authenticators-list';
-import { StepUpEnrollmentForm } from './step-up-enrollment-form';
-import { StepUpVerifyForm } from './step-up-verify-form';
+import { EnrollmentForm } from './enrollment-form';
+import { VerifyForm } from './verify-form';
 
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { useTranslator } from '@/hooks/shared/use-translator';
 
-type MfaStepUpState =
+type MfaWizardState =
   | { view: 'list' }
   | { view: 'enroll'; factor: EnrollmentFactor }
   | { view: 'challenge'; authenticator: MfaAuthenticator };
 
-interface MfaStepUpProps {
+interface MfaWizardProps {
   error: MfaRequiredError;
   onComplete: () => void;
   onCancel: () => void;
@@ -37,12 +37,12 @@ interface MfaStepUpProps {
  * @param props.error - The MFA required error from the step-up flow.
  * @param props.onComplete - Called after successful challenge or enrollment.
  * @param props.onCancel - Called when the user cancels the flow.
- * @returns MFA step-up element.
+ * @returns MFA wizard element.
  * @internal
  */
-export function MfaStepUp({ error, onComplete, onCancel }: MfaStepUpProps) {
+export function MfaWizard({ error, onComplete, onCancel }: MfaWizardProps) {
   const { t } = useTranslator('gate_keeper');
-  const [state, setState] = useState<MfaStepUpState>({ view: 'list' });
+  const [state, setState] = useState<MfaWizardState>({ view: 'list' });
 
   const handleSelectFactor = (factor: EnrollmentFactor) =>
     setState({ view: 'enroll', factor: { ...factor, type: normalizeFactorType(factor.type) } });
@@ -52,7 +52,7 @@ export function MfaStepUp({ error, onComplete, onCancel }: MfaStepUpProps) {
 
   if (state.view === 'enroll') {
     return (
-      <StepUpEnrollmentForm
+      <EnrollmentForm
         error={error}
         factor={state.factor}
         onComplete={onComplete}
@@ -63,7 +63,7 @@ export function MfaStepUp({ error, onComplete, onCancel }: MfaStepUpProps) {
 
   if (state.view === 'challenge') {
     return (
-      <StepUpVerifyForm
+      <VerifyForm
         error={error}
         authenticator={state.authenticator}
         onComplete={onComplete}

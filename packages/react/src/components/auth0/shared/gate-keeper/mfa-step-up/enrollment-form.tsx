@@ -1,6 +1,6 @@
 /**
- * MFA step-up enrollment setup form.
- * @module step-up-enrollment-form
+ * MFA enrollment setup form.
+ * @module enrollment-form
  * @internal
  */
 
@@ -23,7 +23,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { StepUpVerifyForm } from './step-up-verify-form';
+import { VerifyForm } from './verify-form';
 
 import AppleLogo from '@/assets/icons/apple-logo';
 import GoogleLogo from '@/assets/icons/google-logo';
@@ -49,7 +49,7 @@ import { TextField } from '@/components/ui/text-field';
 import { useMfaStepUp } from '@/hooks/shared/use-mfa-step-up';
 import { useTranslator } from '@/hooks/shared/use-translator';
 
-interface StepUpEnrollmentFormProps {
+interface EnrollmentFormProps {
   error: MfaRequiredError;
   factor: EnrollmentFactor;
   onComplete: () => void;
@@ -70,12 +70,7 @@ type ContactForm = EmailContactForm | SmsContactForm;
  * @returns Enrollment form element.
  * @internal
  */
-export function StepUpEnrollmentForm({
-  error,
-  factor,
-  onComplete,
-  onCancel,
-}: StepUpEnrollmentFormProps) {
+export function EnrollmentForm({ error, factor, onComplete, onCancel }: EnrollmentFormProps) {
   const { t } = useTranslator('gate_keeper');
 
   const mfaToken = error.mfa_token;
@@ -215,7 +210,7 @@ export function StepUpEnrollmentForm({
 
   if (step === 'verify' && enrollResponse) {
     return (
-      <StepUpVerifyForm
+      <VerifyForm
         error={error}
         authenticator={{ ...enrollResponse, name: inputForm.getValues('contact') }}
         onComplete={handleVerifyComplete}

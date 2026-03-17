@@ -7,6 +7,8 @@
 import { OktaLogoSvg } from '@auth0/universal-components-core';
 import React from 'react';
 
+import { useTheme } from '@/hooks/shared/use-theme';
+
 export interface OktaLogoProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   width?: number | string;
   height?: number | string;
@@ -24,8 +26,11 @@ const OktaLogo: React.FC<OktaLogoProps> = ({
   height = 17,
   title = 'Okta logo',
   className,
+  style,
   ...props
 }) => {
+  const { isDarkMode } = useTheme();
+
   return (
     <img
       src={OktaLogoSvg}
@@ -33,6 +38,7 @@ const OktaLogo: React.FC<OktaLogoProps> = ({
       width={width}
       height={height}
       className={className}
+      style={{ filter: isDarkMode ? 'invert(1)' : undefined, ...style }}
       {...props}
     />
   );

@@ -58,7 +58,7 @@ export function ProfileDropdown() {
           <div className="absolute right-0 mt-2 w-48 bg-background rounded-md shadow-lg py-1 z-50 border border-accent">
             <Link
               to="/profile"
-              className="block px-4 py-2 text-sm text-primary hover:bg-accent/60 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-primary hover:bg-accent/60 rounded-md transition-colors cursor-default"
               onClick={() => setIsOpen(false)}
             >
               <div className="flex items-center space-x-2">
@@ -67,7 +67,7 @@ export function ProfileDropdown() {
               </div>
             </Link>
             <a
-              className="block px-4 py-2 text-sm text-primary hover:bg-accent/60 rounded-md transition-colors"
+              className="block px-4 py-2 text-sm text-primary hover:bg-accent/60 rounded-md transition-colors cursor-default"
               onClick={handleSignOut}
             >
               <div className="flex items-center space-x-2">

@@ -23,6 +23,7 @@ const LandingPage = () => {
                     href="https://auth0-ui-components.vercel.app/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="cursor-default"
                   >
                     {t('hero-section.get-started-button')}
                   </a>

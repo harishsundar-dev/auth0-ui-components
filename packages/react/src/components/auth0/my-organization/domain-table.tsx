@@ -10,7 +10,7 @@ import { DomainDeleteModal } from '@/components/auth0/my-organization/shared/dom
 import { DomainTableActionsColumn } from '@/components/auth0/my-organization/shared/domain-management/domain-table/domain-table-actions-column';
 import { DomainVerifyModal } from '@/components/auth0/my-organization/shared/domain-management/domain-verify/domain-verify-modal';
 import { DataTable, type Column } from '@/components/auth0/shared/data-table';
-import { GateKeeper } from '@/components/auth0/shared/gate-keeper';
+import { GateKeeper } from '@/components/auth0/shared/gate-keeper/gate-keeper';
 import { Header } from '@/components/auth0/shared/header';
 import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Badge } from '@/components/ui/badge';

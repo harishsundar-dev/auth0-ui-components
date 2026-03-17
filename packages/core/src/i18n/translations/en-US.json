@@ -199,6 +199,30 @@
       "save_organization_changes_message": "The changes have been saved for ${organizationName}.",
       "organization_changes_error_message": "There was an issue processing your request. ${message}.",
       "organization_changes_error_message_generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
+    },
+    "member_management": {
+      "header": {
+        "title": "Organization Management"
+      },
+      "empty_state": {
+        "title": "No organization configured",
+        "description": "Update your organization details to get started"
+      },
+      "table": {
+        "columns": {
+          "name": "Name",
+          "display_name": "Display Name",
+          "actions": "Actions"
+        }
+      },
+      "actions": {
+        "edit": "Edit"
+      },
+      "tabs": {
+        "details": "Details",
+        "sso_providers": "Single Sign-On",
+        "domains": "Domains"
+      }
     }
   },
   "idp_management": {

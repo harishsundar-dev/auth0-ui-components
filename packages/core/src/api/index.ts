@@ -7,4 +7,3 @@
 export * from './api-error';
 export * from './business-error';
 export * from './http-constants';
-export * from './scope-constants';

@@ -5,48 +5,12 @@ import {
   createMockContextInterface,
   TEST_DOMAIN,
 } from '../../internals/__mocks__/shared/api-service.mocks';
-import {
-  addDeprecatedWithScopes,
-  AUTH0_SCOPE_HEADER,
-  createProxyFetcher,
-  createSpaFetcher,
-} from '../api-utils';
+import { AUTH0_SCOPE_HEADER, createProxyFetcher, createSpaFetcher } from '../api-utils';
 import { ContentType, HeaderName } from '../http-constants';
 
 import { stubFetch } from './__mocks__/api-utils.mocks';
 
 describe('api-utils', () => {
-  describe('addDeprecatedWithScopes', () => {
-    it('returns the same client instance with withScopes method', () => {
-      const mockClient = { someMethod: vi.fn() };
-      const wrappedClient = addDeprecatedWithScopes(mockClient);
-
-      expect(wrappedClient).toHaveProperty('withScopes');
-      expect(wrappedClient.someMethod).toBe(mockClient.someMethod);
-    });
-
-    it('withScopes method is a no-op that returns the same client', () => {
-      const mockClient = { someMethod: vi.fn() };
-      const wrappedClient = addDeprecatedWithScopes(mockClient);
-
-      const result = wrappedClient.withScopes('read:users write:users');
-      expect(result).toBe(mockClient);
-    });
-
-    it('preserves all original client properties', () => {
-      const mockClient = {
-        method1: vi.fn(),
-        method2: vi.fn(),
-        property: 'value',
-      };
-      const wrappedClient = addDeprecatedWithScopes(mockClient);
-
-      expect(wrappedClient.method1).toBe(mockClient.method1);
-      expect(wrappedClient.method2).toBe(mockClient.method2);
-      expect(wrappedClient.property).toBe('value');
-    });
-  });
-
   describe('createProxyFetcher', () => {
     afterEach(() => {
       vi.unstubAllGlobals();

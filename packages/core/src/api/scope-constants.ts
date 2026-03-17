@@ -1,17 +1,28 @@
 /**
- * OAuth scopes for My Organization API operations.
- * @module my-organization-api-constants
+ * Deprecated OAuth scope constants.
+ * @deprecated These constants will be removed in next major version. Scopes are now handled automatically by SDK fetchers.
+ * @module scope-constants
  * @internal
  */
 
 /**
+ * Required OAuth scopes for user MFA management operations.
+ * @deprecated No longer needed. Scopes are automatically handled by the SDK fetcher.
+ * @internal
+ */
+export const USER_MFA_SCOPES =
+  'create:me:authentication_methods read:me:authentication_methods delete:me:authentication_methods update:me:authentication_methods read:me:factors';
+
+/**
  * Required OAuth scopes for organization details editing.
+ * @deprecated No longer needed. Scopes are automatically handled by the SDK fetcher.
  * @internal
  */
 export const MY_ORGANIZATION_DETAILS_EDIT_SCOPES = 'read:my_org:details update:my_org:details';
 
 /**
  * Required OAuth scopes for SSO provider table operations.
+ * @deprecated No longer needed. Scopes are automatically handled by the SDK fetcher.
  * @internal
  */
 export const MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES =
@@ -19,6 +30,7 @@ export const MY_ORGANIZATION_SSO_PROVIDER_TABLE_SCOPES =
 
 /**
  * Required OAuth scopes for creating SSO providers.
+ * @deprecated No longer needed. Scopes are automatically handled by the SDK fetcher.
  * @internal
  */
 export const MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES =
@@ -26,6 +38,7 @@ export const MY_ORGANIZATION_SSO_PROVIDER_CREATE_SCOPES =
 
 /**
  * Required OAuth scopes for editing SSO providers.
+ * @deprecated No longer needed. Scopes are automatically handled by the SDK fetcher.
  * @internal
  */
 export const MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES =
@@ -33,6 +46,7 @@ export const MY_ORGANIZATION_SSO_PROVIDER_EDIT_SCOPES =
 
 /**
  * Required OAuth scopes for domain management operations.
+ * @deprecated No longer needed. Scopes are automatically handled by the SDK fetcher.
  * @internal
  */
 export const MY_ORGANIZATION_DOMAIN_SCOPES =

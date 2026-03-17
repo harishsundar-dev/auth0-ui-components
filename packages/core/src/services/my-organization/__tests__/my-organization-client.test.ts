@@ -107,7 +107,7 @@ describe('createMyOrganizationClient', () => {
 
       expect(mockFetchWithAuth).toHaveBeenCalledWith(
         'https://example.com',
-        { method: 'POST', body: '{}' },
+        expect.objectContaining({ method: 'POST', body: '{}' }),
         { scope: ['read:org'], audience: 'https://tenant.auth0.com/my-org/' },
       );
     });

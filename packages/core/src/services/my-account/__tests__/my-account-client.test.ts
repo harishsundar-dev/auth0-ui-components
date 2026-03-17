@@ -127,7 +127,7 @@ describe('createMyAccountClient', () => {
 
       expect(mockFetchWithAuth).toHaveBeenCalledWith(
         'https://example.com',
-        { method: 'GET' },
+        expect.objectContaining({ method: 'GET' }),
         { scope: ['read:users', 'write:users'], audience: 'https://tenant.auth0.com/me/' },
       );
     });
@@ -142,7 +142,7 @@ describe('createMyAccountClient', () => {
 
       expect(mockFetchWithAuth).toHaveBeenCalledWith(
         'https://example.com',
-        { method: 'GET' },
+        expect.objectContaining({ method: 'GET' }),
         { scope: undefined, audience: undefined },
       );
     });

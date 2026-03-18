@@ -37,11 +37,10 @@ interface GateKeeperProps {
  *
  * @param props - Component props.
  * @param props.onRetry - Retry handler.
- * @param props.isRetrying - Whether a retry is in progress.
  * @returns Error fallback element.
  * @internal
  */
-function ErrorFallback({ onRetry, isRetrying }: { onRetry: () => void; isRetrying: boolean }) {
+function ErrorFallback({ onRetry }: { onRetry: () => void }) {
   const { t } = useTranslator('gate_keeper');
 
   return (
@@ -51,12 +50,8 @@ function ErrorFallback({ onRetry, isRetrying }: { onRetry: () => void; isRetryin
         <CardDescription>{t('fallback.description')}</CardDescription>
       </CardContent>
       <CardFooter className="justify-center">
-        <Button variant="primary" size="default" onClick={onRetry} disabled={isRetrying}>
-          {isRetrying ? (
-            <Spinner size="sm" colorScheme="foreground" />
-          ) : (
-            <RefreshCcw className="size-4" />
-          )}
+        <Button variant="primary" size="default" onClick={onRetry}>
+          <RefreshCcw className="size-4" />
           {t('fallback.retry')}
         </Button>
       </CardFooter>
@@ -143,7 +138,7 @@ export function GateKeeper({ styling, isLoading, children }: GateKeeperProps) {
   if (isSystemError || (isMfaStepUp && isMfaDismissed)) {
     return (
       <StyledScope style={styles.variables}>
-        <ErrorFallback onRetry={handleRetry} isRetrying={isRetrying} />
+        <ErrorFallback onRetry={handleRetry} />
       </StyledScope>
     );
   }

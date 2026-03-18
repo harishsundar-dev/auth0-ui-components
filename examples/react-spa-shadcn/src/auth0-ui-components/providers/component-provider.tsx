@@ -6,7 +6,6 @@ import { Toaster } from '../components/ui/sonner';
 import { Spinner } from '../components/ui/spinner';
 import type { Auth0ComponentProviderProps } from '../types/auth-types';
 
-import { ProxyProvider } from './proxy-provider';
 import { ThemeProvider } from './theme-provider';
 const SpaProvider = React.lazy(() => import('./spa-provider'));
 
@@ -63,21 +62,23 @@ const SpaProvider = React.lazy(() => import('./spa-provider'));
  * </Auth0ComponentProvider>
  * ```
  */
-export const Auth0ComponentProvider = ({
-  i18n,
-  authDetails,
-  themeSettings = {
-    theme: 'default',
-    mode: 'light',
-    variables: {
-      common: {},
-      light: {},
-      dark: {},
+export const Auth0ComponentProvider = (
+  props: Auth0ComponentProviderProps & { children: React.ReactNode },
+) => {
+  const {
+    themeSettings = {
+      theme: 'default',
+      mode: 'light',
+      variables: {
+        common: {},
+        light: {},
+        dark: {},
+      },
     },
-  },
-  loader,
-  children,
-}: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
+    loader,
+    children,
+  } = props;
+
   return (
     <>
       <Toaster position="top-right" />
@@ -98,15 +99,7 @@ export const Auth0ComponentProvider = ({
             )
           }
         >
-          {authDetails?.authProxyUrl ? (
-            <ProxyProvider i18n={i18n} authDetails={authDetails}>
-              {children}
-            </ProxyProvider>
-          ) : (
-            <SpaProvider i18n={i18n} authDetails={authDetails}>
-              {children}
-            </SpaProvider>
-          )}
+          <SpaProvider {...props}>{children}</SpaProvider>
         </React.Suspense>
       </ThemeProvider>
     </>

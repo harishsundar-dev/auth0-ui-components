@@ -10,8 +10,8 @@ overrides:
   '@isaacs/brace-expansion': '>=5.0.1'
   minimatch: '>=10.2.3'
   '@vercel/static-config>ajv': '>=8.18.0'
-  tar: '>=7.5.10'
-  undici: '>=5.28.5'
+  tar: '>=7.5.11'
+  undici: '>=7.24.0'
   rollup: '>=4.59.0'
   qs: '>=6.14.2'
   '@modelcontextprotocol/sdk': '>=1.26.0'
@@ -184,8 +184,8 @@ importers:
   examples/next-rwa:
     dependencies:
       '@auth0/nextjs-auth0':
-        specifier: ^4.13.2
-        version: 4.13.2(next@16.1.5(@babel/core@7.28.5)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^4.16.0
+        version: 4.16.0(next@16.1.5(@babel/core@7.28.5)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@auth0/universal-components-react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -248,8 +248,8 @@ importers:
   examples/react-spa-npm:
     dependencies:
       '@auth0/auth0-react':
-        specifier: ^2.15.0
-        version: 2.15.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^2.15.1
+        version: 2.15.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@auth0/universal-components-react':
         specifier: workspace:*
         version: link:../../packages/react
@@ -324,8 +324,8 @@ importers:
   examples/react-spa-shadcn:
     dependencies:
       '@auth0/auth0-react':
-        specifier: ^2.3.0
-        version: 2.9.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^2.15.1
+        version: 2.15.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@auth0/universal-components-core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -651,8 +651,8 @@ importers:
         version: 3.25.76
     devDependencies:
       '@auth0/auth0-react':
-        specifier: ^2.15.0
-        version: 2.15.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^2.15.1
+        version: 2.15.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       '@tailwindcss/cli':
         specifier: ^4.1.17
         version: 4.1.17
@@ -713,26 +713,17 @@ packages:
   '@auth0/auth0-auth-js@1.2.0':
     resolution: {integrity: sha512-VBoSta4aCgNl9Ym+UAHHI3g0VFxIOiZhtY2oPEZxpHjhcUjS7xnNI957XZxXG45f+7zdOgCqLvfkJ1iWJJUv+Q==}
 
-  '@auth0/auth0-auth-js@1.4.0':
-    resolution: {integrity: sha512-ShA7KT4KvcBEtxsXZTcrmoNxai5q1JXhB2aEBFnZD1L6LNLzzmiUWiFTtGMsaaITCylr8TJ/onEQk6XZmUHXbg==}
+  '@auth0/auth0-auth-js@1.5.0':
+    resolution: {integrity: sha512-shahG7sRw6VxduRvnNcmbgL8V42z+kNR9LDih9ofY4eM8ygt07RUh58x7S1M80ENx9wcMqYUsJWMaVudgQHyjQ==}
 
-  '@auth0/auth0-react@2.15.0':
-    resolution: {integrity: sha512-LbRU87U54/YW/N3UHtNVoj3mCBBz+iYAdAByQjbXOkpI6IYnjMBwIwDusW3N23XNXq9WnihD57Dyi2R3/Q9btw==}
+  '@auth0/auth0-react@2.15.1':
+    resolution: {integrity: sha512-zcBh8xWO1cgUeN19tQueZHVzq7/O+yWc6MhKdQvoU0ima0wagl9SeyVmahg8aiBQqRcqT6C+y2+IOcnPGnI2Vw==}
     peerDependencies:
       react: 19.2.1
       react-dom: 19.2.1
 
-  '@auth0/auth0-react@2.9.0':
-    resolution: {integrity: sha512-8BRMYjgE0CVQU/ndOZ5OYODdx/5FZs99D9ZI/t4pEeg3ewcGaL/Zewasm+frjeP3DKaNoFrHFX8FUTPiP9rCDQ==}
-    peerDependencies:
-      react: 19.2.1
-      react-dom: 19.2.1
-
-  '@auth0/auth0-spa-js@2.17.0':
-    resolution: {integrity: sha512-Zdpu4qdOlBXBUDIxSOFAAK6bhs3WlJl1LzkL6kDvamJYDgImi4pMFSzGjS0lobFdotDX1KBnxuyiDSEV0nEBMA==}
-
-  '@auth0/auth0-spa-js@2.9.1':
-    resolution: {integrity: sha512-GNyypxb8ck32tUacYPHAEZ/L845kLDchqXtFZM3Gt/KcBr9C8/c1ncAhGY1UnkgUw2MctwVnBOEoqCD3oP3SPg==}
+  '@auth0/auth0-spa-js@2.17.1':
+    resolution: {integrity: sha512-ae51cZUZro2sGmztY/EwGuQaSoXouTKYByKymHMeybYA6QneV/iurL5CRDZZVg9uqeLUdmnpxtIgakYfaSNY5Q==}
 
   '@auth0/myaccount-js@1.0.0-beta.0':
     resolution: {integrity: sha512-slj0RtNfieNk1BC1ERrCQw65qMUVKU5qacbTc8BFH8R316CUpsOhZ2MIiV9l3VEkaqY1hmCZm03+ZI6ym+3PZg==}
@@ -742,10 +733,10 @@ packages:
     resolution: {integrity: sha512-ul7BmJjJinfgu1xAK3LPR4tgcSxEW9BgjCHy5RHHbF2UBbioYTlbx7dVLn+b8m09UnPmtxTvPisoza/KhacG3Q==}
     engines: {node: '>=18.0.0'}
 
-  '@auth0/nextjs-auth0@4.13.2':
-    resolution: {integrity: sha512-yOEyB+xTRpEp63dNcA6F5rV0wDzjEFf054f2q6uq/joM/1nu6ziG1ALV3lKJdL/1o4Mn1aRADylRJ4PFRWBCVw==}
+  '@auth0/nextjs-auth0@4.16.0':
+    resolution: {integrity: sha512-QTQdK+/YL68J7b1tSdvJTT16+r+Dxwy/m0kwl73CEy/QsYCpHE1sCZYgQ4UaFZb5jHQ7d4R2JUkHN5k2fKQ4zg==}
     peerDependencies:
-      next: ^14.2.25 || ~15.0.5 || ~15.1.9 || ~15.2.6 || ~15.3.6 || ~15.4.8 || ~15.5.7 || ^16.0.7
+      next: ^14.2.35 || ~15.0.7 || ~15.1.11 || ~15.2.8 || ~15.3.8 || ~15.4.10 || ~15.5.9 || ^16.0.10
       react: 19.2.1
       react-dom: 19.2.1
 
@@ -6599,8 +6590,8 @@ packages:
     resolution: {integrity: sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg==}
     engines: {node: '>=6'}
 
-  tar@7.5.10:
-    resolution: {integrity: sha512-8mOPs1//5q/rlkNSPcCegA6hiHJYDmSLEI8aMH/CdSQJNWztHC9WHNam5zdQlfpTwB9Xp7IBEsHfV5LKMJGVAw==}
+  tar@7.5.11:
+    resolution: {integrity: sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==}
     engines: {node: '>=18'}
 
   test-exclude@7.0.1:
@@ -6876,8 +6867,8 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
-  undici@7.22.0:
-    resolution: {integrity: sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==}
+  undici@7.24.0:
+    resolution: {integrity: sha512-jxytwMHhsbdpBXxLAcuu0fzlQeXCNnWdDyRHpvWsUl8vd98UwYdl9YTyn8/HcpcJPC3pwUveefsa3zTxyD/ERg==}
     engines: {node: '>=20.18.1'}
 
   unicorn-magic@0.1.0:
@@ -7281,32 +7272,20 @@ snapshots:
       jose: 6.1.3
       openid-client: 6.8.1
 
-  '@auth0/auth0-auth-js@1.4.0':
+  '@auth0/auth0-auth-js@1.5.0':
     dependencies:
       jose: 6.1.3
       openid-client: 6.8.1
 
-  '@auth0/auth0-react@2.15.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@auth0/auth0-react@2.15.1(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
-      '@auth0/auth0-spa-js': 2.17.0
+      '@auth0/auth0-spa-js': 2.17.1
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
 
-  '@auth0/auth0-react@2.9.0(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@auth0/auth0-spa-js@2.17.1':
     dependencies:
-      '@auth0/auth0-spa-js': 2.9.1
-      react: 19.2.1
-      react-dom: 19.2.1(react@19.2.1)
-
-  '@auth0/auth0-spa-js@2.17.0':
-    dependencies:
-      '@auth0/auth0-auth-js': 1.4.0
-      browser-tabs-lock: 1.3.0
-      dpop: 2.1.1
-      es-cookie: 1.3.2
-
-  '@auth0/auth0-spa-js@2.9.1':
-    dependencies:
+      '@auth0/auth0-auth-js': 1.5.0
       browser-tabs-lock: 1.3.0
       dpop: 2.1.1
       es-cookie: 1.3.2
@@ -7317,7 +7296,7 @@ snapshots:
     dependencies:
       '@auth0/auth0-auth-js': 1.2.0
 
-  '@auth0/nextjs-auth0@4.13.2(next@16.1.5(@babel/core@7.28.5)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
+  '@auth0/nextjs-auth0@4.16.0(next@16.1.5(@babel/core@7.28.5)(react-dom@19.2.1(react@19.2.1))(react@19.2.1))(react-dom@19.2.1(react@19.2.1))(react@19.2.1)':
     dependencies:
       '@edge-runtime/cookies': 5.0.2
       '@panva/hkdf': 1.2.1
@@ -8252,7 +8231,7 @@ snapshots:
       node-fetch: 2.6.9
       nopt: 8.1.0
       semver: 7.7.3
-      tar: 7.5.10
+      tar: 7.5.11
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -10075,7 +10054,7 @@ snapshots:
       ts-node: 10.9.1(@swc/core@1.15.3)(@types/node@16.18.11)(typescript@4.9.5)
       typescript: 4.9.5
       typescript5: typescript@5.9.3
-      undici: 7.22.0
+      undici: 7.24.0
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -13496,7 +13475,7 @@ snapshots:
 
   tapable@2.3.0: {}
 
-  tar@7.5.10:
+  tar@7.5.11:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
@@ -13791,7 +13770,7 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undici@7.22.0: {}
+  undici@7.24.0: {}
 
   unicorn-magic@0.1.0: {}
 

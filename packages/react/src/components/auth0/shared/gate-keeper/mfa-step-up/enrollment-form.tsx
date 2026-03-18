@@ -59,6 +59,11 @@ interface EnrollmentFormProps {
 const GUARDIAN_APP_STORE_URL = 'https://apps.apple.com/us/app/auth0-guardian/id1093447833';
 const GUARDIAN_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.auth0.guardian';
 
+const FACTOR_INITIAL_STEP: Record<string, EnrollStep> = {
+  [FACTOR_TYPE_OTP]: 'qr',
+  [FACTOR_TYPE_PUSH]: 'install',
+};
+
 type EnrollStep = 'install' | 'input' | 'qr' | 'verify' | 'recovery';
 type ContactForm = EmailContactForm | SmsContactForm;
 
@@ -77,9 +82,8 @@ export function EnrollmentForm({ error, factor, onComplete, onCancel }: Enrollme
 
   const isOtp = factor.type === FACTOR_TYPE_OTP;
   const isPush = factor.type === FACTOR_TYPE_PUSH;
-  const requiresInput = !isOtp && !isPush;
 
-  const [step, setStep] = useState<EnrollStep>(requiresInput ? 'input' : isPush ? 'install' : 'qr');
+  const [step, setStep] = useState<EnrollStep>(FACTOR_INITIAL_STEP[factor.type] ?? 'input');
   const [enrollResponse, setEnrollResponse] = useState<EnrollmentResponse | undefined>();
   const [recoveryConfirmed, setRecoveryConfirmed] = useState(false);
 
@@ -108,7 +112,7 @@ export function EnrollmentForm({ error, factor, onComplete, onCancel }: Enrollme
 
   // OTP only: call enroll on mount then show QR.
   useEffect(() => {
-    if (requiresInput || isPush) return;
+    if (!isOtp) return;
 
     const initialiseOtpEnrollment = async () => {
       const response = await enroll({ mfaToken, factorType: FACTOR_TYPE_OTP });
@@ -116,7 +120,7 @@ export function EnrollmentForm({ error, factor, onComplete, onCancel }: Enrollme
     };
 
     initialiseOtpEnrollment();
-  }, [enroll, isPush, mfaToken, requiresInput]);
+  }, [enroll, isOtp, mfaToken]);
 
   const handleInputSubmit = async ({ contact }: ContactForm) => {
     const params: EnrollParams =

@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuth0 } from '@auth0/auth0-react';
-import type { AuthDetails } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { Toaster } from '../components/ui/sonner';
@@ -42,7 +41,7 @@ export const Auth0ComponentProvider = (
     }
 
     if (auth0ReactContext && 'isAuthenticated' in auth0ReactContext) {
-      return auth0ReactContext as unknown as AuthDetails['contextInterface'];
+      return auth0ReactContext;
     }
 
     throw new Error(

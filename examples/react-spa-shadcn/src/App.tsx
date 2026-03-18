@@ -56,10 +56,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => {
   // const { i18n } = useTranslation();
-  // const isDarkMode = useDarkMode();
-  // const defaultAuthDetails = {
-  //   domain: config.auth0.domain,
-  // };
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipPrimitive.Provider>
@@ -76,10 +72,7 @@ const App = () => {
             useMrrt={true}
           >
             {/* <Auth0ComponentProvider
-              authDetails={defaultAuthDetails}
-              themeSettings={{
-                mode: isDarkMode ? 'dark' : 'light',
-              }}
+              domain={config.auth0.domain}
               i18n={{ currentLanguage: i18n.language }}
             > */}
             <AppLayout>

@@ -38,7 +38,6 @@ type CodeForm = { code: string };
  * @param props.onSubmit - Called with the entered code on form submission.
  * @param props.onCancel - Called when the user cancels.
  * @param props.isLoading - Whether a verification request is in flight.
- * @param props.isRecoveryCode - When true, renders a text field instead of OTP field.
  * @returns Code input form element.
  * @internal
  */

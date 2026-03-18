@@ -336,7 +336,7 @@ export function EnrollmentForm({ error, factor, onComplete, onCancel }: Enrollme
             </p>
           )}
 
-          {enrollResponse?.authenticatorType === FACTOR_TYPE_OTP && (
+          {enrollResponse.authenticatorType === FACTOR_TYPE_OTP && (
             <CopyableTextField value={enrollResponse.secret} />
           )}
         </div>

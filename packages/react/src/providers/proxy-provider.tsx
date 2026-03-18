@@ -64,7 +64,7 @@ export const Auth0ComponentProvider = ({
   const fallback = loader || (
     <StyledScope>
       <div className="flex items-center justify-center min-h-[200px]">
-        <Spinner />
+        <Spinner colorScheme={'foreground'} />
       </div>
     </StyledScope>
   );

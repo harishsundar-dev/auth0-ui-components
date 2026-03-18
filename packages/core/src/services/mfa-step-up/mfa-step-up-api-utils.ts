@@ -21,13 +21,15 @@ export function isMfaRequiredError(error: unknown): error is MfaRequiredError {
  * @param error - The caught error value.
  * @returns A normalized {@link MfaRequiredError}.
  */
-export function normalizeMfaRequiredError(error: unknown): MfaRequiredError {
-  const err = error as MfaRequiredError & { body?: Partial<MfaRequiredError> };
-  const body = err.body && typeof err.body === 'object' ? err.body : undefined;
+export function normalizeMfaRequiredError(error: MfaRequiredError): MfaRequiredError {
+  const body =
+    'body' in error
+      ? (error as MfaRequiredError & { body?: Partial<MfaRequiredError> }).body
+      : undefined;
   return {
-    ...err,
-    mfa_token: (err.mfa_token ?? body?.mfa_token) as string,
-    mfa_requirements: err.mfa_requirements ?? body?.mfa_requirements,
+    ...error,
+    mfa_token: (error.mfa_token ?? body?.mfa_token) as string,
+    mfa_requirements: error.mfa_requirements ?? body?.mfa_requirements,
   };
 }
 

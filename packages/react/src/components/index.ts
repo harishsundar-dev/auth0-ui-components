@@ -16,3 +16,4 @@ export {
   OrganizationDetailsEdit,
   OrganizationDetailsEditView,
 } from './auth0/my-organization/organization-details-edit';
+export { OrganizationManagement } from './auth0/my-organization/organization-management';

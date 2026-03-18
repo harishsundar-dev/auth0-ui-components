@@ -199,6 +199,34 @@
       "save_organization_changes_message": "${organizationName}の変更が保存されました。",
       "organization_changes_error_message": "リクエストの処理中に問題が発生しました。${message}.",
       "organization_changes_error_message_generic": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。"
+    },
+    "block": {
+      "table": {
+        "title": "組織",
+        "empty_state": "組織がありません。",
+        "create_button": "組織を作成",
+        "search_placeholder": "名前で検索",
+        "columns": {
+          "name": "名前",
+          "identifier": "識別子"
+        },
+        "row_actions": {
+          "edit": "編集",
+          "delete": "削除"
+        }
+      },
+      "create": {
+        "title": "組織を作成",
+        "back_button": "組織一覧に戻る",
+        "submit_button": "組織を作成",
+        "cancel_button": "キャンセル"
+      },
+      "alerts": {
+        "created": "${organizationName}が作成されました。",
+        "saved": "${organizationName}の変更が保存されました。",
+        "deleted": "${organizationName}が削除されました。",
+        "error": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が続く場合はサポートにお問い合わせください。"
+      }
     }
   },
   "idp_management": {
@@ -810,7 +838,6 @@
       "modal": {
         "title": "${organizationName}から${providerName}を削除",
         "description": "この操作により、この組織のすべてのユーザーの<bold>${providerName}</bold>へのアクセスが取り消されます。ユーザーは削除されませんが、このプロバイダーを使用してサインインできなくなります",
-
         "content": {
           "description": "確認のためプロバイダー名を入力してください。",
           "field": {

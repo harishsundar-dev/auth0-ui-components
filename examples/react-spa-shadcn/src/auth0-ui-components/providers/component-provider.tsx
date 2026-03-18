@@ -1,13 +1,11 @@
 'use client';
 
-import type { AuthDetails } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { Toaster } from '../components/ui/sonner';
 import { Spinner } from '../components/ui/spinner';
 import type { Auth0ComponentProviderProps } from '../types/auth-types';
 
-import { ProxyProvider } from './proxy-provider';
 import { ThemeProvider } from './theme-provider';
 const SpaProvider = React.lazy(() => import('./spa-provider'));
 
@@ -68,7 +66,6 @@ export const Auth0ComponentProvider = (
   props: Auth0ComponentProviderProps & { children: React.ReactNode },
 ) => {
   const {
-    i18n,
     themeSettings = {
       theme: 'default',
       mode: 'light',
@@ -79,17 +76,8 @@ export const Auth0ComponentProvider = (
       },
     },
     loader,
-    mode,
-    domain,
     children,
   } = props;
-
-  const proxyBaseUrl = mode === 'proxy' ? props.proxyConfig.baseUrl : undefined;
-
-  const proxyAuthDetails = React.useMemo<AuthDetails | null>(
-    () => (mode === 'proxy' ? { domain, authProxyUrl: proxyBaseUrl } : null),
-    [mode, domain, proxyBaseUrl],
-  );
 
   return (
     <>
@@ -111,13 +99,7 @@ export const Auth0ComponentProvider = (
             )
           }
         >
-          {proxyAuthDetails ? (
-            <ProxyProvider i18n={i18n} authDetails={proxyAuthDetails}>
-              {children}
-            </ProxyProvider>
-          ) : (
-            <SpaProvider {...props}>{children}</SpaProvider>
-          )}
+          <SpaProvider {...props}>{children}</SpaProvider>
         </React.Suspense>
       </ThemeProvider>
     </>

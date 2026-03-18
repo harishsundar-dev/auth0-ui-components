@@ -28,7 +28,6 @@ export const Auth0ComponentProvider = (
 ) => {
   const {
     i18n,
-    domain,
     previewMode,
     themeSettings = {
       theme: 'default',
@@ -64,11 +63,10 @@ export const Auth0ComponentProvider = (
 
   const memoizedAuthDetails = React.useMemo<AuthDetails>(
     () => ({
-      domain,
       contextInterface: resolvedAuthContext,
       previewMode,
     }),
-    [domain, resolvedAuthContext, previewMode],
+    [resolvedAuthContext, previewMode],
   );
 
   const coreClient = useCoreClientInitialization({

@@ -15,7 +15,6 @@ import type { ToastSettings } from '@/types/toast-types';
 export type Auth0ComponentProviderProps = (
   | {
       mode?: 'direct';
-      domain?: string;
       authContext?: AuthDetails['contextInterface'];
       proxyConfig?: never;
     }

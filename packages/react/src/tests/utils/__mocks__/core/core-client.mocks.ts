@@ -40,6 +40,13 @@ const createMockMyOrgApiService = (): CoreClientInterface['myOrganizationApiClie
       get: vi.fn().mockResolvedValue(mockOrganization),
       update: vi.fn().mockResolvedValue(mockOrganization),
     },
+    organizations: {
+      list: vi.fn().mockResolvedValue([mockOrganization]),
+      get: vi.fn().mockResolvedValue(mockOrganization),
+      create: vi.fn().mockResolvedValue(mockOrganization),
+      update: vi.fn().mockResolvedValue(mockOrganization),
+      delete: vi.fn().mockResolvedValue(undefined),
+    },
     organization: {
       identityProviders: {
         list: vi.fn().mockResolvedValue([]),

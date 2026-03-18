@@ -199,6 +199,52 @@
       "save_organization_changes_message": "The changes have been saved for ${organizationName}.",
       "organization_changes_error_message": "There was an issue processing your request. ${message}.",
       "organization_changes_error_message_generic": "There was an issue processing your request. Please try again or contact support if the issue persists."
+    },
+    "org_management": {
+      "header": {
+        "title": "Organizations"
+      },
+      "list": {
+        "empty_state": {
+          "title": "You do not have any organizations",
+          "description": "Create your first organization to get started.",
+          "create_button_label": "Create Organization"
+        },
+        "table": {
+          "name_column": "Name",
+          "display_name_column": "Display Name",
+          "actions_column": "Actions",
+          "edit_action": "Edit",
+          "delete_action": "Delete"
+        },
+        "create_button_label": "Create Organization",
+        "search_placeholder": "Search organizations"
+      },
+      "create": {
+        "title": "Create Organization",
+        "create_button_label": "Create",
+        "cancel_button_label": "Cancel",
+        "created_message": "${organizationName} has been created.",
+        "error_message": "There was an issue creating the organization. ${message}"
+      },
+      "edit": {
+        "back_button_text": "Back to Organizations",
+        "sso_providers_tab": "SSO Providers",
+        "domains_tab": "Domains",
+        "updated_message": "${organizationName} has been updated."
+      },
+      "delete": {
+        "title": "Delete ${organizationName}",
+        "description": "Once confirmed, this operation cannot be undone.",
+        "delete_button_label": "Delete",
+        "modal_title": "Delete ${organizationName}",
+        "modal_description": "Are you sure you want to delete ${organizationName}? Users will be maintained but membership to this organization will be removed. Once confirmed, this action cannot be undone.",
+        "organization_name_field_placeholder": "Type in the organization name",
+        "organization_name_field_label": "Organization Name",
+        "organization_name_field_error": "Please type \"${organizationName}\" to confirm deletion",
+        "cancel_button_label": "Cancel",
+        "deleted_message": "${organizationName} has been deleted."
+      }
     }
   },
   "idp_management": {

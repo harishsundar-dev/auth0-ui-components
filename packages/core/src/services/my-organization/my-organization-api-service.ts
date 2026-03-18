@@ -8,10 +8,28 @@ import { MyOrganizationClient } from '@auth0/myorganization-js';
 import { buildBaseHeaders, buildServiceConfig } from '@core/api/api-utils';
 import type { ClientAuthConfig } from '@core/auth/auth-types';
 
+import type { OrganizationPrivate } from './organization-management/organization-details-types';
+
+/**
+ * API interface for multi-organization management operations.
+ * @internal
+ */
+export interface OrganizationManagementApi {
+  list(): Promise<OrganizationPrivate[]>;
+  get(params: { organizationId: string }): Promise<OrganizationPrivate>;
+  create(body: Omit<OrganizationPrivate, 'id'>): Promise<OrganizationPrivate>;
+  update(params: {
+    organizationId: string;
+    body: Omit<OrganizationPrivate, 'id'>;
+  }): Promise<OrganizationPrivate>;
+  delete(params: { organizationId: string }): Promise<void>;
+}
+
 export type MyOrganizationApiClient = {
   withScopes(scopes: string): MyOrganizationApiClient;
   readonly organization: MyOrganizationClient['organization'];
   readonly organizationDetails: MyOrganizationClient['organizationDetails'];
+  readonly organizations: OrganizationManagementApi;
 };
 
 /**
@@ -34,6 +52,12 @@ export function initializeMyOrganizationClient(config: ClientAuthConfig): MyOrga
       },
     });
 
+    // Access the SDK's organizations API if available
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rawOrganizationsApi = (rawClient as any).organizations as
+      | OrganizationManagementApi
+      | undefined;
+
     return {
       withScopes: (newScopes: string): MyOrganizationApiClient => createInstance(newScopes),
       get organization() {
@@ -41,6 +65,23 @@ export function initializeMyOrganizationClient(config: ClientAuthConfig): MyOrga
       },
       get organizationDetails() {
         return rawClient.organizationDetails;
+      },
+      get organizations() {
+        if (!rawOrganizationsApi) {
+          const notSupported = (): never => {
+            throw new Error(
+              'organizations API is not supported by the current SDK version. Please upgrade @auth0/myorganization-js.',
+            );
+          };
+          return {
+            list: notSupported,
+            get: notSupported,
+            create: notSupported,
+            update: notSupported,
+            delete: notSupported,
+          };
+        }
+        return rawOrganizationsApi;
       },
     };
   };

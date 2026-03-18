@@ -28,3 +28,4 @@ export { useSsoDomainTab } from './my-organization/use-sso-domain-tab';
 export { useSsoProviderCreate } from './my-organization/use-sso-provider-create';
 export { useSsoProviderEdit } from './my-organization/use-sso-provider-edit';
 export { useSsoProviderTable } from './my-organization/use-sso-provider-table';
+export { useOrgManagement } from './my-organization/use-org-management';

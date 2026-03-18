@@ -5,6 +5,7 @@ export * from './core/i18n-service.mocks';
 export * from './my-organization/config/config.mocks';
 export * from './my-organization/domain-management/domain.mocks';
 export * from './my-organization/organization-management/organization-details.mocks';
+export * from './my-organization/organization-management/org-management.mocks';
 export * from './my-organization/domain-management/domain.mocks';
 export * from './my-organization/idp-management/idp-config.mocks';
 export * from './my-organization/idp-management/sso-domain.mocks';

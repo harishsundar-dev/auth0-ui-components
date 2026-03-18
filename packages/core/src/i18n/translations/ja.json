@@ -199,6 +199,52 @@
       "save_organization_changes_message": "${organizationName}の変更が保存されました。",
       "organization_changes_error_message": "リクエストの処理中に問題が発生しました。${message}.",
       "organization_changes_error_message_generic": "リクエストの処理中に問題が発生しました。再度お試しいただくか、問題が解決しない場合はサポートまでお問い合わせください。"
+    },
+    "org_management": {
+      "header": {
+        "title": "組織"
+      },
+      "list": {
+        "empty_state": {
+          "title": "組織がありません",
+          "description": "最初の組織を作成して始めましょう。",
+          "create_button_label": "組織を作成"
+        },
+        "table": {
+          "name_column": "名前",
+          "display_name_column": "表示名",
+          "actions_column": "アクション",
+          "edit_action": "編集",
+          "delete_action": "削除"
+        },
+        "create_button_label": "組織を作成",
+        "search_placeholder": "組織を検索"
+      },
+      "create": {
+        "title": "組織を作成",
+        "create_button_label": "作成",
+        "cancel_button_label": "キャンセル",
+        "created_message": "${organizationName}が作成されました。",
+        "error_message": "組織の作成中に問題が発生しました。${message}"
+      },
+      "edit": {
+        "back_button_text": "組織一覧に戻る",
+        "sso_providers_tab": "SSOプロバイダー",
+        "domains_tab": "ドメイン",
+        "updated_message": "${organizationName}が更新されました。"
+      },
+      "delete": {
+        "title": "${organizationName}を削除",
+        "description": "確認後、この操作は元に戻せません。",
+        "delete_button_label": "削除",
+        "modal_title": "${organizationName}を削除",
+        "modal_description": "${organizationName}を削除してもよろしいですか？ユーザーは保持されますが、この組織へのメンバーシップは削除されます。確認後、この操作は元に戻せません。",
+        "organization_name_field_placeholder": "組織名を入力してください",
+        "organization_name_field_label": "組織名",
+        "organization_name_field_error": "削除を確認するために\"${organizationName}\"と入力してください",
+        "cancel_button_label": "キャンセル",
+        "deleted_message": "${organizationName}が削除されました。"
+      }
     }
   },
   "idp_management": {
@@ -810,7 +856,6 @@
       "modal": {
         "title": "${organizationName}から${providerName}を削除",
         "description": "この操作により、この組織のすべてのユーザーの<bold>${providerName}</bold>へのアクセスが取り消されます。ユーザーは削除されませんが、このプロバイダーを使用してサインインできなくなります",
-
         "content": {
           "description": "確認のためプロバイダー名を入力してください。",
           "field": {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "sso-provider-edit",
+  "name": "my-organization/sso-provider-edit",
   "type": "registry:block",
   "title": "Internal SSO provider edit container(logic) component.",
   "description": "A block component for sso provider edit container.",

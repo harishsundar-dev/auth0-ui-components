@@ -18,7 +18,7 @@ import MFAManagement from './pages/MFAManagement';
 import OrganizationManagement from './pages/OrganizationManagement';
 import Profile from './pages/Profile';
 
-// import { Auth0ComponentProvider } from '@/components/auth0/providers/spa-provider';
+// import { Auth0ComponentProvider } from '@/providers/spa-provider';
 
 const queryClient = new QueryClient();
 
@@ -46,7 +46,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth0();
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground" data-theme="default">
       <Header />
       {isAuthenticated && <Sidebar />}
       <div className={isAuthenticated ? 'ml-64' : ''}>{children}</div>
@@ -56,6 +56,8 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => {
   // const { i18n } = useTranslation();
+  // const isDarkMode = useDarkMode();
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipPrimitive.Provider>
@@ -72,8 +74,8 @@ const App = () => {
             useMrrt={true}
           >
             {/* <Auth0ComponentProvider
-              domain={config.auth0.domain}
               i18n={{ currentLanguage: i18n.language }}
+              themeSettings={{mode: isDarkMode ? 'dark' : 'light'}}
             > */}
             <AppLayout>
               <Routes>

@@ -26,7 +26,6 @@ const OktaLogo: React.FC<OktaLogoProps> = ({
   height = 17,
   title = 'Okta logo',
   className,
-  style,
   ...props
 }) => {
   return (
@@ -36,7 +35,6 @@ const OktaLogo: React.FC<OktaLogoProps> = ({
       width={width}
       height={height}
       className={cn('dark:invert', className)}
-      style={style}
       {...props}
     />
   );

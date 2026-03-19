@@ -1,6 +1,6 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "domain-table",
+  "name": "my-organization/domain-table",
   "type": "registry:block",
   "title": "DomainTableContainer Component.",
   "description": "A block component for domain table container.",

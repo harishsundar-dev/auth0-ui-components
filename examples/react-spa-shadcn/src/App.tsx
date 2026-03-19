@@ -18,7 +18,7 @@ import MFAManagement from './pages/MFAManagement';
 import OrganizationManagement from './pages/OrganizationManagement';
 import Profile from './pages/Profile';
 
-// import { Auth0ComponentProvider } from '@/auth0-ui-components/providers/spa-provider';
+// import { Auth0ComponentProvider } from '@/components/auth0/providers/spa-provider';
 
 const queryClient = new QueryClient();
 

@@ -810,7 +810,6 @@
       "modal": {
         "title": "${organizationName}から${providerName}を削除",
         "description": "この操作により、この組織のすべてのユーザーの<bold>${providerName}</bold>へのアクセスが取り消されます。ユーザーは削除されませんが、このプロバイダーを使用してサインインできなくなります",
-
         "content": {
           "description": "確認のためプロバイダー名を入力してください。",
           "field": {
@@ -996,6 +995,59 @@
         "enter_verify_code": "${verifier}に送信された6桁のコードを入力してください",
         "enter_opt_code": "認証アプリのコードを入力してください",
         "install_guardian_description": "続行するには、お使いのモバイルデバイスからアプリストア経由でAuth0 Guardianアプリをインストールしてください。"
+      }
+    }
+  },
+  "member_management": {
+    "invite_member": {
+      "dialog": {
+        "title": "メンバーを招待",
+        "description": "メールアドレスで組織に参加するよう招待します。"
+      },
+      "form": {
+        "email_label": "メールアドレス",
+        "email_placeholder": "メールアドレスを入力",
+        "email_helper": "招待したい人のメールアドレスを入力してください。",
+        "role_label": "ロール",
+        "role_placeholder": "ロールを選択",
+        "role_legend": "ロールを割り当て",
+        "role_description": "メンバーの権限を決定するロールを選択してください。"
+      },
+      "chip": {
+        "remove": "${email}を削除",
+        "add_hint": "Enterキー、カンマ、またはスペースでメールを追加"
+      },
+      "buttons": {
+        "send_invite": "招待を送信",
+        "cancel": "キャンセル",
+        "dismiss": "閉じる",
+        "try_again": "再試行",
+        "proceed": "続行する"
+      },
+      "loading": {
+        "checking": "メンバーシップを確認中...",
+        "submitting": "招待を送信中..."
+      },
+      "success": {
+        "title": "招待が送信されました",
+        "description": "${email}に招待が送信されました。",
+        "description_multiple": "${count}名に招待が送信されました。"
+      },
+      "errors": {
+        "invalid_email": "有効なメールアドレスを入力してください。",
+        "required_email": "メールアドレスは必須です。",
+        "required_role": "ロールを選択してください。",
+        "duplicate_email": "このメールはすでにリストに追加されています。",
+        "already_member": "このユーザーはすでに組織のメンバーです。",
+        "insufficient_permissions": "メンバーを招待する権限がありません。",
+        "generic": "招待の送信中に問題が発生しました。もう一度お試しください。"
+      },
+      "warning": {
+        "already_member": "このメールアドレスはすでに組織のメンバーです。それでも招待を送信できます。"
+      },
+      "confirm": {
+        "title": "招待を確認",
+        "description": "${email}に招待を送信してもよろしいですか？"
       }
     }
   }

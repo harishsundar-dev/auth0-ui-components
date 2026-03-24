@@ -7,11 +7,16 @@ import {
   useSsoProviderTable,
 } from '@/hooks/my-organization/use-sso-provider-table';
 import * as useCoreClientModule from '@/hooks/shared/use-core-client';
+import * as useErrorHandlerModule from '@/hooks/shared/use-error-handler';
 import * as useTranslatorModule from '@/hooks/shared/use-translator';
 import { mockToast, createMockI18nService } from '@/tests/utils';
 import { createMockCoreClient } from '@/tests/utils/__mocks__/core/core-client.mocks';
 import { createTestQueryClientWrapper } from '@/tests/utils/test-provider';
-import { setupMockUseCoreClient, setupMockUseCoreClientNull } from '@/tests/utils/test-utilities';
+import {
+  setupMockUseCoreClient,
+  setupMockUseCoreClientNull,
+  setupMockUseErrorHandler,
+} from '@/tests/utils/test-utilities';
 
 // ===== Mock packages =====
 
@@ -61,6 +66,7 @@ const renderUseSsoProviderTableWithClient = (...args: Parameters<typeof useSsoPr
 
 describe('useSsoProviderTable', () => {
   const mockCoreClient = createMockCoreClient();
+  let mockHandleError: ReturnType<typeof vi.fn>;
 
   // Helper function to setup the mock organization client with common mocks
   const setupMockMyOrgClient = (
@@ -99,6 +105,7 @@ describe('useSsoProviderTable', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     setupMockUseCoreClient(mockCoreClient, useCoreClientModule);
+    mockHandleError = setupMockUseErrorHandler(useErrorHandlerModule);
 
     // Setup translator using createMockI18nService
     // The translator will return the key itself (no interpolation needed for tests)
@@ -146,9 +153,8 @@ describe('useSsoProviderTable', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockedShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'general_error',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'general_error',
       });
     });
 
@@ -222,9 +228,8 @@ describe('useSsoProviderTable', () => {
         expect(result.current.isLoading).toBe(false);
       });
 
-      expect(mockedShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'general_error',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'general_error',
       });
     });
 
@@ -245,9 +250,8 @@ describe('useSsoProviderTable', () => {
       const organization = await result.current.fetchOrganizationDetails();
 
       expect(organization).toBeNull();
-      expect(mockedShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'general_error',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'general_error',
       });
     });
   });
@@ -344,9 +348,8 @@ describe('useSsoProviderTable', () => {
 
       await waitFor(() => result.current.onEnableProvider(mockIdentityProviders[0]!, false));
 
-      expect(mockedShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'general_error',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'general_error',
       });
     });
 
@@ -452,9 +455,8 @@ describe('useSsoProviderTable', () => {
 
       await waitFor(() => result.current.onDeleteConfirm(mockIdentityProviders[0]!));
 
-      expect(mockedShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'general_error',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'general_error',
       });
     });
 
@@ -552,9 +554,8 @@ describe('useSsoProviderTable', () => {
 
       await waitFor(() => result.current.onRemoveConfirm(mockIdentityProviders[0]!));
 
-      expect(mockedShowToast).toHaveBeenCalledWith({
-        type: 'error',
-        message: 'general_error',
+      expect(mockHandleError).toHaveBeenCalledWith(expect.any(Error), {
+        fallbackMessage: 'general_error',
       });
     });
 

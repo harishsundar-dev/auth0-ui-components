@@ -5,9 +5,11 @@
 
 'use client';
 
+import type { AuthDetails } from '@auth0/universal-components-core';
 import * as React from 'react';
 
 import { Toaster } from '@/components/auth0/shared/sonner';
+import { StyledScope } from '@/components/auth0/shared/styled-scope';
 import { Spinner } from '@/components/ui/spinner';
 import { CoreClientContext } from '@/hooks/shared/use-core-client';
 import { useCoreClientInitialization } from '@/hooks/shared/use-core-client-initialization';
@@ -18,12 +20,14 @@ import type { Auth0ComponentProviderProps } from '@/types/auth-types';
 
 /**
  * Auth0 provider for RWAs using backend proxy auth.
- * @param props - Provider configuration including i18n, authDetails, themeSettings, toastSettings, cacheConfig, loader, and children.
+ * @param props - Provider configuration including domain, proxyConfig, i18n, themeSettings, toastSettings, cacheConfig, loader, and children.
  * @returns Provider component tree
  */
 export const Auth0ComponentProvider = ({
   i18n,
-  authDetails,
+  domain,
+  proxyConfig,
+  previewMode,
   themeSettings = {
     theme: 'default',
     mode: 'light',
@@ -37,15 +41,17 @@ export const Auth0ComponentProvider = ({
   cacheConfig,
   loader,
   children,
-}: Auth0ComponentProviderProps & { children: React.ReactNode }) => {
+}: Extract<Auth0ComponentProviderProps, { mode: 'proxy' }> & { children: React.ReactNode }) => {
   const mergedToastSettings = useToastProvider(toastSettings);
+  const baseUrl = proxyConfig.baseUrl;
 
-  const memoizedAuthDetails = React.useMemo(
+  const memoizedAuthDetails = React.useMemo<AuthDetails>(
     () => ({
-      ...authDetails,
-      contextInterface: undefined,
+      domain,
+      authProxyUrl: baseUrl,
+      previewMode,
     }),
-    [authDetails],
+    [domain, baseUrl, previewMode],
   );
 
   const coreClient = useCoreClientInitialization({
@@ -61,9 +67,11 @@ export const Auth0ComponentProvider = ({
   );
 
   const fallback = loader || (
-    <div className="flex items-center justify-center min-h-[200px]">
-      <Spinner />
-    </div>
+    <StyledScope>
+      <div className="flex items-center justify-center min-h-[200px]">
+        <Spinner />
+      </div>
+    </StyledScope>
   );
 
   return (
@@ -79,6 +87,7 @@ export const Auth0ComponentProvider = ({
         <Toaster
           position={mergedToastSettings.settings?.position || 'top-right'}
           closeButton={mergedToastSettings.settings?.closeButton ?? true}
+          className="auth0-universal"
         />
       )}
       {coreClient ? (

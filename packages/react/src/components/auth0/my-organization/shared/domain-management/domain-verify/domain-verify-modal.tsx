@@ -63,7 +63,7 @@ export function DomainVerifyModal({
     <Modal
       open={isOpen}
       onOpenChange={(open) => !open && onClose()}
-      className="p-10"
+      className="p-10 break-all"
       title={t('title', { domainName: domain?.domain })}
       content={
         <div className={cn('space-y-4', className)}>
@@ -105,7 +105,7 @@ export function DomainVerifyModal({
               </span>
               <Badge variant="warning">{t('verification_status.pending')}</Badge>
             </div>
-            <p className={cn('text-sm text-muted-foreground text-(length:--font-size-paragraph')}>
+            <p className={'text-sm text-muted-foreground text-(length:--font-size-paragraph)'}>
               {t('verification_status.description')}
             </p>
           </div>

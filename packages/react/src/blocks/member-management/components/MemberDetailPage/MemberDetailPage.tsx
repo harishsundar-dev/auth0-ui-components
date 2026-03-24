@@ -2,19 +2,24 @@ import { ArrowLeftIcon } from 'lucide-react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { useMemberManagement } from '../../context/MemberManagementContext';
 import { useMemberDetail } from '../../hooks/useMemberDetail';
 import { defaultMessages } from '../../MemberManagement.i18n';
 import type { OrganizationRole } from '../../MemberManagement.types';
 import { ConfirmationDialog } from '../dialogs/ConfirmationDialog';
+
 import { MemberDangerZone } from './MemberDangerZone';
 import { MemberDetailsTab } from './MemberDetailsTab';
 import { MemberRolesTab } from './MemberRolesTab';
 
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+/**
+ *
+ */
 export function MemberDetailPage(): React.JSX.Element | null {
   const { client, detailUserId, setDetailUserId, pushToast } = useMemberManagement();
   const msgs = defaultMessages;

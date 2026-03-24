@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 
 import { useMemberManagement } from '../../context/MemberManagementContext';
 import { useInvitationsFilter } from '../../hooks/useInvitationsFilter';
@@ -11,8 +10,14 @@ import type { OrganizationInvitation } from '../../MemberManagement.types';
 import { ConfirmationDialog } from '../dialogs/ConfirmationDialog';
 import { Pagination } from '../shared/Pagination';
 import { RoleFilterDropdown } from '../shared/RoleFilterDropdown';
+
 import { InvitationsTable } from './InvitationsTable';
 
+import { Button } from '@/components/ui/button';
+
+/**
+ *
+ */
 export function InvitationsTab(): React.JSX.Element {
   const { client, pushToast } = useMemberManagement();
   const msgs = defaultMessages;

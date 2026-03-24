@@ -1,5 +1,9 @@
 import * as React from 'react';
 
+
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationRole } from '../../MemberManagement.types';
+
 import {
   Select,
   SelectContent,
@@ -7,9 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationRole } from '../../MemberManagement.types';
 
 interface RoleFilterDropdownProps {
   value: string;
@@ -20,6 +21,10 @@ interface RoleFilterDropdownProps {
   label?: string;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function RoleFilterDropdown({
   value,
   onChange,

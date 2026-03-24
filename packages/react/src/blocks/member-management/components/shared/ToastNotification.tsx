@@ -1,16 +1,21 @@
 import { CheckCircleIcon, XCircleIcon, XIcon } from 'lucide-react';
 import * as React from 'react';
 
+import type { Toast } from '../../MemberManagement.types';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-import type { Toast } from '../../MemberManagement.types';
 
 interface ToastNotificationProps {
   toasts: Toast[];
   onDismiss: (id: string) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function ToastNotification({
   toasts,
   onDismiss,

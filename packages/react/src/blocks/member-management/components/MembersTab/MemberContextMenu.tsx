@@ -1,6 +1,10 @@
 import { MoreHorizontalIcon } from 'lucide-react';
 import * as React from 'react';
 
+
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationMember } from '../../MemberManagement.types';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,9 +12,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationMember } from '../../MemberManagement.types';
 
 interface MemberContextMenuProps {
   member: OrganizationMember;
@@ -20,6 +21,10 @@ interface MemberContextMenuProps {
   onDeleteMember: (member: OrganizationMember) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberContextMenu({
   member,
   onViewDetails,

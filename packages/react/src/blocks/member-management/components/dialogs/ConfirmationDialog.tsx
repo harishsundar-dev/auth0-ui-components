@@ -24,6 +24,10 @@ interface ConfirmationDialogProps {
   onCancel: () => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function ConfirmationDialog({
   isOpen,
   title,

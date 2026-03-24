@@ -1,15 +1,20 @@
 import * as React from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
 
 interface MemberDangerZoneProps {
   onRemoveFromOrg: () => void;
   onDeleteMember: () => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberDangerZone({
   onRemoveFromOrg,
   onDeleteMember,

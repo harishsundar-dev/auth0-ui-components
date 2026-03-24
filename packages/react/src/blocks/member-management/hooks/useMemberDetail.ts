@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { OrganizationMember, OrganizationRole, OrganizationSDKClient } from '../MemberManagement.types';
 
@@ -10,6 +10,11 @@ export interface UseMemberDetailReturn {
   refetch: () => void;
 }
 
+/**
+ *
+ * @param client
+ * @param userId
+ */
 export function useMemberDetail(
   client: OrganizationSDKClient,
   userId: string | null,

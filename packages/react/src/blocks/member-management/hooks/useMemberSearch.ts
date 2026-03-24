@@ -6,6 +6,10 @@ export interface UseMemberSearchReturn {
   debouncedQuery: string;
 }
 
+/**
+ *
+ * @param debounceMs
+ */
 export function useMemberSearch(debounceMs = 300): UseMemberSearchReturn {
   const [searchQuery, setSearchQueryState] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');

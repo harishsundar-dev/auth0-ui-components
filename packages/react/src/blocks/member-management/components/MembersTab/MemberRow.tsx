@@ -1,12 +1,15 @@
 import * as React from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationMember } from '../../MemberManagement.types';
+
+import { MemberContextMenu } from './MemberContextMenu';
+
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { TableCell, TableRow } from '@/components/ui/table';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationMember } from '../../MemberManagement.types';
-import { MemberContextMenu } from './MemberContextMenu';
+
 
 interface MemberRowProps {
   member: OrganizationMember;
@@ -18,6 +21,10 @@ interface MemberRowProps {
   onDeleteMember: (member: OrganizationMember) => void;
 }
 
+/**
+ *
+ * @param dateStr
+ */
 function formatLastLogin(dateStr?: string): string {
   if (!dateStr) return defaultMessages.common.never;
   try {
@@ -27,6 +34,10 @@ function formatLastLogin(dateStr?: string): string {
   }
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberRow({
   member,
   isSelected,

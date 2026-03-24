@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { OrganizationMember, OrganizationSDKClient } from '../MemberManagement.types';
 
@@ -16,6 +16,12 @@ export interface UseMembersListReturn {
   refetch: () => void;
 }
 
+/**
+ *
+ * @param client
+ * @param pageSize
+ * @param searchQuery
+ */
 export function useMembersList(
   client: OrganizationSDKClient,
   pageSize: number,
@@ -28,6 +34,7 @@ export function useMembersList(
   const [currentCursor, setCurrentCursor] = useState<string | undefined>(undefined);
   const [nextCursor, setNextCursor] = useState<string | undefined>(undefined);
   const [total, setTotal] = useState(0);
+  const activeControllerRef = useRef<AbortController | null>(null);
 
   const fetchMembers = useCallback(
     async (cursor?: string, signal?: AbortSignal) => {
@@ -59,6 +66,7 @@ export function useMembersList(
 
   useEffect(() => {
     const controller = new AbortController();
+    activeControllerRef.current = controller;
     setCursorStack([]);
     setCurrentCursor(undefined);
     void fetchMembers(undefined, controller.signal);
@@ -69,7 +77,9 @@ export function useMembersList(
     if (!nextCursor) return;
     setCursorStack((prev) => [...prev, currentCursor ?? '']);
     setCurrentCursor(nextCursor);
+    activeControllerRef.current?.abort();
     const controller = new AbortController();
+    activeControllerRef.current = controller;
     void fetchMembers(nextCursor, controller.signal);
   }, [nextCursor, currentCursor, fetchMembers]);
 
@@ -80,12 +90,16 @@ export function useMembersList(
     setCursorStack(prev);
     const cursor = prevCursor === '' ? undefined : prevCursor;
     setCurrentCursor(cursor);
+    activeControllerRef.current?.abort();
     const controller = new AbortController();
+    activeControllerRef.current = controller;
     void fetchMembers(cursor, controller.signal);
   }, [cursorStack, fetchMembers]);
 
   const refetch = useCallback(() => {
+    activeControllerRef.current?.abort();
     const controller = new AbortController();
+    activeControllerRef.current = controller;
     void fetchMembers(currentCursor, controller.signal);
   }, [fetchMembers, currentCursor]);
 

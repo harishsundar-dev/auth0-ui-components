@@ -9,6 +9,10 @@ export interface UseInvitationsFilterReturn {
   isLoadingRoles: boolean;
 }
 
+/**
+ *
+ * @param client
+ */
 export function useInvitationsFilter(client: OrganizationSDKClient): UseInvitationsFilterReturn {
   const [roleFilter, setRoleFilter] = useState('');
   const [availableRoles, setAvailableRoles] = useState<OrganizationRole[]>([]);

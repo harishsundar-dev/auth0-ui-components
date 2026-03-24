@@ -11,6 +11,9 @@ import type {
 
 const MemberManagementContext = createContext<MemberManagementContextValue | null>(null);
 
+/**
+ *
+ */
 export function useMemberManagement(): MemberManagementContextValue {
   const ctx = useContext(MemberManagementContext);
   if (!ctx) throw new Error('useMemberManagement must be used within MemberManagementProvider');
@@ -25,6 +28,10 @@ interface MemberManagementProviderProps {
   defaultTab?: ActiveTab;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberManagementProvider({
   children,
   client,

@@ -1,15 +1,20 @@
 import { SearchIcon } from 'lucide-react';
 import * as React from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+
 import { TextField } from '@/components/ui/text-field';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
 
 interface MemberSearchBarProps {
   value: string;
   onChange: (value: string) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberSearchBar({ value, onChange }: MemberSearchBarProps): React.JSX.Element {
   return (
     <TextField

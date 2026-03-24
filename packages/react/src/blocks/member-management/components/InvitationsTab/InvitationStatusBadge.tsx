@@ -1,14 +1,19 @@
 import * as React from 'react';
 
-import { Badge } from '@/components/ui/badge';
 
 import { defaultMessages } from '../../MemberManagement.i18n';
 import type { OrganizationInvitation } from '../../MemberManagement.types';
+
+import { Badge } from '@/components/ui/badge';
 
 interface InvitationStatusBadgeProps {
   invitation: OrganizationInvitation;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function InvitationStatusBadge({
   invitation,
 }: InvitationStatusBadgeProps): React.JSX.Element {
@@ -35,6 +40,10 @@ export function InvitationStatusBadge({
   );
 }
 
+/**
+ *
+ * @param invitation
+ */
 function deriveStatus(invitation: OrganizationInvitation): 'pending' | 'expired' | 'accepted' {
   if (!invitation.ticket_expiration_at) return 'pending';
   return new Date(invitation.ticket_expiration_at) < new Date() ? 'expired' : 'pending';

@@ -1,6 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import * as React from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -10,7 +12,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
 
 interface PaginationProps {
   canGoPrevious: boolean;
@@ -25,6 +26,10 @@ interface PaginationProps {
 
 const PAGE_SIZES = [10, 25, 50, 100];
 
+/**
+ *
+ * @param root0
+ */
 export function Pagination({
   canGoPrevious,
   canGoNext,

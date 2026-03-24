@@ -3,6 +3,9 @@ import { useCallback } from 'react';
 import { useMemberManagement } from '../context/MemberManagementContext';
 import type { ConfirmationDialogType } from '../MemberManagement.types';
 
+/**
+ *
+ */
 export function useConfirmationDialog() {
   const { confirmationDialog, setConfirmationDialog } = useMemberManagement();
 

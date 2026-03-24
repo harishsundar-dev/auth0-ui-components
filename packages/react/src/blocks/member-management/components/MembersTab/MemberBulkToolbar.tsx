@@ -1,8 +1,9 @@
 import * as React from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+
 import { Button } from '@/components/ui/button';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
 
 interface MemberBulkToolbarProps {
   selectedCount: number;
@@ -11,6 +12,10 @@ interface MemberBulkToolbarProps {
   onClear: () => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberBulkToolbar({
   selectedCount,
   onRemove,

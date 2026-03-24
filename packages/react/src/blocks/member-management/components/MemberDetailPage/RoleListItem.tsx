@@ -1,15 +1,20 @@
 import * as React from 'react';
 
-import { Button } from '@/components/ui/button';
 
 import { defaultMessages } from '../../MemberManagement.i18n';
 import type { OrganizationRole } from '../../MemberManagement.types';
+
+import { Button } from '@/components/ui/button';
 
 interface RoleListItemProps {
   role: OrganizationRole;
   onRemove: (role: OrganizationRole) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function RoleListItem({ role, onRemove }: RoleListItemProps): React.JSX.Element {
   return (
     <div className="flex items-center justify-between rounded-xl border border-border px-4 py-3">

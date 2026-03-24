@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+import { inviteMemberSchema } from '../../MemberManagement.schema';
+import type { OrganizationRole, OrganizationSDKClient } from '../../MemberManagement.types';
+import { RoleFilterDropdown } from '../shared/RoleFilterDropdown';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,10 +18,6 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { TextField } from '@/components/ui/text-field';
 
-import { inviteMemberSchema } from '../../MemberManagement.schema';
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationRole, OrganizationSDKClient } from '../../MemberManagement.types';
-import { RoleFilterDropdown } from '../shared/RoleFilterDropdown';
 
 interface InviteMemberDialogProps {
   isOpen: boolean;
@@ -27,6 +28,10 @@ interface InviteMemberDialogProps {
   onError: (message: string) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function InviteMemberDialog({
   isOpen,
   onClose,

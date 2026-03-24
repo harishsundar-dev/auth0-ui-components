@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { OrganizationInvitation, OrganizationSDKClient } from '../MemberManagement.types';
 
@@ -16,6 +16,12 @@ export interface UseInvitationsListReturn {
   refetch: () => void;
 }
 
+/**
+ *
+ * @param client
+ * @param pageSize
+ * @param roleFilter
+ */
 export function useInvitationsList(
   client: OrganizationSDKClient,
   pageSize: number,

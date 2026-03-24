@@ -1,5 +1,11 @@
 import * as React from 'react';
 
+
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationInvitation } from '../../MemberManagement.types';
+
+import { InvitationRow } from './InvitationRow';
+
 import { Spinner } from '@/components/ui/spinner';
 import {
   Table,
@@ -9,10 +15,6 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationInvitation } from '../../MemberManagement.types';
-import { InvitationRow } from './InvitationRow';
-
 interface InvitationsTableProps {
   invitations: OrganizationInvitation[];
   isLoading: boolean;
@@ -21,6 +23,10 @@ interface InvitationsTableProps {
   onRevoke: (invitation: OrganizationInvitation) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function InvitationsTable({
   invitations,
   isLoading,

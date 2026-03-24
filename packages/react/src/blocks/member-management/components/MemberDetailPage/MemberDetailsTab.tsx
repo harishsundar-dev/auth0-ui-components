@@ -7,6 +7,10 @@ interface MemberDetailsTabProps {
   member: OrganizationMember;
 }
 
+/**
+ *
+ * @param root0
+ */
 function DetailRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1 py-2 border-b border-border last:border-0">
@@ -18,6 +22,10 @@ function DetailRow({ label, value }: { label: string; value: React.ReactNode }) 
   );
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberDetailsTab({ member }: MemberDetailsTabProps): React.JSX.Element {
   const msgs = defaultMessages.memberDetail.details;
 

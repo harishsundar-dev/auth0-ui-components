@@ -1,5 +1,10 @@
 import * as React from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationMember } from '../../MemberManagement.types';
+
+import { MemberRow } from './MemberRow';
+
 import { Checkbox } from '@/components/ui/checkbox';
 import { Spinner } from '@/components/ui/spinner';
 import {
@@ -10,9 +15,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationMember } from '../../MemberManagement.types';
-import { MemberRow } from './MemberRow';
+
 
 interface MembersTableProps {
   members: OrganizationMember[];
@@ -29,6 +32,10 @@ interface MembersTableProps {
   onDeleteMember: (member: OrganizationMember) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MembersTable({
   members,
   isLoading,

@@ -2,23 +2,28 @@ import { PlusIcon } from 'lucide-react';
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Spinner } from '@/components/ui/spinner';
 
 import { useMemberManagement } from '../../context/MemberManagementContext';
+import { useBulkSelection } from '../../hooks/useBulkSelection';
+import { useMemberSearch } from '../../hooks/useMemberSearch';
+import { useMembersList } from '../../hooks/useMembersList';
 import { defaultMessages } from '../../MemberManagement.i18n';
 import type { OrganizationMember, OrganizationRole } from '../../MemberManagement.types';
 import { AssignRolesDialog } from '../dialogs/AssignRolesDialog';
 import { ConfirmationDialog } from '../dialogs/ConfirmationDialog';
 import { InviteMemberDialog } from '../dialogs/InviteMemberDialog';
 import { Pagination } from '../shared/Pagination';
+
 import { MemberBulkToolbar } from './MemberBulkToolbar';
 import { MemberSearchBar } from './MemberSearchBar';
 import { MembersTable } from './MembersTable';
-import { useBulkSelection } from '../../hooks/useBulkSelection';
-import { useMemberSearch } from '../../hooks/useMemberSearch';
-import { useMembersList } from '../../hooks/useMembersList';
 
+import { Button } from '@/components/ui/button';
+import { Spinner } from '@/components/ui/spinner';
+
+/**
+ *
+ */
 export function MembersTab(): React.JSX.Element {
   const { client, pushToast, setDetailUserId } = useMemberManagement();
   const msgs = defaultMessages;

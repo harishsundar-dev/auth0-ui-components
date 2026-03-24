@@ -12,6 +12,9 @@ export interface UseBulkSelectionReturn {
   isIndeterminate: (ids: string[]) => boolean;
 }
 
+/**
+ *
+ */
 export function useBulkSelection(): UseBulkSelectionReturn {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 

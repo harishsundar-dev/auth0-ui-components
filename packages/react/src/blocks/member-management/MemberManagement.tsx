@@ -1,16 +1,20 @@
 import * as React from 'react';
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
 
+import { InvitationsTab } from './components/InvitationsTab/InvitationsTab';
+import { MemberDetailPage } from './components/MemberDetailPage/MemberDetailPage';
+import { MembersTab } from './components/MembersTab/MembersTab';
+import { ToastNotification } from './components/shared/ToastNotification';
 import { MemberManagementProvider, useMemberManagement } from './context/MemberManagementContext';
 import { defaultMessages } from './MemberManagement.i18n';
 import type { MemberManagementProps } from './MemberManagement.types';
-import { MemberDetailPage } from './components/MemberDetailPage/MemberDetailPage';
-import { InvitationsTab } from './components/InvitationsTab/InvitationsTab';
-import { MembersTab } from './components/MembersTab/MembersTab';
-import { ToastNotification } from './components/shared/ToastNotification';
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
+
+/**
+ *
+ */
 function MemberManagementInner(): React.JSX.Element {
   const { activeTab, setActiveTab, detailUserId, toastQueue, dismissToast } =
     useMemberManagement();
@@ -44,6 +48,10 @@ function MemberManagementInner(): React.JSX.Element {
   );
 }
 
+/**
+ *
+ * @param root0
+ */
 export function MemberManagement({
   client,
   orgId,

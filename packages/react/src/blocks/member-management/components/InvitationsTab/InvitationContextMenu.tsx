@@ -1,6 +1,10 @@
 import { MoreHorizontalIcon } from 'lucide-react';
 import * as React from 'react';
 
+
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationInvitation } from '../../MemberManagement.types';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,9 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationInvitation } from '../../MemberManagement.types';
-
 interface InvitationContextMenuProps {
   invitation: OrganizationInvitation;
   onCopyUrl: (invitation: OrganizationInvitation) => void;
@@ -19,6 +20,10 @@ interface InvitationContextMenuProps {
   onRevoke: (invitation: OrganizationInvitation) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function InvitationContextMenu({
   invitation,
   onCopyUrl,

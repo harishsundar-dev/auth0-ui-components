@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
 
+import { defaultMessages } from '../../MemberManagement.i18n';
+import type { OrganizationRole, OrganizationSDKClient } from '../../MemberManagement.types';
+
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -13,8 +16,6 @@ import {
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 
-import { defaultMessages } from '../../MemberManagement.i18n';
-import type { OrganizationRole, OrganizationSDKClient } from '../../MemberManagement.types';
 
 interface AssignRolesDialogProps {
   isOpen: boolean;
@@ -27,6 +28,10 @@ interface AssignRolesDialogProps {
   onError: (message: string) => void;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function AssignRolesDialog({
   isOpen,
   onClose,

@@ -1,0 +1,177 @@
+export const defaultMessages = {
+  tabs: {
+    members: 'Members',
+    invitations: 'Invitations',
+  },
+  members: {
+    title: 'Members',
+    searchPlaceholder: 'Search members...',
+    filterByRole: 'Filter by role',
+    allRoles: 'All Roles',
+    inviteMember: 'Invite Member',
+    bulkRemove: 'Remove Selected',
+    bulkDelete: 'Delete Selected',
+    noMembers: 'No members found',
+    noMembersDescription: 'There are no members matching your search criteria.',
+    columns: {
+      name: 'Name',
+      email: 'Email',
+      roles: 'Roles',
+      lastLogin: 'Last Login',
+      actions: 'Actions',
+    },
+    actions: {
+      viewDetails: 'View Details',
+      assignRole: 'Assign Role',
+      removeFromOrg: 'Remove from Organization',
+      deleteMember: 'Delete Member',
+    },
+    selected: '{count} selected',
+  },
+  invitations: {
+    title: 'Invitations',
+    filterByRole: 'Filter by role',
+    allRoles: 'All Roles',
+    noInvitations: 'No invitations found',
+    noInvitationsDescription: 'There are no pending invitations.',
+    columns: {
+      email: 'Email',
+      status: 'Status',
+      createdAt: 'Created At',
+      expiresAt: 'Expires At',
+      invitedBy: 'Invited By',
+      actions: 'Actions',
+    },
+    actions: {
+      viewDetails: 'View Details',
+      copyUrl: 'Copy Invitation URL',
+      revokeAndResend: 'Revoke and Resend',
+      revoke: 'Revoke',
+    },
+    status: {
+      pending: 'Pending',
+      expired: 'Expired',
+      accepted: 'Accepted',
+    },
+    urlCopied: 'Invitation URL copied to clipboard',
+    urlCopyFailed: 'Failed to copy invitation URL',
+  },
+  memberDetail: {
+    backToMembers: 'Back to Members',
+    tabs: {
+      details: 'Details',
+      roles: 'Roles',
+    },
+    details: {
+      title: 'Member Details',
+      userId: 'User ID',
+      email: 'Email',
+      name: 'Name',
+      lastLogin: 'Last Login',
+      picture: 'Profile Picture',
+    },
+    roles: {
+      title: 'Assigned Roles',
+      assignRole: 'Assign Role',
+      noRoles: 'No roles assigned',
+      noRolesDescription: 'This member has no roles assigned.',
+      removeRole: 'Remove Role',
+    },
+    dangerZone: {
+      title: 'Danger Zone',
+      removeFromOrg: 'Remove from Organization',
+      removeFromOrgDescription:
+        'Remove this member from the organization. They will lose access to organization resources.',
+      deleteMember: 'Delete Member',
+      deleteMemberDescription:
+        'Permanently delete this member account. This action cannot be undone.',
+    },
+  },
+  dialogs: {
+    inviteMember: {
+      title: 'Invite Member',
+      description: 'Send an invitation to join the organization.',
+      emailLabel: 'Email Address',
+      emailPlaceholder: 'member@example.com',
+      rolesLabel: 'Roles (optional)',
+      submit: 'Send Invitation',
+      cancel: 'Cancel',
+      success: 'Invitation sent successfully',
+      error: 'Failed to send invitation',
+    },
+    assignRoles: {
+      title: 'Assign Roles',
+      description: 'Select roles to assign to this member.',
+      noRoles: 'No roles available',
+      submit: 'Assign Roles',
+      cancel: 'Cancel',
+      success: 'Roles assigned successfully',
+      error: 'Failed to assign roles',
+    },
+    confirmRevoke: {
+      title: 'Revoke Invitation',
+      description: 'Are you sure you want to revoke this invitation for {email}?',
+      confirm: 'Revoke',
+      cancel: 'Cancel',
+    },
+    confirmRevokeResend: {
+      title: 'Revoke and Resend Invitation',
+      description: 'Are you sure you want to revoke and resend this invitation for {email}?',
+      confirm: 'Revoke and Resend',
+      cancel: 'Cancel',
+    },
+    confirmDeleteMember: {
+      title: 'Delete Member',
+      description:
+        'Are you sure you want to permanently delete {name}? This action cannot be undone.',
+      confirm: 'Delete',
+      cancel: 'Cancel',
+    },
+    confirmDeleteMembersBulk: {
+      title: 'Delete Members',
+      description:
+        'Are you sure you want to permanently delete {count} members? This action cannot be undone.',
+      confirm: 'Delete All',
+      cancel: 'Cancel',
+    },
+    confirmRemoveMember: {
+      title: 'Remove Member',
+      description: 'Are you sure you want to remove {name} from the organization?',
+      confirm: 'Remove',
+      cancel: 'Cancel',
+    },
+    confirmRemoveMembersBulk: {
+      title: 'Remove Members',
+      description: 'Are you sure you want to remove {count} members from the organization?',
+      confirm: 'Remove All',
+      cancel: 'Cancel',
+    },
+    confirmRemoveRole: {
+      title: 'Remove Role',
+      description: 'Are you sure you want to remove the role "{roleName}" from this member?',
+      confirm: 'Remove',
+      cancel: 'Cancel',
+    },
+    confirmRemoveRolesBulk: {
+      title: 'Remove Roles',
+      description: 'Are you sure you want to remove {count} roles from this member?',
+      confirm: 'Remove All',
+      cancel: 'Cancel',
+    },
+  },
+  pagination: {
+    previous: 'Previous',
+    next: 'Next',
+    pageSize: 'Page size',
+    showing: 'Showing {count} results',
+  },
+  common: {
+    loading: 'Loading...',
+    error: 'An error occurred',
+    retry: 'Retry',
+    never: 'Never',
+    unknown: 'Unknown',
+  },
+};
+
+export type Messages = typeof defaultMessages;

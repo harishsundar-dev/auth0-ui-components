@@ -6,7 +6,8 @@ const COOKIE_NAME = 'theme-mode';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
 function setThemeCookie(isDark: boolean) {
-  document.cookie = `${COOKIE_NAME}=${isDark ? 'dark' : 'light'}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+  const secure = location.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `${COOKIE_NAME}=${isDark ? 'dark' : 'light'}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax${secure}`;
 }
 
 export function useDarkMode(initialDarkMode = false): boolean {

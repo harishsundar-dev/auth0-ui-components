@@ -19,10 +19,9 @@ export function ClientProvider({ children, initialTheme = 'light' }: ClientProvi
   return (
     <I18nProvider>
       <Auth0ComponentProvider
-        authDetails={{
-          authProxyUrl: '/', // Use the auth proxy base (For example, MFA service will add /mfa/authenticators)
-          domain: clientConfig.auth0Domain,
-        }}
+        domain={clientConfig.auth0Domain}
+        mode="proxy"
+        proxyConfig={{ baseUrl: '/' }} // Use the auth proxy base (For example, MFA service will add /mfa/authenticators)
         themeSettings={{
           mode: isDarkMode ? 'dark' : 'light',
           theme: 'default',

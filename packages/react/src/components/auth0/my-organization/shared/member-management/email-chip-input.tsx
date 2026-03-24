@@ -10,6 +10,7 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { TextField } from '@/components/ui/text-field';
+import { EMAIL_REGEX } from '@/lib/utils/my-organization/member-management/member-management-utils';
 
 interface EmailChipInputProps {
   emails: string[];
@@ -21,8 +22,6 @@ interface EmailChipInputProps {
   error?: string;
   disabled?: boolean;
 }
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
  * Tag/chip email input that allows multiple email addresses.
@@ -57,8 +56,8 @@ export function EmailChipInput({
       e.preventDefault();
       commitChip();
     } else if (e.key === 'Backspace' && inputValue === '' && emails.length > 0) {
-      const lastEmail = emails[emails.length - 1];
-      if (lastEmail) onRemove(lastEmail);
+      // emails.length > 0 ensures the last element is always defined
+      onRemove(emails[emails.length - 1] as string);
     }
   };
 

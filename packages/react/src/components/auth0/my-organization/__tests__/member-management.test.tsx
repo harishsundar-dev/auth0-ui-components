@@ -233,8 +233,8 @@ describe('MemberManagement', () => {
         await user.click(sendButton);
 
         // Mock translator returns key: 'alerts.duplicate_member'
-        // Use getAllByText since the text may appear in both the alert and aria-live region
-        expect((await screen.findAllByText(/duplicate_member/i)).length).toBeGreaterThan(0);
+        // The text appears in both the alert banner and the aria-live region
+        expect(await screen.findAllByText(/duplicate_member/i)).not.toHaveLength(0);
         expect(screen.getByRole('button', { name: /send_anyway/i })).toBeInTheDocument();
       });
     });
@@ -244,7 +244,15 @@ describe('MemberManagement', () => {
         const user = userEvent.setup();
         const onSuccess = vi.fn();
         const sdkClient = createMockSdkClient({
-          list: vi.fn().mockResolvedValue({ total: 0, members: [] }),
+          // First call (duplicate check): returns total: 0 - not a duplicate
+          // Second call (performInvite): returns total: 1 with a userId
+          list: vi
+            .fn()
+            .mockResolvedValueOnce({ total: 0, members: [] })
+            .mockResolvedValueOnce({
+              total: 1,
+              members: [{ user_id: 'user-123', email: 'newmember@example.com' }],
+            }),
           roles: {
             list: vi.fn().mockResolvedValue(mockRoles),
             create: vi.fn().mockResolvedValue(undefined),
@@ -303,8 +311,8 @@ describe('MemberManagement', () => {
         await user.click(sendButton);
 
         // Mock translator returns key: 'alerts.error_generic'
-        // Use getAllByText since the text may appear in both the alert and aria-live region
-        expect((await screen.findAllByText(/error_generic/i)).length).toBeGreaterThan(0);
+        // The text appears in both the alert banner and the aria-live region
+        expect(await screen.findAllByText(/error_generic/i)).not.toHaveLength(0);
       });
     });
   });

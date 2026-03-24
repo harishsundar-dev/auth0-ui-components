@@ -9,14 +9,13 @@ import { useCallback, useReducer } from 'react';
 import { useCheckMembership } from '@/hooks/my-organization/use-check-membership';
 import { useRolesList } from '@/hooks/my-organization/use-roles-list';
 import { useTranslator } from '@/hooks/shared/use-translator';
+import { EMAIL_REGEX } from '@/lib/utils/my-organization/member-management/member-management-utils';
 import type {
   InviteMemberAction,
   InviteMemberState,
   UseInviteMemberOptions,
   UseInviteMemberResult,
 } from '@/types/my-organization/member-management/member-management-types';
-
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const initialState = (email = ''): InviteMemberState => ({
   email,
@@ -146,9 +145,10 @@ export function useInviteMember({
       for (const email of emailsToInvite) {
         const members = await sdkClient.organization.members.list({ q: email });
         const userId = members.members[0]?.user_id;
-        if (userId) {
-          await sdkClient.organization.members.roles.create(userId, { role_id: state.role });
+        if (!userId) {
+          throw new Error(`User not found for email: ${email}`);
         }
+        await sdkClient.organization.members.roles.create(userId, { role_id: state.role });
       }
       dispatch({ type: 'SUBMIT_SUCCESS' });
       onSuccess?.(emailsToInvite, state.role);
@@ -167,9 +167,11 @@ export function useInviteMember({
 
     if (!validate()) return;
 
-    const emailToCheck = mode === 'multi' ? state.emails[0] : state.email;
-    const isDuplicate = await checkMembership(emailToCheck ?? '');
-    if (isDuplicate) {
+    // Check ALL emails for duplicates, not just the first
+    const emailsToCheck = mode === 'multi' ? state.emails : [state.email];
+    const duplicateChecks = await Promise.all(emailsToCheck.map((email) => checkMembership(email)));
+    const hasDuplicate = duplicateChecks.some(Boolean);
+    if (hasDuplicate) {
       dispatch({ type: 'SUBMIT_WARN', payload: t('alerts.duplicate_member') });
       return;
     }

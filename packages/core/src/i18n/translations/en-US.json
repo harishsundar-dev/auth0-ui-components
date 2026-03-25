@@ -1065,5 +1065,169 @@
         "install_guardian_description": "In order to continue, install the Auth0 Guardian app via the app store from your mobile device"
       }
     }
+  },
+  "member_management": {
+    "header": {
+      "title": "Members",
+      "description": "Manage your organization members and invitations"
+    },
+    "tabs": {
+      "members": "Members",
+      "invitations": "Invitations"
+    },
+    "members_table": {
+      "columns": {
+        "name": "Name",
+        "roles": "Roles",
+        "last_login": "Last Login"
+      },
+      "search_placeholder": "Search by name or email",
+      "empty_message": "No members found",
+      "filter_by_role": "Filter By Role",
+      "filter_all": "All",
+      "bulk_selected": "${count} members selected",
+      "invite_button": "Invite Member",
+      "actions": {
+        "view_details": "View Details",
+        "assign_role": "Assign Role",
+        "remove_from_organization": "Remove from organization",
+        "delete": "Delete"
+      }
+    },
+    "invitations_table": {
+      "columns": {
+        "email": "Email",
+        "status": "Status",
+        "created_at": "Created At",
+        "expires_at": "Expires At",
+        "invited_by": "Invited By"
+      },
+      "empty_message": "No invitations found",
+      "status": {
+        "pending": "Pending",
+        "expired": "Expired"
+      },
+      "actions": {
+        "view_details": "View Details",
+        "copy_invitation_url": "Copy Invitation URL",
+        "copied": "Copied",
+        "revoke_and_resend": "Revoke and Resend",
+        "revoke_invitation": "Revoke Invitation"
+      }
+    },
+    "member_detail": {
+      "back_button": "Back to Members",
+      "tabs": {
+        "details": "Details",
+        "roles": "Roles"
+      },
+      "details": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "provider": "Provider",
+        "created_at": "Created At",
+        "last_login": "Last Login",
+        "status": "Status",
+        "status_active": "Active",
+        "status_inactive": "Inactive",
+        "not_available": "N/A"
+      },
+      "roles": {
+        "title": "Roles",
+        "assign_roles": "Assign Roles",
+        "remove_roles": "Remove Roles",
+        "empty_message": "This user has no roles assigned."
+      },
+      "danger_zone": {
+        "title": "Danger Zone",
+        "remove_member": "Remove member from organization",
+        "remove_member_description": "Once removed, this member will lose access to the organization."
+      }
+    },
+    "invite_member": {
+      "title": "Invite Member",
+      "description": "Send an invitation to join the organization",
+      "email_label": "Email Address",
+      "email_placeholder": "Enter email address",
+      "role_label": "Role (optional)",
+      "submit": "Send Invitation",
+      "cancel": "Cancel",
+      "invalid_email": "Please enter a valid email address"
+    },
+    "confirmation": {
+      "revoke_resend": {
+        "title": "Revoke and Resend Invitation",
+        "description": "Are you sure you want to revoke the current invitation for ${email} and send a new one?",
+        "confirm": "Proceed",
+        "cancel": "Cancel"
+      },
+      "revoke_invitation": {
+        "title": "Revoke Invitation",
+        "description": "Are you sure you want to revoke the invitation for ${email}?",
+        "confirm": "Revoke",
+        "cancel": "Cancel"
+      },
+      "delete_member": {
+        "title": "Delete Member",
+        "description": "Are you sure you want to delete ${displayName}? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "bulk_delete": {
+        "title": "Delete Members",
+        "description": "Are you sure you want to delete ${count} members? This action cannot be undone.",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+      },
+      "remove_member": {
+        "title": "Remove Member",
+        "description": "Are you sure you want to remove ${displayName} from ${orgName}?",
+        "confirm": "Remove",
+        "cancel": "Cancel"
+      },
+      "bulk_remove": {
+        "title": "Remove Members",
+        "description": "Are you sure you want to remove ${count} members from ${orgName}?",
+        "confirm": "Remove",
+        "cancel": "Cancel"
+      },
+      "remove_role": {
+        "title": "Remove Role",
+        "description": "Are you sure you want to remove the ${roleName} role from \"${memberName}\"?",
+        "confirm": "Remove",
+        "cancel": "Cancel"
+      },
+      "bulk_remove_roles": {
+        "title": "Remove Roles",
+        "description": "Are you sure you want to remove ${count} roles from \"${memberName}\"?",
+        "confirm": "Remove",
+        "cancel": "Cancel"
+      },
+      "assign_roles": {
+        "title": "Assign Roles",
+        "description": "Select roles to assign to this member",
+        "confirm": "Assign",
+        "cancel": "Cancel"
+      }
+    },
+    "toasts": {
+      "invite_success": "Invitation has been sent to ${email}",
+      "revoke_resend_success": "Previous invite revoked. A new invitation has been sent to ${email}.",
+      "revoke_success": "Invitation for ${email} has been revoked.",
+      "delete_success": "${displayName} has been deleted.",
+      "bulk_delete_success": "Members have been deleted.",
+      "remove_success": "${displayName} has been removed from ${orgName}.",
+      "bulk_remove_success": "Members have been removed from ${orgName}.",
+      "role_assigned_success": "\"${roleName}\" role has been assigned.",
+      "role_removed_success": "\"${roleName}\" role has been removed from member.",
+      "bulk_roles_removed_success": "Selected roles have been removed from member.",
+      "error_generic": "An error occurred. Please try again."
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "rows_per_page": "Rows per page"
+    }
   }
 }

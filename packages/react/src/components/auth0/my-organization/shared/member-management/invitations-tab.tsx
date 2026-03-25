@@ -6,6 +6,7 @@
 import { ChevronLeft, ChevronRight, Copy, MoreHorizontal, Trash2 } from 'lucide-react';
 import * as React from 'react';
 
+import { showToast } from '@/components/auth0/shared/toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -25,7 +26,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { showToast } from '@/components/auth0/shared/toast';
 import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type {
@@ -44,16 +44,31 @@ export interface InvitationsTabProps {
   className?: string;
 }
 
+/**
+ * Formats an ISO date string for display.
+ * @param dateStr - ISO date string.
+ * @returns Formatted date or dash.
+ */
 function formatDate(dateStr?: string): string {
   if (!dateStr) return '—';
   return new Date(dateStr).toLocaleDateString();
 }
 
+/**
+ * Checks whether an invitation has expired.
+ * @param invitation - Invitation object.
+ * @returns True if expired.
+ */
 function isExpired(invitation: MemberInvitation): boolean {
   if (!invitation.expires_at) return false;
   return new Date(invitation.expires_at) < new Date();
 }
 
+/**
+ * Invitations tab content.
+ * @param root0 - Component props.
+ * @returns JSX element.
+ */
 export function InvitationsTab({
   invitationsList,
   onConfirmModal,

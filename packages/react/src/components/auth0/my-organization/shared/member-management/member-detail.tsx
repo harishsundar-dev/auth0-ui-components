@@ -6,6 +6,7 @@
 import { ArrowLeft, Check, Plus, Shield, Trash2 } from 'lucide-react';
 import * as React from 'react';
 
+import { showToast } from '@/components/auth0/shared/toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -29,9 +30,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { showToast } from '@/components/auth0/shared/toast';
-import { useTranslator } from '@/hooks/shared/use-translator';
 import { useMemberDetail } from '@/hooks/my-organization/use-member-detail';
+import { useTranslator } from '@/hooks/shared/use-translator';
 import { cn } from '@/lib/utils';
 import type {
   ConfirmModalState,
@@ -49,11 +49,21 @@ export interface MemberDetailProps {
   className?: string;
 }
 
+/**
+ * Formats an ISO date string for display.
+ * @param dateStr - ISO date string.
+ * @returns Formatted date or dash.
+ */
 function formatDate(dateStr?: string): string {
   if (!dateStr) return '—';
   return new Date(dateStr).toLocaleDateString();
 }
 
+/**
+ * Member detail view component.
+ * @param root0 - Component props.
+ * @returns JSX element.
+ */
 export function MemberDetail({
   userId,
   onBack,
@@ -304,7 +314,11 @@ interface DetailRowProps {
   badgeVariant?: 'success' | 'secondary' | 'default';
 }
 
-function DetailRow({ label, value, badge, badgeVariant = 'default' }: DetailRowProps) {
+/**
+ * Detail row displaying a label-value pair.
+ * @param root0 - Component props.
+ * @returns JSX element.
+ */
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-muted-foreground">{label}</span>
@@ -324,6 +338,10 @@ interface AssignRolesDialogProps {
   customMessages: Partial<MemberManagementMessages>;
 }
 
+/**
+ *
+ * @param root0
+ */
 function AssignRolesDialog({
   open,
   onOpenChange,

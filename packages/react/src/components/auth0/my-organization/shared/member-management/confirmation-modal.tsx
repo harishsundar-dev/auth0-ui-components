@@ -29,6 +29,10 @@ export interface ConfirmationModalProps {
   customMessages?: Partial<MemberManagementMessages>;
 }
 
+/**
+ *
+ * @param root0
+ */
 export function ConfirmationModal({
   modal,
   onConfirm,

@@ -49,15 +49,29 @@ export interface MembersTabProps {
   className?: string;
 }
 
+/**
+ * Derives a display name from a member record.
+ * @param member - Organization member.
+ * @returns Display name string.
+ */
 function getDisplayName(member: OrgMember): string {
   return member.name || member.email || member.nickname || member.user_id || '';
 }
 
+/**
+ * Formats an ISO date string for display.
+ * @param dateStr - ISO date string.
+ * @returns Formatted date or dash.
+ */
 function formatDate(dateStr?: string): string {
   if (!dateStr) return '—';
   return new Date(dateStr).toLocaleDateString();
 }
 
+/**
+ * Members tab content.
+ * @param root0 - Component props.
+ * @returns JSX element.
 export function MembersTab({
   membersList,
   selectedMemberIds,

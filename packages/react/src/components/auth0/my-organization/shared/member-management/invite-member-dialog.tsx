@@ -29,6 +29,10 @@ export interface InviteMemberDialogProps {
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ *
+ * @param root0
+ */
 export function InviteMemberDialog({
   open,
   onOpenChange,

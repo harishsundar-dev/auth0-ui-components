@@ -9,10 +9,10 @@ import { InvitationsTab } from '@/components/auth0/my-organization/shared/member
 import { InviteMemberDialog } from '@/components/auth0/my-organization/shared/member-management/invite-member-dialog';
 import { MemberDetail } from '@/components/auth0/my-organization/shared/member-management/member-detail';
 import { MembersTab } from '@/components/auth0/my-organization/shared/member-management/members-tab';
-import { showToast } from '@/components/auth0/shared/toast';
 import { GateKeeper } from '@/components/auth0/shared/gate-keeper/gate-keeper';
 import { Header } from '@/components/auth0/shared/header';
 import { StyledScope } from '@/components/auth0/shared/styled-scope';
+import { showToast } from '@/components/auth0/shared/toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useInvitationsList } from '@/hooks/my-organization/use-invitations-list';
 import { useMemberManagement } from '@/hooks/my-organization/use-member-management';
@@ -63,6 +63,7 @@ function MemberManagement(props: MemberManagementProps) {
 
 /**
  * MemberManagement block – view component.
+ * @param root0
  * @internal
  */
 function MemberManagementView({

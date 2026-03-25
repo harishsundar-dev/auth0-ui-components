@@ -30,8 +30,9 @@ export interface InviteMemberDialogProps {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- *
- * @param root0
+ * Dialog for inviting a new member by email.
+ * @param root0 - The component props.
+ * @returns The invite member dialog element.
  */
 export function InviteMemberDialog({
   open,
@@ -104,11 +105,7 @@ export function InviteMemberDialog({
           </div>
 
           <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="outline" disabled={isSubmitting}>
-                {t('invite_member.cancel')}
-              </Button>
-            </DialogClose>
+            <DialogClose disabled={isSubmitting}>{t('invite_member.cancel')}</DialogClose>
             <Button type="submit" disabled={isSubmitting || !email.trim()}>
               {t('invite_member.submit')}
             </Button>

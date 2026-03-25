@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { stubFetch } from '../../../api/__tests__/__mocks__/api-utils.mocks';
 import { AUTH0_SCOPE_HEADER } from '../../../api/api-utils';
-import type { FetcherSupplier, SpaAuthConfig } from '../../../auth/auth-types';
+import type { SpaAuthConfig } from '../../../auth/auth-types';
 import {
   createMockContextInterface,
   mockProxyConfig,
@@ -34,6 +34,9 @@ describe('createMyOrganizationClient', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockFetchWithAuth.mockResolvedValue(
+      new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } }),
+    );
     mockCreateFetcher.mockReturnValue({
       fetchWithAuth: mockFetchWithAuth,
     });
@@ -50,12 +53,12 @@ describe('createMyOrganizationClient', () => {
     );
   });
 
-  it('creates client with domain in SPA mode', () => {
+  it('creates client with baseUrl in SPA mode', () => {
     createMyOrganizationClient(createSpaConfig());
 
     expect(MyOrganizationClient).toHaveBeenCalledWith(
       expect.objectContaining({
-        domain: TEST_DOMAIN,
+        baseUrl: `https://${TEST_DOMAIN}/my-org`,
         telemetry: false,
       }),
     );
@@ -79,13 +82,17 @@ describe('createMyOrganizationClient', () => {
       createMyOrganizationClient(mockProxyConfig);
 
       const constructorOptions = vi.mocked(MyOrganizationClient).mock.calls[0]![0];
-      const fetcher = constructorOptions.fetcher as FetcherSupplier;
+      const fetcher = constructorOptions.fetcher as unknown as (
+        args: Record<string, unknown>,
+      ) => Promise<unknown>;
 
-      await fetcher(
-        'https://example.com',
-        { method: 'GET' },
-        { scope: ['read:org', 'write:org'], audience: 'test-audience' },
-      );
+      await fetcher({
+        url: 'https://example.com',
+        method: 'GET',
+        endpointMetadata: {
+          security: [{ OAuth2AuthCode: ['read:org', 'write:org'] }],
+        },
+      });
 
       const [, requestInit] = mockFetch.mock.calls[0]!;
       expect((requestInit?.headers as Headers).get(AUTH0_SCOPE_HEADER)).toBe('read:org write:org');
@@ -93,22 +100,27 @@ describe('createMyOrganizationClient', () => {
   });
 
   describe('SPA mode fetcher', () => {
-    it('calls SDK fetchWithAuth with scope and audience', async () => {
+    it('calls SDK fetchWithAuth with scope from endpoint metadata', async () => {
       createMyOrganizationClient(createSpaConfig());
 
       const constructorOptions = vi.mocked(MyOrganizationClient).mock.calls[0]![0];
-      const fetcher = constructorOptions.fetcher as FetcherSupplier;
+      const fetcher = constructorOptions.fetcher as unknown as (
+        args: Record<string, unknown>,
+      ) => Promise<unknown>;
 
-      await fetcher(
-        'https://example.com',
-        { method: 'POST', body: '{}' },
-        { scope: ['read:org'], audience: 'https://tenant.auth0.com/my-org/' },
-      );
+      await fetcher({
+        url: 'https://example.com',
+        method: 'POST',
+        body: {},
+        endpointMetadata: {
+          security: [{ OAuth2AuthCode: ['read:org'] }],
+        },
+      });
 
       expect(mockFetchWithAuth).toHaveBeenCalledWith(
         'https://example.com',
-        expect.objectContaining({ method: 'POST', body: '{}' }),
-        { scope: ['read:org'], audience: 'https://tenant.auth0.com/my-org/' },
+        expect.objectContaining({ method: 'POST' }),
+        { scope: ['read:org'] },
       );
     });
   });

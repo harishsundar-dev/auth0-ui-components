@@ -16,7 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import {
@@ -72,6 +78,7 @@ function formatDate(dateStr?: string): string {
  * Members tab content.
  * @param root0 - Component props.
  * @returns JSX element.
+ */
 export function MembersTab({
   membersList,
   selectedMemberIds,

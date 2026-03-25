@@ -16,7 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import {
   Table,
@@ -82,7 +88,6 @@ export function InvitationsTab({
   const {
     invitations,
     isLoading,
-    page,
     hasNextPage,
     hasPreviousPage,
     goToNextPage,

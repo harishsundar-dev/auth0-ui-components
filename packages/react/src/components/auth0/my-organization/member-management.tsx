@@ -63,20 +63,23 @@ function MemberManagement(props: MemberManagementProps) {
 
 /**
  * MemberManagement block – view component.
- * @param root0
+ * @param root0 - Component props
+ * @returns The member management view component
  * @internal
  */
 function MemberManagementView({
   customMessages,
   styling,
   readOnly,
+  onNavigateToMember,
   perPageOptions,
   membersList,
   invitationsList,
-}: MemberManagementProps & {
-  membersList: ReturnType<typeof useMembersList>;
-  invitationsList: ReturnType<typeof useInvitationsList>;
-}) {
+}: Required<Pick<MemberManagementProps, 'readOnly' | 'perPageOptions'>> &
+  Omit<MemberManagementProps, 'readOnly' | 'perPageOptions'> & {
+    membersList: ReturnType<typeof useMembersList>;
+    invitationsList: ReturnType<typeof useInvitationsList>;
+  }) {
   const { isDarkMode } = useTheme();
   const { t } = useTranslator('member_management', customMessages);
   const { coreClient } = useCoreClient();

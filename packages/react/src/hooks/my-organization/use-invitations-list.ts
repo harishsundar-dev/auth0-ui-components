@@ -65,7 +65,7 @@ export function useInvitationsList(customMessages = {}): UseInvitationsListRetur
         sort: 'created_at:-1',
       });
 
-      return (response?.invitations ?? []) as MemberInvitation[];
+      return (response?.data ?? []) as MemberInvitation[];
     },
     enabled: !!coreClient,
   });

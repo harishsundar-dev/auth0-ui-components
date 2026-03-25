@@ -30,8 +30,9 @@ export interface ConfirmationModalProps {
 }
 
 /**
- *
- * @param root0
+ * Confirmation modal for member management actions.
+ * @param root0 - Component props
+ * @returns The confirmation modal component
  */
 export function ConfirmationModal({
   modal,
@@ -141,7 +142,7 @@ export function ConfirmationModal({
             </Button>
           </DialogClose>
           <Button
-            variant={content.destructive ? 'destructive' : 'default'}
+            variant={content.destructive ? 'destructive' : 'primary'}
             onClick={onConfirm}
             disabled={isConfirming}
           >

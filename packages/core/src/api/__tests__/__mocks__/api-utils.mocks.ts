@@ -5,6 +5,7 @@ export const createFetchMock = (ok = true, body: unknown = {}) =>
     ok,
     status: ok ? 200 : 400,
     json: vi.fn().mockResolvedValue(body),
+    text: vi.fn().mockResolvedValue(JSON.stringify(body)),
   });
 
 export const stubFetch = (ok = true, body: unknown = {}) => {

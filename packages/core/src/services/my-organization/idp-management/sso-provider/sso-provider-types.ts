@@ -13,7 +13,7 @@ import type {
 export type ListIdentityProvidersResponseContent =
   MyOrganization.ListIdentityProvidersResponseContent;
 export type IdentityProvider = MyOrganization.IdpKnownResponse;
-export type DetachIdpProviderResponseContent = MyOrganization.DetachIdpProviderResponseContent;
+export type DetachIdpProviderResponseContent = void;
 export type CreateIdentityProviderRequestContent =
   MyOrganization.CreateIdentityProviderRequestContent;
 export type CreateIdentityProviderResponseContent =

@@ -73,10 +73,13 @@ export function MemberDetail({
   className,
 }: MemberDetailProps): React.JSX.Element {
   const { t } = useTranslator('member_management', customMessages);
-  const { member, roles, isLoading, assignRole, removeRole } = useMemberDetail(
-    userId,
-    customMessages,
-  );
+  const {
+    member,
+    roles,
+    isLoading,
+    assignRole,
+    removeRole: _removeRole,
+  } = useMemberDetail(userId, customMessages);
 
   const [activeTab, setActiveTab] = React.useState<MemberDetailTab>('details');
   const [selectedRoleIds, setSelectedRoleIds] = React.useState<string[]>([]);
@@ -114,7 +117,7 @@ export function MemberDetail({
       onConfirmModal({
         type: 'removeSingleRole',
         userId,
-        roleId: selectedRoleIds[0],
+        roleId: selectedRoleIds[0]!,
         roleName: role?.name ?? '',
         memberName: displayName,
       });
@@ -195,20 +198,12 @@ export function MemberDetail({
           <div className="space-y-4">
             {!readOnly && (
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setAssignDialogOpen(true)}
-                >
+                <Button variant="outline" size="sm" onClick={() => setAssignDialogOpen(true)}>
                   <Plus className="mr-1 h-4 w-4" />
                   {t('member_detail.roles.assign_roles')}
                 </Button>
                 {selectedRoleIds.length > 0 && (
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleRemoveSelectedRoles}
-                  >
+                  <Button variant="destructive" size="sm" onClick={handleRemoveSelectedRoles}>
                     <Trash2 className="mr-1 h-4 w-4" />
                     {t('member_detail.roles.remove_roles')}
                   </Button>
@@ -319,6 +314,7 @@ interface DetailRowProps {
  * @param root0 - Component props.
  * @returns JSX element.
  */
+function DetailRow({ label, value, badge, badgeVariant }: DetailRowProps) {
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-muted-foreground">{label}</span>
@@ -339,8 +335,9 @@ interface AssignRolesDialogProps {
 }
 
 /**
- *
- * @param root0
+ * Dialog for assigning roles to organization members.
+ * @param root0 - Component props
+ * @returns The assign roles dialog component
  */
 function AssignRolesDialog({
   open,

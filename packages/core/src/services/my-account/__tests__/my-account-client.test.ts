@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { stubFetch } from '../../../api/__tests__/__mocks__/api-utils.mocks';
 import { AUTH0_SCOPE_HEADER } from '../../../api/api-utils';
-import type { FetcherSupplier, SpaAuthConfig } from '../../../auth/auth-types';
+import type { SpaAuthConfig } from '../../../auth/auth-types';
 import {
   createMockContextInterface,
   mockProxyConfig,
@@ -34,6 +34,9 @@ describe('createMyAccountClient', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockFetchWithAuth.mockResolvedValue(
+      new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } }),
+    );
     mockCreateFetcher.mockReturnValue({
       fetchWithAuth: mockFetchWithAuth,
     });
@@ -50,12 +53,12 @@ describe('createMyAccountClient', () => {
     );
   });
 
-  it('creates client with domain in SPA mode', () => {
+  it('creates client with baseUrl in SPA mode', () => {
     createMyAccountClient(createSpaConfig());
 
     expect(MyAccountClient).toHaveBeenCalledWith(
       expect.objectContaining({
-        domain: TEST_DOMAIN,
+        baseUrl: `https://${TEST_DOMAIN}/me/v1`,
         telemetry: false,
       }),
     );
@@ -79,13 +82,17 @@ describe('createMyAccountClient', () => {
       createMyAccountClient(mockProxyConfig);
 
       const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-      const fetcher = constructorOptions.fetcher as FetcherSupplier;
+      const fetcher = constructorOptions.fetcher as unknown as (
+        args: Record<string, unknown>,
+      ) => Promise<unknown>;
 
-      await fetcher(
-        'https://example.com',
-        { method: 'GET' },
-        { scope: ['read:users', 'write:users'], audience: 'test-audience' },
-      );
+      await fetcher({
+        url: 'https://example.com',
+        method: 'GET',
+        endpointMetadata: {
+          security: [{ OAuth2AuthCode: ['read:users', 'write:users'] }],
+        },
+      });
 
       expect(mockFetch).toHaveBeenCalledWith(
         'https://example.com',
@@ -103,9 +110,14 @@ describe('createMyAccountClient', () => {
       createMyAccountClient(mockProxyConfig);
 
       const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-      const fetcher = constructorOptions.fetcher as FetcherSupplier;
+      const fetcher = constructorOptions.fetcher as unknown as (
+        args: Record<string, unknown>,
+      ) => Promise<unknown>;
 
-      await fetcher('https://example.com', { method: 'GET' }, { scope: [], audience: 'test' });
+      await fetcher({
+        url: 'https://example.com',
+        method: 'GET',
+      });
 
       const [, requestInit] = mockFetch.mock.calls[0]!;
       expect((requestInit?.headers as Headers).get(AUTH0_SCOPE_HEADER)).toBeNull();
@@ -113,37 +125,46 @@ describe('createMyAccountClient', () => {
   });
 
   describe('SPA mode fetcher', () => {
-    it('calls SDK fetchWithAuth with scope and audience', async () => {
+    it('calls SDK fetchWithAuth with scope from endpoint metadata', async () => {
       createMyAccountClient(createSpaConfig());
 
       const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-      const fetcher = constructorOptions.fetcher as FetcherSupplier;
+      const fetcher = constructorOptions.fetcher as unknown as (
+        args: Record<string, unknown>,
+      ) => Promise<unknown>;
 
-      await fetcher(
-        'https://example.com',
-        { method: 'GET' },
-        { scope: ['read:users', 'write:users'], audience: 'https://tenant.auth0.com/me/' },
-      );
+      await fetcher({
+        url: 'https://example.com',
+        method: 'GET',
+        endpointMetadata: {
+          security: [{ OAuth2AuthCode: ['read:users', 'write:users'] }],
+        },
+      });
 
       expect(mockFetchWithAuth).toHaveBeenCalledWith(
         'https://example.com',
         expect.objectContaining({ method: 'GET' }),
-        { scope: ['read:users', 'write:users'], audience: 'https://tenant.auth0.com/me/' },
+        { scope: ['read:users', 'write:users'] },
       );
     });
 
-    it('handles undefined authParams', async () => {
+    it('handles no endpoint metadata', async () => {
       createMyAccountClient(createSpaConfig());
 
       const constructorOptions = vi.mocked(MyAccountClient).mock.calls[0]![0];
-      const fetcher = constructorOptions.fetcher as FetcherSupplier;
+      const fetcher = constructorOptions.fetcher as unknown as (
+        args: Record<string, unknown>,
+      ) => Promise<unknown>;
 
-      await fetcher('https://example.com', { method: 'GET' }, undefined);
+      await fetcher({
+        url: 'https://example.com',
+        method: 'GET',
+      });
 
       expect(mockFetchWithAuth).toHaveBeenCalledWith(
         'https://example.com',
         expect.objectContaining({ method: 'GET' }),
-        { scope: undefined, audience: undefined },
+        { scope: undefined },
       );
     });
   });

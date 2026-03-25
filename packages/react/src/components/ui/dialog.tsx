@@ -45,11 +45,11 @@ function DialogPortal({ ...props }: React.ComponentProps<typeof DialogPrimitive.
 }
 
 function DialogClose({ ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
-  const { children } = props;
+  const { children, ...rest } = props;
 
   return (
     <DialogPrimitive.Close data-slot="dialog-close" asChild>
-      <Button variant="outline" data-slot="dialog-close">
+      <Button variant="outline" data-slot="dialog-close" {...rest}>
         {children}
       </Button>
     </DialogPrimitive.Close>
@@ -123,7 +123,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="dialog-footer"
-      className={cn('flex flex-row gap-2 justify-end', className)}
+      className={cn('flex flex-row flex-wrap gap-3 justify-end', className)}
       {...props}
     />
   );

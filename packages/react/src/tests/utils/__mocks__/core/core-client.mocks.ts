@@ -95,6 +95,25 @@ const createMockMyOrgApiService = (): CoreClientInterface['myOrganizationApiClie
           }),
         },
       },
+      members: {
+        list: vi.fn().mockResolvedValue({ members: [] }),
+        get: vi.fn().mockResolvedValue({}),
+        deleteMembers: vi.fn().mockResolvedValue(undefined),
+        roles: {
+          list: vi.fn().mockResolvedValue({ roles: [] }),
+          create: vi.fn().mockResolvedValue({ roles: [] }),
+          delete: vi.fn().mockResolvedValue(undefined),
+        },
+      },
+      memberships: {
+        deleteMemberships: vi.fn().mockResolvedValue(undefined),
+      },
+      invitations: {
+        list: vi.fn().mockResolvedValue({ invitations: [] }),
+        get: vi.fn().mockResolvedValue({}),
+        create: vi.fn().mockResolvedValue([]),
+        delete: vi.fn().mockResolvedValue(undefined),
+      },
     },
   } as unknown as NonNullable<CoreClientInterface['myOrganizationApiClient']>;
   return service;

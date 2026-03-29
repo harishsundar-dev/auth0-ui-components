@@ -1065,5 +1065,39 @@
         "install_guardian_description": "In order to continue, install the Auth0 Guardian app via the app store from your mobile device"
       }
     }
+  },
+  "member_management": {
+    "member_management": {
+      "dialog": {
+        "title": "Invite Member",
+        "description": "Invite a new member to your organization by email.",
+        "close_button_label": "Close"
+      },
+      "form": {
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter email address",
+          "helper_text": "Enter the email address of the person you want to invite.",
+          "error_invalid": "Please enter a valid email address.",
+          "error_required": "Email address is required."
+        },
+        "role": {
+          "label": "Role",
+          "placeholder": "Select a role",
+          "error_required": "Please select a role."
+        }
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "send_invite": "Send Invite",
+        "sending": "Sending...",
+        "send_anyway": "Send Anyway"
+      },
+      "alerts": {
+        "duplicate_member": "This email address is already a member of your organization.",
+        "success": "Invitation sent successfully.",
+        "error_generic": "An error occurred while sending the invitation. Please try again."
+      }
+    }
   }
 }

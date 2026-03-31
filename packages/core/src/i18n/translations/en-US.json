@@ -1065,5 +1065,58 @@
         "install_guardian_description": "In order to continue, install the Auth0 Guardian app via the app store from your mobile device"
       }
     }
+  },
+  "member_management": {
+    "invite_member": {
+      "dialog": {
+        "title": "Invite Member",
+        "description": "Invite someone to join your organization by email."
+      },
+      "form": {
+        "email_label": "Email Address",
+        "email_placeholder": "Enter email address",
+        "email_helper": "Enter the email address of the person you want to invite.",
+        "role_label": "Role",
+        "role_placeholder": "Select a role",
+        "role_legend": "Assign a role",
+        "role_description": "Choose the role that determines the member's permissions."
+      },
+      "chip": {
+        "remove": "Remove ${email}",
+        "add_hint": "Press Enter, comma, or space to add an email"
+      },
+      "buttons": {
+        "send_invite": "Send Invite",
+        "cancel": "Cancel",
+        "dismiss": "Close",
+        "try_again": "Try Again",
+        "proceed": "Proceed Anyway"
+      },
+      "loading": {
+        "checking": "Checking membership...",
+        "submitting": "Sending invitation..."
+      },
+      "success": {
+        "title": "Invitation Sent",
+        "description": "An invitation has been sent to ${email}.",
+        "description_multiple": "Invitations have been sent to ${count} recipients."
+      },
+      "errors": {
+        "invalid_email": "Please enter a valid email address.",
+        "required_email": "Email address is required.",
+        "required_role": "Please select a role.",
+        "duplicate_email": "This email has already been added to the list.",
+        "already_member": "This user is already a member of the organization.",
+        "insufficient_permissions": "You do not have permission to invite members.",
+        "generic": "There was an issue sending the invitation. Please try again."
+      },
+      "warning": {
+        "already_member": "This email address is already a member of the organization. You can still proceed with the invitation."
+      },
+      "confirm": {
+        "title": "Confirm Invitation",
+        "description": "Are you sure you want to send an invitation to ${email}?"
+      }
+    }
   }
 }
